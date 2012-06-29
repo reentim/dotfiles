@@ -1,0 +1,24 @@
+[user]
+	name = Timothy Reen
+	email = reentim@gmail.com
+[core]
+	editor = vim
+	excludesfile = "~/.gitignore-global"
+[color]
+	ui = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[alias]
+	l = "!bash ~/.githelpers"
+	st = status
+	ci = commit
+	cim = commit -m 
+	co = checkout
+	di = diff
+	ds = diff --staged
+	amend = commit --amend
+	aa = add --all
+	ff = merge --ff-only
+	unstage = reset HEAD
