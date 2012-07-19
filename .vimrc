@@ -53,6 +53,8 @@
 " ------------------------------------------------------------------------------
 	let mapleader = ","
 
+	let g:ctrlp_map = '<leader>t'
+
 	" Reselect pasted text: <,v>
 		nnoremap <leader>v V`]
 	" Gundo
