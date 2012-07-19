@@ -3,53 +3,41 @@
 bold=`tput bold`
 normal=`tput sgr0`
 
+mkdir ~/.backup-dotfiles
+
 # vim files
-if [ -d "$HOME/Dropbox/.dotfiles/.vim" ]
-then
-	if [ -f "$HOME/Dropbox/.dotfiles/.vimrc" ]
-	then
-		echo -e "${bold}Found vim dotfiles on Dropbox...${normal}"
-		echo -e "---------------------------------------"
-		echo -e "Moving any existing vim dotfiles to ~/Dropbox/.dotfiles/stock-dotfiles/"
-		mv -v ~/.vimrc ~/Dropbox/.dotfiles/stock-dotfiles/.vimrc-`date +%Y-%m-%d`-$USER-$HOSTNAME
-		mv -v ~/.vim ~/Dropbox/.dotfiles/stock-dotfiles/.vim-`date +%Y-%m-%d`-$USER-$HOSTNAME
-		echo -e "Linking vim dotfiles from Dropbox..."
-		ln -s ~/Dropbox/.dotfiles/.vim ~/.vim
-		ln -s ~/Dropbox/.dotfiles/.vimrc ~/.vimrc
-		echo -e "${bold}Done!${normal}\n"
-	fi
-fi
+	echo -e "Moving any existing vim dotfiles to ~/.backup-dotfiles/"
+	mv -v ~/.vim ~/.backup-dotfiles/ 
+	mv -v ~/.vimrc ~/.backup-dotfiles/
+	mv -v ~/.gvimrc ~/.backup-dotfiles/
+	echo -e "Linking vim dotfiles..."
+	ln -s $PWD/.vim ~/.vim
+	ln -s $PWD/.vimrc ~/.vimrc
+	ln -s $PWD/.gvimrc ~/.gvimrc
+	echo -e "${bold}Done${normal}\n"
 
 # bash files
-if [ -f "$HOME/Dropbox/.dotfiles/.bash_history" -a  -f "$HOME/Dropbox/.dotfiles/.bash_logout" -a  -f "$HOME/Dropbox/.dotfiles/.bashrc" -a -f "$HOME/Dropbox/.dotfiles/.bash_profile" ]
-then
-	echo -e "${bold}Found bash dotfiles on Dropbox...${normal}"
-	echo -e "----------------------------------------"
-	echo -e "Moving any existing bash dotfiles to ~/Dropbox/.dotfiles/stock-dotfiles/"
-	# Let's be sensible and not sync everything:
-	# mv -v ~/.bash_history ~/Dropbox/.dotfiles/stock-dotfiles/.bash_history-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	# ln -s ~/Dropbox/.dotfiles/.bash_history ~/.bash_history
-	# mv -v ~/.bash_logout ~/Dropbox/.dotfiles/stock-dotfiles/.bash_logout-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	# ln -s ~/Dropbox/.dotfiles/.bash_logout ~/.bash_logout
-	mv -v ~/.bashrc ~/Dropbox/.dotfiles/stock-dotfiles/.bashrc-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	mv -v ~/.bash_profile ~/Dropbox/.dotfiles/stock-dotfiles/.bash_profile-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	echo -e "Linking bash dotfiles from Dropbox..."
-	ln -s ~/Dropbox/.dotfiles/.bashrc ~/.bashrc
-	ln -s ~/Dropbox/.dotfiles/.bash_profile ~/.bash_profile
-	echo -e "${bold}Done!${normal}\n"
-fi
+	echo -e "Moving any existing bash dotfiles to ~/.backup-dotfiles/"
+	mv -v ~/.bash_aliases ~/.backup-dotfiles/
+	mv -v ~/.bash_custom ~/.backup-dotfiles/
+	mv -v ~/.bash_colors ~/.backup-dotfiles/
+	mv -v ~/.bash_profile ~/.backup-dotfiles/
+	echo -e "Linking bash dotfiles..."
+	ln -s $PWD/.bash_aliases ~/.bash_aliases
+	ln -s $PWD/.bash_custom ~/.bash_custom
+	ln -s $PWD/.bash_colors ~/.bash_colors
+	ln -s $PWD/.bash_profile ~/.bash_profile
+	echo -e "${bold}Done${normal}\n"
 
-if [ -f "$HOME/Dropbox/.dotfiles/.gitconfig" -a  -f "$HOME/Dropbox/.dotfiles/.githelpers" ]
-then
-	echo -e "${bold}Found git dotfiles on Dropbox...${normal}"
-	echo -e "---------------------------------------"
+# git files
 	echo -e "Moving any existing git dotfiles to ~/Dropbox/.dotfiles/stock-dotfiles/"
-	mv -v ~/.gitconfig ~/Dropbox/.dotfiles/stock-dotfiles/.gitconfig-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	mv -v ~/.githelpers ~/Dropbox/.dotfiles/stock-dotfiles/.githelpers-`date +%Y-%m-%d`-$USER-$HOSTNAME
-	mv -v ~/.gitignore-global ~/Dropbox/.dotfiles/stock-dotfiles/.gitignore-global-`date +Y-%m-%d`-$USER-$HOSTNAME
+	mv -v ~/.gitconfig ~/.backup-dotfiles
+	mv -v ~/.githelpers ~/.backup-dotfiles
+	mv -v ~/.gitignore-global ~/.backup-dotfiles
 	echo -e "Linking git dotfiles from Dropbox..."
-	ln -s ~/Dropbox/.dotfiles/.gitconfig ~/.gitconfig
-	ln -s ~/Dropbox/.dotfiles/.githelpers ~/.githelpers
-	ln -s ~/Dropbox/.dotfiles/.gitignore-global ~/.gitignore-global
-	echo -e "${bold}Done!${normal}\n"
-fi
+	ln -s $PWD/.gitconfig ~/.gitconfig
+	ln -s $PWD/.githelpers ~/.githelpers
+	ln -s $PWD/.gitignore-global ~/.gitignore-global
+	echo -e "${bold}Done${normal}\n"
+
+echo -e "${bold}Setup complete!${normal}\n"
