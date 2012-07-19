@@ -13,6 +13,7 @@
 [alias]
 	l = "!bash ~/.githelpers"
 	graph = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\"
+	    g = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\" 
 	st = status
 	ci = commit
 	cim = commit -m 
