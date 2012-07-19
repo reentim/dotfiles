@@ -94,10 +94,10 @@
 " Central temporary directories
 " ------------------------------------------------------------------------------
 	set backup
-	set backupdir=~/Dropbox/.dotfiles/.vimtmp//
-	set dir=~/Dropbox/.dotfiles/.vimswap//
+	set backupdir=~/.vimtmp//
+	set dir=~/.vimswap//
 	set undofile
-	set undodir=~/Dropbox/.dotfiles/.vimundo//
+	set undodir=~/.vimundo//
 
 " Macros
 " ------------------------------------------------------------------------------
