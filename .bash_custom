@@ -23,6 +23,10 @@ if [ $HOMEBREW_INSTALLED ]; then
 	[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
 fi
 
+if [ -f /etc/bash_completion.d/git ]; then
+	. /etc/bash_completion.d/git
+fi
+
 # Stolen from Gary Bernhardt
 # https://bitbucket.org/garybernhardt/dotfiles/src/4bdc724e5c4e/.bashrc
 # with my small addition of hours and days at the git prompt
