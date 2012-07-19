@@ -12,13 +12,12 @@
 	diff = auto
 [alias]
 	l = "!bash ~/.githelpers"
+	graph = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\"
 	st = status
 	ci = commit
 	cim = commit -m 
 	co = checkout
 	di = diff
 	ds = diff --staged
-	amend = commit --amend
 	aa = add --all
 	ff = merge --ff-only
-	unstage = reset HEAD

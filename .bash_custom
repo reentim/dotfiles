@@ -1,4 +1,4 @@
-# include human readable colour shortcuts
+# Include human readable colour shortcuts
 if [ -f ~/.bash_colors ]; then
     . ~/.bash_colors
 fi
@@ -8,14 +8,25 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# Rvm stuff
+if [ $RVM_INSTALLED ]; then
+	PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+# Homebrew stuff
+if [ $HOMEBREW_INSTALLED ]; then
+	if [ -f `brew --prefix`/etc/bash_completion ]; then
+		. `brew --prefix`/etc/bash_completion
+	fi
 
-# Stolen from Gary Bernhardt: https://bitbucket.org/garybernhardt/dotfiles/src/4bdc724e5c4e/.bashrc
+	[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
+fi
+
+# Stolen from Gary Bernhardt
+# https://bitbucket.org/garybernhardt/dotfiles/src/4bdc724e5c4e/.bashrc
 # with my small addition of hours and days at the git prompt
-# -------------------------------------------------------------------------------------------------
-
+# -----------------------------------------------------------------------------
 function minutes_since_last_commit {
     now=`date +%s`
     last_commit=`git log --pretty=format:'%at' -1`
@@ -31,8 +42,8 @@ grb_git_prompt() {
 		local HOURS_SINCE_LAST_COMMIT=$(($MINUTES_SINCE_LAST_COMMIT/60))
 		local DAYS_SINCE_LAST_COMMIT=$(($HOURS_SINCE_LAST_COMMIT/24))
 
-# Color codes passed into PS1 by a function seem to goof up escape codes and
-# mess with terminal length, so have been removed --
+	# Color codes passed into PS1 by a function seem to goof up escape codes and
+	# mess with terminal length, so have been removed --
 
        # if [ "$MINUTES_SINCE_LAST_COMMIT" -gt 30 ]; then
        #     local COLOR=${BRIGHT_RED}
@@ -73,11 +84,3 @@ if [ $STY ]
 then
 	PS1="\[${BRIGHT_RED}\]\${STY}\[${NORMAL}\]:\[${BRIGHT_VIOLET}\]\w\[${NORMAL}\] \[${BRIGHT_YELLOW}\]\u\[${NORMAL}\]\$ "
 fi
-
-# Homebrew stuff
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-	. `brew --prefix`/etc/bash_completion
-fi
-
-[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
-# end Homebrew stuff
