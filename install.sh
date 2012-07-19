@@ -33,7 +33,7 @@ mkdir ~/.vimundo
 	echo -e "${bold}Done${normal}\n"
 
 # git files
-	echo -e "Moving any existing git dotfiles to ~/Dropbox/.dotfiles/stock-dotfiles/"
+	echo -e "Moving any existing git dotfiles to ~/.backup-dotfiles/"
 	mv -v ~/.gitconfig ~/.backup-dotfiles
 	mv -v ~/.githelpers ~/.backup-dotfiles
 	mv -v ~/.gitignore-global ~/.backup-dotfiles
@@ -42,5 +42,7 @@ mkdir ~/.vimundo
 	ln -s $PWD/.githelpers ~/.githelpers
 	ln -s $PWD/.gitignore-global ~/.gitignore-global
 	echo -e "${bold}Done${normal}\n"
+
+source ~/.bash_profile
 
 echo -e "${bold}Setup complete!${normal}\n"
