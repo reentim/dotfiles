@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/AutoComplPop"]
 	path = .vim/bundle/AutoComplPop
 	url = git://github.com/lammermann/AutoComplPop.git
-[submodule ".vim/bundle/command-t"]
-	path = .vim/bundle/command-t
-	url = git://github.com/wincent/Command-T.git
 [submodule ".vim/bundle/html5-syntax.vim"]
 	path = .vim/bundle/html5-syntax.vim
 	url = git://github.com/othree/html5-syntax.vim.git
@@ -34,6 +31,9 @@
 [submodule ".vim/bundle/vim-surround"]
 	path = .vim/bundle/vim-surround
 	url = git://github.com/tpope/vim-surround.git
-[submodule ".vim/bundle/xterm-color-table.vim"]
-	path = .vim/bundle/xterm-color-table.vim
-	url = git://github.com/vim-scripts/xterm-color-table.vim.git
+[submodule ".vim/bundle/scss-syntax.vim"]
+	path = .vim/bundle/scss-syntax.vim
+	url = git://github.com/cakebaker/scss-syntax.vim.git
+[submodule ".vim/bundle/ctrlp.vim"]
+	path = .vim/bundle/ctrlp.vim
+	url = git://github.com/kien/ctrlp.vim.git
