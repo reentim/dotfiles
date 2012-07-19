@@ -4,6 +4,9 @@ bold=`tput bold`
 normal=`tput sgr0`
 
 echo -e "Removing linked dotfiles..."
+rm -rf ~/.vimswap
+rm -rf ~/.vimtmp
+rm -rf ~/.vimundo
 # vim
 	rm ~/.vim
 	rm ~/.vimrc
