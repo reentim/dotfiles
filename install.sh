@@ -34,7 +34,7 @@ mkdir ~/.backup-dotfiles
 	mv -v ~/.gitconfig ~/.backup-dotfiles
 	mv -v ~/.githelpers ~/.backup-dotfiles
 	mv -v ~/.gitignore-global ~/.backup-dotfiles
-	echo -e "Linking git dotfiles from Dropbox..."
+	echo -e "Linking git dotfiles..."
 	ln -s $PWD/.gitconfig ~/.gitconfig
 	ln -s $PWD/.githelpers ~/.githelpers
 	ln -s $PWD/.gitignore-global ~/.gitignore-global
