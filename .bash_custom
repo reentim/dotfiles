@@ -72,9 +72,9 @@ grb_git_prompt() {
 
 if [ -f "$HOME/.gitconfig" ]
 then
-	PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${BRIGHT_VIOLET}\]\W\[${NORMAL}\]\$(grb_git_prompt) \[${BRIGHT_YELLOW}\]\u\[${NORMAL}\]\$ "
+	PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${DIR_COLOR}\]\W\[${NORMAL}\]\$(grb_git_prompt) \[${USER_COLOR}\]\u\[${NORMAL}\]\$ "
 else
-	PS1="\[${BRIGHT_CYAN}\]\h\[${NORMAL}\]:\[${BRIGHT_VIOLET}\]\W\[${NORMAL}\] \[${BRIGHT_YELLOW}\]\u\[${NORMAL}\]\$ "
+	PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${DIR_COLOR}\]\W\[${NORMAL}\] \[${USER_COLOR}\]\u\[${NORMAL}\]\$ "
 fi
 # -------------------------------------------------------------------------------------------------
 
