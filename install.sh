@@ -4,6 +4,9 @@ bold=`tput bold`
 normal=`tput sgr0`
 
 mkdir ~/.backup-dotfiles
+mkdir ~/.vimswap
+mkdir ~/.vimtmp
+mkdir ~/.vimundo
 
 # vim files
 	echo -e "Moving any existing vim dotfiles to ~/.backup-dotfiles/"
