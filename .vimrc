@@ -65,11 +65,9 @@
 " ------------------------------------------------------------------------------
   let mapleader = ","
 
-    nnoremap <leader>t :CtrlPCurWD<CR>
+    nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
-  " Gundo
-    nnoremap <leader>u :GundoToggle<CR>
   " Edit .vimrc in new vertical window
     nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
   " Edit .gvimrc in new vertical window
