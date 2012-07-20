@@ -29,6 +29,10 @@
   set autoindent
   set smartindent
 
+  " File dependent indentation
+  autocmd FileType html setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
 " Searching
 " ------------------------------------------------------------------------------
   set hlsearch
@@ -61,6 +65,7 @@
 " ------------------------------------------------------------------------------
   let mapleader = ","
 
+    nnoremap <leader>t :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
   " Gundo
