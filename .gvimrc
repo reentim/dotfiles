@@ -1,6 +1,6 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 12
+  set guifont=Inconsolata:h13
 	colorscheme darkblue
 	set cursorline
 	hi CursorLine
