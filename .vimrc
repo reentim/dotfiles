@@ -29,7 +29,7 @@
 	set incsearch
 	set ignorecase
 	set smartcase
-	nnoremap <CR> :nohlsearch<cr>		" clear search highlighting on <CR>
+	nnoremap <CR> :nohlsearch<cr> " clear search highlighting on <CR>
 
 	" Search for selected text, forwards or backwards. 
 	" --------------------------------------------------------------------------
@@ -49,7 +49,7 @@
 	set ruler
 	colorscheme default
 	set list
-	set listchars=tab:▸\ ,eol:¬
+	set listchars=tab:▸\ ,eol:↵
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
