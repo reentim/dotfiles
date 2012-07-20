@@ -16,12 +16,6 @@ if [[ $SYSTEM_TYPE == 'Linux' ]]; then
 	USER_COLOR=${BRIGHT_BLUE}
 fi
 
-
-if [ -f ~/.bash_variables ]; then source ~/.bash_variables; fi
-if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
-source ~/.bash_custom
-export PATH=/usr/local/bin:$PATH
-
 if [ -d ~/.rvm ]; then
 	RVM_INSTALLED=1
 fi
@@ -29,3 +23,7 @@ fi
 if [ -d /usr/local/Library/Homebrew ]; then
 	HOMEBREW_INSTALLED=1
 fi
+
+if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
+source ~/.bash_custom
+export PATH=/usr/local/bin:$PATH
