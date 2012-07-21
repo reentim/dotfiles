@@ -12,7 +12,6 @@
 	diff = auto
 [alias]
 	l = "!bash ~/.githelpers"
-  # l     = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\"
 	graph = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\"
   g     = log --graph --pretty=format:\"%Cblue%h%Cgreen %an%Creset: %s\" 
 	st = status
