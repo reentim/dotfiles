@@ -6,5 +6,8 @@ AUTHOR="%C(bold blue)%an%C(reset)"
 REFS="%C(red)%d%C(reset)"
 SUBJECT="%s"
 
-FORMAT="$HASH{$RELATIVE_TIME{$AUTHOR{$REFS $SUBJECT"
-git log --graph --pretty="tformat:$FORMAT" | column -t -s '{' | less -FXRS
+# FORMAT="$HASH{$RELATIVE_TIME{$AUTHOR{$REFS $SUBJECT"
+# git log --graph --pretty="tformat:$FORMAT" | column -t -s '{' | less -FXRS
+
+FORMAT="$HASH $RELATIVE_TIME $AUTHOR $REFS $SUBJECT"
+git log --graph --pretty="tformat:$FORMAT" | less -FXRS
