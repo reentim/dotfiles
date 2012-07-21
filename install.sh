@@ -25,11 +25,14 @@ mkdir ~/.vimundo
 	mv -v ~/.bash_custom ~/.backup-dotfiles/
 	mv -v ~/.bash_colors ~/.backup-dotfiles/
 	mv -v ~/.bash_profile ~/.backup-dotfiles/
+  mv -v ~/.screenrc ~/.backup-dotfiles/
+  mv -v ~/.ackrc ~/.backup-dotfiles/
 	echo -e "Linking bash dotfiles..."
 	ln -s $PWD/.bash_aliases ~/.bash_aliases
 	ln -s $PWD/.bash_custom ~/.bash_custom
 	ln -s $PWD/.bash_colors ~/.bash_colors
 	ln -s $PWD/.bash_profile ~/.bash_profile
+  ln -s $PWD/.ackrc ~/.ackrc
 	echo -e "${bold}Done${normal}\n"
 
 # git files
