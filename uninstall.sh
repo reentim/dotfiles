@@ -16,6 +16,8 @@ rm -rf ~/.vimundo
 	rm ~/.bash_custom
 	rm ~/.bash_colors
 	rm ~/.bash_profile
+	rm ~/.screenrc
+	rm ~/.ackrc
 # git 
 	rm ~/.gitconfig
 	rm ~/.githelpers
