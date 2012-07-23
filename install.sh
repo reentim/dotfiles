@@ -32,6 +32,7 @@ mkdir ~/.vimundo
 	ln -s $PWD/.bash_custom ~/.bash_custom
 	ln -s $PWD/.bash_colors ~/.bash_colors
 	ln -s $PWD/.bash_profile ~/.bash_profile
+  ln -s $PWD/.screenrc ~/.screenrc
   ln -s $PWD/.ackrc ~/.ackrc
 	echo -e "${bold}Done${normal}\n"
 
