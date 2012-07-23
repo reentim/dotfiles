@@ -77,13 +77,6 @@
 
 " Folding
 " ------------------------------------------------------------------------------
-  " Folding by indent level... not working out
-  " ------------------------------------------
-    " set foldmethod=indent
-    " set foldnestmax=10
-    " set nofoldenable
-    " set foldlevel=1
-
   " Fold inner matching XML tag
     nnoremap <leader>ft Vatzf
 
@@ -117,5 +110,3 @@
   inoremap jk <ESC>      " Also use jk to escape
 
 " set clipboard=unnamed
-" powerline
-" gundo
