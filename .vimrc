@@ -8,7 +8,6 @@
   set laststatus=2 
   set t_Co=256
   let g:Powerline_symbols = 'fancy'
-  " set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 12
 
 " General
 " ------------------------------------------------------------------------------
@@ -58,7 +57,6 @@
 " ------------------------------------------------------------------------------
   set ruler
   colorscheme ron
-  set list
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
@@ -70,9 +68,9 @@
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
   " Edit .vimrc in new vertical window
-    nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+    nnoremap <leader>ev :e $MYVIMRC<cr>
   " Edit .gvimrc in new vertical window
-    nnoremap <leader>eg <C-w><C-v><C-l>:e $MYGVIMRC<cr>
+    nnoremap <leader>eg :e $MYGVIMRC<cr>
   " Underline length of comment
     nmap <leader>l \\lyypv$r-\\k
   " 80 character comment underline
@@ -112,4 +110,4 @@
   nnoremap ; :
   inoremap jk <ESC>      " Also use jk to escape
 
-" set clipboard=unnamed
+  set clipboard=unnamed
