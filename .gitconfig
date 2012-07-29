@@ -11,7 +11,6 @@
 	interactive = auto
 	diff = auto
 [alias]
-  # l = "!bash ~/.githelpers"
   l     = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\" 
   graph = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\" 
   g     = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\" 
@@ -23,5 +22,6 @@
 	ds = diff --staged
 	aa = add --all
 	ff = merge --ff-only
+  pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
