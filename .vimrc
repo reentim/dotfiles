@@ -4,11 +4,6 @@
   call pathogen#helptags()
   filetype plugin indent on
 
-  " Powerline
-  set laststatus=2 
-  set t_Co=256
-  let g:Powerline_symbols = 'fancy'
-
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
