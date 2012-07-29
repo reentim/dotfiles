@@ -70,12 +70,7 @@ grb_git_prompt() {
     fi
 }
 
-if [ -f "$HOME/.gitconfig" ]
-then
-	PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${DIR_COLOR}\]\W\[${NORMAL}\]\$(grb_git_prompt) \[${USER_COLOR}\]\u\[${NORMAL}\]\$ "
-else
-	PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${DIR_COLOR}\]\W\[${NORMAL}\] \[${USER_COLOR}\]\u\[${NORMAL}\]\$ "
-fi
+PS1="\[${HOST_COLOR}\]\h\[${NORMAL}\]:\[${DIR_COLOR}\]\W\[${NORMAL}\]\$(grb_git_prompt) \[${USER_COLOR}\]\u\[${NORMAL}\]\$ "
 # -------------------------------------------------------------------------------------------------
 
 # If we're in a screen session, make it clear, and don't do git PS1 stuff that doesn't (seem to) work
