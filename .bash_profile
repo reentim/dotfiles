@@ -25,5 +25,5 @@ if [ -d /usr/local/Library/Homebrew ]; then
 fi
 
 if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
-source ~/.bash_custom
+source ~/.bashrc
 export PATH=/usr/local/bin:$PATH
