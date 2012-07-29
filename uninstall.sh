@@ -23,8 +23,7 @@ rm -rf ~/.vimundo
 	rm ~/.githelpers
 	rm ~/.gitignore-global
 echo -e "Restoring backed-up vim dotfiles..."
-	cd ~/.backup-dotfiles
-	mv * .[^.]* ..
+	cp ~/.backup-dotfiles/* ~/
 	rmdir ~/.backup-dotfiles
 
 echo -e "${bold}Uninstallation complete: original setup restored!${normal}\n"
