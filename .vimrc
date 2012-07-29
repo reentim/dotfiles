@@ -4,6 +4,9 @@
   call pathogen#helptags()
   filetype plugin indent on
 
+  " Command-T ignore files
+    set wildignore+=*.pdf
+
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
