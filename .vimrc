@@ -94,8 +94,8 @@
   set backup
   set backupdir=~/.vimtmp//
   set dir=~/.vimswap//
-  " set undofile
-  " set undodir=~/.vimundo//
+  set undofile
+  set undodir=~/.vimundo//
 
 " Macros
 " ------------------------------------------------------------------------------
@@ -105,4 +105,4 @@
   nnoremap ; :
   inoremap jk <ESC>      " Also use jk to escape
 
-  set clipboard=unnamed
+  " set clipboard=unnamed
