@@ -24,6 +24,6 @@ if [ -d /usr/local/Library/Homebrew ]; then
 	HOMEBREW_INSTALLED=1
 fi
 
-if [ -f ~/.bash_custom ]; then source ~/.bash_custom; fi
+if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
 source ~/.bash_custom
 export PATH=/usr/local/bin:$PATH
