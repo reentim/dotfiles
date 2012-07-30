@@ -5,7 +5,11 @@
   filetype plugin indent on
 
   " Command-T ignore files
-    set wildignore+=*.pdf
+    set wildignore+=*.pdf,*.png,*.jpg,*.jpeg
+
+  " Powerline
+  set laststatus=2 
+  set t_Co=256
 
 " General
 " ------------------------------------------------------------------------------
