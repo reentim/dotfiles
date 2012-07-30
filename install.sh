@@ -22,14 +22,14 @@ mkdir ~/.vimundo
 # bash files
 	echo -e "Moving any existing bash dotfiles to ~/.backup-dotfiles/"
 	mv -v ~/.bash_aliases ~/.backup-dotfiles/
-	mv -v ~/.bashrc ~/.backup-dotfiles/
+	mv -v ~/.bash_ ~/.backup-dotfiles/
 	mv -v ~/.bash_colors ~/.backup-dotfiles/
 	mv -v ~/.bash_profile ~/.backup-dotfiles/
   mv -v ~/.screenrc ~/.backup-dotfiles/
   mv -v ~/.ackrc ~/.backup-dotfiles/
 	echo -e "Linking bash dotfiles..."
 	ln -s $PWD/.bash_aliases ~/.bash_aliases
-	ln -s $PWD/.bashrc ~/.bashrc
+	ln -s $PWD/.bash_custom ~/.bash_custom
 	ln -s $PWD/.bash_colors ~/.bash_colors
 	ln -s $PWD/.bash_profile ~/.bash_profile
   ln -s $PWD/.screenrc ~/.screenrc

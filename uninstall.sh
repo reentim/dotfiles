@@ -13,7 +13,7 @@ rm -rf ~/.vimundo
 	rm ~/.gvimrc
 # bash
 	rm ~/.bash_aliases
-	rm ~/.bashrc
+	rm ~/.bash_custom
 	rm ~/.bash_colors
 	rm ~/.bash_profile
 	rm ~/.screenrc
