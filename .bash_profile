@@ -13,7 +13,7 @@ fi
 if [[ $SYSTEM_TYPE == 'Linux' ]]; then
 	HOST_COLOR=${BRIGHT_GREEN}
 	DIR_COLOR=${BRIGHT_VIOLET}
-	USER_COLOR=${BLUE}
+	USER_COLOR=${BRIGHT_BLUE}
 fi
 
 if [ -d ~/.rvm ]; then
