@@ -9,7 +9,6 @@
 
   " Powerline
   set laststatus=2 
-  set t_Co=256
 
 " General
 " ------------------------------------------------------------------------------
@@ -65,7 +64,7 @@
 " Aesthetics
 " ------------------------------------------------------------------------------
   set ruler
-  colorscheme ron
+  colorscheme default
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
@@ -80,16 +79,18 @@
     nnoremap <leader>ev :e $MYVIMRC<cr>
   " Edit .gvimrc in new vertical window
     nnoremap <leader>eg :e $MYGVIMRC<cr>
-  " Underline length of comment
-    nmap <leader>l \\lyypv$r-\\k
-  " 80 character comment underline
-    nmap <leader>8 yypd$aa<ESC>\\lyypd$80a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
+
+  " Comment underlining: relies on vim-commentary plugin
+  " ----------------------------------------------------
+    " Underline length of comment
+      nmap <leader>l \\lyypv$r-\\k
+    " 80 character comment underline
+      nmap <leader>8 yypd$aa<ESC>\\lyypd$80a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
 
 " Folding
 " ------------------------------------------------------------------------------
   " Fold inner matching XML tag
     nnoremap <leader>ft Vatzf
-
 
 " Windowing
 " ------------------------------------------------------------------------------
@@ -118,5 +119,7 @@
 " ------------------------------------------------------------------------------
   nnoremap ; :
   inoremap jk <ESC>      " Also use jk to escape
+  " Insert a hash rocket with <c-l>
+    imap <c-l> <space>=><space>
 
-  " set clipboard=unnamed
+  set clipboard+=unnamed
