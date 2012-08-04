@@ -31,7 +31,7 @@
 
   " File dependent indentation
   autocmd FileType html setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-  autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType php  setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   " Jump to last cursor position unless it's invalid or in an event handler
   " c/o G.B.
@@ -72,6 +72,7 @@
 " ------------------------------------------------------------------------------
   let mapleader = ","
 
+    map <leader>r :!chmod +x %<cr>:w\|:!./%<cr>
     nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
