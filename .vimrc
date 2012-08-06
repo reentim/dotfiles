@@ -28,10 +28,13 @@
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
   set autoindent
   set smartindent
+	set colorcolumn=80
 
   " File dependent indentation
-  autocmd FileType html setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-  autocmd FileType php  setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType html,php,c setlocal 
+    \ tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType js,javascript setlocal 
+    \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
   " Jump to last cursor position unless it's invalid or in an event handler
   " c/o G.B.
@@ -72,7 +75,10 @@
 " ------------------------------------------------------------------------------
   let mapleader = ","
 
-    map <leader>r :!chmod +x %<cr>:w\|:!./%<cr>
+    autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
+    autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
+    autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
+
     nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
