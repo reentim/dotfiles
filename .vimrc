@@ -9,6 +9,7 @@
 
   " Powerline
   set laststatus=2 
+  set t_Co=256
 
 " General
 " ------------------------------------------------------------------------------
@@ -28,7 +29,7 @@
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
   set autoindent
   set smartindent
-	set colorcolumn=80
+	" set colorcolumn=80
 
   " File dependent indentation
   autocmd FileType html,php,c setlocal 
