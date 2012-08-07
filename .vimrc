@@ -80,6 +80,9 @@
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
+  " run tests
+    nnoremap <leader>s :!clear<cr>:w\|:!rspec %:p<cr>
+
     nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
