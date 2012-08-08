@@ -76,12 +76,13 @@
 " ------------------------------------------------------------------------------
   let mapleader = ","
 
+  " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
-  " Run specs
-    nnoremap <leader>s :w<cr>^H:!clear<cr>:!rspec %:p<cr>
+  " Run tests / specs
+    nnoremap <leader>s :w<cr><C-w>h:w<cr>:!clear<cr>:!time rspec %:p<cr>
 
     nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
