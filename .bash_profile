@@ -27,3 +27,10 @@ fi
 if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
 source ~/.bash_custom
 export PATH=/usr/local/bin:$PATH
+
+# Erase duplicates in history
+export HISTCONTROL=erasedups
+# Store 10k history entries
+export HISTSIZE=10000
+# Append to the history file when exiting instead of overwriting it
+shopt -s histappend
