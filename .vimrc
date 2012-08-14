@@ -138,7 +138,7 @@
 " General custom mappings
 " ------------------------------------------------------------------------------
   nnoremap ; :
-  inoremap jk <ESC>      " Also use jk to escape
+  inoremap jk <ESC>
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
 
