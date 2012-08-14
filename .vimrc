@@ -92,8 +92,16 @@
   " Edit .gvimrc in new vertical window
     nnoremap <leader>eg :e $MYGVIMRC<cr>
 
+  " Todo list shortcuts
+  " --------------------
+    " Move item to done list
+    noremap <leader>d dd/donejp:nohlsearch<cr>``
+    " Move done item back to todo list
+    noremap <leader>u dd/todojp:nohlsearch<cr>``
+
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
+    au! BufNewFile,BufRead *.todo setf todo
     " Underline length of comment
       nmap <leader>l \\lyypv$r-\\k
     " 80 character comment underline
