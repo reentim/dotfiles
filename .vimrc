@@ -6,7 +6,8 @@
 
   " Command-T ignore files
     set wildignore+=*.pdf,*.png,*.jpg,*.jpeg,*.doc,*.ods,*.odt,*.xml,*.log,
-          \*.mp3,*.txt,*.url
+          \*.mp3,*.txt,*.url,*.lnk,*1Password,*.epub,*.mobi,*.pdf,*.ttf,*.TTF,*.xls
+          \*.xlsx,*.otf
 
 " General
 " ------------------------------------------------------------------------------
@@ -139,5 +140,6 @@
 " ------------------------------------------------------------------------------
   nnoremap ; :
   inoremap jk <ESC>
+  nnoremap <leader><leader> <c-^>
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
