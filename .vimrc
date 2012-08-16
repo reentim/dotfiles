@@ -5,7 +5,8 @@
   filetype plugin indent on
 
   " Command-T ignore files
-    set wildignore+=*.pdf,*.png,*.jpg,*.jpeg
+    set wildignore+=*.pdf,*.png,*.jpg,*.jpeg,*.doc,*.ods,*.odt,*.xml,*.log,
+          \*.mp3,*.txt,*.url
 
 " General
 " ------------------------------------------------------------------------------
@@ -25,7 +26,6 @@
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
   set autoindent
   set smartindent
-	" set colorcolumn=80
 
   " File dependent indentation
   autocmd FileType html,php,c setlocal 
@@ -63,6 +63,10 @@
 
 " Aesthetics
 " ------------------------------------------------------------------------------
+  set t_Co=256
+  let g:indent_guides_auto_colors = 0
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
   set ruler
   colorscheme default
   set listchars=tab:▸\ ,eol:↵
@@ -137,5 +141,3 @@
   inoremap jk <ESC>
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
-
-  set clipboard+=unnamed

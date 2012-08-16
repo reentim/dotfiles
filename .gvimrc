@@ -5,6 +5,7 @@
 	set cursorline
 	hi CursorLine
 	set IndentGuidesEnable
+  let g:indent_guides_auto_colors = 1
 	set colorcolumn=80
 	highlight ColorColumn guibg=#303050
 
