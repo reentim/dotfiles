@@ -4,7 +4,7 @@
 	colorscheme darkblue
 	set cursorline
 	hi CursorLine
-	IndentGuidesEnable
+	set IndentGuidesEnable
 	set colorcolumn=80
 	highlight ColorColumn guibg=#303050
 
