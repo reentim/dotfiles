@@ -2,4 +2,4 @@
 .vimtmp/
 .vimundo/
 .vim/.netrwhist
-.vim/bundle/command-t/
+.vim/bundle/vim-matchit/doc
