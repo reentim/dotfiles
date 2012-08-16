@@ -23,6 +23,7 @@
   syntax on
 
 " Whitespace
+" ------------------------------------------------------------------------------
   set nowrap
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
   set autoindent
@@ -50,7 +51,7 @@
   nnoremap <CR> :nohlsearch<cr> " clear search highlighting on <CR>
 
   " Search for selected text, forwards or backwards. 
-  " --------------------------------------------------------------------------
+  " ----------------------------------------------------------------------------
     vnoremap <silent> * :<C-U>
        \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
        \gvy/<C-R><C-R>=substitute(
@@ -65,11 +66,12 @@
 " Aesthetics
 " ------------------------------------------------------------------------------
   set t_Co=256
-  let g:indent_guides_auto_colors = 0
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
+  set colorcolumn=80
+  " let g:indent_guides_auto_colors = 0
+  " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
+  " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
   set ruler
-  colorscheme default
+  colorscheme tomorrow-night-bright
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
@@ -85,7 +87,6 @@
   " Run tests / specs
     nnoremap <leader>s :w<cr><C-w>h:w<cr>:!clear<cr>:!time rspec %:p<cr>
 
-    nnoremap <C-R>p :CtrlPCurWD<CR>
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
   " Edit .vimrc in new vertical window
@@ -106,12 +107,16 @@
     " Underline length of comment
       nmap <leader>l \\lyypv$r-\\k
     " 80 character comment underline
-      nmap <leader>8 yypd$aa<ESC>\\lyypd$80a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
+      nmap <leader>8 yypd$aa<ESC>\\lyypd$81a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
 
 " Folding
 " ------------------------------------------------------------------------------
   " Fold inner matching XML tag
-    nnoremap <leader>ft Vatzf
+    " nnoremap <leader>ft Vatzf
+
+    set foldmethod=indent
+    set foldnestmax=10
+    set nofoldenable
 
 " Windowing
 " ------------------------------------------------------------------------------
