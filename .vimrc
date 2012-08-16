@@ -9,6 +9,10 @@
           \*.mp3,*.txt,*.url,*.lnk,*1Password,*.epub,*.mobi,*.pdf,*.ttf,*.TTF,*.xls
           \*.xlsx,*.otf
 
+  " Powerline
+    set laststatus=2   " Always show the statusline
+    let g:Powerline_symbols = 'fancy'
+
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
