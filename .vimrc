@@ -11,7 +11,7 @@
 
   " Powerline
     set laststatus=2   " Always show the statusline
-    let g:Powerline_symbols = 'fancy'
+    " let g:Powerline_symbols = 'fancy'
 
 " General
 " ------------------------------------------------------------------------------
@@ -75,7 +75,7 @@
   " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
   " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
   set ruler
-  colorscheme tomorrow-night-bright
+  colorscheme Tomorrow-Night-Bright
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
