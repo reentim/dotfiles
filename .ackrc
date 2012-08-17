@@ -2,3 +2,6 @@
 html=.haml
 --type-add
 css=.sass,.scss
+
+--type-set=MIN=.min.js
+--noMIN
