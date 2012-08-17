@@ -75,7 +75,7 @@
   " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
   " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
   set ruler
-  colorscheme Tomorrow-Night-Bright
+  colorscheme Tomorrow-Night-Eighties
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
@@ -119,7 +119,7 @@
     " nnoremap <leader>ft Vatzf
 
     set foldmethod=indent
-    set foldnestmax=10
+    " set foldnestmax=10
     set nofoldenable
 
 " Windowing
