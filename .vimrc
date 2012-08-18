@@ -19,8 +19,8 @@
   set backspace=indent,eol,start
   set nu
   set encoding=utf-8
-  set showcmd
-  set showmode
+  set noshowcmd
+  set noshowmode
   set wildmenu
   set wildmode=list:longest
   set ttyfast
