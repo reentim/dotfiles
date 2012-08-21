@@ -50,7 +50,7 @@
   set smartcase
   nnoremap <CR> :nohlsearch<cr> " clear search highlighting on <CR>
 
-  " Search for selected text, forwards or backwards. 
+  " Search for selected text, forwards or backwards.
   " ----------------------------------------------------------------------------
     vnoremap <silent> * :<C-U>
        \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
@@ -70,7 +70,10 @@
   set ruler
   colorscheme tne
   set listchars=tab:▸\ ,eol:↵
-  nmap <F5> :set invlist<cr> 
+  set listchars+=trail:.
+  set listchars+=extends:>
+  set listchars+=precedes:<
+  nmap <F5> :set invlist<cr>
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
@@ -93,6 +96,7 @@
 
   " Todo list shortcuts
   " --------------------
+    au! BufNewFile,BufRead *.todo setf todo
     " Move item to done list
     noremap <leader>d dd/donejp:nohlsearch<cr>``
     " Move done item back to todo list
@@ -100,9 +104,18 @@
 
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
-    au! BufNewFile,BufRead *.todo setf todo
-    " Underline length of comment
-      nmap <leader>l \\lyypv$r-\\k
+      function! UnderlineComment()
+        " uncomment current line
+        :normal \\l
+        " yank line, paste below
+        :normal yyp
+        " visually select pasted line, replace all with '-'
+        :normal v$r-
+        " comment out underline, re-comment original comment
+        :normal \\k
+      endfunction
+      nnoremap <leader>l :call UnderlineComment()<cr>
+
     " 80 character comment underline
       nmap <leader>8 yypd$aa<ESC>\\lyypd$81a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
 
