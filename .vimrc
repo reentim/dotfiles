@@ -165,5 +165,6 @@
   nnoremap ; :
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
+
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
