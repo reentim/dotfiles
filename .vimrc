@@ -13,6 +13,8 @@
     set laststatus=2   " Always show the statusline
     " let g:Powerline_symbols = 'fancy'
 
+  let g:syntastic_mode_map = { 'mode': 'passive' }
+
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
