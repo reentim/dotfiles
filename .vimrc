@@ -1,13 +1,15 @@
 " Plugin related
 " ------------------------------------------------------------------------------
-  call pathogen#infect()
-  call pathogen#helptags()
-  filetype plugin indent on
+  " Pathogen
+    call pathogen#infect()
+    call pathogen#helptags()
+    filetype plugin indent on
 
   " Powerline
     set laststatus=2   " Always show the statusline
 
-  let g:syntastic_mode_map = { 'mode': 'passive' }
+  " Syntastic
+    let g:syntastic_mode_map = { 'mode': 'passive' }
 
 " General
 " ------------------------------------------------------------------------------
@@ -17,10 +19,19 @@
   set encoding=utf-8
   set noshowcmd
   set noshowmode
-  set wildmenu
-  set wildmode=list:longest
   set ttyfast
   syntax on
+
+  " Tab-complete / suggest in command-mode
+    set wildmenu
+    set wildmode=list:longest
+
+  " Jump to last cursor position unless it's invalid or in an event handler
+  " c/o G.B.
+    autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal g`\"" |
+      \ endif
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -29,18 +40,18 @@
   set autoindent
   set smartindent
 
+  highlight ExtraWhitespace ctermbg=red guibg=red
+  au ColorScheme * highlight ExtraWhitespace guibg=red
+  au BufEnter * match ExtraWhitespace /\s\+$/
+  au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  au InsertLeave * match ExtraWhiteSpace /\s\+$/
+
   " File dependent indentation
-  autocmd FileType html,php,c setlocal 
+  autocmd FileType html,php,c,sh setlocal
     \ tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+    \ listchars=tab:\ \ 
   autocmd FileType js,javascript setlocal 
     \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
-  " Jump to last cursor position unless it's invalid or in an event handler
-  " c/o G.B.
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
 
 " Searching
 " ------------------------------------------------------------------------------
@@ -48,7 +59,8 @@
   set incsearch
   set ignorecase
   set smartcase
-  nnoremap <CR> :nohlsearch<cr> " clear search highlighting on <CR>
+  " clear search highlighting on <CR>
+  nnoremap <CR> :nohlsearch<cr>
 
   " Search for selected text, forwards or backwards.
   " ----------------------------------------------------------------------------
@@ -106,13 +118,13 @@
   " ----------------------------------------------------
       function! UnderlineComment()
         " uncomment current line
-        :normal \\l
+        normal \\l
         " yank line, paste below
-        :normal yyp
+        normal yyp
         " visually select pasted line, replace all with '-'
-        :normal v$r-
+        normal v$r-
         " comment out underline, re-comment original comment
-        :normal \\k
+        normal \\k
       endfunction
       nnoremap <leader>l :call UnderlineComment()<cr>
 
