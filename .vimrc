@@ -4,14 +4,8 @@
   call pathogen#helptags()
   filetype plugin indent on
 
-  " Command-T ignore files
-    set wildignore+=*.pdf,*.png,*.jpg,*.jpeg,*.doc,*.ods,*.odt,*.xml,*.log,
-          \*.mp3,*.txt,*.url,*.lnk,*1Password,*.epub,*.mobi,*.pdf,*.ttf,*.TTF,*.xls
-          \*.xlsx,*.otf
-
   " Powerline
     set laststatus=2   " Always show the statusline
-    " let g:Powerline_symbols = 'fancy'
 
   let g:syntastic_mode_map = { 'mode': 'passive' }
 
@@ -73,11 +67,8 @@
 " ------------------------------------------------------------------------------
   set t_Co=256
   set colorcolumn=80
-  " let g:indent_guides_auto_colors = 0
-  " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=17
-  " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=60
   set ruler
-  colorscheme Tomorrow-Night-Eighties
+  colorscheme tne
   set listchars=tab:▸\ ,eol:↵
   nmap <F5> :set invlist<cr> 
 
@@ -117,11 +108,7 @@
 
 " Folding
 " ------------------------------------------------------------------------------
-  " Fold inner matching XML tag
-    " nnoremap <leader>ft Vatzf
-
     set foldmethod=indent
-    " set foldnestmax=10
     set nofoldenable
 
 " Windowing
@@ -143,9 +130,6 @@
   set dir=~/.vimswap//
   set undofile
   set undodir=~/.vimundo//
-
-" Macros
-" ------------------------------------------------------------------------------
 
 " General custom mappings
 " ------------------------------------------------------------------------------
