@@ -33,6 +33,18 @@
       \   exe "normal g`\"" |
       \ endif
 
+" Aesthetics
+" ------------------------------------------------------------------------------
+  set t_Co=256
+  set colorcolumn=80
+  set ruler
+  colorscheme tne
+  set listchars=tab:▸\ ,eol:↵
+  set listchars+=trail:.
+  set listchars+=extends:>
+  set listchars+=precedes:<
+  nmap <F5> :set invlist<cr>
+
 " Whitespace
 " ------------------------------------------------------------------------------
   set nowrap
@@ -40,18 +52,22 @@
   set autoindent
   set smartindent
 
-  highlight ExtraWhitespace ctermbg=red guibg=red
-  au ColorScheme * highlight ExtraWhitespace guibg=red
-  au BufEnter * match ExtraWhitespace /\s\+$/
-  au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-  au InsertLeave * match ExtraWhiteSpace /\s\+$/
+  highlight TrailingWhitespace ctermbg=red guibg=red
+  au BufEnter    * match TrailingWhitespace /\s\+$/
+  au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+  au InsertLeave * match TrailingWhitespace /\s\+$/
+  au BufWinLeave * call clearmatches()
+
+  " highlight ErrantIndentStyle ctermbg=red guibg=red
+  " au BufEnter    * match ErrantIndentStyle /  /
+  " au InsertEnter * match ErrantIndentStyle /  /
+  " au InsertLeave * match ErrantIndentStyle /  /
 
   " File dependent indentation
-  autocmd FileType html,php,c,sh setlocal
-    \ tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-    \ listchars=tab:\ \ 
-  autocmd FileType js,javascript setlocal 
-    \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+  autocmd FileType html,php,c,sh
+    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType js,javascript
+    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " Searching
 " ------------------------------------------------------------------------------
@@ -74,18 +90,6 @@
   " --------------------------
     nnoremap / /\v
     vnoremap / /\v
-
-" Aesthetics
-" ------------------------------------------------------------------------------
-  set t_Co=256
-  set colorcolumn=80
-  set ruler
-  colorscheme tne
-  set listchars=tab:▸\ ,eol:↵
-  set listchars+=trail:.
-  set listchars+=extends:>
-  set listchars+=precedes:<
-  nmap <F5> :set invlist<cr>
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
