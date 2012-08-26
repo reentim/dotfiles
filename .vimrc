@@ -80,7 +80,7 @@
   autocmd FileType html,php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType js,javascript
-    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+    \ setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Searching
 " ------------------------------------------------------------------------------
