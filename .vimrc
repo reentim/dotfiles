@@ -16,6 +16,9 @@
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 
+  " delimitmate: I have my doubts -- off by default
+    let delimitMate_offByDefault = 1
+
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
@@ -65,11 +68,11 @@
   set autoindent
   set smartindent
 
-  highlight TrailingWhitespace ctermbg=red guibg=red
-  au BufEnter    * match TrailingWhitespace /\s\+$/
-  au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-  au InsertLeave * match TrailingWhitespace /\s\+$/
-  au BufWinLeave * call clearmatches()
+  " highlight TrailingWhitespace ctermbg=red guibg=red
+  " au BufEnter    * match TrailingWhitespace /\s\+$/
+  " au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+  " au InsertLeave * match TrailingWhitespace /\s\+$/
+  " au BufWinLeave * call clearmatches()
 
   " highlight ErrantIndentStyle ctermbg=red guibg=red
   " au BufEnter    * match ErrantIndentStyle /  /
