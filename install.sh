@@ -1,52 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-bold=`tput bold`
-normal=`tput sgr0`
+set -e
 
-mkdir ~/.backup-dotfiles
+mkdir /tmp/dotfiles
 mkdir ~/.vimswap
 mkdir ~/.vimtmp
 mkdir ~/.vimundo
 
-# vim files
-	echo -e "Moving any existing vim dotfiles to ~/.backup-dotfiles/"
-	mv -v ~/.vim ~/.backup-dotfiles/ 
-	mv -v ~/.vimrc ~/.backup-dotfiles/
-	mv -v ~/.gvimrc ~/.backup-dotfiles/
-	echo -e "Linking vim dotfiles..."
-	ln -s $PWD/.vim ~/.vim
-	ln -s $PWD/.vimrc ~/.vimrc
-	ln -s $PWD/.gvimrc ~/.gvimrc
-	echo -e "${bold}Done${normal}\n"
+here="$(dirname "$0")"
+here="$(cd "$here"; pwd)"
 
-# bash files
-	echo -e "Moving any existing bash dotfiles to ~/.backup-dotfiles/"
-	mv -v ~/.bash_aliases ~/.backup-dotfiles/
-	mv -v ~/.bash_ ~/.backup-dotfiles/
-	mv -v ~/.bash_colors ~/.backup-dotfiles/
-	mv -v ~/.bash_profile ~/.backup-dotfiles/
-  mv -v ~/.screenrc ~/.backup-dotfiles/
-  mv -v ~/.ackrc ~/.backup-dotfiles/
-	echo -e "Linking bash dotfiles..."
-	ln -s $PWD/.bash_aliases ~/.bash_aliases
-	ln -s $PWD/.bash_custom ~/.bash_custom
-	ln -s $PWD/.bash_colors ~/.bash_colors
-	ln -s $PWD/.bash_profile ~/.bash_profile
-  ln -s $PWD/.screenrc ~/.screenrc
-  ln -s $PWD/.ackrc ~/.ackrc
-	echo -e "${bold}Done${normal}\n"
+for file in "$here"/*; do
+  name="$(basename "$file" .md)"
+  [[ $name = bin ]] && dotname="$name" || dotname=".${name}"
 
-# git files
-	echo -e "Moving any existing git dotfiles to ~/.backup-dotfiles/"
-	mv -v ~/.gitconfig ~/.backup-dotfiles
-	mv -v ~/.githelpers ~/.backup-dotfiles
-	mv -v ~/.gitignore-global ~/.backup-dotfiles
-	echo -e "Linking git dotfiles..."
-	ln -s $PWD/.gitconfig ~/.gitconfig
-	ln -s $PWD/.githelpers ~/.githelpers
-	ln -s $PWD/.gitignore-global ~/.gitignore-global
-	echo -e "${bold}Done${normal}\n"
-
-source ~/.bash_profile
-
-echo -e "${bold}Setup complete!${normal}\n"
+  if [[ !( "install readme" =~ $name || -e ~/$dotname || -d $file/.git ) ]]; then
+    mv ${file} /tmp/
+    ln -sfv ${file#$HOME/} "${HOME}/${dotname}"
+  fi
+done
