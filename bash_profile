@@ -34,3 +34,8 @@ export HISTCONTROL=erasedups
 export HISTSIZE=10000
 # Append to the history file when exiting instead of overwriting it
 shopt -s histappend
+
+# vim temp files go in /tmp/ directories
+mkdir -p /tmp/vimtemp
+mkdir -p /tmp/vimswap
+mkdir -p /tmp/vimundo
