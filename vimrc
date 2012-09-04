@@ -171,10 +171,10 @@
 " Central temporary directories
 " ------------------------------------------------------------------------------
   set backup
-  set backupdir=~/.vimtmp//
-  set dir=~/.vimswap//
+  set backupdir=/tmp/vimtemp//
+  set dir=/tmp/vimswap//
   set undofile
-  set undodir=~/.vimundo//
+  set undodir=/tmp/vimundo//
 
 " General custom mappings
 " ------------------------------------------------------------------------------
