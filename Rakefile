@@ -3,6 +3,9 @@ require 'erb'
 
 desc "install the dot files into user's home directory"
 task :install do
+  system %Q{mkdir /tmp/vimswap}
+  system %Q{mkdir /tmp/vimtemp}
+  system %Q{mkdir /tmp/vimundo}
   replace_all = false
   files = Dir['*'] - %w[Rakefile README.md]
   files.each do |file|
