@@ -19,6 +19,7 @@
   " delimitmate: I have my doubts -- off by default
     let delimitMate_offByDefault = 1
 
+    let g:ctrlp_working_path_mode = ''
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
