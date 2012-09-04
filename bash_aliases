@@ -9,3 +9,4 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias la='ls -AG'
 	alias l='ls -l'
 fi
+alias ack='ack-grep'
