@@ -10,3 +10,4 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias l='ls -l'
 fi
 alias ack='ack-grep'
+alias rspec='rspec --color --tty'
