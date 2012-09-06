@@ -56,7 +56,7 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme tom
+  colorscheme tn
   set listchars=tab:▸\ ,eol:↵
   set listchars+=trail:.
   set listchars+=extends:>
