@@ -9,16 +9,17 @@
     set laststatus=2   " Always show the statusline
 
   " Syntastic
-    let g:syntastic_mode_map = { 'mode': 'passive' }
+    " let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
     let g:html_indent_inctags = "html,body,head,tbody"
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 
-  " delimitmate: I have my doubts -- off by default
-    let delimitMate_offByDefault = 1
+  " delimitmate
+    let delimitMate_offByDefault = 0
 
+  " ctrl-p in working directory and below only
     let g:ctrlp_working_path_mode = ''
 " General
 " ------------------------------------------------------------------------------
@@ -55,7 +56,7 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme tne
+  colorscheme tom
   set listchars=tab:▸\ ,eol:↵
   set listchars+=trail:.
   set listchars+=extends:>
@@ -182,6 +183,12 @@
   nnoremap ; :
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
+
+  " OPEN FILES IN DIRECTORY OF CURRENT FILE
+  " ---------------------------------------
+    cnoremap %% <C-R>=expand('%:h').'/'<cr>
+    map <leader>e :edit %%
+    map <leader>v :view %%"
 
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
