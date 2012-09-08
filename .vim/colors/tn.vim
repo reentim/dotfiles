@@ -5,7 +5,7 @@
 
 " Default GUI Colours
 let s:foreground = "c5c8c6"
-" let s:background = "1d1f21"
+let s:background = "1d1f21"
 let s:selection = "373b41"
 let s:line = "282a2e"
 let s:comment = "969896"
@@ -241,12 +241,12 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	endfun
 
 	" Vim Highlighting
-	" call <SID>X("Normal", s:foreground, s:background, "")
+	call <SID>X("Normal", s:foreground, s:background, "")
 	call <SID>X("LineNr", s:selection, "", "")
 	call <SID>X("NonText", s:selection, "", "")
 	call <SID>X("SpecialKey", s:selection, "", "")
-	" call <SID>X("Search", s:background, s:yellow, "")
-	" call <SID>X("TabLine", s:foreground, s:background, "reverse")
+	call <SID>X("Search", s:background, s:yellow, "")
+	call <SID>X("TabLine", s:foreground, s:background, "reverse")
 	call <SID>X("StatusLine", s:window, s:yellow, "reverse")
 	call <SID>X("StatusLineNC", s:window, s:foreground, "reverse")
 	call <SID>X("VertSplit", s:window, s:window, "none")
@@ -257,14 +257,14 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("Question", s:green, "", "")
 	call <SID>X("WarningMsg", s:red, "", "")
 	call <SID>X("MatchParen", "", s:selection, "")
-	" call <SID>X("Folded", s:comment, s:background, "reverse")
-	" call <SID>X("FoldColumn", "", s:background, "reverse")
+	call <SID>X("Folded", s:comment, s:background, "reverse")
+	call <SID>X("FoldColumn", "", s:background, "reverse")
 	if version >= 700
 		call <SID>X("CursorLine", "", s:line, "none")
 		call <SID>X("CursorColumn", "", s:line, "none")
 		call <SID>X("PMenu", s:foreground, s:selection, "none")
 		call <SID>X("PMenuSel", s:foreground, s:selection, "reverse")
-		" call <SID>X("SignColumn", "", s:background, "none")
+		call <SID>X("SignColumn", "", s:background, "none")
 	end
 	if version >= 703
 		call <SID>X("ColorColumn", "", s:line, "none")
@@ -272,7 +272,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 
 	" Standard Highlighting
 	call <SID>X("Comment", s:comment, "", "")
-	" call <SID>X("Todo", s:comment, s:background, "")
+	call <SID>X("Todo", s:comment, s:background, "")
 	call <SID>X("Title", s:comment, "", "")
 	call <SID>X("Identifier", s:red, "", "none")
 	call <SID>X("Statement", s:foreground, "", "")
@@ -344,10 +344,10 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
 	call <SID>X("diffRemoved", s:red, "", "")
 
     " ShowMarks Highlighting
-    " call <SID>X("ShowMarksHLl", s:orange, s:background, "none")
-    " call <SID>X("ShowMarksHLo", s:purple, s:background, "none")
-    " call <SID>X("ShowMarksHLu", s:yellow, s:background, "none")
-    " call <SID>X("ShowMarksHLm", s:aqua, s:background, "none")
+    call <SID>X("ShowMarksHLl", s:orange, s:background, "none")
+    call <SID>X("ShowMarksHLo", s:purple, s:background, "none")
+    call <SID>X("ShowMarksHLu", s:yellow, s:background, "none")
+    call <SID>X("ShowMarksHLm", s:aqua, s:background, "none")
 
 	" Delete Functions
 	delf <SID>X
