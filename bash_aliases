@@ -9,5 +9,5 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias la='ls -AG'
 	alias l='ls -l'
 fi
-alias ack='ack-grep'
 alias rspec='rspec --color --tty'
+alias bx='bundle exec'
