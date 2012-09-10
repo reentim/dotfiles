@@ -119,7 +119,7 @@
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
   " Run tests / specs
-    nnoremap <leader>s :w<cr><C-w>h:w<cr>:!clear<cr>:!time rspec %:p<cr>
+    nnoremap <leader>s :w<cr>:!clear<cr>:!time bundle exec rspec --color --tty %:p<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
