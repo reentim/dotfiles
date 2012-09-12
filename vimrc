@@ -21,6 +21,9 @@
 
   " ctrl-p in working directory and below only
     let g:ctrlp_working_path_mode = ''
+
+  " command-t
+    let g:CommandTMaxFiles=99000
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
@@ -56,7 +59,7 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme tn
+  colorscheme tne
   set listchars=tab:▸\ ,eol:↵
   set listchars+=trail:.
   set listchars+=extends:>
@@ -119,7 +122,8 @@
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
   " Run tests / specs
-    nnoremap <leader>s :w<cr>:!clear<cr>:!time bundle exec rspec --color --tty %:p<cr>
+    nnoremap <leader>m :w<cr>:!clear<cr>:!time SPEC=model bundle exec rspec --color --tty %<cr>
+    nnoremap <leader>f :w<cr>:!clear<cr>:!time SPEC=full bundle exec rspec --color --tty %<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
