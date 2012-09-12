@@ -11,4 +11,5 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 fi
 alias rspec='rspec --color --tty'
 alias bx='bundle exec'
+alias r='rails'
 # SPEC=model bundle exec rspec spec/models/user_generator_spec.rb
