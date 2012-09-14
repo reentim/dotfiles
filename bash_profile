@@ -39,3 +39,6 @@ shopt -s histappend
 mkdir -p /tmp/vimtemp
 mkdir -p /tmp/vimswap
 mkdir -p /tmp/vimundo
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
