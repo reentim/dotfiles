@@ -124,6 +124,7 @@
   " Run tests / specs
     nnoremap <leader>m :w<cr>:!clear<cr>:!time SPEC=model bundle exec rspec --color --tty %<cr>
     nnoremap <leader>f :w<cr>:!clear<cr>:!time SPEC=full bundle exec rspec --color --tty %<cr>
+    nnoremap <leader>c :w<cr>:!clear<cr>:!time rake cucumber:ok<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
