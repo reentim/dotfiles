@@ -21,7 +21,7 @@
       \   exe "normal g`\"" |
       \ endif
 
-  " git commit message-specific settings
+  " Auto-insert mode with spellchecking for git commit messages
     if has('autocmd')
       if has('spell')
         au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
