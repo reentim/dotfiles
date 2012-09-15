@@ -1,32 +1,7 @@
-" Plugin related
-" ------------------------------------------------------------------------------
-  " Pathogen
-    call pathogen#infect()
-    call pathogen#helptags()
-    filetype plugin indent on
-
-  " Powerline
-    set laststatus=2   " Always show the statusline
-
-  " Syntastic
-    " let g:syntastic_mode_map = { 'mode': 'passive' }
-
-  " indent html
-    let g:html_indent_inctags = "html,body,head,tbody"
-    let g:html_indent_script1 = "inc"
-    let g:html_indent_style1 = "inc"
-
-  " delimitmate
-    let delimitMate_offByDefault = 0
-
-  " ctrl-p in working directory and below only
-    let g:ctrlp_working_path_mode = ''
-
-  " command-t
-    let g:CommandTMaxFiles=99000
 " General
 " ------------------------------------------------------------------------------
   set nocompatible
+  let mapleader = ","
   set backspace=indent,eol,start
   set nu
   set encoding=utf-8
@@ -53,6 +28,42 @@
       endif
       au BufNewFile,BufRead COMMIT_EDITMSG call feedkeys('ggi', 't')
     endif
+
+" Plugin related
+" ------------------------------------------------------------------------------
+  " Pathogen
+    call pathogen#infect()
+    call pathogen#helptags()
+    filetype plugin indent on
+
+  " Powerline
+    set laststatus=2   " Always show the statusline
+
+  " Syntastic
+    " let g:syntastic_mode_map = { 'mode': 'passive' }
+
+  " indent html
+    let g:html_indent_inctags = "html,body,head,tbody"
+    let g:html_indent_script1 = "inc"
+    let g:html_indent_style1 = "inc"
+
+  " delimitmate
+    let delimitMate_offByDefault = 0
+
+  " ctrl-p in working directory and below only
+    let g:ctrlp_working_path_mode = ''
+
+  " Command-t
+  " ---------
+    let g:CommandTMaxFiles=99000
+    map <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
+    map <leader>gc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
+    map <leader>gm :CommandTFlush<cr>\|:CommandT app/models<cr>
+    map <leader>gh :CommandTFlush<cr>\|:CommandT app/helpers<cr>
+    map <leader>gl :CommandTFlush<cr>\|:CommandT lib<cr>
+    map <leader>gp :CommandTFlush<cr>\|:CommandT public<cr>
+    map <leader>gs :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
+    map <leader>gf :CommandTFlush<cr>\|:CommandT features<cr>
 
 " Aesthetics
 " ------------------------------------------------------------------------------
@@ -100,7 +111,7 @@
   nnoremap <CR> :nohlsearch<cr>
 
   " Search for selected text, forwards or backwards.
-  " ----------------------------------------------------------------------------
+  " ------------------------------------------------
     vnoremap <silent> * :<C-U>
        \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
        \gvy/<C-R><C-R>=substitute(
@@ -114,8 +125,6 @@
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
-  let mapleader = ","
-
   " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
@@ -155,7 +164,8 @@
       endfunction
       nnoremap <leader>l :call UnderlineComment()<cr>
 
-    " 80 character comment underline
+    " 80 character underline
+    " ----------------------
       nmap <leader>8 yypd$aa<ESC>\\lyypd$81a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
 
 " Folding
@@ -189,11 +199,11 @@
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
 
-  " OPEN FILES IN DIRECTORY OF CURRENT FILE
+  " Open files in directory of current file
   " ---------------------------------------
     cnoremap %% <C-R>=expand('%:h').'/'<cr>
     map <leader>e :edit %%
-    map <leader>v :view %%"
+    map <leader>v :view %%
 
   " Insert a hash rocket with <c-l>
     imap <c-l> <space>=><space>
