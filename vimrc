@@ -70,7 +70,7 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme tne
+  colorscheme tn
   set listchars=tab:▸\ ,eol:↵
   set listchars+=trail:.
   set listchars+=extends:>
@@ -125,15 +125,16 @@
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
+
+  " Paste mode
+    nnoremap <leader>p :set invpaste<CR>
   " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
   " Run tests / specs
-    nnoremap <leader>m :w<cr>:!clear<cr>:!time SPEC=model bundle exec rspec --color --tty %<cr>
-    nnoremap <leader>f :w<cr>:!clear<cr>:!time SPEC=full bundle exec rspec --color --tty %<cr>
-    nnoremap <leader>c :w<cr>:!clear<cr>:!time rake cucumber:ok<cr>
+    nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty %<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
