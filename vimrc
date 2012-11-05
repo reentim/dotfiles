@@ -40,7 +40,7 @@
     set laststatus=2   " Always show the statusline
 
   " Syntastic
-    " let g:syntastic_mode_map = { 'mode': 'passive' }
+    let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
     let g:html_indent_inctags = "html,body,head,tbody"
@@ -207,4 +207,4 @@
     map <leader>v :view %%
 
   " Insert a hash rocket with <c-l>
-    imap <c-l> <space>=><space>
+    imap <c-l> =><space>
