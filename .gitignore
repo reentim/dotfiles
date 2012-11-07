@@ -1,5 +1,4 @@
 .vimswap/
 .vimtmp/
 .vimundo/
-.vim/.netrwhist
-.vim/bundle/vim-matchit/doc
+vim/.netrwhist
