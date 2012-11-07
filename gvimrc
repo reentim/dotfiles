@@ -1,7 +1,7 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=Inconsolata:h13
-	colorscheme darkblue
+  set guifont=Inconsolata\-g:h11
+  colorscheme Tomorrow\-Night\-Eighties
 	set cursorline
 	hi CursorLine
 	set IndentGuidesEnable
