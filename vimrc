@@ -84,11 +84,11 @@
   set autoindent
   set smartindent
 
-  " highlight TrailingWhitespace ctermbg=red guibg=red
-  " au BufEnter    * match TrailingWhitespace /\s\+$/
-  " au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-  " au InsertLeave * match TrailingWhitespace /\s\+$/
-  " au BufWinLeave * call clearmatches()
+  highlight TrailingWhitespace ctermbg=red guibg=red
+  au BufEnter    * match TrailingWhitespace /\s\+$/
+  au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+  au InsertLeave * match TrailingWhitespace /\s\+$/
+  au BufWinLeave * call clearmatches()
 
   " highlight ErrantIndentStyle ctermbg=red guibg=red
   " au BufEnter    * match ErrantIndentStyle /  /
@@ -153,17 +153,20 @@
 
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
-      function! UnderlineComment()
-        " uncomment current line
-        normal \\l
-        " yank line, paste below
-        normal yyp
-        " visually select pasted line, replace all with '-'
-        normal v$r-
-        " comment out underline, re-comment original comment
-        normal \\k
-      endfunction
-      nnoremap <leader>l :call UnderlineComment()<cr>
+    function! UnderlineComment()
+      " uncomment current line
+      normal \\l
+      " yank line, paste below
+      normal yyp
+      " visually select pasted line, replace all with '-'
+      normal v$r-
+      " comment out underline, re-comment original comment
+      normal \\k
+    endfunction
+    nnoremap <leader>l :call UnderlineComment()<cr>
+
+    " Heading underline
+    " -----------------
 
     " 80 character underline
     " ----------------------
