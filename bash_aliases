@@ -1,6 +1,7 @@
 alias vi='vim'
 alias sr='screen -r'
 alias t='tmux'
+alias ta='tmux a'
 alias ff='find . | ack '
 alias tree='tree -FC'
 alias l='ls -l'
