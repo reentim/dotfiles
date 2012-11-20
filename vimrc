@@ -3,16 +3,12 @@
   set nocompatible
   let mapleader = ","
   set backspace=indent,eol,start
-  set nu
+  set nonu
   set encoding=utf-8
   set noshowcmd
   set noshowmode
   set ttyfast
   syntax on
-
-  " Tab-complete / suggest in command-mode
-    set wildmenu
-    set wildmode=list:longest
 
   " Jump to last cursor position unless it's invalid or in an event handler
   " c/o G.B.
@@ -28,6 +24,18 @@
       endif
       au BufNewFile,BufRead COMMIT_EDITMSG call feedkeys('ggi', 't')
     endif
+
+" Aesthetics
+" ------------------------------------------------------------------------------
+  set t_Co=256
+  set colorcolumn=80
+  set ruler
+  colorscheme Tomorrow-Night-Eighties
+  set listchars=tab:▸\ ,eol:↵
+  set listchars+=trail:.
+  set listchars+=extends:>
+  set listchars+=precedes:<
+  nmap <F5> :set invlist<cr>
 
 " Plugin related
 " ------------------------------------------------------------------------------
@@ -53,6 +61,13 @@
   " ctrl-p in working directory and below only
     let g:ctrlp_working_path_mode = ''
 
+
+    let g:indent_guides_enable_on_vim_startup = 1
+    let g:indent_guides_auto_colors = 0
+    hi IndentGuidesOdd  guibg=red   ctermbg=236
+    hi IndentGuidesEven guibg=green ctermbg=238
+
+
   " Command-t
   " ---------
     let g:CommandTMaxFiles=99000
@@ -65,18 +80,6 @@
     map <leader>gp      :CommandTFlush<cr>\|:CommandT public<cr>
     map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
-
-" Aesthetics
-" ------------------------------------------------------------------------------
-  set t_Co=256
-  set colorcolumn=80
-  set ruler
-  colorscheme tne
-  set listchars=tab:▸\ ,eol:↵
-  set listchars+=trail:.
-  set listchars+=extends:>
-  set listchars+=precedes:<
-  nmap <F5> :set invlist<cr>
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -212,3 +215,14 @@
 
   " Insert a hash rocket with <c-l>
     imap <c-l> =><space>
+
+  " function! InsertTabWrapper()
+  "   let col = col('.') - 1
+  "   if !col || getline('.')[col - 1] !~ '\k'
+  "     return "\<tab>"
+  "   else
+  "     return "\<c-p>"
+  "   endif
+  " endfunction
+  " inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+  " inoremap <s-tab> <c-n>
