@@ -15,7 +15,9 @@ export GREP_OPTIONS="--color"
 source ~/.profile
 source ~/.zsh/zshrc.sh
 
-PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% $(git_super_status)$ "
+local git_prompt='%{$(git_super_status)%}'
+
+PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% ${git_prompt}%# "
 
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
