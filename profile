@@ -62,17 +62,17 @@ source ~/.bash_colors
 		[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
 	fi
 
-	# If unspecified, set default prompt colours
-	if [ -z $HOST_COLOR ]; then
-		HOST_COLOR=${BRIGHT_CYAN}
-		DIR_COLOR=${BRIGHT_VIOLET}
-		USER_COLOR=${BRIGHT_YELLOW}
-	fi
-
 	if [[ $SYSTEM_TYPE == 'Linux' ]]; then
-		HOST_COLOR=${BRIGHT_GREEN}
-		DIR_COLOR=${BRIGHT_VIOLET}
-		USER_COLOR=${BRIGHT_BLUE}
+		if [ $ZSH_VERSION ]; then
+			HOST_COLOR="%{$fg_bold[green]%}"
+			DIR_COLOR="%{$fg_bold[magenta]%}"
+			USER_COLOR="%{$fg_bold[yellow]%}"
+		else
+			HOST_COLOR=${BRIGHT_GREEN}
+			DIR_COLOR=${BRIGHT_VIOLET}
+			USER_COLOR=${BRIGHT_BLUE}
+		fi
+
 	fi
 
 	if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
@@ -81,6 +81,12 @@ source ~/.bash_colors
 		USER_COLOR=${BRIGHT_YELLOW}
 	fi
 
+	# If unspecified, set default prompt colours
+	if [ -z $HOST_COLOR ]; then
+		HOST_COLOR=${BRIGHT_YELLOW}
+		DIR_COLOR=${BRIGHT_VIOLET}
+		USER_COLOR=${BRIGHT_YELLOW}
+	fi
 
 	if [ -n "$BASH_VERSION" ]; then
 
@@ -106,3 +112,4 @@ source ~/.bash_colors
 			fi
 		fi
 	fi
+
