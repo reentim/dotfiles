@@ -1,13 +1,15 @@
+autoload -U colors && colors
+
+# History settings
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 
-zstyle :compinstall filename '/home/tim/.zshrc'
-
 autoload -Uz compinit
 compinit
 
-setopt rmstarsilent
+setopt rmstarsilent # don't warn on 'rm *'
+
 export GREP_OPTIONS="--color"
 
 source ~/.profile
@@ -18,3 +20,4 @@ PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% $(git_su
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
 bindkey    "^[3;5~"         delete-char
+

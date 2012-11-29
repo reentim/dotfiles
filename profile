@@ -76,9 +76,16 @@ source ~/.bash_colors
 	fi
 
 	if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
-		HOST_COLOR=${BRIGHT_RED}
-		DIR_COLOR=${BRIGHT_VIOLET}
-		USER_COLOR=${BRIGHT_YELLOW}
+		if [ $ZSH_VERSION ]; then
+			HOST_COLOR="%{$fg_bold[cyan]%}"
+			DIR_COLOR="%{$fg_bold[magenta]%}"
+			USER_COLOR="%{$fg_bold[yellow]%}"
+		else
+			HOST_COLOR=${BRIGHT_RED}
+			DIR_COLOR=${BRIGHT_VIOLET}
+			USER_COLOR=${BRIGHT_YELLOW}
+		fi
+
 	fi
 
 	# If unspecified, set default prompt colours
