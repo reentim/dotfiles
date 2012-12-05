@@ -11,6 +11,7 @@ alias la='ls -A'
 alias rspec='rspec --color --tty'
 alias bx='bundle exec'
 alias r='rails'
+alias duh='du -csh'
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias ls='ls -CFG'

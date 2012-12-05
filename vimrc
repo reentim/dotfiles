@@ -9,6 +9,7 @@
   set noshowmode
   set ttyfast
   syntax on
+  set shell=bash
 
   " Jump to last cursor position unless it's invalid or in an event handler
   " c/o G.B.
@@ -36,6 +37,7 @@
   set listchars+=extends:>
   set listchars+=precedes:<
   nmap <F5> :set invlist<cr>
+  set cursorline
 
 " Plugin related
 " ------------------------------------------------------------------------------
@@ -138,7 +140,7 @@
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
   " Run tests / specs
-    nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty %<cr>
+    nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]

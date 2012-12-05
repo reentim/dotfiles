@@ -1,6 +1,6 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=Inconsolata\-g:h11
+  set guifont=Source\ Code\ Pro\ Semibold:h11
   colorscheme Tomorrow\-Night\-Eighties
 	set cursorline
 	hi CursorLine
