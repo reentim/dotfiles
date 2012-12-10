@@ -13,7 +13,13 @@ setopt rmstarsilent # don't warn on 'rm *'
 export GREP_OPTIONS="--color"
 
 source ~/.profile
-source ~/.zsh/zshrc.sh
+
+# load remaining sources automatically
+auto_sources=(`for f in ~/.zsh/*.zsh; do basename $f .zsh; done`)
+
+for source in $auto_sources; do
+  source ~/.zsh/$source.zsh
+done
 
 local git_prompt='%{$(git_super_status)%}'
 
@@ -22,4 +28,3 @@ PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% ${git_pr
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
 bindkey    "^[3;5~"         delete-char
-
