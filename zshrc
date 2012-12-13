@@ -21,9 +21,11 @@ for source in $auto_sources; do
   source ~/.zsh/$source.zsh
 done
 
+# local git_prompt='%{$(git_super_status)%}'
 local git_prompt='%{$(git_super_status)%}'
 
-PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% ${git_prompt}%# "
+# PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% ${git_prompt}%# "
+PROMPT='%{$fg_bold[green]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
 
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char

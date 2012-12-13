@@ -10,6 +10,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias rspec='rspec --color --tty'
 alias bx='bundle exec'
+alias z='zeus '
 alias r='rails'
 alias duh='du -csh'
 
