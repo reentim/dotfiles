@@ -5,3 +5,7 @@ css=.sass,.scss
 
 --type-set=MIN=.min.js
 --noMIN
+
+--ignore-dir=public/css
+--ignore-dir=public/js/tinymce
+
