@@ -10,8 +10,6 @@ compinit
 
 setopt rmstarsilent # don't warn on 'rm *'
 
-export GREP_OPTIONS="--color"
-
 source ~/.profile
 
 # load remaining sources automatically

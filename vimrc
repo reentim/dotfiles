@@ -141,7 +141,7 @@
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
   " Run tests / specs
-    nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
+    nnoremap <leader>z :wa<cr>:!clear<cr>:!time zeus rspec --color --tty  --format documentation %<cr>
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
 
   " Reselect pasted text: <,v>
