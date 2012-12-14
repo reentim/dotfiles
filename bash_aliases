@@ -13,6 +13,7 @@ alias bx='bundle exec'
 alias z='zeus '
 alias r='rails'
 alias duh='du -csh'
+alias fixtime='sudo /etc/init.d/ntp stop && sudo /usr/sbin/ntpdate time.apple.com'
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias ls='ls -CFG'
