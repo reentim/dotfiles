@@ -143,6 +143,7 @@
   " Run tests / specs
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
     nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
+    nnoremap <leader>z :wa<cr>:!clear<cr>:!time zeus rspec --color --tty  --format documentation %<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
