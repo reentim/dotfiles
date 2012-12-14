@@ -41,8 +41,8 @@ source ~/.bash_colors
 	mkdir -p /tmp/vimundo
 
 		# Alias definitions.
-		if [ -f ~/.bash_aliases ]; then
-			source ~/.bash_aliases
+		if [ -f ~/.aliases ]; then
+			source ~/.aliases
 		fi
 
 # Do conditional stuff
