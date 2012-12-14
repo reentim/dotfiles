@@ -3,40 +3,36 @@ require 'rake'
 HOME = Dir.home
 DOTFILES_DIR = File.dirname(__FILE__)
 
-desc "Install dotfiles"
+def make_link(source, target)
+  if File.exist?(target)
+    puts "Skipping exiting file: #{target}"
+  else
+    system %[ln -vsf #{source} #{target}]
+  end
+end
+
+desc "Install dotfiles."
 task :install do
+  exclude   = %w{Rakefile README.md .gitmodules ssh}
+  linkables = Dir.glob('*') - exclude
 
-  def make_link(file, dotfile = true)
-    if dotfile
-      system %[ln -vsf #{File.join(DOTFILES_DIR, file)} #{File.join(HOME, ".#{file}")}]
-      # puts "#{File.join(DOTFILES_DIR, file)} -> #{File.join(HOME, ".#{file}")}"
-    else
-      system %[ln -vsf #{File.join(DOTFILES_DIR, file)} #{File.join(HOME, file)}]
-      # puts "#{File.join(DOTFILES_DIR, file)} -> #{File.join(HOME, file)}"
-    end
+  linkables.each do |file|
+    source = File.join(DOTFILES_DIR, file)
+    target = File.join(HOME, ".#{file}")
+
+    make_link(source, target)
   end
+end
 
-  all_dirs = Dir.glob('**/').map do |d|
-    d.sub(/\/$/, '')
-  end
+desc "Keep SSH_AUTH_SOCK for screen / tmux sessions."
+task :ssh do
+  linkables = Dir.glob('ssh/*').map { |l| File.basename(l) }
 
-  simple_link = Dir.glob('*')
-  link_in_place = []
+  linkables.each do |file|
+    source = File.join(DOTFILES_DIR, "ssh", file)
+    target = File.join(HOME, ".ssh", file)
 
-  all_dirs.each do |d|
-    if File.exists?("#{HOME}/#{d}")
-      files_in_dir = Dir.glob("#{d}/*")
-      simple_link -= [d]
-      link_in_place << files_in_dir
-    end
-  end
-
-  simple_link.each do |l|
-    make_link(l)
-  end
-
-  link_in_place.flatten.each do |l|
-    make_link(l, false)
+    make_link(source, target)
   end
 end
 
