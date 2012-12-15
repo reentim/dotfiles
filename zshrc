@@ -22,8 +22,11 @@ done
 # local git_prompt='%{$(git_super_status)%}'
 local git_prompt='%{$(git_super_status)%}'
 
-# PROMPT="${HOST_COLOR}%m%{$reset_color%}:${DIR_COLOR}%c%{$reset_color%}% ${git_prompt}%# "
-PROMPT='%{$fg_bold[green]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
+if [[ $SYSTEM_TYPE == 'Linux' ]]; then
+  PROMPT='%{$fg_bold[green]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
+else
+  PROMPT='%{$fg_bold[cyan]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
+fi
 
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
