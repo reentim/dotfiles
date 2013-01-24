@@ -140,6 +140,9 @@
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
+  " load rb into irb session
+    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<cr>:w\|:!irb -r %:p<cr>
+
   " Run tests / specs
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
     nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
