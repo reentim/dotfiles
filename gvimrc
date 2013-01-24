@@ -1,6 +1,5 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  " set guifont=Inconsolata\-g:h11
   set guifont=Source\ Code\ Pro\ Semibold:h11
   colorscheme Tomorrow\-Night\-Eighties
 	set cursorline
@@ -22,3 +21,4 @@
 " ------------------------------------------------------------------------------
 	autocmd BufLeave,FocusLost * silent! wall
 	set vb " use (nonexistent) visual bell instead of audio
+  map <leader>t :wa\|:CtrlP<cr>
