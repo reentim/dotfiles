@@ -1,32 +1,23 @@
-autoload -U colors && colors
-
-# History settings
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+# Set custom prompt
+setopt PROMPT_SUBST
+autoload -U promptinit
+promptinit
+prompt grb
 
 autoload -Uz compinit
 compinit
+autoload -U colors && colors
+
+# History settings
+export HISTSIZE=100000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
 
 setopt rmstarsilent # don't warn on 'rm *'
 
 source ~/.profile
 
-# load remaining sources automatically
-auto_sources=(`for f in ~/.zsh/*.zsh; do basename $f .zsh; done`)
-
-for source in $auto_sources; do
-  source ~/.zsh/$source.zsh
-done
-
-# local git_prompt='%{$(git_super_status)%}'
-local git_prompt='%{$(git_super_status)%}'
-
-if [[ $SYSTEM_TYPE == 'Linux' ]]; then
-  PROMPT='%{$fg_bold[green]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
-else
-  PROMPT='%{$fg_bold[cyan]%}%m%{$reset_color%}:%{$fg_bold[magenta]%}%c%{$reset_color%}$(git_super_status)%# '
-fi
+export WORDCHARS='*?[]~&;!$%^<>'
 
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
