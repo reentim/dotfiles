@@ -38,7 +38,7 @@
   set listchars+=extends:>
   set listchars+=precedes:<
   nmap <F5> :set invlist<cr>
-  set cursorline
+  " set cursorline
 
 " Plugin related
 " ------------------------------------------------------------------------------
@@ -61,10 +61,10 @@
   " delimitmate
     let delimitMate_offByDefault = 0
 
-  " ctrl-p in working directory and below only
-    let g:ctrlp_working_path_mode = ''
+  " " ctrl-p in working directory and below only
+  "   let g:ctrlp_working_path_mode = ''
 
-
+  " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors = 0
     hi IndentGuidesOdd  guibg=red   ctermbg=236
@@ -132,21 +132,21 @@
 
 " Leader shortcuts
 " ------------------------------------------------------------------------------
-
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
+
   " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
 
-  " load rb into irb session
-    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<cr>:w\|:!irb -r %:p<cr>
-
   " Run tests / specs
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
     nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
     nnoremap <leader>z :wa<cr>:!clear<cr>:!time zeus rspec --color --tty  --format documentation %<cr>
+
+  " load rb into irb session
+    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<cr>:w\|:!irb -r %:p<cr>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
@@ -154,14 +154,6 @@
     nnoremap <leader>ev :e $MYVIMRC<cr>
   " Edit .gvimrc in new vertical window
     nnoremap <leader>eg :e $MYGVIMRC<cr>
-
-  " Todo list shortcuts
-  " --------------------
-    au! BufNewFile,BufRead *.todo setf todo
-    " Move item to done list
-    noremap <leader>d dd/donejp:nohlsearch<cr>``
-    " Move done item back to todo list
-    noremap <leader>u dd/todojp:nohlsearch<cr>``
 
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
@@ -223,14 +215,3 @@
 
   " Insert a hash rocket with <c-l>
     imap <c-l> =><space>
-
-  " function! InsertTabWrapper()
-  "   let col = col('.') - 1
-  "   if !col || getline('.')[col - 1] !~ '\k'
-  "     return "\<tab>"
-  "   else
-  "     return "\<c-p>"
-  "   endif
-  " endfunction
-  " inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-  " inoremap <s-tab> <c-n>
