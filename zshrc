@@ -1,3 +1,5 @@
+source ~/.profile
+
 # Set custom prompt
 setopt PROMPT_SUBST
 autoload -U promptinit
@@ -15,7 +17,6 @@ export SAVEHIST=$HISTSIZE
 
 setopt rmstarsilent # don't warn on 'rm *'
 
-source ~/.profile
 
 export WORDCHARS='*?[]~&;!$%^<>'
 

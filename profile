@@ -74,7 +74,6 @@ source ~/.bash_colors
 			DIR_COLOR=${BRIGHT_VIOLET}
 			USER_COLOR=${BRIGHT_BLUE}
 		fi
-
 	fi
 
 	if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
@@ -87,7 +86,6 @@ source ~/.bash_colors
 			DIR_COLOR=${BRIGHT_VIOLET}
 			USER_COLOR=${BRIGHT_YELLOW}
 		fi
-
 	fi
 
 	# If unspecified, set default prompt colours

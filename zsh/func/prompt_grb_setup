@@ -131,7 +131,11 @@ prompt_grb_setup() {
     pc[default]='default'
     pc[date]='cyan'
     pc[time]='Blue'
-    pc[host]='Green'
+    if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+      pc[host]='Cyan'
+    else
+      pc[host]='Green'
+    fi
     pc[user]='cyan'
     pc[punc]='yellow'
     pc[line]='magenta'
