@@ -13,8 +13,6 @@
 # It is loaded in a variety of environments, so shouldn't assume anything.
 # ------------------------------------------------------------------------------
 
-source ~/.bash_colors
-
 # Check environment
 # ------------------------------------------------------------------------------
 	SYSTEM_TYPE=$(uname)
@@ -42,10 +40,10 @@ source ~/.bash_colors
 	mkdir -p /tmp/vimswap
 	mkdir -p /tmp/vimundo
 
-		# Alias definitions.
-		if [ -f ~/.aliases ]; then
-			source ~/.aliases
-		fi
+  # Alias definitions.
+  if [ -f ~/.aliases ]; then
+    source ~/.aliases
+  fi
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
@@ -64,38 +62,13 @@ source ~/.bash_colors
 		[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
 	fi
 
-	if [[ $SYSTEM_TYPE == 'Linux' ]]; then
-		if [ $ZSH_VERSION ]; then
-			HOST_COLOR="%{$fg_bold[green]%}"
-			DIR_COLOR="%{$fg_bold[magenta]%}"
-			USER_COLOR="%{$fg_bold[yellow]%}"
-		else
-			HOST_COLOR=${BRIGHT_GREEN}
-			DIR_COLOR=${BRIGHT_VIOLET}
-			USER_COLOR=${BRIGHT_BLUE}
-		fi
-	fi
+	if [ -n "$BASH_VERSION" ]; then
 
-	if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
-		if [ $ZSH_VERSION ]; then
-			HOST_COLOR="%{$fg_bold[cyan]%}"
-			DIR_COLOR="%{$fg_bold[magenta]%}"
-			USER_COLOR="%{$fg_bold[yellow]%}"
-		else
-			HOST_COLOR=${BRIGHT_RED}
-			DIR_COLOR=${BRIGHT_VIOLET}
-			USER_COLOR=${BRIGHT_YELLOW}
-		fi
-	fi
+    source ~/.bash_colors
 
-	# If unspecified, set default prompt colours
-	if [ -z $HOST_COLOR ]; then
 		HOST_COLOR=${BRIGHT_YELLOW}
 		DIR_COLOR=${BRIGHT_VIOLET}
 		USER_COLOR=${BRIGHT_YELLOW}
-	fi
-
-	if [ -n "$BASH_VERSION" ]; then
 
 		# Include human readable colour shortcuts
 		if [ -f ~/.bash_colors ]; then
