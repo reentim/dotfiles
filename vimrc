@@ -3,7 +3,7 @@
   set nocompatible
   let mapleader = ","
   set backspace=indent,eol,start
-  set nonu
+  set nu
   set encoding=utf-8
   set noshowcmd
   set noshowmode
