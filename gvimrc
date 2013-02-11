@@ -2,12 +2,8 @@
 " ------------------------------------------------------------------------------
   set guifont=Source\ Code\ Pro\ Semibold:h11
   colorscheme Tomorrow\-Night\-Eighties
-	set cursorline
-	hi CursorLine
-	set IndentGuidesEnable
   let g:indent_guides_auto_colors = 1
 	set colorcolumn=80
-	highlight ColorColumn guibg=#303050
 
 	" Disable window chrome
 	" --------------------------------------------------------------------------
@@ -21,4 +17,3 @@
 " ------------------------------------------------------------------------------
 	autocmd BufLeave,FocusLost * silent! wall
 	set vb " use (nonexistent) visual bell instead of audio
-  map <leader>t :wa\|:CtrlP<cr>
