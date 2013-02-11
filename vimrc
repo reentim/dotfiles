@@ -70,7 +70,6 @@
     hi IndentGuidesOdd  guibg=red   ctermbg=236
     hi IndentGuidesEven guibg=green ctermbg=238
 
-
   " Command-t
   " ---------
     let g:CommandTMaxFiles=99000
@@ -83,6 +82,12 @@
     map <leader>gp      :CommandTFlush<cr>\|:CommandT public<cr>
     map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
+
+    " you complete me
+    " let g:ycm_key_select_completion = '<TAB>'
+
+    " snipmate
+    let g:snips_trigger_key = '<C-\>'
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -215,3 +220,4 @@
 
   " Insert a hash rocket with <c-l>
     imap <c-l> =><space>
+
