@@ -81,3 +81,6 @@
 [submodule "vim/bundle/you-complete-me"]
 	path = vim/bundle/you-complete-me
 	url = git://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/bundle/vim-rabl"]
+	path = vim/bundle/vim-rabl
+	url = git://github.com/yaymukund/vim-rabl.git
