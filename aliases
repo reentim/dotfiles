@@ -1,8 +1,4 @@
 alias vi='vim'
-alias sr='screen -r'
-alias tmux='tmux -u'
-alias t='tmux'
-alias ta='t a'
 alias ff='find . -type f | ack -i '
 alias tree='tree -FC'
 alias l='ls -lh'
@@ -13,7 +9,6 @@ alias bx='bundle exec'
 alias z='zeus '
 alias r='rails'
 alias duh='du -csh'
-alias fixtime='sudo /etc/init.d/ntp stop && sudo /usr/sbin/ntpdate time.apple.com'
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias ls='ls -CFG'
@@ -21,3 +16,8 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	alias la='ls -AG'
 	alias l='ls -lh'
 fi
+
+alias sr='screen -r'
+alias tmux='tmux -u'
+alias t='tmux'
+alias ta='t a'
