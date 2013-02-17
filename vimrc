@@ -223,6 +223,7 @@
     map <leader>e :edit %%
     map <leader>v :view %%
 
-  " Insert a hash rocket with <c-l>
+  " hash rockets and arrows
     imap <c-l> =><space>
+    imap <c-j> ->
 
