@@ -32,12 +32,12 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme Tomorrow-Night-Eighties
+  colorscheme Tomorrow-Night-Bright
   set listchars=tab:▸\ ,eol:↵
   set listchars+=trail:.
   set listchars+=extends:>
   set listchars+=precedes:<
-  nmap <F5> :set invlist<cr>
+  " nmap <F5> :set invlist<cr>
   " set cursorline
 
 " Plugin related
@@ -67,8 +67,12 @@
   " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors = 0
-    hi IndentGuidesOdd  guibg=red   ctermbg=236
-    hi IndentGuidesEven guibg=green ctermbg=238
+    " Tomorrow-Night-Eighties
+      " hi IndentGuidesOdd  guibg=red   ctermbg=236
+      " hi IndentGuidesEven guibg=green ctermbg=238
+    " Tomorrow-Night-Bright
+      hi IndentGuidesOdd  guibg=red   ctermbg=235
+      hi IndentGuidesEven guibg=green ctermbg=237
 
   " Command-t
   " ---------
@@ -78,9 +82,11 @@
     map <leader>gc      :CommandTFlush<cr>\|:CommandT app/controllers<cr>
     map <leader>gm      :CommandTFlush<cr>\|:CommandT app/models<cr>
     map <leader>gh      :CommandTFlush<cr>\|:CommandT app/helpers<cr>
+    map <leader>gj      :CommandTFlush<cr>\|:CommandT app/assets/javascripts<cr>
     map <leader>gl      :CommandTFlush<cr>\|:CommandT lib<cr>
     map <leader>gp      :CommandTFlush<cr>\|:CommandT public<cr>
     map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
+    " map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
 
     " you complete me
