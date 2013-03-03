@@ -5,14 +5,14 @@
   set backspace=indent,eol,start
   set nu
   set encoding=utf-8
-  set noshowcmd
-  set noshowmode
+  set showcmd
+  set showmode
   set ttyfast
   syntax on
   set shell=bash
 
   " Jump to last cursor position unless it's invalid or in an event handler
-  " c/o G.B.
+  " -----------------------------------------------------------------------
     autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal g`\"" |
@@ -118,8 +118,6 @@
   " File dependent indentation
   autocmd FileType html,php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-  autocmd FileType js,javascript
-    \ setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Searching
 " ------------------------------------------------------------------------------
