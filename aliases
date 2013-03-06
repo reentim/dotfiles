@@ -1,5 +1,5 @@
 alias vi='vim'
-alias ff='find . -type f | ack -i '
+alias ff='find . -type f 2>/dev/null| ack -i '
 alias tree='tree -FC'
 alias ls='ls -G --color=auto'
 alias l='ls -lh'
