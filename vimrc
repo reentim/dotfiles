@@ -37,7 +37,7 @@
   set listchars+=trail:.
   set listchars+=extends:>
   set listchars+=precedes:<
-  " nmap <F5> :set invlist<cr>
+  nmap <F5> :set invlist<cr>
   " set cursorline
 
 " Plugin related
@@ -48,7 +48,8 @@
     filetype plugin indent on
 
   " Powerline
-    set laststatus=2   " Always show the statusline
+    " always show the status line
+    set laststatus=2
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
@@ -76,6 +77,7 @@
 
   " Command-t
   " ---------
+    set wildignore+=public/css
     let g:CommandTMaxFiles=99000
     map <leader>t  :wa\|:CommandTFlush<cr>\|:CommandT<cr>
     map <leader>gv      :CommandTFlush<cr>\|:CommandT app/views<cr>
@@ -147,9 +149,9 @@
     nnoremap <leader>p :set invpaste<CR>
 
   " Run scripts
-    autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!bash %:p<cr>
-    autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!ruby %:p<cr>
-    autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!python %:p<cr>
+    autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!time bash %:p<cr>
+    autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!time ruby %:p<cr>
+    autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!time python %:p<cr>
 
   " Run tests / specs
     nnoremap <leader>z :wa<cr>:!clear<cr>:!time zeus rspec --color --tty  --format documentation %<cr>
@@ -191,8 +193,11 @@
     set foldmethod=indent
     set nofoldenable
 
-" Windowing
+" Buffers and windows
 " ------------------------------------------------------------------------------
+  set hidden
+  set confirm
+
   " switch to new split window
     nnoremap <leader>w <C-w>v<C-w>l
     nnoremap <leader>h :split<CR><C-w>j
