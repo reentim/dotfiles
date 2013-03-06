@@ -1,6 +1,7 @@
 alias vi='vim'
 alias ff='find . -type f | ack -i '
 alias tree='tree -FC'
+alias ls='ls -G --color=auto'
 alias l='ls -lh'
 alias ll='ls -alF'
 alias la='ls -A'
@@ -21,3 +22,5 @@ alias sr='screen -r'
 alias tmux='tmux -u'
 alias t='tmux'
 alias ta='t a'
+
+alias heredoc="read -rd '' HEREDOC << 'EOF'"
