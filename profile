@@ -17,10 +17,6 @@
 # ------------------------------------------------------------------------------
 	SYSTEM_TYPE=$(uname)
 
-	if [ -d $HOME/.rvm ]; then
-		RVM_INSTALLED=1
-	fi
-
 	if [ -d $HOME/.rbenv ]; then
 		RBENV_INSTALLED=1
 	fi
@@ -50,11 +46,6 @@
 	if [ $RBENV_INSTALLED ]; then
 		export PATH="$HOME/.rbenv/bin:$PATH"
 		eval "$(rbenv init -)"
-	fi
-
-	if [ $RVM_INSTALLED ]; then
-		PATH=$PATH:$HOME/.rvm/bin
-		[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 	fi
 
 	# Homebrew stuff

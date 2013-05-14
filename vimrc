@@ -87,8 +87,8 @@
     map <leader>gj      :CommandTFlush<cr>\|:CommandT app/assets/javascripts<cr>
     map <leader>gl      :CommandTFlush<cr>\|:CommandT lib<cr>
     map <leader>gp      :CommandTFlush<cr>\|:CommandT public<cr>
-    map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
-    " map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
+    " map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
+    map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
 
     " you complete me
@@ -153,6 +153,7 @@
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!time ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!time python %:p<cr>
 
+    autocmd FileType eruby      setlocal spell
   " Run tests / specs
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
     nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
@@ -197,7 +198,6 @@
 " Buffers and windows
 " ------------------------------------------------------------------------------
   set hidden
-  set confirm
 
   " switch to new split window
     nnoremap <leader>w <C-w>v<C-w>l

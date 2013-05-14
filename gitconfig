@@ -15,13 +15,12 @@
   graph = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   g     = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
 	st = status
-	ci = commit
+	ci = commit --verbose
 	cim = commit -m
 	co = checkout
 	di = diff
 	ds = diff --staged
 	aa = add --all
-	ff = merge --ff-only
   pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
