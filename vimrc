@@ -95,7 +95,8 @@
     " let g:ycm_key_select_completion = '<TAB>'
 
     " snipmate
-    let g:snips_trigger_key = '<C-\>'
+    inoremap <C-\> <Plug>snipMateNextOrTrigger
+    snoremap <C-\> <Plug>snipMateNextOrTrigger
 
 " Whitespace
 " ------------------------------------------------------------------------------
