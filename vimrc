@@ -6,6 +6,7 @@
   set nu
   set encoding=utf-8
   set showcmd
+  set noshowmode
   set ttyfast
   syntax on
   set shell=bash

@@ -20,7 +20,7 @@
 	co = checkout
 	di = diff
 	ds = diff --staged
-	aa = add --all
+	aa = add --all ./
   pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
