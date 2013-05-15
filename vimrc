@@ -91,12 +91,10 @@
     map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
 
-    " you complete me
-    " let g:ycm_key_select_completion = '<TAB>'
-
-    " snipmate
-    inoremap <C-\> <Plug>snipMateNextOrTrigger
-    snoremap <C-\> <Plug>snipMateNextOrTrigger
+    " Ultisnips
+    " ---------
+    let g:UltiSnipsExpandTrigger = "<C-\>"
+    let g:UltiSnipsListSnippets  = "<C-S-\>"
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -180,9 +178,6 @@
       normal \\k
     endfunction
     nnoremap <leader>l :call UnderlineComment()<cr>
-
-    " Heading underline
-    " -----------------
 
     " 80 character underline
     " ----------------------
