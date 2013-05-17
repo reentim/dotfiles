@@ -93,8 +93,13 @@
 
     " Ultisnips
     " ---------
-    let g:UltiSnipsExpandTrigger = "<C-\>"
-    let g:UltiSnipsListSnippets  = "<C-S-\>"
+    " let g:UltiSnipsExpandTrigger="<tab>"
+    " let g:UltiSnipsJumpForwardTrigger="<tab>"
+    " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+    " You complete me
+    " ---------------
+      let g:ycm_key_list_select_completion = ['<C-T>']
 
 " Whitespace
 " ------------------------------------------------------------------------------
