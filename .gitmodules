@@ -98,3 +98,7 @@
 	path = vim/bundle/ultisnips
 	url = git://github.com/SirVer/ultisnips.git
   ignore = dirty
+[submodule "vim/bundle/vim-vitality"]
+	path = vim/bundle/vim-vitality
+	url = git://github.com/sjl/vitality.vim.git
+  ignore = dirty

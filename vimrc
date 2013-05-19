@@ -10,6 +10,7 @@
   set ttyfast
   syntax on
   set shell=bash
+  au FocusLost * :wa
 
   " Jump to last cursor position unless it's invalid or in an event handler
   " -----------------------------------------------------------------------
