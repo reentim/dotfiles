@@ -24,6 +24,7 @@
   pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
+  ff = merge --ff-only
 
 [merge]
   tool = vimdiff
