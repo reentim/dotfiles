@@ -62,15 +62,14 @@
   " delimitmate
     let delimitMate_offByDefault = 0
 
-  " " ctrl-p in working directory and below only
-  "   let g:ctrlp_working_path_mode = ''
-
   " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
     let g:indent_guides_auto_colors = 0
+
     " Tomorrow-Night-Eighties
       " hi IndentGuidesOdd  guibg=red   ctermbg=236
       " hi IndentGuidesEven guibg=green ctermbg=238
+
     " Tomorrow-Night-Bright
       hi IndentGuidesOdd  guibg=red   ctermbg=235
       hi IndentGuidesEven guibg=green ctermbg=237
@@ -93,13 +92,9 @@
 
     " Ultisnips
     " ---------
-    " let g:UltiSnipsExpandTrigger="<tab>"
-    " let g:UltiSnipsJumpForwardTrigger="<tab>"
-    " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-    " You complete me
-    " ---------------
-      let g:ycm_key_list_select_completion = ['<C-T>']
+    let g:UltiSnipsExpandTrigger="<C-]>"
+    let g:UltiSnipsJumpForwardTrigger="<C-]>"
+    let g:UltiSnipsSnippetsDir="~/.vim/bundle/snippets/UltiSnips"
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -150,10 +145,14 @@
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
 
+  " Open directory
+    nnoremap <leader>o :!open <C-R>=expand('%:h').'/'<cr><CR>
+
   " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!time bash %:p<cr>
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!time ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!time python %:p<cr>
+    autocmd FileType javascript nnoremap <leader>r :!clear<cr>:w\|:!time node %:p<cr>
 
     autocmd FileType eruby      setlocal spell
   " Run tests / specs
