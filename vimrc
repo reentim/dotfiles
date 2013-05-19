@@ -166,10 +166,15 @@
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
+
   " Edit .vimrc in new vertical window
     nnoremap <leader>ev :e $MYVIMRC<cr>
+
   " Edit .gvimrc in new vertical window
     nnoremap <leader>eg :e $MYGVIMRC<cr>
+
+  " Edit snippets
+    nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
 
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
