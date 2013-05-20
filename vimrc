@@ -93,9 +93,14 @@
 
     " Ultisnips
     " ---------
-    let g:UltiSnipsExpandTrigger="<C-]>"
-    let g:UltiSnipsJumpForwardTrigger="<C-]>"
-    let g:UltiSnipsSnippetsDir="~/.vim/bundle/snippets/UltiSnips"
+    let g:UltiSnipsExpandTrigger      = "<C-]>"
+    let g:UltiSnipsJumpForwardTrigger = "<C-]>"
+    let g:UltiSnipsSnippetsDir        = "~/.vim/bundle/snippets/UltiSnips"
+
+    " Vitality
+    " --------
+    let g:vitality_fix_cursor = 0
+    let g:vitality_always_assume_iterm = 1
 
 " Whitespace
 " ------------------------------------------------------------------------------
