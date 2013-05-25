@@ -159,8 +159,11 @@
     autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!time ruby %:p<cr>
     autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!time python %:p<cr>
     autocmd FileType javascript nnoremap <leader>r :!clear<cr>:w\|:!time node %:p<cr>
+    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<cr>
 
-    autocmd FileType eruby      setlocal spell
+    autocmd FileType eruby               setlocal spell
+    autocmd BufNewFile,BufRead *.tpl.php setlocal spell
+
   " Run tests / specs
     nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
     nnoremap <leader>f :wa<cr>:!clear<cr>:!time bundle exec rspec --color --tty  --format documentation %<cr>
@@ -230,6 +233,7 @@
 " ------------------------------------------------------------------------------
   nnoremap ; :
   inoremap jk <ESC>
+  inoremap <ESC> <C-[>
   nnoremap <leader><leader> <c-^>
 
   " Open files in directory of current file
