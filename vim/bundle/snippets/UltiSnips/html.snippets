@@ -91,7 +91,7 @@ snippet doctype "HTML 4.01 Transitional"
 endsnippet
 
 snippet doctype "HTML 5"
-<!DOCTYPE HTML>
+<!doctype html>
 endsnippet
 
 snippet doctype "XHTML 1.0 Frameset"
@@ -128,7 +128,7 @@ endsnippet
 
 # HTML Doctype 5
 snippet doct5 "doct5"
-<!DOCTYPE HTML>
+<!doctype html>
 endsnippet
 
 # XHTML Doctype 1.0 Frameset
@@ -763,15 +763,14 @@ ${1}
 endsnippet
 
 snippet html5 "html5"
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>${1:`!v substitute(Filename('', 'Page Title'), '^.', '\u&', '')`}</title>
-		${2:meta}
 	</head>
 	<body>
-		${3:body}
+		${2:body}
 	</body>
 </html>
 endsnippet
@@ -1189,13 +1188,13 @@ snippet samp "samp"
 endsnippet
 
 snippet script "script"
-<script type="text/javascript" charset="utf-8">
+<script>
 	${1}
 </script>
 endsnippet
 
 snippet scriptsrc "scriptsrc"
-<script src="${1}.js" type="text/javascript" charset="utf-8"></script>
+<script src="${1}.js"></script>
 endsnippet
 
 snippet section "section"
