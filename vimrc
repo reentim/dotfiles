@@ -3,30 +3,23 @@
   set nocompatible
   let mapleader = ","
   set backspace=indent,eol,start
-  set nu
+  set nonu
   set encoding=utf-8
   set showcmd
   set noshowmode
   set ttyfast
+  set ttimeout
+  set ttimeoutlen=10
   syntax on
   set shell=bash
-  au FocusLost * :wa
+  set showmatch
+	autocmd BufLeave,FocusLost * silent! wall
 
   " Jump to last cursor position unless it's invalid or in an event handler
-  " -----------------------------------------------------------------------
     autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal g`\"" |
       \ endif
-
-  " Auto-insert mode with spellchecking for git commit messages
-    if has('autocmd')
-      if has('spell')
-        au BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-      endif
-      au BufNewFile,BufRead COMMIT_EDITMSG call feedkeys('ggi', 't')
-      au BufNewFile,BufRead COMMIT_EDITMSG set nocursorline
-    endif
 
 " Aesthetics
 " ------------------------------------------------------------------------------
@@ -39,9 +32,20 @@
   set listchars+=extends:>
   set listchars+=precedes:<
   nmap <F5> :set invlist<cr>
-  " set cursorline
 
-" Plugin related
+" Filetype dependent formatting
+" ----------------------------------------------------------------------------
+  autocmd FileType php,c,sh
+    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
+" Spell-checking for eruby and git commit messages
+  if has('spell')
+    autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
+    autocmd FileType eruby                    setlocal spell
+    autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
+  endif
+
+" Plugins
 " ------------------------------------------------------------------------------
   " Pathogen
     call pathogen#infect()
@@ -49,16 +53,15 @@
     filetype plugin indent on
 
   " Powerline
-    " always show the status line
     set laststatus=2
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
-    let g:html_indent_inctags = "html,body,head,tbody"
-    let g:html_indent_script1 = "inc"
-    let g:html_indent_style1 = "inc"
+    " let g:html_indent_inctags = "html,body,head,tbody"
+    " let g:html_indent_script1 = "inc"
+    " let g:html_indent_style1 = "inc"
 
   " delimitmate
     let delimitMate_offByDefault = 0
@@ -91,6 +94,11 @@
     map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
     map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
 
+    " Ctrl-P
+      let g:ctrlp_max_height = 20
+      let g:ctrlp_match_window_reversed = 0
+      let g:ctrlp_working_path_mode = ''
+
     " Ultisnips
     " ---------
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -119,10 +127,6 @@
   " au BufEnter    * match ErrantIndentStyle /  /
   " au InsertEnter * match ErrantIndentStyle /  /
   " au InsertLeave * match ErrantIndentStyle /  /
-
-  " File dependent indentation
-  autocmd FileType html,php,c,sh
-    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
 " Searching
 " ------------------------------------------------------------------------------
@@ -155,18 +159,18 @@
     nnoremap <leader>o :!open <C-R>=expand('%:h').'/'<cr><CR>
 
   " Run scripts
-    autocmd FileType sh,bash    nnoremap <leader>r :!clear<cr>:w\|:!time bash %:p<cr>
-    autocmd FileType rb,ruby    nnoremap <leader>r :!clear<cr>:w\|:!time ruby %:p<cr>
-    autocmd FileType py,python  nnoremap <leader>r :!clear<cr>:w\|:!time python %:p<cr>
-    autocmd FileType javascript nnoremap <leader>r :!clear<cr>:w\|:!time node %:p<cr>
+    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<cr>
+    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<cr>
+    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<cr>
+    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<cr>
+    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<cr>:!time ./a.out<cr>
     autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<cr>
 
-    autocmd FileType eruby               setlocal spell
-    autocmd BufNewFile,BufRead *.tpl.php setlocal spell
 
   " Run tests / specs
-    nnoremap <leader>z :wa<cr>:!clear<cr>:!time zeus rspec --color --tty  --format documentation %<cr>
-    nnoremap <leader>c :wa<cr>:!clear<cr>:!time bundle exec rake cucumber:ok<cr>
+    nnoremap <leader>c :wa\|:!clear && time bundle exec rake cucumber:ok<cr>
+    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty  --format documentation %<cr>
+    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty  --format documentation %<cr>
 
   " load rb into irb session
     autocmd FileType rb,ruby    nnoremap <leader>a :!clear<cr>:w\|:!irb -r %:p<cr>
@@ -176,9 +180,6 @@
 
   " Edit .vimrc in new vertical window
     nnoremap <leader>ev :e $MYVIMRC<cr>
-
-  " Edit .gvimrc in new vertical window
-    nnoremap <leader>eg :e $MYGVIMRC<cr>
 
   " Edit snippets
     nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
@@ -232,12 +233,13 @@
 " ------------------------------------------------------------------------------
   nnoremap ; :
   inoremap jk <ESC>
-  inoremap <ESC> <C-[>
   nnoremap <leader><leader> <c-^>
+  " Make Y consistent with C and D.  See :help Y.
+  nnoremap Y y$
 
   " Open files in directory of current file
   " ---------------------------------------
-    cnoremap %% <C-R>=expand('%:h').'/'<cr>
+    cnoremap %% <C-R>=expand('%:p:h').'/'<cr>
     map <leader>e :edit %%
     map <leader>v :view %%
 
