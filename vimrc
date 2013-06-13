@@ -14,6 +14,7 @@
   set shell=bash
   set showmatch
 	autocmd BufLeave,FocusLost * silent! wall
+  let g:watching = 0
 
   " Jump to last cursor position unless it's invalid or in an event handler
     autocmd BufReadPost *
@@ -31,19 +32,21 @@
   set listchars+=trail:.
   set listchars+=extends:>
   set listchars+=precedes:<
-  nmap <F5> :set invlist<cr>
+  nmap <F5> :set invlist<CR>
 
 " Filetype dependent formatting
 " ----------------------------------------------------------------------------
   autocmd FileType php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
-" Spell-checking for eruby and git commit messages
-  if has('spell')
-    autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-    autocmd FileType eruby                    setlocal spell
-    autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
-  endif
+  " Spell-checking
+    if has('spell')
+      autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
+      autocmd FileType eruby                    setlocal spell
+      autocmd FileType markdown                 setlocal spell
+      autocmd FileType text                     setlocal spell
+      autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
+    endif
 
 " Plugins
 " ------------------------------------------------------------------------------
@@ -59,9 +62,9 @@
     let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
-    " let g:html_indent_inctags = "html,body,head,tbody"
-    " let g:html_indent_script1 = "inc"
-    " let g:html_indent_style1 = "inc"
+    let g:html_indent_inctags = "html,body,head,tbody"
+    let g:html_indent_script1 = "inc"
+    let g:html_indent_style1 = "inc"
 
   " delimitmate
     let delimitMate_offByDefault = 0
@@ -82,20 +85,10 @@
   " ---------
     set wildignore+=public/css
     let g:CommandTMaxFiles=99000
-    map <leader>t  :wa\|:CommandTFlush<cr>\|:CommandT<cr>
-    map <leader>gv      :CommandTFlush<cr>\|:CommandT app/views<cr>
-    map <leader>gc      :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-    map <leader>gm      :CommandTFlush<cr>\|:CommandT app/models<cr>
-    map <leader>gh      :CommandTFlush<cr>\|:CommandT app/helpers<cr>
-    map <leader>gj      :CommandTFlush<cr>\|:CommandT app/assets/javascripts<cr>
-    map <leader>gl      :CommandTFlush<cr>\|:CommandT lib<cr>
-    map <leader>gp      :CommandTFlush<cr>\|:CommandT public<cr>
-    " map <leader>gs      :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
-    map <leader>gs      :CommandTFlush<cr>\|:CommandT app/assets/stylesheets<cr>
-    map <leader>gf      :CommandTFlush<cr>\|:CommandT features<cr>
+    map <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
 
     " Ctrl-P
-      let g:ctrlp_max_height = 20
+      let g:ctrlp_max_height = 55
       let g:ctrlp_match_window_reversed = 0
       let g:ctrlp_working_path_mode = ''
 
@@ -109,6 +102,10 @@
     " --------
     let g:vitality_fix_cursor = 0
     let g:vitality_always_assume_iterm = 1
+
+    " coffee-script
+    " -------------
+    hi link coffeeSpaceError NONE
 
 " Whitespace
 " ------------------------------------------------------------------------------
@@ -134,8 +131,7 @@
   set incsearch
   set ignorecase
   set smartcase
-  " clear search highlighting on <CR>
-  nnoremap <CR> :nohlsearch<cr>
+  nnoremap <CR> :nohlsearch<CR>
 
   " Search for selected text, forwards or backwards.
   " ------------------------------------------------
@@ -155,31 +151,54 @@
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
 
-  " Open directory
-    nnoremap <leader>o :!open <C-R>=expand('%:h').'/'<cr><CR>
+    " open current file / directory in MacOS
+    nnoremap <leader>o :!open %<CR><CR>
+    nnoremap <leader>d :!open <C-R>=expand('%:p:h').'/'<CR><CR>
+
+    " Agressive autosave mode
+    nnoremap <leader>a :call AutoSaveMode()<CR>
+    function! AutoSaveMode()
+      autocmd InsertLeave <buffer> update
+      autocmd CursorMoved <buffer> update
+    endfunction
+
+  " Shortcut to invoke watch / browser refresh script in background...
+  " ------------------------------------------------------------------
+    nnoremap <leader>c :call SetWatch()<CR>
+    function! SetWatch()
+      :!watch '%:p:h' > /dev/null 2>&1 &
+      let g:watching = 1
+    endfunction
+
+    " ...and tidy up afterwards
+      au VimLeave * :call RemoveWatch()
+      function! RemoveWatch()
+        if g:watching == 1
+          :!pkill ruby /usr/local/bin/watch
+        endif
+      endfunction
 
   " Run scripts
-    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<cr>
-    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<cr>
-    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<cr>
-    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<cr>
-    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<cr>:!time ./a.out<cr>
-    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<cr>
-
+    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<CR>
+    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<CR>
+    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<CR>
+    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<CR>
+    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
+    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<CR>
 
   " Run tests / specs
-    nnoremap <leader>c :wa\|:!clear && time bundle exec rake cucumber:ok<cr>
-    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty  --format documentation %<cr>
-    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty  --format documentation %<cr>
+    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty  --format documentation %<CR>
+    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty  --format documentation %<CR>
 
   " load rb into irb session
-    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<cr>:w\|:!irb -r %:p<cr>
+    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<CR>:w\|:!irb -r %:p<CR>
 
   " Reselect pasted text: <,v>
     nnoremap <leader>v V`]
+    nnoremap <leader>v V`]
 
   " Edit .vimrc in new vertical window
-    nnoremap <leader>ev :e $MYVIMRC<cr>
+    nnoremap <leader>ev :e $MYVIMRC<CR>
 
   " Edit snippets
     nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
@@ -196,7 +215,7 @@
       " comment out underline, re-comment original comment
       normal \\k
     endfunction
-    nnoremap <leader>l :call UnderlineComment()<cr>
+    nnoremap <leader>l :call UnderlineComment()<CR>
 
     " 80 character underline
     " ----------------------
@@ -234,14 +253,13 @@
   nnoremap ; :
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
+
   " Make Y consistent with C and D.  See :help Y.
   nnoremap Y y$
 
-  " Open files in directory of current file
+  " Get directory of current file
   " ---------------------------------------
-    cnoremap %% <C-R>=expand('%:p:h').'/'<cr>
-    map <leader>e :edit %%
-    map <leader>v :view %%
+    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>
 
   " hash rockets and arrows
     imap <c-l> =><space>

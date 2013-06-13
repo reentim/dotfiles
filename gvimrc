@@ -1,6 +1,6 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=Inconsolata-q:h13
+  set guifont=Menlo:h11
   colorscheme Tomorrow\-Night\-Eighties
   let g:indent_guides_auto_colors = 1
 	set colorcolumn=80
