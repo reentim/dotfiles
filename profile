@@ -25,6 +25,10 @@
 		HOMEBREW_INSTALLED=1
 	fi
 
+	if [ -d $HOME/.npm ]; then
+		NPM_INSTALLED=1
+	fi
+
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
 	export PATH=/usr/local/bin:$PATH
@@ -43,6 +47,10 @@
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
+	if [ $NPM_INSTALLED ]; then
+		export PATH="/usr/local/share/npm/bin:$PATH"
+	fi
+
 	if [ $RBENV_INSTALLED ]; then
 		export PATH="$HOME/.rbenv/bin:$PATH"
 		eval "$(rbenv init -)"
