@@ -15,6 +15,7 @@
   set showmatch
 	autocmd BufLeave,FocusLost * silent! wall
   let g:watching = 0
+  set tw=80
 
   " Jump to last cursor position unless it's invalid or in an event handler
     autocmd BufReadPost *
@@ -90,7 +91,7 @@
     " Ctrl-P
       let g:ctrlp_max_height = 55
       let g:ctrlp_match_window_reversed = 0
-      let g:ctrlp_working_path_mode = ''
+      " let g:ctrlp_working_path_mode = ''
 
     " Ultisnips
     " ---------
