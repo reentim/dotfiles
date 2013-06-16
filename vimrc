@@ -45,7 +45,6 @@
       autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
       autocmd FileType eruby                    setlocal spell
       autocmd FileType markdown                 setlocal spell
-      autocmd FileType text                     setlocal spell
       autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
     endif
 
@@ -69,6 +68,8 @@
 
   " delimitmate
     let delimitMate_offByDefault = 0
+    let delimitMate_expand_cr = 1
+    let delimitMate_expand_space = 1
 
   " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
@@ -260,4 +261,3 @@
   " hash rockets and arrows
     imap <c-l> =><space>
     imap <c-j> ->
-
