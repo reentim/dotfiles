@@ -161,7 +161,7 @@
 
   " Shortcut to invoke watch / browser refresh script in background...
   " ------------------------------------------------------------------
-    nnoremap <leader>c :call SetWatch()<CR>
+    nnoremap <leader>c :call SetWatch()<CR><CR>
     function! SetWatch()
       :!watch '%:p:h' > /dev/null 2>&1 &
       let g:watching = 1
@@ -174,6 +174,8 @@
           :!pkill ruby /usr/local/bin/watch
         endif
       endfunction
+
+    nnoremap <leader>q :!coffee --compile %<CR><CR>
 
   " Run scripts
     autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<CR>
