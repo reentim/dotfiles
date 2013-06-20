@@ -2,204 +2,204 @@ extends html
 # .erb and .rhmtl files
 # Includes html.snippets
 # Rails *****************************
-snippet rc "rc"
+snippet rc "rc" i
 <% ${1} %>
 endsnippet
 
-snippet rce "rce"
+snippet rce "rce" i
 <%= ${1} %>${2}
 endsnippet
 
-snippet % "%"
+snippet % "%" i
 <% ${1} %>
 endsnippet
 
-snippet = "="
+snippet = "=" i
 <%= ${1} %>${2}
 endsnippet
 
-snippet end "end"
+snippet end "end" i
 <% end %>${1}
 endsnippet
 
-snippet ead "ead"
+snippet ead "ead" i
 <% ${1}.each do |${2}| %>
 	${3}
 <% end %>
 endsnippet
 
-snippet for "for"
+snippet for "for" i
 <% for ${2:item} in ${1} %>
 	${3}
 <% end %>
 endsnippet
 
-snippet rp "rp"
+snippet rp "rp" i
 <%= render :partial => '${1:item}' %>
 endsnippet
 
-snippet rpl "rpl"
+snippet rpl "rpl" i
 <%= render :partial => '${1:item}', :locals => { :${2:name} => '${3:value}'$4 } %>
 endsnippet
 
-snippet rps "rps"
+snippet rps "rps" i
 <%= render :partial => '${1:item}', :status => ${2:500} %>
 endsnippet
 
-snippet rpc "rpc"
+snippet rpc "rpc" i
 <%= render :partial => '${1:item}', :collection => ${2:items} %>
 endsnippet
 
-snippet lia "lia"
+snippet lia "lia" i
 <%= link_to '${1:link text...}', :action => '${2:index}' %>
 endsnippet
 
-snippet liai "liai"
+snippet liai "liai" i
 <%= link_to '${1:link text...}', :action => '${2:edit}', :id => ${3:@item} %>
 endsnippet
 
-snippet lic "lic"
+snippet lic "lic" i
 <%= link_to '${1:link text...}', :controller => '${2:items}' %>
 endsnippet
 
-snippet lica "lica"
+snippet lica "lica" i
 <%= link_to '${1:link text...}', :controller => '${2:items}', :action => '${3:index}' %>
 endsnippet
 
-snippet licai "licai"
+snippet licai "licai" i
 <%= link_to '${1:link text...}', :controller => '${2:items}', :action => '${3:edit}', :id => ${4:@item} %>
 endsnippet
 
-snippet yield "yield"
+snippet yield "yield" i
 <%= yield ${1::content_symbol} %>${2}
 endsnippet
 
-snippet conf "conf"
+snippet conf "conf" i
 <% content_for :${1:head} do %>
 	${2}
 <% end %>
 endsnippet
 
-snippet cs "cs"
+snippet cs "cs" i
 <%= collection_select <+object+>, <+method+>, <+collection+>, <+value_method+>, <+text_method+><+, <+[options]+>, <+[html_options]+>+> %>
 endsnippet
 
-snippet ct "ct"
+snippet ct "ct" i
 <%= content_tag '${1:DIV}', ${2:content}${3:,options} %>
 endsnippet
 
-snippet ff "ff"
+snippet ff "ff" i
 <%= form_for @${1:model} do |f| %>
 	${2}
 <% end %>
 endsnippet
 
-snippet ffcb "ffcb"
+snippet ffcb "ffcb" i
 <%= ${1:f}.check_box :${2:attribute} %>
 endsnippet
 
-snippet ffe "ffe"
+snippet ffe "ffe" i
 <% error_messages_for :${1:model} %>
 <%= form_for @${2:model} do |f| %>
 	${3}
 <% end %>
 endsnippet
 
-snippet ffff "ffff"
+snippet ffff "ffff" i
 <%= ${1:f}.file_field :${2:attribute} %>
 endsnippet
 
-snippet ffhf "ffhf"
+snippet ffhf "ffhf" i
 <%= ${1:f}.hidden_field :${2:attribute} %>
 endsnippet
 
-snippet ffl "ffl"
+snippet ffl "ffl" i
 <%= ${1:f}.label :${2:attribute}, '${3:$2}' %>
 endsnippet
 
-snippet ffpf "ffpf"
+snippet ffpf "ffpf" i
 <%= ${1:f}.password_field :${2:attribute} %>
 endsnippet
 
-snippet ffrb "ffrb"
+snippet ffrb "ffrb" i
 <%= ${1:f}.radio_button :${2:attribute}, :${3:tag_value} %>
 endsnippet
 
-snippet ffs "ffs"
+snippet ffs "ffs" i
 <%= ${1:f}.submit "${2:submit}" %>
 endsnippet
 
-snippet ffta "ffta"
+snippet ffta "ffta" i
 <%= ${1:f}.text_area :${2:attribute} %>
 endsnippet
 
-snippet fftf "fftf"
+snippet fftf "fftf" i
 <%= ${1:f}.text_field :${2:attribute} %>
 endsnippet
 
-snippet fields "fields"
+snippet fields "fields" i
 <%= fields_for :${1:model}, @$1 do |${2:f}| %>
 	${3}
 <% end %>
 endsnippet
 
-snippet i18 "i18"
+snippet i18 "i18" i
 I18n.t('${1:type.key}')${2}
 endsnippet
 
-snippet it "it"
+snippet it "it" i
 <%= image_tag "${1}"${2} %>
 endsnippet
 
-snippet jit "jit"
+snippet jit "jit" i
 <%= javascript_include_tag ${1::all} %>
 endsnippet
 
-snippet jsit "jsit"
+snippet jsit "jsit" i
 <%= javascript_include_tag "${1}" %>
 endsnippet
 
-snippet lim "lim"
+snippet lim "lim" i
 <%= link_to ${1:model}.${2:name}, ${3:$1}_path(${4:$1}) %>
 endsnippet
 
-snippet linp "linp"
+snippet linp "linp" i
 <%= link_to "${1:Link text...}", ${2:parent}_${3:child}_path(${4:@$2}, ${5:@$3}) %>
 endsnippet
 
-snippet linpp "linpp"
+snippet linpp "linpp" i
 <%= link_to "${1:Link text...}", ${2:parent}_${3:child}_path(${4:@$2}) %>
 endsnippet
 
-snippet lip "lip"
+snippet lip "lip" i
 <%= link_to "${1:Link text...}", ${2:model}_path(${3:@$2}) %>
 endsnippet
 
-snippet lipp "lipp"
+snippet lipp "lipp" i
 <%= link_to "${1:Link text...}", ${2:model}s_path %>
 endsnippet
 
-snippet lt "lt"
+snippet lt "lt" i
 <%= link_to "${1:name}", ${2:dest} %>
 endsnippet
 
-snippet ofcfs "ofcfs"
+snippet ofcfs "ofcfs" i
 <%= options_from_collection_for_select ${1:collection}, ${2:value_method}, ${3:text_method}, ${4:selected_value} %>
 endsnippet
 
-snippet rf "rf"
+snippet rf "rf" i
 <%= render :file => "${1:file}"${2} %>
 endsnippet
 
-snippet rt "rt"
+snippet rt "rt" i
 <%= render :template => "${1:file}"${2} %>
 endsnippet
 
-snippet slt "slt"
+snippet slt "slt" i
 <%= stylesheet_link_tag ${1::all}, :cache => ${2:true} %>
 endsnippet
 
-snippet sslt "sslt"
+snippet sslt "sslt" i
 <%= stylesheet_link_tag "${1}" %>
 endsnippet
 
