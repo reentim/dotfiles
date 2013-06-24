@@ -102,3 +102,6 @@
 	path = vim/bundle/vim-ragtag
 	url = https://github.com/tpope/vim-ragtag.git
   ignore = dirty
+[submodule "vim/bundle/vim-indent-object"]
+	path = vim/bundle/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object.git
