@@ -1,5 +1,11 @@
 source ~/.profile
 
+auto_sources=(`for f in ~/.zsh/*.zsh; do basename $f .zsh; done`)
+
+for source in $auto_sources; do
+  source ~/.zsh/$source.zsh
+done
+
 # Set custom prompt
 setopt PROMPT_SUBST
 autoload -U promptinit
