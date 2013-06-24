@@ -15,7 +15,7 @@
   set showmatch
 	autocmd BufLeave,FocusLost * silent! wall
   let g:watching = 0
-  set tw=80
+  set tw=79
 
   " Jump to last cursor position unless it's invalid or in an event handler
     autocmd BufReadPost *
@@ -46,6 +46,7 @@
       autocmd FileType eruby                    setlocal spell
       autocmd FileType markdown                 setlocal spell
       autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
+      autocmd BufNewFile,BufRead html           setlocal spell
     endif
 
 " Plugins
@@ -93,24 +94,21 @@
       hi IndentGuidesEven guibg=green ctermbg=237
 
   " Command-t
-  " ---------
     set wildignore+=public/css
     let g:CommandTMaxFiles=99000
     map <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
 
-    " Ctrl-P
-      let g:ctrlp_max_height = 55
-      let g:ctrlp_match_window_reversed = 0
-      " let g:ctrlp_working_path_mode = ''
+  " Ctrl-P
+    let g:ctrlp_max_height = 55
+    let g:ctrlp_match_window_reversed = 0
+    " let g:ctrlp_working_path_mode = ''
 
-    " Ultisnips
-    " ---------
+  " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
     let g:UltiSnipsJumpForwardTrigger = "<C-]>"
     let g:UltiSnipsSnippetsDir        = "~/.vim/bundle/snippets/UltiSnips"
 
-    " coffee-script
-    " -------------
+  " coffee-script
     hi link coffeeSpaceError NONE
 
 " Whitespace
@@ -227,7 +225,7 @@
 
     " 80 character underline
     " ----------------------
-      nmap <leader>8 yypd$aa<ESC>\\lyypd$81a-<ESC>:norm 81\|<CR>d$khljd^\\lkddk
+      nmap <leader>8 yypd$aa<ESC>\\lyypd$80a-<ESC>:norm 80\|<CR>d$khljd^\\lkddk
 
 " Folding
 " ------------------------------------------------------------------------------
