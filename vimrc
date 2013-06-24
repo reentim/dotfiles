@@ -55,6 +55,15 @@
     call pathogen#helptags()
     filetype plugin indent on
 
+  " Surround
+    " with method: ascii 'm'
+      autocmd FileType javascript let b:surround_109 = "function() { \r }"
+      autocmd FileType ruby       let b:surround_109 = "def \r end"
+
+    " with if: ascii 'i'
+      autocmd FileType javascript let b:surround_105 = "if () { \r }"
+      autocmd FileType ruby       let b:surround_105 = "if \r end"
+
   " Powerline
     set laststatus=2
 
