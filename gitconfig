@@ -1,26 +1,26 @@
 [user]
-	name = Timothy Reen
-	email = reentim@gmail.com
+  name = Timothy Reen
+  email = reentim@gmail.com
 [core]
-	editor = vim
-	excludesfile = "~/.gitignore-global"
+  editor = vim
+  excludesfile = "~/.gitignore-global"
 [color]
-	ui = auto
-	status = auto
-	branch = auto
-	interactive = auto
-	diff = auto
+  ui = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  diff = auto
 [alias]
   l     = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   graph = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   g     = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
-	st = status
-	ci = commit --verbose
-	cim = commit -m
-	co = checkout
-	di = diff
-	ds = diff --staged
-	aa = add -A
+  st = status
+  ci = commit --verbose
+  cim = commit -m
+  co = checkout
+  di = diff
+  ds = diff --staged
+  aa = add -A
   pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
@@ -30,4 +30,4 @@
   tool = vimdiff
   defaultToUpstream = true
 [push]
-	default = tracking
+  default = tracking
