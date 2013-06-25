@@ -21,6 +21,8 @@
   di = diff
   ds = diff --staged
   aa = add -A
+  diw = diff --color-words
+  dsw = diff --staged --color-words
   pf = pull --ff-only
   amend = commit --amend
   unstage = reset HEAD
