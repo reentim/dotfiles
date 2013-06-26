@@ -13,7 +13,7 @@
   syntax on
   set shell=bash
   set showmatch
-	autocmd BufLeave,FocusLost * silent! wall
+  autocmd BufLeave,FocusLost * silent! wall
   let g:watching = 0
   set tw=79
 
@@ -229,8 +229,8 @@
 
 " Folding
 " ------------------------------------------------------------------------------
-    set foldmethod=indent
-    set nofoldenable
+  set foldmethod=indent
+  set nofoldenable
 
 " Buffers and windows
 " ------------------------------------------------------------------------------
@@ -261,7 +261,7 @@
   nnoremap <leader><leader> <c-^>
 
   " Make Y consistent with C and D.  See :help Y.
-  nnoremap Y y$
+    nnoremap Y y$
 
   " Get directory of current file
   " ---------------------------------------
