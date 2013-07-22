@@ -279,6 +279,10 @@
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
 
+  " :bdelete also closes the current window; let's fix that
+  command! Bd bp|sp|bn|bd
+  cabbrev bd Bd
+
   " Make Y consistent with C and D.  See :help Y.
     nnoremap Y y$
 
