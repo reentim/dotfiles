@@ -169,6 +169,22 @@
       autocmd CursorMoved <buffer> update
     endfunction
 
+    autocmd InsertLeave * silent! update
+    autocmd CursorMoved * silent! update
+
+    function! SplitHTMLAttrs()
+      normal 0dw
+      :s/ /\r/g
+
+      " fix indentation, for self closing tags, will indent parent and move
+      " cursor...
+      normal vat=
+
+      " ...so move it back
+      normal `._
+    endfunction
+    nnoremap <leader>S :call SplitHTMLAttrs()<CR>
+
   " Shortcut to invoke watch / browser refresh script in background...
   " ------------------------------------------------------------------
     nnoremap <leader>c :call SetWatch()<CR><CR>
