@@ -97,6 +97,9 @@
     set wildignore+=public/css
     let g:CommandTMaxFiles=99000
     map <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
+    " let g:CommandTMatchWindowAtTop=1
+    let g:CommandTMatchWindowReverse=1
+    let g:CommandTClearMap='<C-w>'
 
   " Ctrl-P
     let g:ctrlp_max_height = 55
