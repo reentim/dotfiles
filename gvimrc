@@ -1,7 +1,8 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=Menlo:h11
-  colorscheme Tomorrow\-Night\-Eighties
+  set guifont=FF-Letter-Gothic-z:h13
+  colorscheme solarized
+  set background=dark
   let g:indent_guides_auto_colors = 1
 	set colorcolumn=80
 
@@ -18,4 +19,3 @@
 	autocmd BufLeave,FocusLost * silent! wall
 	set vb " use (nonexistent) visual bell instead of audio
   nnoremap <leader>eg :e $MYGVIMRC<cr>
-  cd dev
