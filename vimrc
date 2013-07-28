@@ -1,42 +1,41 @@
-" General
-" ------------------------------------------------------------------------------
-  set nocompatible
-  let mapleader = ","
-  set backspace=indent,eol,start
-  set nonu
-  set encoding=utf-8
-  set showcmd
-  set noshowmode
-  set ttyfast
-  set ttimeout
-  set ttimeoutlen=10
-  syntax on
-  set shell=bash
-  set showmatch
-  autocmd BufLeave,FocusLost * silent! wall
-  let g:watching = 0
-  set tw=79
+" Pathogenesis
+  call pathogen#infect()
+  call pathogen#helptags()
 
-  " Jump to last cursor position unless it's invalid or in an event handler
-    autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
+" General
+" ==============================================================================
+  " Sensible defaults
+    set nocompatible
+    set backspace=indent,eol,start
+    set history=10000
+    set encoding=utf-8
+    set showcmd
+    set ttyfast
+    set ttimeout
+    set ttimeoutlen=10
+    set shell=bash
+    set mouse=a
+    syntax on
+
+  " Actual preferences
+    set nonumber
+    set showmatch
+    set wildmenu
+    set sidescrolloff=5
+    set autoread
+    let mapleader = ","
 
 " Aesthetics
-" ------------------------------------------------------------------------------
+" ==============================================================================
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme Tomorrow-Night-Bright
-  set listchars=tab:▸\ ,eol:↵
-  set listchars+=trail:.
-  set listchars+=extends:>
-  set listchars+=precedes:<
-  nmap <F5> :set invlist<CR>
+  colorscheme Tomorrow-Night-Eighties
 
 " Filetype dependent formatting
-" ----------------------------------------------------------------------------
+" ==============================================================================
+  filetype plugin indent on
+
   autocmd FileType php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
@@ -50,12 +49,7 @@
     endif
 
 " Plugins
-" ------------------------------------------------------------------------------
-  " Pathogen
-    call pathogen#infect()
-    call pathogen#helptags()
-    filetype plugin indent on
-
+" ==============================================================================
   " Surround
     " with method: ascii 'm'
       autocmd FileType javascript let b:surround_109 = "function() { \r }"
@@ -66,7 +60,11 @@
       autocmd FileType ruby       let b:surround_105 = "if \r end"
 
   " Powerline
+    set noshowmode
     set laststatus=2
+    if has('gui')
+      let g:Powerline_colorscheme='solarized256_dark'
+    endif
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
@@ -77,7 +75,6 @@
     let g:html_indent_style1 = "inc"
 
   " delimitmate
-    let delimitMate_offByDefault = 0
     let delimitMate_expand_cr = 1
     let delimitMate_expand_space = 1
 
@@ -86,25 +83,29 @@
     let g:indent_guides_auto_colors = 0
 
     " Tomorrow-Night-Eighties
-      " hi IndentGuidesOdd  guibg=red   ctermbg=236
-      " hi IndentGuidesEven guibg=green ctermbg=238
+      hi IndentGuidesOdd  guibg=red   ctermbg=236
+      hi IndentGuidesEven guibg=green ctermbg=238
 
     " Tomorrow-Night-Bright
-      hi IndentGuidesOdd  guibg=red   ctermbg=235
-      hi IndentGuidesEven guibg=green ctermbg=237
+      " hi IndentGuidesOdd  guibg=red   ctermbg=235
+      " hi IndentGuidesEven guibg=green ctermbg=237
+
+    " Solarized Dark
+      " hi IndentGuidesOdd  guibg=red   ctermbg=0
+      " hi IndentGuidesEven guibg=green ctermbg=8
 
   " Command-t
-    set wildignore+=public/css
     let g:CommandTMaxFiles=99000
-    map <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
-    " let g:CommandTMatchWindowAtTop=1
     let g:CommandTMatchWindowReverse=1
     let g:CommandTClearMap='<C-w>'
+    set wildignore+=public/css
+    set wildignore+=*.png,*.jpg,*.gif
+    set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
+    set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
+    nnoremap <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
 
   " Ctrl-P
-    let g:ctrlp_max_height = 55
-    let g:ctrlp_match_window_reversed = 0
-    " let g:ctrlp_working_path_mode = ''
+    let g:ctrlp_working_path_mode = ''
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -112,41 +113,38 @@
     let g:UltiSnipsSnippetsDir        = "~/.vim/bundle/snippets/UltiSnips"
 
   " coffee-script
-    hi link coffeeSpaceError NONE
+    highlight link coffeeSpaceError NONE
 
 " Whitespace
-" ------------------------------------------------------------------------------
+" ==============================================================================
   set nowrap
+  set textwidth=80
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
   set autoindent
   set smartindent
 
-  highlight TrailingWhitespace ctermbg=red guibg=red
-  au BufEnter    * match TrailingWhitespace /\s\+$/
-  au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-  au InsertLeave * match TrailingWhitespace /\s\+$/
-  au BufWinLeave * call clearmatches()
-
-  " highlight ErrantIndentStyle ctermbg=red guibg=red
-  " au BufEnter    * match ErrantIndentStyle /  /
-  " au InsertEnter * match ErrantIndentStyle /  /
-  " au InsertLeave * match ErrantIndentStyle /  /
+  " Highlight trailing whitespace, but not during insertion
+    highlight TrailingWhitespace ctermbg=red guibg=red
+    au BufEnter    * match TrailingWhitespace /\s\+$/
+    au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+    au InsertLeave * match TrailingWhitespace /\s\+$/
+    au BufWinLeave * call clearmatches()
 
 " Searching
-" ------------------------------------------------------------------------------
+" ==============================================================================
   set hlsearch
   set incsearch
   set ignorecase
   set smartcase
-  nnoremap <CR> :nohlsearch<CR>
+  nnoremap <silent> <CR> :nohlsearch<CR>
 
-  " Search for selected text, forwards or backwards.
-  " ------------------------------------------------
+  " Search for selected text, forwards or backwards
+  " -----------------------------------------------
     vnoremap <silent> * :<C-U>
-       \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-       \gvy/<C-R><C-R>=substitute(
-       \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-       \gV:call setreg('"', old_reg, old_regtype)<CR>
+      \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+      \ gvy/<C-R><C-R>=substitute(
+      \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+      \ gV:call setreg('"', old_reg, old_regtype)<CR>
 
   " Standardise regex handling
   " --------------------------
@@ -154,24 +152,37 @@
     vnoremap / /\v
 
 " Leader shortcuts
-" ------------------------------------------------------------------------------
-  " Paste mode
-    nnoremap <leader>p :set invpaste<CR>
+" ==============================================================================
+  " Edit .vimrc in new vertical window
+    nnoremap <leader>ev :e $MYVIMRC<CR>
 
-    " open current file / directory in MacOS
+  " Edit snippets
+    nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
+
+  " Open current file / directory in MacOS
     nnoremap <leader>o :!open %<CR><CR>
     nnoremap <leader>d :!open <C-R>=expand('%:p:h').'/'<CR><CR>
 
-    " Agressive autosave mode
-    nnoremap <leader>a :call AutoSaveMode()<CR>
-    function! AutoSaveMode()
-      autocmd InsertLeave <buffer> update
-      autocmd CursorMoved <buffer> update
-    endfunction
+  " Run scripts
+    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<CR>
+    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<CR>
+    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<CR>
+    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<CR>
+    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
+    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<CR>
 
-    autocmd InsertLeave * silent! update
-    autocmd CursorMoved * silent! update
+  " Run tests / specs
+    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty --format documentation %<CR>
+    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty --format documentation %<CR>
 
+  " Load Ruby into irb session
+    autocmd FileType rb,ruby    nnoremap <leader>a :w\|:!clear && irb -r %:p<CR>
+
+  " Compile CoffeeScript
+    nnoremap <leader>q :!coffee --compile %<CR><CR>
+
+  " Split HTML attributes
+    nnoremap <leader>S :call SplitHTMLAttrs()<CR>
     function! SplitHTMLAttrs()
       normal 0dw
       :s/ /\r/g
@@ -183,10 +194,10 @@
       " ...so move it back
       normal `._
     endfunction
-    nnoremap <leader>S :call SplitHTMLAttrs()<CR>
 
   " Shortcut to invoke watch / browser refresh script in background...
   " ------------------------------------------------------------------
+    let g:watching = 0
     nnoremap <leader>c :call SetWatch()<CR><CR>
     function! SetWatch()
       :!watch '%:p:h' > /dev/null 2>&1 &
@@ -201,35 +212,12 @@
         endif
       endfunction
 
-    nnoremap <leader>q :!coffee --compile %<CR><CR>
-
-  " Run scripts
-    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<CR>
-    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<CR>
-    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<CR>
-    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<CR>
-    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
-    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<CR>
-
-  " Run tests / specs
-    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty  --format documentation %<CR>
-    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty  --format documentation %<CR>
-
-  " load rb into irb session
-    autocmd FileType rb,ruby    nnoremap <leader>a :!clear<CR>:w\|:!irb -r %:p<CR>
-
-  " Reselect pasted text: <,v>
-    nnoremap <leader>v V`]
-    nnoremap <leader>v V`]
-
-  " Edit .vimrc in new vertical window
-    nnoremap <leader>ev :e $MYVIMRC<CR>
-
-  " Edit snippets
-    nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
+  " Paste mode
+    nnoremap <leader>p :set invpaste<CR>
 
   " Comment underlining: relies on vim-commentary plugin
   " ----------------------------------------------------
+    nnoremap <leader>l :call UnderlineComment()<CR>
     function! UnderlineComment()
       " uncomment current line
       normal \\l
@@ -240,19 +228,17 @@
       " comment out underline, re-comment original comment
       normal \\k
     endfunction
-    nnoremap <leader>l :call UnderlineComment()<CR>
 
-    " 80 character underline
-    " ----------------------
-      nmap <leader>8 yypd$aa<ESC>\\lyypd$80a-<ESC>:norm 80\|<CR>d$khljd^\\lkddk
+  " 80 character '=' underline
+    nnoremap <leader>8 yypd$aa<ESC>\\lyypd$80a=<ESC>:norm 80\|<CR>d$khljd^\\lkddk
 
 " Folding
-" ------------------------------------------------------------------------------
+" ==============================================================================
   set foldmethod=indent
   set nofoldenable
 
 " Buffers and windows
-" ------------------------------------------------------------------------------
+" ==============================================================================
   set hidden
 
   " switch to new split window
@@ -265,34 +251,53 @@
     nnoremap <C-k> <C-w>k
     nnoremap <C-l> <C-w>l
 
-" Central temporary directories
-" ------------------------------------------------------------------------------
-  set backup
-  set backupdir=/tmp/vimtemp//
-  set dir=/tmp/vimswap//
-  set undofile
-  set undodir=/tmp/vimundo//
+" Behaviour
+" ==============================================================================
+  " Central temporary directories
+    set backup
+    set backupdir=/tmp/vimtemp//
+    set dir=/tmp/vimswap//
+    set undofile
+    set undodir=/tmp/vimundo//
+
+  " When Vim opens, jump to last cursor position unless it's invalid or in an
+  " event handler
+    autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal g`\"" |
+      \ endif
+
+  " Agressive autosaving
+    autocmd InsertLeave * silent! update
+    autocmd CursorMoved * silent! update
+    autocmd BufLeave,FocusLost * silent! wall
+
+  " Toggle the display of invisible characters
+    nnoremap <F5> :set invlist<CR>
+    set listchars=tab:▸\ ,eol:↵
+    set listchars+=trail:.
+    set listchars+=extends:>
+    set listchars+=precedes:<
 
 " General custom mappings
-" ------------------------------------------------------------------------------
+" ==============================================================================
   nnoremap ; :
   inoremap jk <ESC>
   nnoremap <leader><leader> <c-^>
 
   " :bdelete also closes the current window; let's fix that
-  command! Bd bp|sp|bn|bd
-  cabbrev bd Bd
+    command! Bd bp|sp|bn|bd
+    cabbrev bd Bd
 
   " Make Y consistent with C and D.  See :help Y.
     nnoremap Y y$
 
   " Get directory of current file
-  " ---------------------------------------
     cnoremap %% <C-R>=expand('%:p:h').'/'<CR>
 
-  " hash rockets and arrows
-    imap <c-l> =><space>
-    imap <c-j> ->
+  " Hash rockets and arrows
+    inoremap <c-l> =><space>
+    inoremap <c-j> ->
 
   " http://vim.wikia.com/wiki/Move_to_next/previous_line_with_same_indentation
   " ---------------------------------------------------------------------------
@@ -330,15 +335,15 @@
     endfunction
 
     " Moving back and forth between lines of same or lower indentation.
-    nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
-    nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
-    nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
-    nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
-    vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
-    vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
-    vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
-    vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
-    onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
-    onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
-    onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
-    onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
+      nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+      nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+      nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
+      nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
+      vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
+      vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+      vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
+      vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
+      onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+      onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+      onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
+      onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
