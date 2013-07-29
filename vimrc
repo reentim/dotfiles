@@ -30,7 +30,8 @@
   set t_Co=256
   set colorcolumn=80
   set ruler
-  colorscheme Tomorrow-Night-Eighties
+  colorscheme solarized
+  set background=dark
 
 " Filetype dependent formatting
 " ==============================================================================
@@ -62,9 +63,7 @@
   " Powerline
     set noshowmode
     set laststatus=2
-    if has('gui')
-      let g:Powerline_colorscheme='solarized256_dark'
-    endif
+    let g:Powerline_colorscheme='solarized256_dark'
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
@@ -83,16 +82,16 @@
     let g:indent_guides_auto_colors = 0
 
     " Tomorrow-Night-Eighties
-      hi IndentGuidesOdd  guibg=red   ctermbg=236
-      hi IndentGuidesEven guibg=green ctermbg=238
+      " hi IndentGuidesOdd  guibg=red   ctermbg=236
+      " hi IndentGuidesEven guibg=green ctermbg=238
 
     " Tomorrow-Night-Bright
       " hi IndentGuidesOdd  guibg=red   ctermbg=235
       " hi IndentGuidesEven guibg=green ctermbg=237
 
     " Solarized Dark
-      " hi IndentGuidesOdd  guibg=red   ctermbg=0
-      " hi IndentGuidesEven guibg=green ctermbg=8
+      hi IndentGuidesOdd  guibg=red   ctermbg=0
+      hi IndentGuidesEven guibg=green ctermbg=8
 
   " Command-t
     let g:CommandTMaxFiles=99000
