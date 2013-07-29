@@ -33,6 +33,13 @@
   colorscheme solarized
   set background=dark
 
+  " Italic comments. This requires a terminal emulator that supports italic
+  " text, e.g. iTerm2 with setting enabled, and an appropriate TERMINFO (see
+  " https://gist.github.com/sos4nt/3187620).
+  " If echo `tput sitm`italics`tput ritm` produces italic text, then this should
+  " work (maybe)
+    highlight Comment cterm=italic
+
 " Filetype dependent formatting
 " ==============================================================================
   filetype plugin indent on
