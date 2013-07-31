@@ -221,18 +221,47 @@
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
 
-  " Comment underlining: relies on vim-commentary plugin
+  " Underlining, relies on vim-commentary plugin
   " ----------------------------------------------------
-    nnoremap <leader>l :call UnderlineComment()<CR>
-    function! UnderlineComment()
-      " uncomment current line
-      normal \\l
+    nnoremap <leader>l :call Underline('-')<CR>
+    nnoremap <leader>u :call Underline('=')<CR>
+
+    function! Underline(linechar)
+      if g:loaded_commentary == 0
+        return
+      endif
+
+      let a:wordline = split(getline('.'))
+
+      if len(a:wordline) == 0
+        return
+      endif
+
+      let a:comment = split(substitute(&commentstring, '%s', '', ''))[0]
+      " beginning of line characters that might be comment syntax
+      let a:bolchars = a:wordline[0][0:strlen(a:comment) - 1]
+
+      if a:bolchars == a:comment
+        " uncomment current line
+        normal gcl
+      endif
+
+      " clobber a marker to which to return
+      normal ma
+
       " yank line, paste below
       normal yyp
-      " visually select pasted line, replace all with '-'
-      normal v$r-
-      " comment out underline, re-comment original comment
-      normal \\k
+
+      " visually select pasted line, replace all with linechar
+      execute 'normal v$r' . a:linechar
+
+      if a:bolchars == a:comment
+        " comment out underline, re-comment original comment
+        normal gck
+      endif
+
+      " return to marked position
+      normal `a
     endfunction
 
   " 80 character '=' underline
