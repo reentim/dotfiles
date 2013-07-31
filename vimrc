@@ -14,24 +14,36 @@
     set ttimeout
     set ttimeoutlen=10
     set shell=bash
-    set mouse=a
     syntax on
 
   " Actual preferences
     set nonumber
-    set showmatch
     set wildmenu
+    set ruler
     set sidescrolloff=5
+    set scrolloff=2
     set autoread
+    set iskeyword-=_ " underscore delimits word boundaries
+    set mouse=a
+    set ttymouse=xterm2 " better selection and dragging, especially inside tmux
+    set showmatch
     let mapleader = ","
 
 " Aesthetics
 " ==============================================================================
   set t_Co=256
   set colorcolumn=80
-  set ruler
+  set nowrap
+  set textwidth=80
   colorscheme solarized
-  set background=dark
+  set background=light
+
+  " Highlight trailing whitespace, but not during insertion
+    highlight TrailingWhitespace ctermbg=red guibg=red
+    au BufEnter    * match TrailingWhitespace /\s\+$/
+    au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+    au InsertLeave * match TrailingWhitespace /\s\+$/
+    au BufWinLeave * call clearmatches()
 
   " Italic comments. This requires a terminal emulator that supports italic
   " text, e.g. iTerm2 with setting enabled, and an appropriate TERMINFO (see
@@ -43,17 +55,17 @@
 " Filetype dependent formatting
 " ==============================================================================
   filetype plugin indent on
+  set autoindent
+  set smartindent
+
+  set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
   autocmd FileType php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   " Spell-checking
     if has('spell')
-      autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-      autocmd FileType eruby                    setlocal spell
-      autocmd FileType markdown                 setlocal spell
-      autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
-      autocmd BufNewFile,BufRead html           setlocal spell
+      set spell
     endif
 
 " Plugins
@@ -121,28 +133,6 @@
   " coffee-script
     highlight link coffeeSpaceError NONE
 
-" Whitespace
-" ==============================================================================
-  set nowrap
-  set textwidth=80
-  set expandtab tabstop=2 softtabstop=2 shiftwidth=2
-  set autoindent
-  set smartindent
-
-  " Highlight trailing whitespace, but not during insertion
-    highlight TrailingWhitespace ctermbg=red guibg=red
-    au BufEnter    * match TrailingWhitespace /\s\+$/
-    au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-    au InsertLeave * match TrailingWhitespace /\s\+$/
-    au BufWinLeave * call clearmatches()
-
-  " Trim trailing whitespace on command
-    nnoremap <leader>rw :call TrimWhiteSpace()<CR>
-    function! TrimWhiteSpace()
-      %s/\s\+$//e
-      normal ``
-    endfunction
-
 " Searching
 " ==============================================================================
   set hlsearch
@@ -167,7 +157,10 @@
 " Leader shortcuts
 " ==============================================================================
   " Edit .vimrc in new vertical window
-    nnoremap <leader>ev :e $MYVIMRC<CR>
+    nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
+
+  " Reload .vimrc
+    nnoremap <leader>er :source ~/.dotfiles/vimrc<CR>
 
   " Edit snippets
     nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
@@ -243,7 +236,14 @@
     endfunction
 
   " 80 character '=' underline
-    nnoremap <leader>8 yypd$aa<ESC>\\lyypd$80a=<ESC>:norm 80\|<CR>d$khljd^\\lkddk
+    nmap <leader>8 yypd$aa<ESC>\\lyypd$80a=<ESC>:norm 80\|<CR>d$khljd^\\lkddk
+
+  " Trim trailing whitespace on command
+    nnoremap <leader>rw :call TrimWhiteSpace()<CR>
+    function! TrimWhiteSpace()
+      %s/\s\+$//e
+      normal ``
+    endfunction
 
 " Folding
 " ==============================================================================
@@ -299,7 +299,7 @@
   nnoremap <leader><leader> <c-^>
 
   " :bdelete also closes the current window; let's fix that
-    command! Bd bp|sp|bn|bd
+    command! Bd bp|sp|bp|bd
     cabbrev bd Bd
 
   " Make Y consistent with C and D.  See :help Y.
