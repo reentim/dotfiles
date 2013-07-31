@@ -105,3 +105,6 @@
 [submodule "vim/bundle/vim-indent-object"]
 	path = vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
+[submodule "lib/z"]
+	path = lib/z
+	url = https://github.com/rupa/z.git
