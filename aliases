@@ -1,27 +1,36 @@
-alias vi='vim'
-alias ff='find . -type f 2>/dev/null| ack -i '
+#!/usr/bin/env bash
+
+# Customisations of standard behaviour
 alias tree='tree -FC'
-alias ls='ls -G --color=auto'
-alias l='ls -lh'
-alias ll='ls -alF'
-alias la='ls -A'
-alias rspec='rspec --color --tty'
+alias rspec='rspec --color --tty --format documentation'
+alias tmux='tmux -u' # force utf-8
+
+ls_opt='--color=auto --group-directories-first --file-type'
+alias ls="ls $ls_opt"
+
+if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+	if (which gls > /dev/null); then
+		alias ls="gls $ls_opt"
+	else
+		alias ls='ls -CFG'
+	fi
+fi
+
+alias l='ls -lGgh' # list, omit group, omit owner, human readable sizes
+alias ll='ls -la' # list, show all files
+alias la='ls -A' # no list, show almost all
+
+# Key-saving shortcuts
+alias vi='vim'
 alias bx='bundle exec'
 alias z='zeus '
 alias r='rails'
 alias duh='du -csh'
-
-if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
-	alias ls='ls -CFG'
-	alias ll='ls -alFG'
-	alias la='ls -AG'
-	alias l='ls -lh'
-fi
-
 alias sr='screen -r'
-alias tmux='tmux -u'
 alias t='tmux'
 alias ta='t a'
 
+# Kind of new things
+alias ff='find . -type f 2>/dev/null| ack -i '
 alias heredoc="read -rd '' HEREDOC << 'EOF'"
 alias cdr='cd $(git rev-parse --show-cdup)'
