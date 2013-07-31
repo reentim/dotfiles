@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
@@ -6,7 +8,6 @@
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
-#umask 022
 
 # ------------------------------------------------------------------------------
 # This should be the only file that gets automatically loaded at login.
@@ -40,10 +41,10 @@
 	mkdir -p /tmp/vimswap
 	mkdir -p /tmp/vimundo
 
-  # Alias definitions.
-  if [ -f ~/.aliases ]; then
-    source ~/.aliases
-  fi
+	# Alias definitions
+	if [ -f ~/.aliases ]; then
+		source ~/.aliases
+	fi
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
@@ -51,9 +52,25 @@
 		export PATH="/usr/local/share/npm/bin:$PATH"
 	fi
 
+	if [ -d $HOME/bin ]; then
+		export PATH="$HOME/bin:$PATH"
+	fi
+
 	if [ $RBENV_INSTALLED ]; then
 		export PATH="$HOME/.rbenv/bin:$PATH"
 		eval "$(rbenv init -)"
+	fi
+
+	# z - a fuzzy finder for directory changing
+	#    installed under Homebrew on MacOS, otherwise available in dotfiles
+	if [ $HOMEBREW_INSTALLED ]; then
+		if [ -f `brew --prefix`/etc/profile.d/z.sh ]; then
+			source `brew --prefix`/etc/profile.d/z.sh
+		fi
+	else
+		if [ -f ~/.dotfiles/lib/z/z.sh ]; then
+			source ~/.dotfiles/lib/z/z.sh
+		fi
 	fi
 
 	# Homebrew stuff
@@ -61,11 +78,11 @@
 		[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
 	fi
 
+	# Bash specific
 	if [ -n "$BASH_VERSION" ]; then
+		source ~/.bash_colors
 
-    source ~/.bash_colors
-
-		HOST_COLOR=${BRIGHT_YELLOW}
+		HOST_COLOR=${BRIGHT_CYAN}
 		DIR_COLOR=${BRIGHT_VIOLET}
 		USER_COLOR=${BRIGHT_YELLOW}
 
@@ -75,11 +92,9 @@
 		fi
 
 		# History stuff
-		# --------------------------------------------------------------------------
 		export HISTCONTROL=erasedups
 		export HISTSIZE=10000
 		shopt -s histappend
-		# --------------------------------------------------------------------------
 
 		if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
 
@@ -92,13 +107,15 @@
 		fi
 	fi
 
-# Ensure MySQL is on the PATH, if necessary
-if [ -f /etc/profile.d/mysql.server.sh ]; then
-  source /etc/profile.d/mysql.server.sh
-fi
+	if [ $SYSTEM_TYPE = 'Linux' ]; then
+		# Ensure MySQL is on the PATH, if necessary
+		if [ -f /etc/profile.d/mysql.server.sh ]; then
+			source /etc/profile.d/mysql.server.sh
+		fi
 
-# Custom git-ff (https://github.com/pda/babushka-deps/blob/master/git/git-ff)
-# never seems to work with my setup; remove it.
-if [ -f /usr/local/bin/git-ff ]; then
-	sudo rm /usr/local/bin/git-ff
-fi
+		# Custom git-ff (https://github.com/pda/babushka-deps/blob/master/git/git-ff)
+		# never seems to work with my setup; remove it.
+		if [ -f /usr/local/bin/git-ff ]; then
+			sudo rm /usr/local/bin/git-ff
+		fi
+	fi
