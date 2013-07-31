@@ -136,6 +136,13 @@
     au InsertLeave * match TrailingWhitespace /\s\+$/
     au BufWinLeave * call clearmatches()
 
+  " Trim trailing whitespace on command
+    nnoremap <leader>rw :call TrimWhiteSpace()<CR>
+    function! TrimWhiteSpace()
+      %s/\s\+$//e
+      normal ``
+    endfunction
+
 " Searching
 " ==============================================================================
   set hlsearch
