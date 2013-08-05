@@ -266,8 +266,8 @@
   nnoremap <leader><leader> <C-^>
 
   " :bdelete also closes the current window; let's fix that
-    command! Bd bp|sp|bp|bd
-    cabbrev bd Bd
+    command! CloseBuffer call CloseBuffer()
+    cabbrev bd CloseBuffer
 
   " Make Y consistent with C and D.  See :help Y.
     nnoremap Y y$
