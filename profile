@@ -33,8 +33,6 @@
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
 	export PATH=/usr/local/bin:$PATH
-	export LESS=-Ri
-	export GREP_OPTIONS="--color"
 
 	# vim temp files go in /tmp/ directories
 	mkdir -p /tmp/vimtemp

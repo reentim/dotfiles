@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# Customisations of standard behaviour
+# Customisation of standard behaviour
 alias tree='tree -FC'
 alias rspec='rspec --color --tty --format documentation'
 alias tmux='tmux -u' # force utf-8
+alias grep='grep --color=always'
+alias less='less -Ri'
 
 ls_opt='--color=auto --group-directories-first --file-type'
 alias ls="ls $ls_opt"
@@ -23,8 +25,6 @@ alias la='ls -A' # no list, show almost all
 # Key-saving shortcuts
 alias vi='vim'
 alias bx='bundle exec'
-alias z='zeus '
-alias r='rails'
 alias duh='du -csh'
 alias sr='screen -r'
 alias t='tmux'
