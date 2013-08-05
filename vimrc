@@ -105,19 +105,11 @@
 
   " Indent Guides
     let g:indent_guides_enable_on_vim_startup = 1
-    let g:indent_guides_auto_colors = 0
-
-    " Tomorrow-Night-Eighties
-      " hi IndentGuidesOdd  guibg=red   ctermbg=236
-      " hi IndentGuidesEven guibg=green ctermbg=238
-
-    " Tomorrow-Night-Bright
-      " hi IndentGuidesOdd  guibg=red   ctermbg=235
-      " hi IndentGuidesEven guibg=green ctermbg=237
-
-    " Solarized Dark
-      hi IndentGuidesOdd  guibg=red   ctermbg=0
-      hi IndentGuidesEven guibg=green ctermbg=8
+    if exists('g:colorscheme_indent_guide_odd')
+      let g:indent_guides_auto_colors = 0
+      exe "hi IndentGuidesOdd  ctermbg=" . g:colorscheme_indent_guide_odd
+      exe "hi IndentGuidesEven ctermbg=" . g:colorscheme_indent_guide_even
+    endif
 
   " Command-t
     let g:CommandTMaxFiles=99000
