@@ -1,11 +1,14 @@
---type-add
-html=.haml
---type-add
-css=.sass,.scss
+--type-add=ruby=rake,haml,erb
+--type-add=vim=vimrc
+--type-add=js=json
+--type-add=css=scss,sass,less
 
---type-set=MIN=.min.js
---noMIN
+--type-set=coffee=coffee
+--type-set=gherkin=feature
 
+--color
+
+--ignore-dir=node_modules
 --ignore-dir=public/css
 --ignore-dir=public/js/tinymce
-
+--ignore-dir=public/js/lib

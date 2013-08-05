@@ -1,12 +1,3 @@
-" Pathogenesis
-  call pathogen#infect()
-  call pathogen#helptags()
-
-" Load functions
-  if filereadable(expand("~/.dotfiles/vim/functions.vim"))
-    source ~/.dotfiles/vim/functions.vim
-  endif
-
 " General
 " ==============================================================================
   " Sensible defaults
@@ -25,7 +16,7 @@
     set nonumber
     set wildmenu
     set ruler
-    set sidescrolloff=5
+    set sidescrolloff=15
     set scrolloff=2
     set autoread
     set iskeyword-=_ " underscore delimits word boundaries
@@ -33,6 +24,15 @@
     set ttymouse=xterm2 " better selection and dragging, especially inside tmux
     set showmatch
     let mapleader = ","
+
+  " Pathogen
+    call pathogen#infect()
+    call pathogen#helptags()
+
+    " Load functions
+    if filereadable(expand("~/.dotfiles/vim/functions.vim"))
+      source ~/.dotfiles/vim/functions.vim
+    endif
 
 " Aesthetics
 " ==============================================================================
@@ -211,9 +211,6 @@
 
   " 80 character '=' underline
     nmap <leader>8 yypd$aa<ESC>\\lyypd$80a=<ESC>:norm 80\|<CR>d$khljd^\\lkddk
-
-  " Trim trailing whitespace on command
-    nnoremap <leader>rw :call TrimWhiteSpace()<CR>
 
 " Folding
 " ==============================================================================
