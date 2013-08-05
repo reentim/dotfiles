@@ -113,3 +113,32 @@ function! ResumeCursorPosition()
     exe "normal g`\"" |
   endif
 endfunction
+
+function! VisibleBuffers()
+  return tabpagebuflist(tabpagenr())
+endfunction
+
+function! HiddenBuffers()
+  let hidden_buffers = []
+
+  for b in range(1, bufnr('$'))
+    if buflisted(b) && index(VisibleBuffers(), b) == -1
+      call add(hidden_buffers, b)
+    endif
+  endfor
+
+  return hidden_buffers
+endfunction
+
+function! CloseBuffer()
+  if len(HiddenBuffers()) > 0
+    execute "buffer" . HiddenBuffers()[0]
+  else
+    enew
+  endif
+
+  if buffer_name('%') != ""
+    split #
+    bdelete
+  endif
+endfunction
