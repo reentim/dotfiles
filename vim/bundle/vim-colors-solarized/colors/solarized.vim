@@ -6,6 +6,14 @@
 " Created:  In the middle of the night
 " Modified: 2011 May 05
 "
+
+if &background == 'dark'
+  let g:colorscheme_indent_guide_odd  = 0
+  let g:colorscheme_indent_guide_even = 8
+else
+  let g:colorscheme_indent_guide_odd  = 7
+endif
+
 " Usage "{{{
 "
 " ---------------------------------------------------------------------
