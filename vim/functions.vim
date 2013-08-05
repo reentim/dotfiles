@@ -3,17 +3,18 @@ function! Underline(linechar)
     return
   endif
 
-  let a:wordline = split(getline('.'))
+  let wordline = split(getline('.'))
 
-  if len(a:wordline) == 0
+  if len(wordline) == 0
     return
   endif
 
-  let a:comment = split(substitute(&commentstring, '%s', '', ''))[0]
-  " beginning of line characters that might be comment syntax
-  let a:bolchars = a:wordline[0][0:strlen(a:comment) - 1]
+  let comment = split(substitute(&commentstring, '%s', '', ''))[0]
 
-  if a:bolchars == a:comment
+  " beginning of line characters that might be comment syntax
+  let bol_chars = wordline[0][0:strlen(comment) - 1]
+
+  if bol_chars == comment
     " uncomment current line
     normal gcl
   endif
@@ -27,7 +28,7 @@ function! Underline(linechar)
   " visually select pasted line, replace all with linechar
   execute 'normal v$r' . a:linechar
 
-  if a:bolchars == a:comment
+  if bol_chars == comment
     " comment out underline, re-comment original comment
     normal gck
   endif
@@ -98,4 +99,17 @@ function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
       endif
     endif
   endwhile
+endfunction
+
+function! ResumeCursorPosition()
+  " Checks to make sure the last position is valid and not in an event handler.
+  " Can be disabled by setting b:noResumeCursorPosition
+
+  if exists('b:noResumeCursorPosition')
+    return
+  endif
+
+  if line("'\"") > 0 && line("'\"") <= line("$") |
+    exe "normal g`\"" |
+  endif
 endfunction

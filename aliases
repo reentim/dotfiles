@@ -11,6 +11,7 @@ ls_opt='--color=auto --group-directories-first --file-type'
 alias ls="ls $ls_opt"
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+	# use GNU ls if it's available
 	if (which gls > /dev/null); then
 		alias ls="gls $ls_opt"
 	else
