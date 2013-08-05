@@ -29,9 +29,9 @@
     call pathogen#infect()
     call pathogen#helptags()
 
-    " Load functions
-    if filereadable(expand("~/.dotfiles/vim/functions.vim"))
-      source ~/.dotfiles/vim/functions.vim
+  " Load functions
+    if filereadable(expand("~/.vim/functions.vim"))
+      source ~/.vim/functions.vim
     endif
 
 " Aesthetics
@@ -67,6 +67,8 @@
 
   autocmd FileType php,c,sh
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
+  autocmd FileType gitcommit let b:noResumeCursorPosition=1
 
   " Spell-checking
     if has('spell')
@@ -141,6 +143,7 @@
 " Searching
 " ==============================================================================
   set hlsearch
+  execute ":nohlsearch"
   set incsearch
   set ignorecase
   set smartcase
@@ -215,6 +218,7 @@
 " Folding
 " ==============================================================================
   set foldmethod=indent
+  set foldminlines=0
   set nofoldenable
 
 " Buffers and windows
@@ -240,14 +244,10 @@
     set undofile
     set undodir=/tmp/vimundo//
 
-  " When Vim opens, jump to last cursor position unless it's invalid or in an
-  " event handler
-    autocmd BufReadPost *
-      \ if line("'\"") > 0 && line("'\"") <= line("$") |
-      \   exe "normal g`\"" |
-      \ endif
+  " When Vim opens, jump to last cursor position
+    autocmd BufReadPost * call ResumeCursorPosition()
 
-  " Agressive autosaving
+  " Aggressive autosaving
     autocmd InsertLeave * silent! update
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
@@ -263,7 +263,7 @@
 " ==============================================================================
   nnoremap ; :
   inoremap jk <ESC>
-  nnoremap <leader><leader> <c-^>
+  nnoremap <leader><leader> <C-^>
 
   " :bdelete also closes the current window; let's fix that
     command! Bd bp|sp|bp|bd

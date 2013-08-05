@@ -15,7 +15,7 @@
   graph   = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   g       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   st      = status
-  ci      = commit --verbose
+  ci      = commit
   cim     = commit -m
   co      = checkout
   di      = diff
@@ -27,7 +27,6 @@
   amend   = commit --amend
   unstage = reset HEAD
   ff      = merge --ff-only
-
 [merge]
   tool = vimdiff
   defaultToUpstream = true
