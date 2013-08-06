@@ -89,7 +89,6 @@
   " Powerline
     set noshowmode
     set laststatus=2
-    let g:Powerline_colorscheme='solarized256_dark'
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
