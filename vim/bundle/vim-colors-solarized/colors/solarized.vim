@@ -10,8 +10,11 @@
 if &background == 'dark'
   let g:colorscheme_indent_guide_odd  = 0
   let g:colorscheme_indent_guide_even = 8
+  let g:Powerline_colorscheme='solarized256_dark'
 else
   let g:colorscheme_indent_guide_odd  = 7
+  let g:colorscheme_indent_guide_even = 15
+  let g:Powerline_colorscheme='solarized256_light'
 endif
 
 " Usage "{{{
