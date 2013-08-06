@@ -157,10 +157,10 @@
 " Leader shortcuts
 " ==============================================================================
   " Edit .vimrc in new vertical window
-    nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
+    nnoremap <leader>ev :e $MYVIMRC<CR>
 
   " Reload .vimrc
-    nnoremap <leader>er :source ~/.dotfiles/vimrc<CR>
+    nnoremap <leader>er :source $MYVIMRC<CR>
 
   " Edit snippets
     nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
@@ -170,19 +170,19 @@
     nnoremap <leader>d :!open <C-R>=expand('%:p:h').'/'<CR><CR>
 
   " Run scripts
-    autocmd FileType sh,bash    nnoremap <leader>r :w\|:!clear && time bash %:p<CR>
-    autocmd FileType rb,ruby    nnoremap <leader>r :w\|:!clear && time ruby %:p<CR>
-    autocmd FileType py,python  nnoremap <leader>r :w\|:!clear && time python %:p<CR>
-    autocmd FileType javascript nnoremap <leader>r :w\|:!clear && time node %:p<CR>
-    autocmd FileType c          nnoremap <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
-    autocmd FileType vim        nnoremap <leader>r :w\|:source %:p<CR>
+    autocmd FileType sh,bash    nnoremap <buffer> <leader>r :w\|:!clear && time bash %:p<CR>
+    autocmd FileType rb,ruby    nnoremap <buffer> <leader>r :w\|:!clear && time ruby %:p<CR>
+    autocmd FileType py,python  nnoremap <buffer> <leader>r :w\|:!clear && time python %:p<CR>
+    autocmd FileType javascript nnoremap <buffer> <leader>r :w\|:!clear && time node %:p<CR>
+    autocmd FileType c          nnoremap <buffer> <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
+    autocmd FileType vim        nnoremap <buffer> <leader>r :w\|:source %:p<CR>
 
   " Run tests / specs
     nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty --format documentation %<CR>
     nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty --format documentation %<CR>
 
   " Load Ruby into irb session
-    autocmd FileType rb,ruby    nnoremap <leader>a :w\|:!clear && irb -r %:p<CR>
+    autocmd FileType rb,ruby    nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
 
   " Compile CoffeeScript
     nnoremap <leader>q :!coffee --compile %<CR><CR>
