@@ -284,3 +284,8 @@
     onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
     onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
     onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
+
+  " Insignificant whims: colorscheme du jour, etc
+    if filereadable(expand("~/.vim/whims.vim"))
+      source ~/.vim/whims.vim
+    endif
