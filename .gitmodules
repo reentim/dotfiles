@@ -108,3 +108,6 @@
 [submodule "lib/z"]
 	path = lib/z
 	url = https://github.com/rupa/z.git
+[submodule "vim/bundle/vim-tmux-navigator"]
+	path = vim/bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
