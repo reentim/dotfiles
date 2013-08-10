@@ -15,7 +15,7 @@
   graph   = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   g       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   st      = status -sb
-  ci      = commit
+  ci      = commit --verbose
   cim     = commit -m
   co      = checkout
   di      = diff
