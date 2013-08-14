@@ -5,6 +5,8 @@
 
 --type-set=coffee=coffee
 --type-set=gherkin=feature
+--type-set=LOG=.log
+--noLOG
 
 --color
 

@@ -13,16 +13,15 @@
     syntax on
 
   " Actual preferences
-    set nonumber
-    set wildmenu
-    set ruler
     set sidescrolloff=15
     set scrolloff=2
     set autoread
-    set iskeyword-=_ " underscore delimits word boundaries
     set mouse=a
     set ttymouse=xterm2 " better selection and dragging, especially inside tmux
     set showmatch
+    set nowrap
+    set textwidth=80
+    set colorcolumn=80
     let mapleader = ","
 
   " Pathogen
@@ -36,10 +35,11 @@
 
 " Aesthetics
 " ==============================================================================
+  set nonumber
+  set wildmenu
+  set ruler
+  set laststatus=2
   set t_Co=256
-  set colorcolumn=80
-  set nowrap
-  set textwidth=80
   colorscheme solarized
   set background=dark
 
@@ -74,7 +74,11 @@
 
   " Spell-checking
     if has('spell')
-      set spell
+      autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
+      autocmd FileType eruby                    setlocal spell
+      autocmd FileType markdown                 setlocal spell
+      autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
+      autocmd BufNewFile,BufRead html           setlocal spell
     endif
 
 " Plugins
@@ -87,10 +91,6 @@
     " with if: ascii 'i'
       autocmd FileType javascript let b:surround_105 = "if () { \r }"
       autocmd FileType ruby       let b:surround_105 = "if \r end"
-
-  " Powerline
-    set noshowmode
-    set laststatus=2
 
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
@@ -116,6 +116,7 @@
     let g:CommandTMaxFiles=99000
     let g:CommandTMatchWindowReverse=1
     let g:CommandTClearMap='<C-w>'
+    let g:CommandTMaxHeight=10
     set wildignore+=public/css
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
@@ -157,36 +158,30 @@
 
 " Leader shortcuts
 " ==============================================================================
-  " Edit .vimrc in new vertical window
+  " Edit vim-related files
     nnoremap <leader>ev :e $MYVIMRC<CR>
+    nnoremap <leader>ef :e ~/.vim/functions.vim<CR>
+    nnoremap <leader>ew :e ~/.vim/whims.vim<CR>
 
   " Reload .vimrc
     nnoremap <leader>er :source $MYVIMRC<CR>
 
   " Edit snippets
-    nnoremap <leader>es :execute "e ~/.vim/bundle/snippets/UltiSnips/" . &filetype . ".snippets"<CR>
+    nnoremap <leader>es :UltiSnipsEdit<CR>
 
   " Open current file / directory in MacOS
     nnoremap <leader>o :!open %<CR><CR>
     nnoremap <leader>d :!open <C-R>=expand('%:p:h').'/'<CR><CR>
 
   " Run scripts
-    autocmd FileType sh,bash    nnoremap <buffer> <leader>r :w\|:!clear && time bash %:p<CR>
-    autocmd FileType rb,ruby    nnoremap <buffer> <leader>r :w\|:!clear && time ruby %:p<CR>
-    autocmd FileType py,python  nnoremap <buffer> <leader>r :w\|:!clear && time python %:p<CR>
-    autocmd FileType javascript nnoremap <buffer> <leader>r :w\|:!clear && time node %:p<CR>
-    autocmd FileType c          nnoremap <buffer> <leader>r :w\|:silent! !gcc %:p<CR>:!time ./a.out<CR>
-    autocmd FileType vim        nnoremap <buffer> <leader>r :w\|:source %:p<CR>
+    nnoremap <leader>r :call RunFile()<CR>
 
   " Run tests / specs
-    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty --format documentation %<CR>
-    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty --format documentation %<CR>
+    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty --format documentation %:p<CR>
+    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty --format documentation %:p<CR>
 
   " Load Ruby into irb session
-    autocmd FileType rb,ruby    nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
-
-  " Compile CoffeeScript
-    nnoremap <leader>q :!coffee --compile %<CR><CR>
+    autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
 
   " Split HTML attributes
     nnoremap <leader>S :call SplitHTMLAttrs()<CR>
@@ -205,8 +200,9 @@
     nnoremap <leader>l :call Underline('-')<CR>
     nnoremap <leader>u :call Underline('=')<CR>
 
-  " 80 character '=' underline
-    nmap <leader>8 yypd$aa<ESC>\\lyypd$80a=<ESC>:norm 80\|<CR>d$khljd^\\lkddk
+  " 80 character underline
+    nnoremap <silent> <leader>8l :call FullUnderline('-')<CR>
+    nnoremap <silent> <leader>8u :call FullUnderline('=')<CR>
 
 " Folding
 " ==============================================================================
