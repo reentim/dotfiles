@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Customisation of standard behaviour
-alias tree='tree -FC'
+alias tree='tree -FC --dirsfirst'
 alias rspec='rspec --color --tty --format documentation'
 alias tmux='tmux -u' # force utf-8
 alias grep='grep --color=always'

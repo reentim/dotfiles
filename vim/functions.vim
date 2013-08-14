@@ -1,39 +1,54 @@
+function! IsCommentLine()
+  let wordline = split(getline('.'))
+  if len(wordline) == 0
+    return
+  endif
+  let comment = split(substitute(&commentstring, '%s', '', ''))[0]
+  let bol_chars = wordline[0][0:strlen(comment) - 1]
+  return bol_chars == comment
+endfunction
+
 function! Underline(linechar)
   if g:loaded_commentary == 0
     return
   endif
-
-  let wordline = split(getline('.'))
-
-  if len(wordline) == 0
-    return
+  if IsCommentLine()
+    let comment_line = 1
+  else
+    let comment_line = 0
   endif
-
-  let comment = split(substitute(&commentstring, '%s', '', ''))[0]
-
-  " beginning of line characters that might be comment syntax
-  let bol_chars = wordline[0][0:strlen(comment) - 1]
-
-  if bol_chars == comment
+  if comment_line
     " uncomment current line
     normal gcl
   endif
-
   " clobber a marker to which to return
   normal ma
-
   " yank line, paste below
   normal yyp
-
   " visually select pasted line, replace all with linechar
   execute 'normal v$r' . a:linechar
-
-  if bol_chars == comment
+  if comment_line
     " comment out underline, re-comment original comment
     normal gck
   endif
-
   " return to marked position
+  normal `a
+endfunction
+
+function! FullUnderline(linechar)
+  if g:loaded_commentary == 0
+    return
+  endif
+  if &textwidth
+    let width = &textwidth
+  else
+    let width = 80
+  endif
+  normal ma
+  normal yypD
+  execute 'normal ' . width . 'a' . a:linechar
+  normal gcl
+  execute 'normal ' . width . '|lD'
   normal `a
 endfunction
 
@@ -140,5 +155,23 @@ function! CloseBuffer()
   if buffer_name('%') != ""
     split #
     bdelete
+  endif
+endfunction
+
+function! RunFile()
+  if &ft == "bash"
+    !clear && time bash %:p
+  elseif &ft == "ruby"
+    !clear && time ruby %:p
+  elseif &ft == "python"
+    !clear && time python %:p
+  elseif &ft == "javascript"
+    !clear && time node %:p
+  elseif &ft == "vim"
+    source %:p
+  elseif &ft
+    execute "echo \"Don't know how to run" . &ft . " files.\""
+  else
+    echo "Don't know what sort of file this is."
   endif
 endfunction
