@@ -41,7 +41,7 @@
   set nowrap
   set textwidth=80
   colorscheme solarized
-  set background=light
+  set background=dark
 
   " Highlight trailing whitespace, but not during insertion
     highlight TrailingWhitespace ctermbg=red guibg=red
@@ -55,7 +55,9 @@
   " https://gist.github.com/sos4nt/3187620).
   " If echo `tput sitm`italics`tput ritm` produces italic text, then this should
   " work (maybe)
-    highlight Comment cterm=italic
+    if &term =~ "italic"
+        highlight Comment cterm=italic
+    endif
 
 " Filetype dependent formatting
 " ==============================================================================
