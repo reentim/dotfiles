@@ -19,6 +19,12 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	fi
 fi
 
+if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+	if (which gstat > /dev/null); then
+		alias stat="gstat"
+	fi
+fi
+
 alias l='ls -lGgh' # list, omit group, omit owner, human readable sizes
 alias ll='ls -la' # list, show all files
 alias la='ls -A' # no list, show almost all
