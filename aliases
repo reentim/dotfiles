@@ -5,7 +5,6 @@ alias tree='tree -FC --dirsfirst'
 alias rspec='rspec --color --tty --format documentation'
 alias tmux='tmux -u' # force utf-8
 alias grep='grep --color=always'
-alias less='less -Ri'
 
 ls_opt='--color=auto --group-directories-first --file-type'
 alias ls="ls $ls_opt"
