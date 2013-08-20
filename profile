@@ -33,6 +33,7 @@
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
 	export PATH=/usr/local/bin:$PATH
+	export LESS=-Ri
 
 	# vim temp files go in /tmp/ directories
 	mkdir -p /tmp/vimtemp
