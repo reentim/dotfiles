@@ -88,9 +88,6 @@
 [submodule "vim/bundle/vim-markdown"]
 	path = vim/bundle/vim-markdown
 	url = git://github.com/tpope/vim-markdown.git
-[submodule "vim/bundle/vim-js-indent"]
-	path = vim/bundle/vim-js-indent
-	url = https://github.com/vim-scripts/JavaScript-Indent.git
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
 	url = git://github.com/SirVer/ultisnips.git
