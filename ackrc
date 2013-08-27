@@ -14,3 +14,4 @@
 --ignore-dir=public/css
 --ignore-dir=public/js/tinymce
 --ignore-dir=public/js/lib
+--ignore-dir=public/assets
