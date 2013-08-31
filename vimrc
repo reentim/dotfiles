@@ -40,7 +40,13 @@
   set ruler
   set laststatus=2
   set t_Co=256
-  colorscheme solarized
+
+  if $TERM_PROGRAM == 'Apple_Terminal'
+    colorscheme Tomorrow-Night
+  else
+    colorscheme solarized
+  endif
+
   set background=dark
 
   " Highlight trailing whitespace, but not during insertion
@@ -281,8 +287,3 @@
     onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
     onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
     onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
-
-  " Insignificant whims: colorscheme du jour, etc
-    if filereadable(expand("~/.vim/whims.vim"))
-      source ~/.vim/whims.vim
-    endif
