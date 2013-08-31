@@ -57,14 +57,14 @@
 # Feedback is welcome!
 # 
 # entry point
-snippet sim "sim"
+snippet sim "sim" w
 public static int Main(string[] args) {
 	${1}
 	return 0;
 } 
 endsnippet
 
-snippet simc "simc"
+snippet simc "simc" w
 public class Application {
 	public static int Main(string[] args) {
 		${1}
@@ -74,136 +74,136 @@ public class Application {
 endsnippet
 
 # if condition
-snippet if "if"
+snippet if "if" w
 if (${1}) {
 	${2}
 } 
 endsnippet
 
-snippet el "el"
+snippet el "el" w
 else {
 	${1}
 } 
 endsnippet
 
-snippet ifs "ifs"
+snippet ifs "ifs" w
 if (${1}) 
 	${2}
 endsnippet
 
 # ternary conditional
-snippet t "t"
+snippet t "t" w
 ${1} ? ${2} : ${3}
 endsnippet
 
-snippet ? "?"
+snippet ? "?" w
 ${1} ? ${2} : ${3}
 endsnippet
 
 # do while loop
-snippet do "do"
+snippet do "do" w
 do {
 	${2}
 } while (${1});
 endsnippet
 
 # while loop
-snippet wh "wh"
+snippet wh "wh" w
 while (${1}) {
 	${2}
 }
 endsnippet
 
 # for loop
-snippet for "for"
+snippet for "for" w
 for (int ${1:i} = 0; $1 < ${2:count}; $1${3:++}) {
 	${4}
 }
 endsnippet
 
 # foreach
-snippet fore "fore"
+snippet fore "fore" w
 foreach (var ${1:entry} in ${2}) {
 	${3}
 }
 endsnippet
 
-snippet foreach "foreach"
+snippet foreach "foreach" w
 foreach (var ${1:entry} in ${2}) {
 	${3}
 }
 endsnippet
 
-snippet each "each"
+snippet each "each" w
 foreach (var ${1:entry} in ${2}) {
 	${3}
 }
 endsnippet
 
 # interfaces
-snippet interface "interface"
+snippet interface "interface" w
 public interface ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet if+ "if+"
+snippet if+ "if+" w
 public interface ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
 # class bodies
-snippet class "class"
+snippet class "class" w
 public class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls "cls"
+snippet cls "cls" w
 ${2:public} class ${1:`!v Filename()`} {
 	${3}
 }
 endsnippet
 
-snippet cls+ "cls+"
+snippet cls+ "cls+" w
 public class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls+^ "cls+^"
+snippet cls+^ "cls+^" w
 public static class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls& "cls&"
+snippet cls& "cls&" w
 internal class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls&^ "cls&^"
+snippet cls&^ "cls&^" w
 internal static class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls| "cls|"
+snippet cls| "cls|" w
 protected class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
-snippet cls|% "cls|%"
+snippet cls|% "cls|%" w
 protected abstract class ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
 # constructor
-snippet ctor "ctor"
+snippet ctor "ctor" w
 public ${1:`!v Filename()`}() {
 	${2}
 }
@@ -211,362 +211,362 @@ endsnippet
 
 # properties - auto properties by default.
 # default type is int with layout get / set.
-snippet prop "prop"
+snippet prop "prop" w
 ${1:public} ${2:int} ${3:} { get; set; }${4}
 endsnippet
 
-snippet p "p"
+snippet p "p" w
 ${1:public} ${2:int} ${3:} { get; set; }${4}
 endsnippet
 
-snippet p+ "p+"
+snippet p+ "p+" w
 public ${1:int} ${2:} { get; set; }${3}
 endsnippet
 
-snippet p+& "p+&"
+snippet p+& "p+&" w
 public ${1:int} ${2:} { get; internal set; }${3}
 endsnippet
 
-snippet p+| "p+|"
+snippet p+| "p+|" w
 public ${1:int} ${2:} { get; protected set; }${3}
 endsnippet
 
-snippet p+- "p+-"
+snippet p+- "p+-" w
 public ${1:int} ${2:} { get; private set; }${3}
 endsnippet
 
-snippet p& "p&"
+snippet p& "p&" w
 internal ${1:int} ${2:} { get; set; }${3}
 endsnippet
 
-snippet p&| "p&|"
+snippet p&| "p&|" w
 internal ${1:int} ${2:} { get; protected set; }${3}
 endsnippet
 
-snippet p&- "p&-"
+snippet p&- "p&-" w
 internal ${1:int} ${2:} { get; private set; }${3}
 endsnippet
 
-snippet p| "p|"
+snippet p| "p|" w
 protected ${1:int} ${2:} { get; set; }${3}
 endsnippet
 
-snippet p|- "p|-"
+snippet p|- "p|-" w
 protected ${1:int} ${2:} { get; private set; }${3}
 endsnippet
 
-snippet p- "p-"
+snippet p- "p-" w
 private ${1:int} ${2:} { get; set; }${3}
 endsnippet
 
 # property - bool
-snippet pi "pi"
+snippet pi "pi" w
 ${1:public} int ${2:} { get; set; }${3}
 endsnippet
 
-snippet pi+ "pi+"
+snippet pi+ "pi+" w
 public int ${1} { get; set; }${2}
 endsnippet
 
-snippet pi+& "pi+&"
+snippet pi+& "pi+&" w
 public int ${1} { get; internal set; }${2}
 endsnippet
 
-snippet pi+| "pi+|"
+snippet pi+| "pi+|" w
 public int ${1} { get; protected set; }${2}
 endsnippet
 
-snippet pi+- "pi+-"
+snippet pi+- "pi+-" w
 public int ${1} { get; private set; }${2}
 endsnippet
 
-snippet pi& "pi&"
+snippet pi& "pi&" w
 internal int ${1} { get; set; }${2}
 endsnippet
 
-snippet pi&| "pi&|"
+snippet pi&| "pi&|" w
 internal int ${1} { get; protected set; }${2}
 endsnippet
 
-snippet pi&- "pi&-"
+snippet pi&- "pi&-" w
 internal int ${1} { get; private set; }${2}
 endsnippet
 
-snippet pi| "pi|"
+snippet pi| "pi|" w
 protected int ${1} { get; set; }${2}
 endsnippet
 
-snippet pi|- "pi|-"
+snippet pi|- "pi|-" w
 protected int ${1} { get; private set; }${2}
 endsnippet
 
-snippet pi- "pi-"
+snippet pi- "pi-" w
 private int ${1} { get; set; }${2}
 endsnippet
 
 # property - bool
-snippet pb "pb"
+snippet pb "pb" w
 ${1:public} bool ${2:} { get; set; }${3}
 endsnippet
 
-snippet pb+ "pb+"
+snippet pb+ "pb+" w
 public bool ${1} { get; set; }${2}
 endsnippet
 
-snippet pb+& "pb+&"
+snippet pb+& "pb+&" w
 public bool ${1} { get; internal set; }${2}
 endsnippet
 
-snippet pb+| "pb+|"
+snippet pb+| "pb+|" w
 public bool ${1} { get; protected set; }${2}
 endsnippet
 
-snippet pb+- "pb+-"
+snippet pb+- "pb+-" w
 public bool ${1} { get; private set; }${2}
 endsnippet
 
-snippet pb& "pb&"
+snippet pb& "pb&" w
 internal bool ${1} { get; set; }${2}
 endsnippet
 
-snippet pb&| "pb&|"
+snippet pb&| "pb&|" w
 internal bool ${1} { get; protected set; }${2}
 endsnippet
 
-snippet pb&- "pb&-"
+snippet pb&- "pb&-" w
 internal bool ${1} { get; private set; }${2}
 endsnippet
 
-snippet pb| "pb|"
+snippet pb| "pb|" w
 protected bool ${1} { get; set; }${2}
 endsnippet
 
-snippet pb|- "pb|-"
+snippet pb|- "pb|-" w
 protected bool ${1} { get; private set; }${2}
 endsnippet
 
-snippet pb- "pb-"
+snippet pb- "pb-" w
 private bool ${1} { get; set; }${2}
 endsnippet
 
 # property - string
-snippet ps "ps"
+snippet ps "ps" w
 ${1:public} string ${2:} { get; set; }${3}
 endsnippet
 
-snippet ps+ "ps+"
+snippet ps+ "ps+" w
 public string ${1} { get; set; }${2}
 endsnippet
 
-snippet ps+& "ps+&"
+snippet ps+& "ps+&" w
 public string ${1} { get; internal set; }${2}
 endsnippet
 
-snippet ps+| "ps+|"
+snippet ps+| "ps+|" w
 public string ${1} { get; protected set; }${2}
 endsnippet
 
-snippet ps+- "ps+-"
+snippet ps+- "ps+-" w
 public string ${1} { get; private set; }${2}
 endsnippet
 
-snippet ps& "ps&"
+snippet ps& "ps&" w
 internal string ${1} { get; set; }${2}
 endsnippet
 
-snippet ps&| "ps&|"
+snippet ps&| "ps&|" w
 internal string ${1} { get; protected set; }${2}
 endsnippet
 
-snippet ps&- "ps&-"
+snippet ps&- "ps&-" w
 internal string ${1} { get; private set; }${2}
 endsnippet
 
-snippet ps| "ps|"
+snippet ps| "ps|" w
 protected string ${1} { get; set; }${2}
 endsnippet
 
-snippet ps|- "ps|-"
+snippet ps|- "ps|-" w
 protected string ${1} { get; private set; }${2}
 endsnippet
 
-snippet ps- "ps-"
+snippet ps- "ps-" w
 private string ${1} { get; set; }${2}
 endsnippet
 
 # members - void
-snippet m "m"
+snippet m "m" w
 ${1:public} ${2:void} ${3:}(${4:}) {
 	${5:}
 }
 endsnippet
 
-snippet m+ "m+"
+snippet m+ "m+" w
 public ${1:void} ${2:}(${3:}) {
 	${4:}
 }
 endsnippet
 
-snippet m& "m&"
+snippet m& "m&" w
 internal ${1:void} ${2:}(${3:}) {
 	${4:}
 }
 endsnippet
 
-snippet m| "m|"
+snippet m| "m|" w
 protected ${1:void} ${2:}(${3:}) {
 	${4:}
 }
 endsnippet
 
-snippet m- "m-"
+snippet m- "m-" w
 private ${1:void} ${2:}(${3:}) {
 	${4:}
 }
 endsnippet
 
 # members - int
-snippet mi "mi"
+snippet mi "mi" w
 ${1:public} int ${2:}(${3:}) {
 	${4:return 0;}
 }
 endsnippet
 
-snippet mi+ "mi+"
+snippet mi+ "mi+" w
 public int ${1:}(${2:}) {
 	${3:return 0;}
 }
 endsnippet
 
-snippet mi& "mi&"
+snippet mi& "mi&" w
 internal int ${1:}(${2:}) {
 	${3:return 0;}
 }
 endsnippet
 
-snippet mi| "mi|"
+snippet mi| "mi|" w
 protected int ${1:}(${2:}) {
 	${3:return 0;}
 }
 endsnippet
 
-snippet mi- "mi-"
+snippet mi- "mi-" w
 private int ${1:}(${2:}) {
 	${3:return 0;}
 }
 endsnippet
 
 # members - bool
-snippet mb "mb"
+snippet mb "mb" w
 ${1:public} bool ${2:}(${3:}) {
 	${4:return false;}
 }
 endsnippet
 
-snippet mb+ "mb+"
+snippet mb+ "mb+" w
 public bool ${1:}(${2:}) {
 	${3:return false;}
 }
 endsnippet
 
-snippet mb& "mb&"
+snippet mb& "mb&" w
 internal bool ${1:}(${2:}) {
 	${3:return false;}
 }
 endsnippet
 
-snippet mb| "mb|"
+snippet mb| "mb|" w
 protected bool ${1:}(${2:}) {
 	${3:return false;}
 }
 endsnippet
 
-snippet mb- "mb-"
+snippet mb- "mb-" w
 private bool ${1:}(${2:}) {
 	${3:return false;}
 }
 endsnippet
 
 # members - string
-snippet ms "ms"
+snippet ms "ms" w
 ${1:public} string ${2:}(${3:}) {
 	${4:return "";}
 }
 endsnippet
 
-snippet ms+ "ms+"
+snippet ms+ "ms+" w
 public string ${1:}(${2:}) {
 	${3:return "";}
 }
 endsnippet
 
-snippet ms& "ms&"
+snippet ms& "ms&" w
 internal string ${1:}(${2:}) {
 	${3:return "";}
 }
 endsnippet
 
-snippet ms| "ms|"
+snippet ms| "ms|" w
 protected string ${1:}(${2:}) {
 	${3:return "";}
 }
 endsnippet
 
-snippet ms- "ms-"
+snippet ms- "ms-" w
 private string ${1:}(${2:}) {
 	${3:return "";}
 }
 endsnippet
 
 # structure
-snippet struct "struct"
+snippet struct "struct" w
 public struct ${1:`!v Filename()`} {
 	${2}
 }
 endsnippet
 
 # enumeration
-snippet enum "enum"
+snippet enum "enum" w
 public enum ${1} {
 	${2}
 }
 endsnippet
 
 # preprocessor directives
-snippet #if "#if"
+snippet #if "#if" w
 #if
 	${1}
 #endif
 endsnippet
 
 # inline xml documentation
-snippet /// "///"
+snippet /// "///" w
 /// <summary>
 /// ${1}
 /// </summary>
 endsnippet
 
-snippet <p "<p"
+snippet <p "<p" w
 <param name="${1}">${2:$1}</param>${3}
 endsnippet
 
-snippet <ex "<ex"
+snippet <ex "<ex" w
 <exception cref="${1:System.Exception}">${2}</exception>${3}
 endsnippet
 
-snippet <r "<r"
+snippet <r "<r" w
 <returns>${1}</returns>{${2}
 endsnippet
 
-snippet <s "<s"
+snippet <s "<s" w
 <see cref="${1}"/>${2}
 endsnippet
 
-snippet <rem "<rem"
+snippet <rem "<rem" w
 <remarks>${1}</remarks>${2}
 endsnippet
 
-snippet <c "<c"
+snippet <c "<c" w
 <code>${1}</code>${2}
 endsnippet
 

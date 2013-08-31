@@ -1,6 +1,6 @@
 ## Main
 # main
-snippet main "main"
+snippet main "main" w
 int main(int argc, const char *argv[])
 {
 	${1}
@@ -9,7 +9,7 @@ int main(int argc, const char *argv[])
 endsnippet
 
 # main(void)
-snippet mainn "mainn"
+snippet mainn "mainn" w
 int main(void)
 {
 	${1}
@@ -20,43 +20,43 @@ endsnippet
 ##
 ## Preprocessor 
 # #include <...>
-snippet inc "inc"
+snippet inc "inc" w
 #include <${1:stdio}.h>${2}
 endsnippet
 
 # #include "..."
-snippet Inc "Inc"
+snippet Inc "Inc" w
 #include "${1:`!v Filename("$1.h")`}"${2}
 endsnippet
 
 # ifndef...define...endif
-snippet ndef "ndef"
+snippet ndef "ndef" w
 #ifndef $1
 #define ${1:SYMBOL} ${2:value}
 #endif${3}
 endsnippet
 
 # define
-snippet def "def"
+snippet def "def" w
 #define
 endsnippet
 
 # ifdef...endif
-snippet ifdef "ifdef"
+snippet ifdef "ifdef" w
 #ifdef ${1:FOO}
 	${2:#define }
 #endif${3}
 endsnippet
 
 # if
-snippet #if "#if"
+snippet #if "#if" w
 #if ${1:FOO}
 	${2}
 #endif
 endsnippet
 
 # header include guard
-snippet once "once"
+snippet once "once" w
 #ifndef ${1:`!v toupper(Filename('$1_H', 'UNTITLED_H'))`}
 #define $1
 ${2}
@@ -66,33 +66,33 @@ endsnippet
 ##
 ## Control Statements
 # if
-snippet if "if"
+snippet if "if" w
 if (${1:/* condition */}) {
 	${2:/* code */}
 }${3}
 endsnippet
 
 # else
-snippet el "el"
+snippet el "el" w
 else {
 	${1}
 }${2}
 endsnippet
 
 # else if
-snippet elif "elif"
+snippet elif "elif" w
 else if (${1:/* condition */}) {
 	${2:/* code */}
 }${3}
 endsnippet
 
 # ternary
-snippet t "t"
+snippet t "t" w
 ${1:/* condition */} ? ${2:a} : ${3:b}
 endsnippet
 
 # switch
-snippet switch "switch"
+snippet switch "switch" w
 switch (${1:/* variable */}) {
 	case ${2:/* variable case */}:
 		${3}
@@ -103,7 +103,7 @@ switch (${1:/* variable */}) {
 endsnippet
 
 # switch without default
-snippet switchndef "switchndef"
+snippet switchndef "switchndef" w
 switch (${1:/* variable */}) {
 	case ${2:/* variable case */}:
 		${3}
@@ -112,7 +112,7 @@ switch (${1:/* variable */}) {
 endsnippet
 
 # case
-snippet case "case"
+snippet case "case" w
 case ${1:/* variable case */}:
 	${2}
 	${3:break;}${4}
@@ -121,28 +121,28 @@ endsnippet
 ##
 ## Loops
 # for
-snippet for "for"
+snippet for "for" w
 for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
 	${4:/* code */}
 }${5}
 endsnippet
 
 # for (custom)
-snippet forr "forr"
+snippet forr "forr" w
 for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
 	${5:/* code */}
 }${6}
 endsnippet
 
 # while
-snippet wh "wh"
+snippet wh "wh" w
 while (${1:/* condition */}) {
 	${2:/* code */}
 }${3}
 endsnippet
 
 # do... while
-snippet do "do"
+snippet do "do" w
 do {
 	${2:/* code */}
 } while (${1:/* condition */});${3}
@@ -151,7 +151,7 @@ endsnippet
 ##
 ## Functions
 # function definition
-snippet fun "fun"
+snippet fun "fun" w
 ${1:void} ${2:function_name}(${3})
 {
 	${4:/* code */}
@@ -159,33 +159,33 @@ ${1:void} ${2:function_name}(${3})
 endsnippet
 
 # function declaration
-snippet fund "fund"
+snippet fund "fund" w
 ${1:void} ${2:function_name}(${3});${4}
 endsnippet
 
 ##
 ## Types
 # typedef
-snippet td "td"
+snippet td "td" w
 typedef ${1:int} ${2:MyCustomType};${3}
 endsnippet
 
 # struct
-snippet st "st"
+snippet st "st" w
 struct ${1:`!v Filename('$1_t', 'name')`} {
 	${2:/* data */}
 }${3: /* optional variable list */};${4}
 endsnippet
 
 # typedef struct
-snippet tds "tds"
+snippet tds "tds" w
 typedef struct ${2:_$1 }{
 	${3:/* data */}
 } ${1:`!v Filename('$1_t', 'name')`};${4}
 endsnippet
 
 # typedef enum
-snippet tde "tde"
+snippet tde "tde" w
 typedef enum {
 	${1:/* data */}
 } ${2:foo};${3}
@@ -194,17 +194,17 @@ endsnippet
 ##
 ## Input/Output
 # printf
-snippet pr "pr"
+snippet pr "pr" w
 printf("${1:%s}\n"${2});${3}
 endsnippet
 
 # fprintf (again, this isn't as nice as TextMate's version, but it works)
-snippet fpr "fpr"
+snippet fpr "fpr" w
 fprintf(${1:stderr}, "${2:%s}\n"${3});${4}
 endsnippet
 
 # getopt
-snippet getopt "getopt"
+snippet getopt "getopt" w
 int choice;
 while (1)
 {
@@ -256,12 +256,12 @@ endsnippet
 ##
 ## Miscellaneous
 # This is kind of convenient
-snippet . "."
+snippet . "." w
 [${1}]${2}
 endsnippet
 
 # GPL
-snippet gpl "gpl"
+snippet gpl "gpl" w
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

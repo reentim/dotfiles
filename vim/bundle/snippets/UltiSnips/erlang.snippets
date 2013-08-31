@@ -1,5 +1,5 @@
 # module and export all
-snippet mod "mod"
+snippet mod "mod" w
 -module(${1:`!v Filename('', 'my')`}).
 -compile([export_all]).
 start() ->
@@ -9,27 +9,27 @@ stop() ->
 endsnippet
 
 # define directive
-snippet def "def"
+snippet def "def" w
 -define(${1:macro}, ${2:body}).${3}
 endsnippet
 
 # export directive
-snippet exp "exp"
+snippet exp "exp" w
 -export([${1:function}/${2:arity}]).
 endsnippet
 
 # include directive
-snippet inc "inc"
+snippet inc "inc" w
 -include("${1:file}").${2}
 endsnippet
 
 # behavior directive
-snippet beh "beh"
+snippet beh "beh" w
 -behaviour(${1:behaviour}).${2}
 endsnippet
 
 # if expression
-snippet if "if"
+snippet if "if" w
 if
     ${1:guard} ->
         ${2:body}
@@ -37,7 +37,7 @@ end
 endsnippet
 
 # case expression
-snippet case "case"
+snippet case "case" w
 case ${1:expression} of
     ${2:pattern} ->
         ${3:body};
@@ -45,12 +45,12 @@ end
 endsnippet
 
 # anonymous function
-snippet fun "fun"
+snippet fun "fun" w
 fun (${1:Parameters}) -> ${2:body} end${3}
 endsnippet
 
 # try...catch
-snippet try "try"
+snippet try "try" w
 try
     ${1}
 catch
@@ -59,40 +59,40 @@ end
 endsnippet
 
 # record directive
-snippet rec "rec"
+snippet rec "rec" w
 -record(${1:record}, {
     ${2:field}=${3:value}}).${4}
 endsnippet
 
 # todo comment
-snippet todo "todo"
+snippet todo "todo" w
 %% TODO: ${1}
 endsnippet
 
 ## Snippets below (starting with '%') are in EDoc format.
 ## See http://www.erlang.org/doc/apps/edoc/chapter.html#id56887 for more details
 # doc comment
-snippet %d "%d"
+snippet %d "%d" w
 %% @doc ${1}
 endsnippet
 
 # end of doc comment
-snippet %e "%e"
+snippet %e "%e" w
 %% @end
 endsnippet
 
 # specification comment
-snippet %s "%s"
+snippet %s "%s" w
 %% @spec ${1}
 endsnippet
 
 # private function marker
-snippet %p "%p"
+snippet %p "%p" w
 %% @private
 endsnippet
 
 # OTP application
-snippet application "application"
+snippet application "application" w
 -module(${1:`!v Filename('', 'my')`}).
 -behaviour(application).
 -export([start/2, stop/1]).
@@ -108,7 +108,7 @@ stop(_State) ->
 endsnippet
 
 # OTP supervisor
-snippet supervisor "supervisor"
+snippet supervisor "supervisor" w
 -module(${1:`!v Filename('', 'my')`}).
 -behaviour(supervisor).
 %% API
@@ -127,7 +127,7 @@ init([]) ->
 endsnippet
 
 # OTP gen_server
-snippet gen_server "gen_server"
+snippet gen_server "gen_server" w
 -module(${1:`!v Filename('', 'my')`}).
 -behaviour(gen_server).
 %% API

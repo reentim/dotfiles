@@ -1,96 +1,96 @@
 ## Access Modifiers
-snippet po "po"
+snippet po "po" w
 protected
 endsnippet
 
-snippet pu "pu"
+snippet pu "pu" w
 public
 endsnippet
 
-snippet pr "pr"
+snippet pr "pr" w
 private
 endsnippet
 
 ##
 ## Annotations
-snippet before "before"
+snippet before "before" w
 @Before
 static void ${1:intercept}(${2:args}) { ${3} }
 endsnippet
 
-snippet mm "mm"
+snippet mm "mm" w
 @ManyToMany
 ${1}
 endsnippet
 
-snippet mo "mo"
+snippet mo "mo" w
 @ManyToOne
 ${1}
 endsnippet
 
-snippet om "om"
+snippet om "om" w
 @OneToMany${1:(cascade=CascadeType.ALL)}
 ${2}
 endsnippet
 
-snippet oo "oo"
+snippet oo "oo" w
 @OneToOne
 ${1}
 endsnippet
 
 ##
 ## Basic Java packages and import
-snippet im "im"
+snippet im "im" w
 import
 endsnippet
 
-snippet j.b "j.b"
+snippet j.b "j.b" w
 java.beans.
 endsnippet
 
-snippet j.i "j.i"
+snippet j.i "j.i" w
 java.io.
 endsnippet
 
-snippet j.m "j.m"
+snippet j.m "j.m" w
 java.math.
 endsnippet
 
-snippet j.n "j.n"
+snippet j.n "j.n" w
 java.net.
 endsnippet
 
-snippet j.u "j.u"
+snippet j.u "j.u" w
 java.util.
 endsnippet
 
 ##
 ## Class
-snippet cl "cl"
+snippet cl "cl" w
 class ${1:`!v Filename("", "untitled")`} ${2}
 endsnippet
 
-snippet in "in"
+snippet in "in" w
 interface ${1:`!v Filename("", "untitled")`} ${2:extends Parent}${3}
 endsnippet
 
-snippet tc "tc"
+snippet tc "tc" w
 public class ${1:`!v Filename()`} extends ${2:TestCase}
 endsnippet
 
 ##
 ## Class Enhancements
-snippet ext "ext"
+snippet ext "ext" w
 extends 
 endsnippet
 
-snippet imp "imp"
+snippet imp "imp" w
 implements
 endsnippet
 
 ##
 ## Comments
-snippet /* "/*"
+snippet /* "/*" w
 /*
  * ${1}
  */
@@ -98,39 +98,39 @@ endsnippet
 
 ##
 ## Constants
-snippet co "co"
+snippet co "co" w
 static public final ${1:String} ${2:var} = ${3};${4}
 endsnippet
 
-snippet cos "cos"
+snippet cos "cos" w
 static public final String ${1:var} = "${2}";${3}
 endsnippet
 
 ##
 ## Control Statements
-snippet case "case"
+snippet case "case" w
 case ${1}:
 	${2}
 endsnippet
 
-snippet def "def"
+snippet def "def" w
 default:
 	${2}
 endsnippet
 
-snippet el "el"
+snippet el "el" w
 else
 endsnippet
 
-snippet elif "elif"
+snippet elif "elif" w
 else if (${1}) ${2}
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 if (${1}) ${2}
 endsnippet
 
-snippet sw "sw"
+snippet sw "sw" w
 switch (${1}) {
 	${2}
 }
@@ -138,74 +138,74 @@ endsnippet
 
 ##
 ## Create a Method
-snippet m "m"
+snippet m "m" w
 ${1:void} ${2:method}(${3}) ${4:throws }${5}
 endsnippet
 
 ##
 ## Create a Variable
-snippet v "v"
+snippet v "v" w
 ${1:String} ${2:var}${3: = null}${4};${5}
 endsnippet
 
 ##
 ## Enhancements to Methods, variables, classes, etc.
-snippet ab "ab"
+snippet ab "ab" w
 abstract
 endsnippet
 
-snippet fi "fi"
+snippet fi "fi" w
 final
 endsnippet
 
-snippet st "st"
+snippet st "st" w
 static
 endsnippet
 
-snippet sy "sy"
+snippet sy "sy" w
 synchronized
 endsnippet
 
 ##
 ## Error Methods
-snippet err "err"
+snippet err "err" w
 System.err.print("${1:Message}");
 endsnippet
 
-snippet errf "errf"
+snippet errf "errf" w
 System.err.printf("${1:Message}", ${2:exception});
 endsnippet
 
-snippet errln "errln"
+snippet errln "errln" w
 System.err.println("${1:Message}");
 endsnippet
 
 ##
 ## Exception Handling
-snippet as "as"
+snippet as "as" w
 assert ${1:test} : "${2:Failure message}";${3}
 endsnippet
 
-snippet ca "ca"
+snippet ca "ca" w
 catch(${1:Exception} ${2:e}) ${3}
 endsnippet
 
-snippet thr "thr"
+snippet thr "thr" w
 throw
 endsnippet
 
-snippet ths "ths"
+snippet ths "ths" w
 throws
 endsnippet
 
-snippet try "try"
+snippet try "try" w
 try {
 	${3}
 } catch(${1:Exception} ${2:e}) {
 }
 endsnippet
 
-snippet tryf "tryf"
+snippet tryf "tryf" w
 try {
 	${3}
 } catch(${1:Exception} ${2:e}) {
@@ -215,77 +215,77 @@ endsnippet
 
 ##
 ## Find Methods
-snippet findall "findall"
+snippet findall "findall" w
 List<${1:listName}> ${2:items} = ${1}.findAll();${3}
 endsnippet
 
-snippet findbyid "findbyid"
+snippet findbyid "findbyid" w
 ${1:var} ${2:item} = ${1}.findById(${3});${4}
 endsnippet
 
 ##
 ## Javadocs
-snippet /** "/**"
+snippet /** "/**" w
 /**
  * ${1}
  */
 endsnippet
 
-snippet @au "@au"
+snippet @au "@au" w
 @author `!v system("grep \`id -un\`!v  /etc/passwd | cut -d \":\" -f5 | cut -d \",\" -f1")`
 endsnippet
 
-snippet @br "@br"
+snippet @br "@br" w
 @brief ${1:Description}
 endsnippet
 
-snippet @fi "@fi"
+snippet @fi "@fi" w
 @file ${1:`!v Filename()`}.java
 endsnippet
 
-snippet @pa "@pa"
+snippet @pa "@pa" w
 @param ${1:param}
 endsnippet
 
-snippet @re "@re"
+snippet @re "@re" w
 @return ${1:param}
 endsnippet
 
 ##
 ## Logger Methods
-snippet debug "debug"
+snippet debug "debug" w
 Logger.debug(${1:param});${2}
 endsnippet
 
-snippet error "error"
+snippet error "error" w
 Logger.error(${1:param});${2}
 endsnippet
 
-snippet info "info"
+snippet info "info" w
 Logger.info(${1:param});${2}
 endsnippet
 
-snippet warn "warn"
+snippet warn "warn" w
 Logger.warn(${1:param});${2}
 endsnippet
 
 ##
 ## Loops
-snippet enfor "enfor"
+snippet enfor "enfor" w
 for (${1} : ${2}) ${3}
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 for (${1}; ${2}; ${3}) ${4}
 endsnippet
 
-snippet wh "wh"
+snippet wh "wh" w
 while (${1}) ${2}
 endsnippet
 
 ##
 ## Main method
-snippet main "main"
+snippet main "main" w
 public static void main (String[] args) {
 	${1:/* code */}
 }
@@ -293,49 +293,49 @@ endsnippet
 
 ##
 ## Print Methods
-snippet print "print"
+snippet print "print" w
 System.out.print("${1:Message}");
 endsnippet
 
-snippet printf "printf"
+snippet printf "printf" w
 System.out.printf("${1:Message}", ${2:args});
 endsnippet
 
-snippet println "println"
+snippet println "println" w
 System.out.println(${1});
 endsnippet
 
 ##
 ## Render Methods
-snippet ren "ren"
+snippet ren "ren" w
 render(${1:param});${2}
 endsnippet
 
-snippet rena "rena"
+snippet rena "rena" w
 renderArgs.put("${1}", ${2});${3}
 endsnippet
 
-snippet renb "renb"
+snippet renb "renb" w
 renderBinary(${1:param});${2}
 endsnippet
 
-snippet renj "renj"
+snippet renj "renj" w
 renderJSON(${1:param});${2}
 endsnippet
 
-snippet renx "renx"
+snippet renx "renx" w
 renderXml(${1:param});${2}
 endsnippet
 
 ##
 ## Setter and Getter Methods
-snippet set "set"
+snippet set "set" w
 ${1:public} void set${3:}(${2:String} ${4:}){
 	this.$4 = $4;
 }
 endsnippet
 
-snippet get "get"
+snippet get "get" w
 ${1:public} ${2:String} get${3:}(){
 	return this.${4:};
 }
@@ -343,23 +343,23 @@ endsnippet
 
 ##
 ## Terminate Methods or Loops
-snippet re "re"
+snippet re "re" w
 return
 endsnippet
 
-snippet br "br"
+snippet br "br" w
 break;
 endsnippet
 
 ##
 ## Test Methods
-snippet t "t"
+snippet t "t" w
 public void test${1:Name}() throws Exception {
 	${2}
 }
 endsnippet
 
-snippet test "test"
+snippet test "test" w
 @Test
 public void test${1:Name}() throws Exception {
 	${2}
@@ -368,33 +368,33 @@ endsnippet
 
 ##
 ## Utils
-snippet Sc "Sc"
+snippet Sc "Sc" w
 Scanner
 endsnippet
 
 ##
 ## Miscellaneous
-snippet action "action"
+snippet action "action" w
 public static void ${1:index}(${2:args}) { ${3} }
 endsnippet
 
-snippet rnf "rnf"
+snippet rnf "rnf" w
 notFound(${1:param});${2}
 endsnippet
 
-snippet rnfin "rnfin"
+snippet rnfin "rnfin" w
 notFoundIfNull(${1:param});${2}
 endsnippet
 
-snippet rr "rr"
+snippet rr "rr" w
 redirect(${1:param});${2}
 endsnippet
 
-snippet ru "ru"
+snippet ru "ru" w
 unauthorized(${1:param});${2}
 endsnippet
 
-snippet unless "unless"
+snippet unless "unless" w
 (unless=${1:param});${2}
 endsnippet
 

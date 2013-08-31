@@ -1,75 +1,75 @@
 #Yii session offset
-snippet yse "yse"
+snippet yse "yse" w
 Yii::app()->session['${1}']; 
 endsnippet
 
 #Yii renderDynamic
-snippet yrd "yrd"
+snippet yrd "yrd" w
 $this->renderDynamic('${1:callback}'); 
 endsnippet
 
 #Yii set cache
-snippet ycas "ycas"
+snippet ycas "ycas" w
 Yii::app()->cache->set('${1:key}', ${2:value}, ${3:expire}, new C${4:}CacheDependency(${5})); 
 endsnippet
 
 #Yii Add cache
-snippet ycad "ycad"
+snippet ycad "ycad" w
 Yii::app()->cache->add('${1:key}', ${2:value}, ${3:expire}, new C${4}CacheDependency(${5})); 
 endsnippet
 
 #Yii register CSS file
-snippet yregcf "yregcf"
+snippet yregcf "yregcf" w
 Yii::app()->clientScript->registerCssFile('${1:file}'); 
 endsnippet
 
 #Yii requestType
-snippet yreqtype "yreqtype"
+snippet yreqtype "yreqtype" w
 Yii::app()->request->requestType 
 endsnippet
 
 #Yii isAjaxRequest
-snippet yisajax "yisajax"
+snippet yisajax "yisajax" w
 Yii::app()->request->isAjaxRequest 
 endsnippet
 
 #Yii translate
-snippet yt "yt"
+snippet yt "yt" w
 Yii::t('${1:category}', '${2:message}',array(${3})); 
 endsnippet
 
 #Yii register CSS
-snippet yregc "yregc"
+snippet yregc "yregc" w
 Yii::app()->clientScript->registerCss('${1:id}', '${2}'); 
 endsnippet
 
 #Yii log
-snippet ylog "ylog"
+snippet ylog "ylog" w
 Yii::log('${1:msg}', '${2:info}'); 
 endsnippet
 
 #Yii userHostAddress
-snippet yuserip "yuserip"
+snippet yuserip "yuserip" w
 YYii::app()->request->userHostAddress 
 endsnippet
 
 #Yii register script file
-snippet yregsf "yregsf"
+snippet yregsf "yregsf" w
 Yii::app()->clientScript->registerScriptFile('${1:scriptUrl}', CClientScript::POS_${2:END}); 
 endsnippet
 
 #Yii CLinkPager
-snippet ylinkpager "ylinkpager"
+snippet ylinkpager "ylinkpager" w
 $this->widget('CLinkPager', array('pages'=>$pages,'header'=>'${1}'})) 
 endsnippet
 
 #Yii CJSON::encode
-snippet yjec "yjec"
+snippet yjec "yjec" w
 CJSON::encode(${1:text}); 
 endsnippet
 
 #CActiveDataProvider
-snippet yadp "yadp"
+snippet yadp "yadp" w
 $dataProvider = new CActiveDataProvider('${1}', array(
   'criteria' => array(
 		'condition' => '${2}',
@@ -86,57 +86,57 @@ ${6}
 endsnippet
 
 #Yii renderDynamic internal
-snippet yrdi "yrdi"
+snippet yrdi "yrdi" w
 $this->renderDynamic('${1:callback}', array('${2:key}'=>${3:value})); 
 endsnippet
 
 #Yii register script
-snippet yregs "yregs"
+snippet yregs "yregs" w
 Yii::app()->clientScript->registerScript('${1:id}', '${2}', CClientScript::POS_${3:READY}); 
 endsnippet
 
 #Yii Flush cache
-snippet ycaf "ycaf"
+snippet ycaf "ycaf" w
 Yii::app()->cache->flush(); 
 endsnippet
 
 #Yii Yii::app()->request->cookies
-snippet yco "yco"
+snippet yco "yco" w
 Yii::app()->request->cookies['${1}'] 
 endsnippet
 
 #Yii user->
-snippet yuser "yuser"
+snippet yuser "yuser" w
 Yii::app()->user->${1}
 endsnippet
 
 #Yii refresh
-snippet yrf "yrf"
+snippet yrf "yrf" w
 $this->refresh(); 
 endsnippet
 
 #Yii import
-snippet yimp "yimp"
+snippet yimp "yimp" w
 Yii::import('${1}'); 
 endsnippet
 
 #Yii trace
-snippet ytrace "ytrace"
+snippet ytrace "ytrace" w
 Yii::trace('${1:msg}'); 
 endsnippet
 
 #Yii params
-snippet ypar "ypar"
+snippet ypar "ypar" w
 Yii::app()->params['${1}'] 
 endsnippet
 
 #Yii isPostRequest
-snippet yispost "yispost"
+snippet yispost "yispost" w
 Yii::app()->request->isPostRequest 
 endsnippet
 
 #Yii IF isAjaxRequest
-snippet yifisajax "yifisajax"
+snippet yifisajax "yifisajax" w
 if(Yii::app()->request->isAjaxRequest == TRUE)
 {
 	${1}
@@ -144,103 +144,103 @@ if(Yii::app()->request->isAjaxRequest == TRUE)
 endsnippet
 
 #Yii Yii::app()->cache->delete
-snippet ydelcache "ydelcache"
+snippet ydelcache "ydelcache" w
 Yii::app()->cache->delete('${1:key}'); 
 endsnippet
 
 #Yii render view
-snippet yr "yr"
+snippet yr "yr" w
 $this->render('${1:view}',array('${2:key}'=>${3:value})); 
 endsnippet
 
 #Yii redirect
-snippet yre "yre"
+snippet yre "yre" w
 $this->redirect(array('${1:controller}/${2:action}')); 
 endsnippet
 
 #Yii Get cache
-snippet ycag "ycag"
+snippet ycag "ycag" w
 Yii::app()->cache->get('${1:key}'); 
 endsnippet
 
 #Yii render text
-snippet yrt "yrt"
+snippet yrt "yrt" w
 $this->renderText('${1}'); 
 endsnippet
 
 #Yii render partial
-snippet yrp "yrp"
+snippet yrp "yrp" w
 $this->renderPartial('${1:view}',array('${2:key}'=>${3:value})); 
 endsnippet
 
 #----------------Yii Model-----------------------------
 #Yii Model count
-snippet ycountm "ycountm"
+snippet ycountm "ycountm" w
 ${1:ModelName}::model()->count(${2:condition}, array('${3:key}'=>${4:value}));
 endsnippet
 
 #Yii Model countBySql
-snippet ycountbs "ycountbs"
+snippet ycountbs "ycountbs" w
 ${1:ModelName}::model()->countBySql(${2:sql},array('${3:key}'=>${4:value}));
 endsnippet
 
 #Yii Model updateAll
-snippet yupdatea "yupdatea"
+snippet yupdatea "yupdatea" w
 ${1:ModelName}::model()->updateAll(${2:array('attributes')}, ${3:condition},array('${4:key}'=>${5:value})); 
 endsnippet
 
 #Yii Model updateByPk
-snippet yupdatebp "yupdatebp"
+snippet yupdatebp "yupdatebp" w
 ${1:ModelName}::model()->updateByPk(${2:pk}, ${3:array('attributes')}, ${4:condition},array('${5:key}'=>${6:value}));
 endsnippet
 
 #Yii Model deleteAll
-snippet ydela "ydela"
+snippet ydela "ydela" w
 ${1:ModelName}::model()->deleteAll(${2:condition},array('${3:key}'=>${4:value}));
 endsnippet
 
 #Yii Model deleteByPk
-snippet ydelbp "ydelbp"
+snippet ydelbp "ydelbp" w
 ${1:ModelName}::model()->deleteByPk(${2:pk}, ${3:condition}, array('${4:key}'=>${5:value})); 
 endsnippet
 
 #Yii Model find
-snippet yfind "yfind"
+snippet yfind "yfind" w
 ${1:ModelName}::model()->find(${2:condition},array('${3:key}'=>${4:value})); 
 endsnippet
 
 #Yii Model findAll
-snippet yfinda "yfinda"
+snippet yfinda "yfinda" w
 ${1:ModelName}::model()->findAll(${2:condition},array('${3:key}'=>${4:value})); 
 endsnippet
 
 #Yii Model findByPk
-snippet yfindbp "yfindbp"
+snippet yfindbp "yfindbp" w
 ${1:ModelName}::model()->findByPk(${2:pk}, ${3:condition}, array('${4:key}'=>${5:value})); 
 endsnippet
 
 #Yii Model findAllByPk
-snippet yfindabp "yfindabp"
+snippet yfindabp "yfindabp" w
 ${1:ModelName}::model()->findAllByPk(${2:pk}, ${3:condition},array('${4:key}'=>${5:value})); 
 endsnippet
 
 #Yii Model findBySql
-snippet yfindbs "yfindbs"
+snippet yfindbs "yfindbs" w
 ${1:ModelName}::model()->findBySql(${2:sql}, array('${3:key}'=>${4:value})); 
 endsnippet
 
 #Yii Model findAllByAttributes
-snippet yfindaba "yfindaba"
+snippet yfindaba "yfindaba" w
 ${1:ModelName}::model()->findAllByAttributes(array('${2:attributeName}'=>${3:attributeValue}), ${4:condition}, array('${5:key}'=>${6:value})); 
 endsnippet
 
 #Yii Model exists
-snippet yexists "yexists"
+snippet yexists "yexists" w
 ${1:ModelName}::model()->exists(${2:condition}, array('${3:key}'=>${4:value})); 
 endsnippet
 
 #Yii Create model class
-snippet ymodel "ymodel"
+snippet ymodel "ymodel" w
 <?php
 class ${1:ModelName} extends ${2:CActiveRecord}
 {
@@ -288,7 +288,7 @@ endsnippet
 
 #------------Yii Controller------------------------------------ 
 #Yii Create controller class
-snippet ycontroller "ycontroller"
+snippet ycontroller "ycontroller" w
 <?php
 /**
  * ${1:}
@@ -329,7 +329,7 @@ class ${2:Site}Controller extends ${3:CController}
 endsnippet
 
 #Yii Create controller action method
-snippet yact "yact"
+snippet yact "yact" w
 public function action${1:Index}(${2:params})
 {
 	${3}

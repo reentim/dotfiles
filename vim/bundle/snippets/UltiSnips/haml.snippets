@@ -1,4 +1,4 @@
-snippet t "t"
+snippet t "t" w
 %table
 	%tr
 		%th
@@ -8,22 +8,22 @@ snippet t "t"
 			${2:headers}
 endsnippet
 
-snippet ul "ul"
+snippet ul "ul" w
 %ul
 	%li
 		${1:item}
 	%li
 endsnippet
 
-snippet =rp "=rp"
+snippet =rp "=rp" w
 = render :partial => '${1:partial}'
 endsnippet
 
-snippet =rpl "=rpl"
+snippet =rpl "=rpl" w
 = render :partial => '${1:partial}', :locals => {}
 endsnippet
 
-snippet =rpc "=rpc"
+snippet =rpc "=rpc" w
 = render :partial => '${1:partial}', :collection => @$1
 endsnippet
 

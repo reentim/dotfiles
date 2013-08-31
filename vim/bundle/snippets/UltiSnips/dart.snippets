@@ -1,67 +1,67 @@
-snippet lib "lib"
+snippet lib "lib" w
 #library('${1}');
 ${2}
 endsnippet
 
-snippet im "im"
+snippet im "im" w
 #import('${1}');
 ${2}
 endsnippet
 
-snippet so "so"
+snippet so "so" w
 #source('${1}');
 ${2}
 endsnippet
 
-snippet main "main"
+snippet main "main" w
 static void main() {
   ${1:/* code */}
 }
 endsnippet
 
-snippet st "st"
+snippet st "st" w
 static ${1}
 endsnippet
 
-snippet fi "fi"
+snippet fi "fi" w
 final ${1}
 endsnippet
 
-snippet re "re"
+snippet re "re" w
 return ${1}
 endsnippet
 
-snippet br "br"
+snippet br "br" w
 break;
 endsnippet
 
-snippet th "th"
+snippet th "th" w
 throw ${1}
 endsnippet
 
-snippet cl "cl"
+snippet cl "cl" w
 class ${1:`!v Filename("", "untitled")`} ${2}
 endsnippet
 
-snippet in "in"
+snippet in "in" w
 interface ${1:`!v Filename("", "untitled")`} ${2}
 endsnippet
 
-snippet imp "imp"
+snippet imp "imp" w
 implements ${1}
 endsnippet
 
-snippet ext "ext"
+snippet ext "ext" w
 extends ${1}
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 if (${1:true}) {
   ${2}
 }
 endsnippet
 
-snippet ife "ife"
+snippet ife "ife" w
 if (${1:true}) {
   ${2}
 } else {
@@ -69,62 +69,62 @@ if (${1:true}) {
 }
 endsnippet
 
-snippet el "el"
+snippet el "el" w
 else
 endsnippet
 
-snippet sw "sw"
+snippet sw "sw" w
 switch (${1}) {
   ${2}
 }
 endsnippet
 
-snippet cs "cs"
+snippet cs "cs" w
 case ${1}:
   ${2}
 endsnippet
 
-snippet de "de"
+snippet de "de" w
 default:
   ${1}
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 for (var ${2:i} = 0, len = ${1:things}.length; $2 < len; ${3:++}$2) {
   ${4:$1[$2]}
 }
 endsnippet
 
-snippet fore "fore"
+snippet fore "fore" w
 for (final ${2:item} in ${1:itemList}) {
   ${3:/* code */}
 }
 endsnippet
 
-snippet wh "wh"
+snippet wh "wh" w
 while (${1:/* condition */}) {
   ${2:/* code */}
 }
 endsnippet
 
-snippet dowh "dowh"
+snippet dowh "dowh" w
 do {
   ${2:/* code */}
 } while (${1:/* condition */});
 endsnippet
 
-snippet as "as"
+snippet as "as" w
 assert(${1:/* condition */});
 endsnippet
 
-snippet try "try"
+snippet try "try" w
 try {
   ${2}
 } catch (${1:Exception e}) {
 }
 endsnippet
 
-snippet tryf "tryf"
+snippet tryf "tryf" w
 try {
   ${2}
 } catch (${1:Exception e}) {

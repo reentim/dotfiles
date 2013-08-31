@@ -1,5 +1,5 @@
 # create package spec
-snippet ps "ps"
+snippet ps "ps" w
 create or replace package ${1:name}
 as
 	${2:-- spec}
@@ -7,7 +7,7 @@ end; -- end of package spec $1
 endsnippet
 
 # create package body
-snippet pb "pb"
+snippet pb "pb" w
 create or replace package body ${1:name}
 as
 	${2:-- body}
@@ -15,12 +15,12 @@ end; -- end of package body $1;
 endsnippet
 
 # package procedure spec
-snippet pps "pps"
+snippet pps "pps" w
 procedure ${1:name}(${2:args});
 endsnippet
 
 # package procedure body
-snippet ppb "ppb"
+snippet ppb "ppb" w
 procedure ${1:name}(${2:args})
 as
 begin
@@ -29,13 +29,13 @@ end $2;
 endsnippet
 
 # package function spec
-snippet pfs "pfs"
+snippet pfs "pfs" w
 function ${1:name}(${2:args})
   return ${3:type};
 endsnippet
 
 # package function body
-snippet pfb "pfb"
+snippet pfb "pfb" w
 function ${1:name}(${2:args})
   return ${3:type}
 as
@@ -47,46 +47,46 @@ end $1;
 endsnippet
 
 # snow errors
-snippet err "err"
+snippet err "err" w
 show errors;
 endsnippet
 
 # proc/func in parameter
-snippet p "p"
+snippet p "p" w
 ${1:name} ${2:in} ${3:type} ${4: := null}
 endsnippet
 
 # package type: record
-snippet tr "tr"
+snippet tr "tr" w
 type tr_${1:name} is record (${2:/* columns */});
 endsnippet
 
 # package type: nested table
-snippet tt "tt"
+snippet tt "tt" w
 type tt_${1:name} is table of tr_${2:name};
 endsnippet
 
 # package type: indexed table
-snippet tti "tti"
+snippet tti "tti" w
 type tt_${1:name} is table of tr_${2:name} index by binary_integer;
 endsnippet
 
 # proc/func comment
-snippet doc "doc"
+snippet doc "doc" w
 /*
  *	${1: comment ...}
  */
 endsnippet
 
 # plsql block
-snippet beg "beg"
+snippet beg "beg" w
 begin
 	${1}
 end;
 endsnippet
 
 # plsql block with declare part
-snippet dec "dec"
+snippet dec "dec" w
 declare
 	${1}
 begin
@@ -95,7 +95,7 @@ end;
 endsnippet
 
 # return pipe row
-snippet rpipe "rpipe"
+snippet rpipe "rpipe" w
 for ${1:i} in 1 .. ${2:l_res}.count loop
 	pipe row( $2($1) );
 end loop;
@@ -103,49 +103,49 @@ return;
 endsnippet
 
 # bulk collect
-snippet bc "bc"
+snippet bc "bc" w
 bulk collect into ${1}
 endsnippet
 
 # local variable
-snippet l "l"
+snippet l "l" w
 l_${1}		${2:number};
 endsnippet
 
 # output
-snippet log "log"
+snippet log "log" w
 dbms_output.put_line('${1}');
 endsnippet
 
 # for loop
-snippet for "for"
+snippet for "for" w
 for ${1:i} in ${2:1}..${3:42} loop
 	${3}
 end loop;
 endsnippet
 
 # for loop with select
-snippet fors "fors"
+snippet fors "fors" w
 for ${1:rec} in (${2: select}) loop
 	${3}
 end loop;
 endsnippet
 
 # for loop with collection
-snippet forc "forc"
+snippet forc "forc" w
 for ${1:i} in ${2:l_var}.first .. $2.last loop
 	${3: -- dbms_output.put_line($2($1)); }
 end loop;
 endsnippet
 
 # if
-snippet if "if"
+snippet if "if" w
 if ${1} then
 	${2}
 end if;
 endsnippet
 
-snippet ife "ife"
+snippet ife "ife" w
 if ${1} then
 	${2}
 else

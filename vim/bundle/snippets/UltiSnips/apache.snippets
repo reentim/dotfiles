@@ -1,6 +1,6 @@
 # Snippets for code blocks used oftenly in Apache files.
 # <Directory>
-snippet dir "dir"
+snippet dir "dir" w
 <Directory ${1:/}>
 	DirectoryIndex ${2:index.html}
 	Order Deny,Allow
@@ -9,35 +9,35 @@ snippet dir "dir"
 endsnippet
 
 # <FilesMatch>   
-snippet filesmatch "filesmatch"
+snippet filesmatch "filesmatch" w
 <FilesMatch "${1:regex}">
 	${2}
 </FilesMatch>
 endsnippet
 
 # <IfModule>
-snippet ifmodule "ifmodule"
+snippet ifmodule "ifmodule" w
 <IfModule ${1:mod_example.c}>
 	${2}
 </IfModule>
 endsnippet
 
 # <LimitExcept>
-snippet limitexcept "limitexcept"
+snippet limitexcept "limitexcept" w
 <LimitExcept ${1:POST GET}>
 	${2}
 </LimitExcept>
 endsnippet
 
 # <Proxy>
-snippet proxy "proxy"
+snippet proxy "proxy" w
 <Proxy ${1:*}>
 	${2}
 </Proxy>
 endsnippet
 
 # <VirtualHost>
-snippet virtualhost "virtualhost"
+snippet virtualhost "virtualhost" w
 <VirtualHost ${1:*}:${2:80}>
 	ServerAdmin ${3:webmaster@example.com}
 	DocumentRoot ${4:/www/example.com}

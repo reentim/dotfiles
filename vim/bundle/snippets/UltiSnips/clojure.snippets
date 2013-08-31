@@ -1,153 +1,153 @@
-snippet comm "comm"
+snippet comm "comm" w
 (comment
   ${1}
   )
 endsnippet
 
-snippet condp "condp"
+snippet condp "condp" w
 (condp ${1:pred} ${2:expr}
   ${3})
 endsnippet
 
-snippet def "def"
+snippet def "def" w
 (def ${1})
 endsnippet
 
-snippet defm "defm"
+snippet defm "defm" w
 (defmethod ${1:multifn} "${2:doc-string}" ${3:dispatch-val} [${4:args}]
   ${5})
 endsnippet
 
-snippet defmm "defmm"
+snippet defmm "defmm" w
 (defmulti ${1:name} "${2:doc-string}" ${3:dispatch-fn})
 endsnippet
 
-snippet defma "defma"
+snippet defma "defma" w
 (defmacro ${1:name} "${2:doc-string}" ${3:dispatch-fn})
 endsnippet
 
-snippet defn "defn"
+snippet defn "defn" w
 (defn ${1:name} "${2:doc-string}" [${3:arg-list}]
   ${4})
 endsnippet
 
-snippet defp "defp"
+snippet defp "defp" w
 (defprotocol ${1:name}
   ${2})
 endsnippet
 
-snippet defr "defr"
+snippet defr "defr" w
 (defrecord ${1:name} [${2:fields}]
   ${3:protocol}
   ${4})
 endsnippet
 
-snippet deft "deft"
+snippet deft "deft" w
 (deftest ${1:name}
     (is (= ${2:assertion})))
   ${3})
 endsnippet
 
-snippet is "is"
+snippet is "is" w
 (is (= ${1} ${2}))
 endsnippet
 
-snippet defty "defty"
+snippet defty "defty" w
 (deftype ${1:Name} [${2:fields}]
   ${3:Protocol}
   ${4})
 endsnippet
 
-snippet doseq "doseq"
+snippet doseq "doseq" w
 (doseq [${1:elem} ${2:coll}]
   ${3})
 endsnippet
 
-snippet fn "fn"
+snippet fn "fn" w
 (fn [${1:arg-list}] ${2})
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 (if ${1:test-expr}
   ${2:then-expr}
   ${3:else-expr})
 endsnippet
 
-snippet if-let "if-let"
+snippet if-let "if-let" w
 (if-let [${1:result} ${2:test-expr}]
 	(${3:then-expr} $1)
 	(${4:else-expr}))
 endsnippet
 
-snippet imp "imp"
+snippet imp "imp" w
 (:import [${1:package}])
 & {:keys [${1:keys}] :or {${2:defaults}}}
 endsnippet
 
-snippet let "let"
+snippet let "let" w
 (let [${1:name} ${2:expr}]
 	${3})
 endsnippet
 
-snippet letfn "letfn"
+snippet letfn "letfn" w
 (letfn [(${1:name) [${2:args}]
           ${3})])
 endsnippet
 
-snippet map "map"
+snippet map "map" w
 (map ${1:func} ${2:coll})
 endsnippet
 
-snippet mapl "mapl"
+snippet mapl "mapl" w
 (map #(${1:lambda}) ${2:coll})
 endsnippet
 
-snippet met "met"
+snippet met "met" w
 (${1:name} [${2:this} ${3:args}]
   ${4})
 endsnippet
 
-snippet ns "ns"
+snippet ns "ns" w
 (ns ${1:name}
   ${2})
 endsnippet
 
-snippet dotimes "dotimes"
+snippet dotimes "dotimes" w
 (dotimes [_ 10]
   (time
     (dotimes [_ ${1:times}]
       ${2})))
 endsnippet
 
-snippet pmethod "pmethod"
+snippet pmethod "pmethod" w
 (${1:name} [${2:this} ${3:args}])
 endsnippet
 
-snippet refer "refer"
+snippet refer "refer" w
 (:refer-clojure :exclude [${1}])
 endsnippet
 
-snippet require "require"
+snippet require "require" w
 (:require [${1:namespace} :as [${2}]])
 endsnippet
 
-snippet use "use"
+snippet use "use" w
 (:use [${1:namespace} :only [${2}]])
 endsnippet
 
-snippet print "print"
+snippet print "print" w
 (println ${1})
 endsnippet
 
-snippet reduce "reduce"
+snippet reduce "reduce" w
 (reduce ${1:(fn [p n] ${3})} ${2})
 endsnippet
 
-snippet when "when"
+snippet when "when" w
 (when ${1:test} ${2:body})
 endsnippet
 
-snippet when-let "when-let"
+snippet when-let "when-let" w
 (when-let [${1:result} ${2:test}]
 	${3:body})
 endsnippet

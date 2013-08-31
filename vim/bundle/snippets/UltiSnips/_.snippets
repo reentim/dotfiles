@@ -1,26 +1,26 @@
 # Global snippets
 # (c) holds no legal value ;)
-snippet c) "c)"
+snippet c) "c)" w
 Copyright `!v &enc[:2] == "utf" ? "©" : "(c)"` `!v strftime("%Y")` ${1:`!v g:snips_author`}. All Rights Reserved.${2}
 endsnippet
 
-snippet date "date"
+snippet date "date" w
 `!v strftime("%Y-%m-%d")`
 endsnippet
 
-snippet ddate "ddate"
+snippet ddate "ddate" w
 `!v strftime("%B %d, %Y")`
 endsnippet
 
-snippet time "time"
+snippet time "time" w
 `!v strftime("%H:%M")`
 endsnippet
 
-snippet datetime "datetime"
+snippet datetime "datetime" w
 `!v strftime("%Y-%m-%d %H:%M")`
 endsnippet
 
-snippet lorem "lorem"
+snippet lorem "lorem" w
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
   tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
   quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -29,7 +29,7 @@ snippet lorem "lorem"
   proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 endsnippet
 
-snippet GPL2 "GPL2"
+snippet GPL2 "GPL2" w
 ${1:One line to give the program's name and a brief description.}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 ${3}
 endsnippet
 
-snippet LGPL2 "LGPL2"
+snippet LGPL2 "LGPL2" w
 ${1:One line to give the program's name and a brief description.}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 This library is free software; you can redistribute it and/or modify
@@ -61,7 +61,7 @@ along with this library; if not, see <http://www.gnu.org/licenses/>.
 ${3}
 endsnippet
 
-snippet GPL3 "GPL3"
+snippet GPL3 "GPL3" w
 ${1:one line to give the program's name and a brief description.}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ${3}
 endsnippet
 
-snippet LGPL3 "LGPL3"
+snippet LGPL3 "LGPL3" w
 ${1:One line to give the program's name and a brief description.}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 This library is free software; you can redistribute it and/or modify
@@ -93,7 +93,7 @@ along with this library; if not, see <http://www.gnu.org/licenses/>.
 ${3}
 endsnippet
 
-snippet BSD2 "BSD2"
+snippet BSD2 "BSD2" w
 ${1:one line to give the program's name and a brief description}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 All rights reserved.
@@ -120,7 +120,7 @@ official policies, either expressedor implied, of $2.
 ${4}
 endsnippet
 
-snippet BSD3 "BSD3"
+snippet BSD3 "BSD3" w
 ${1:one line to give the program's name and a brief description}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 All rights reserved.
@@ -147,7 +147,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${4}
 endsnippet
 
-snippet BSD4 "BSD4"
+snippet BSD4 "BSD4" w
 ${1:one line to give the program's name and a brief description}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 All rights reserved.
@@ -177,7 +177,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ${4}
 endsnippet
 
-snippet MIT "MIT"
+snippet MIT "MIT" w
 ${1:one line to give the program's name and a brief description}
 Copyright (C) `!v strftime("%Y")` ${2:copyright holder}
 Permission is hereby granted, free of charge, to any person obtaining
@@ -198,7 +198,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ${3}
 endsnippet
 
-snippet APACHE "APACHE"
+snippet APACHE "APACHE" w
 ${1:one line to give the program's name and a brief description}
 Copyright `!v strftime("%Y")` ${2:copyright holder}
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -213,7 +213,7 @@ limitations under the License.
 ${3}
 endsnippet
 
-snippet BEERWARE "BEERWARE"
+snippet BEERWARE "BEERWARE" w
 ${2:one line to give the program's name and a brief description}
 Copyright `!v strftime("%Y")` ${3:copyright holder}
 Licensed under the "THE BEER-WARE LICENSE" (Revision 42):

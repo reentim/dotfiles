@@ -1,50 +1,50 @@
-snippet tbl "tbl"
+snippet tbl "tbl" w
 create table ${1:table} (
 	${2:columns}
 );
 endsnippet
 
-snippet col "col"
+snippet col "col" w
 ${1:name}	${2:type}	${3:default ''}	${4:not null}
 endsnippet
 
-snippet ccol "ccol"
+snippet ccol "ccol" w
 ${1:name}	varchar2(${2:size})	${3:default ''}	${4:not null}
 endsnippet
 
-snippet ncol "ncol"
+snippet ncol "ncol" w
 ${1:name}	number	${3:default 0}	${4:not null}
 endsnippet
 
-snippet dcol "dcol"
+snippet dcol "dcol" w
 ${1:name}	date	${3:default sysdate}	${4:not null}
 endsnippet
 
-snippet ind "ind"
+snippet ind "ind" w
 create index ${3:$1_$2} on ${1:table}(${2:column});
 endsnippet
 
-snippet uind "uind"
+snippet uind "uind" w
 create unique index ${1:name} on ${2:table}(${3:column});
 endsnippet
 
-snippet tblcom "tblcom"
+snippet tblcom "tblcom" w
 comment on table ${1:table} is '${2:comment}';
 endsnippet
 
-snippet colcom "colcom"
+snippet colcom "colcom" w
 comment on column ${1:table}.${2:column} is '${3:comment}';
 endsnippet
 
-snippet addcol "addcol"
+snippet addcol "addcol" w
 alter table ${1:table} add (${2:column} ${3:type});
 endsnippet
 
-snippet seq "seq"
+snippet seq "seq" w
 create sequence ${1:name} start with ${2:1} increment by ${3:1} minvalue ${4:1};
 endsnippet
 
-snippet s* "s*"
+snippet s* "s*" w
 select * from ${1:table}
 endsnippet
 

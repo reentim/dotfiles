@@ -1,4 +1,4 @@
-snippet cmake "cmake"
+snippet cmake "cmake" w
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(${1:ProjectName})
 FIND_PACKAGE(${2:LIBRARY})
@@ -12,51 +12,51 @@ TARGET_LINK_LIBRARIES($1
 )
 endsnippet
 
-snippet include "include"
+snippet include "include" w
 INCLUDE_DIRECTORIES(
 	${${1:INCLUDE_DIR}}
 )
 endsnippet
 
-snippet find "find"
+snippet find "find" w
 FIND_PACKAGE(${1:LIBRARY})
 endsnippet
 
-snippet glob "glob"
+snippet glob "glob" w
 FILE(GLOB ${1:SRCS} *.${2:cpp})
 endsnippet
 
-snippet subdir "subdir"
+snippet subdir "subdir" w
 ADD_SUBDIRECTORY(${1:src})
 endsnippet
 
-snippet lib "lib"
+snippet lib "lib" w
 ADD_LIBRARY(${1:lib} ${2:STATIC}
 	${${3:SRCS}}
 )
 endsnippet
 
-snippet link "link"
+snippet link "link" w
 TARGET_LINK_LIBRARIES(${1:bin}
 	${2:somelib}
 )
 endsnippet
 
-snippet bin "bin"
+snippet bin "bin" w
 ADD_EXECUTABLE(${1:bin})
 endsnippet
 
-snippet set "set"
+snippet set "set" w
 SET(${1:var} ${2:val})
 endsnippet
 
-snippet dep "dep"
+snippet dep "dep" w
 ADD_DEPENDENCIES(${1:target}
 	${2:dep}
 )
 endsnippet
 
-snippet props "props"
+snippet props "props" w
 SET_TARGET_PROPERTIES(${1:target} 
 	${2:PROPERTIES} ${3:COMPILE_FLAGS} 
 	${4:"-O3 -Wall -pedantic"}
