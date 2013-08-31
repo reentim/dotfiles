@@ -6,7 +6,7 @@ alias rspec='rspec --color --tty --format documentation'
 alias tmux='tmux -u' # force utf-8
 alias grep='grep --color=always'
 
-ls_opt='--color=auto --group-directories-first --file-type'
+ls_opt='--color=auto --group-directories-first --file-type --time-style=+"%Y-%m-%d %X"'
 alias ls="ls $ls_opt"
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
