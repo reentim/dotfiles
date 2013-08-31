@@ -1,29 +1,29 @@
 # #!/usr/bin/perl
-snippet #! "#!"
+snippet #! "#!" w
 #!/usr/bin/env perl
 endsnippet
 
 # Hash Pointer
-snippet . "."
+snippet . "." w
 =>
 endsnippet
 
 # Function
-snippet sub "sub"
+snippet sub "sub" w
 sub ${1:function_name} {
 	${2:#body ...}
 }
 endsnippet
 
 # Conditional
-snippet if "if"
+snippet if "if" w
 if (${1}) {
 	${2:# body...}
 }
 endsnippet
 
 # Conditional if..else
-snippet ife "ife"
+snippet ife "ife" w
 if (${1}) {
 	${2:# body...}
 }
@@ -33,7 +33,7 @@ else {
 endsnippet
 
 # Conditional if..elsif..else
-snippet ifee "ifee"
+snippet ifee "ifee" w
 if (${1}) {
 	${2:# body...}
 }
@@ -46,24 +46,24 @@ else {
 endsnippet
 
 # Conditional One-line
-snippet xif "xif"
+snippet xif "xif" w
 ${1:expression} if ${2:condition};${3}
 endsnippet
 
 # Unless conditional
-snippet unless "unless"
+snippet unless "unless" w
 unless (${1}) {
 	${2:# body...}
 }
 endsnippet
 
 # Unless conditional One-line
-snippet xunless "xunless"
+snippet xunless "xunless" w
 ${1:expression} unless ${2:condition};${3}
 endsnippet
 
 # Try/Except
-snippet eval "eval"
+snippet eval "eval" w
 local $@;
 eval {
 	${1:# do something risky...}
@@ -74,43 +74,43 @@ if (my $e = $@) {
 endsnippet
 
 # While Loop
-snippet wh "wh"
+snippet wh "wh" w
 while (${1}) {
 	${2:# body...}
 }
 endsnippet
 
 # While Loop One-line
-snippet xwh "xwh"
+snippet xwh "xwh" w
 ${1:expression} while ${2:condition};${3}
 endsnippet
 
 # C-style For Loop
-snippet cfor "cfor"
+snippet cfor "cfor" w
 for (my $${2:var} = 0; $$2 < ${1:count}; $$2${3:++}) {
 	${4:# body...}
 }
 endsnippet
 
 # For loop one-line
-snippet xfor "xfor"
+snippet xfor "xfor" w
 ${1:expression} for @${2:array};${3}
 endsnippet
 
 # Foreach Loop
-snippet for "for"
+snippet for "for" w
 foreach my $${1:x} (@${2:array}) {
 	${3:# body...}
 }
 endsnippet
 
 # Foreach Loop One-line
-snippet fore "fore"
+snippet fore "fore" w
 ${1:expression} foreach @${2:array};${3}
 endsnippet
 
 # Package
-snippet package "package"
+snippet package "package" w
 package ${1:`!v substitute(Filename('', 'Page Title'), '^.', '\u&', '')`};
 ${2}
 1;
@@ -118,7 +118,7 @@ __END__
 endsnippet
 
 # Package syntax perl >= 5.14
-snippet packagev514 "packagev514"
+snippet packagev514 "packagev514" w
 package ${1:`!v substitute(Filename('', 'Page Title'), '^.', '\u&', '')`} ${2:0.99};
 ${3}
 1;
@@ -126,7 +126,7 @@ __END__
 endsnippet
 
 #moose
-snippet moose "moose"
+snippet moose "moose" w
 use Moose;
 use namespace::autoclean;
 ${1:#}BEGIN {extends '${2:ParentClass}'};
@@ -134,24 +134,24 @@ ${3}
 endsnippet
 
 # parent
-snippet parent "parent"
+snippet parent "parent" w
 use parent qw(${1:Parent Class});
 endsnippet
 
 # Read File
-snippet slurp "slurp"
+snippet slurp "slurp" w
 my $${1:var} = do { local $/; open my $file, '<', "${2:file}"; <$file> };
 ${3}
 endsnippet
 
 # strict warnings
-snippet strwar "strwar"
+snippet strwar "strwar" w
 use strict;
 use warnings;
 endsnippet
 
 # older versioning with perlcritic bypass
-snippet vers "vers"
+snippet vers "vers" w
 ## no critic
 our $VERSION = '${1:version}';
 eval $VERSION;
@@ -159,58 +159,58 @@ eval $VERSION;
 endsnippet
 
 # new 'switch' like feature
-snippet switch "switch"
+snippet switch "switch" w
 use feature 'switch';
 endsnippet
 
 # Anonymous subroutine
-snippet asub "asub"
+snippet asub "asub" w
 sub {
  	${1:# body }
 }
 endsnippet
 
 # Begin block
-snippet begin "begin"
+snippet begin "begin" w
 BEGIN {
 	${1:# begin body}
 }
 endsnippet
 
 # call package function with some parameter
-snippet pkgmv "pkgmv"
+snippet pkgmv "pkgmv" w
 __PACKAGE__->${1:package_method}(${2:var})
 endsnippet
 
 # call package function without a parameter
-snippet pkgm "pkgm"
+snippet pkgm "pkgm" w
 __PACKAGE__->${1:package_method}()
 endsnippet
 
 # call package "get_" function without a parameter
-snippet pkget "pkget"
+snippet pkget "pkget" w
 __PACKAGE__->get_${1:package_method}()
 endsnippet
 
 # call package function with a parameter
-snippet pkgetv "pkgetv"
+snippet pkgetv "pkgetv" w
 __PACKAGE__->get_${1:package_method}(${2:var})
 endsnippet
 
 # complex regex
-snippet qrx "qrx"
+snippet qrx "qrx" w
 qr/
      ${1:regex}
 /xms
 endsnippet
 
 #simpler regex
-snippet qr/ "qr/"
+snippet qr/ "qr/" w
 qr/${1:regex}/x
 endsnippet
 
 #given
-snippet given "given"
+snippet given "given" w
 given ($${1:var}) {
 	${2:# cases}
 	${3:# default}
@@ -218,24 +218,24 @@ given ($${1:var}) {
 endsnippet
 
 # switch-like case
-snippet when "when"
+snippet when "when" w
 when (${1:case}) {
 	${2:# body}
 }
 endsnippet
 
 # hash slice
-snippet hslice "hslice"
+snippet hslice "hslice" w
 @{ ${1:hash}  }{ ${2:array} }
 endsnippet
 
 # map
-snippet map "map"
+snippet map "map" w
 map {  ${2: body }    }  ${1: @array } ;
 endsnippet
 
 # Pod stub
-snippet ppod "ppod"
+snippet ppod "ppod" w
 =head1 NAME
 ${1:ClassName} - ${2:ShortDesc}
 =head1 SYNOPSIS
@@ -249,20 +249,20 @@ ${4:# longer description...}
 endsnippet
 
 # Heading for a subroutine stub
-snippet psub "psub"
+snippet psub "psub" w
 =head2 ${1:MethodName}
 ${2:Summary....}
 endsnippet
 
 # Heading for inline subroutine pod
-snippet psubi "psubi"
+snippet psubi "psubi" w
 =head2 ${1:MethodName}
 ${2:Summary...}
 =cut
 endsnippet
 
 # inline documented subroutine
-snippet subpod "subpod"
+snippet subpod "subpod" w
 =head2 $1
 Summary of $1
 =cut
@@ -272,7 +272,7 @@ sub ${1:subroutine_name} {
 endsnippet
 
 # Subroutine signature
-snippet parg "parg"
+snippet parg "parg" w
 =over 2
 =item
 Arguments
@@ -291,7 +291,7 @@ C<${3:...return data}>
 endsnippet
 
 # Moose has
-snippet has "has"
+snippet has "has" w
 has ${1:attribute} => (
 	is	    => '${2:ro|rw}',
 	isa 	=> '${3:Str|Int|HashRef|ArrayRef|etc}',
@@ -303,7 +303,7 @@ has ${1:attribute} => (
 endsnippet
 
 # override
-snippet override "override"
+snippet override "override" w
 override ${1:attribute} => sub {
 	${2:# my $self = shift;};
 	${3:# my ($self, $args) = @_;};
@@ -311,30 +311,30 @@ override ${1:attribute} => sub {
 endsnippet
 
 # use test classes
-snippet tuse "tuse"
+snippet tuse "tuse" w
 use Test::More;
 use Test::Deep; # (); # uncomment to stop prototype errors
 use Test::Exception;
 endsnippet
 
 # local test lib
-snippet tlib "tlib"
+snippet tlib "tlib" w
 use lib qw{ ./t/lib };
 endsnippet
 
 #test methods
-snippet tmeths "tmeths"
+snippet tmeths "tmeths" w
 $ENV{TEST_METHOD} = '${1:regex}';
 endsnippet
 
 # runtestclass
-snippet trunner "trunner"
+snippet trunner "trunner" w
 use ${1:test_class};
 $1->runtests();
 endsnippet
 
 # Test::Class-style test
-snippet tsub "tsub"
+snippet tsub "tsub" w
 sub t${1:number}_${2:test_case} :Test(${3:num_of_tests}) {
 	my $self = shift;
 	${4:#  body}
@@ -342,7 +342,7 @@ sub t${1:number}_${2:test_case} :Test(${3:num_of_tests}) {
 endsnippet
 
 # Test::Routine-style test
-snippet trsub "trsub"
+snippet trsub "trsub" w
 test ${1:test_name} => { description => '${2:Description of test.}'} => sub {
 	my ($self) = @_;
 	${3:# test code}
@@ -350,7 +350,7 @@ test ${1:test_name} => { description => '${2:Description of test.}'} => sub {
 endsnippet
 
 #prep test method
-snippet tprep "tprep"
+snippet tprep "tprep" w
 sub prep${1:number}_${2:test_case} :Test(startup) {
 	my $self = shift;
 	${4:#  body}
@@ -358,7 +358,7 @@ sub prep${1:number}_${2:test_case} :Test(startup) {
 endsnippet
 
 # cause failures to print stack trace
-snippet debug_trace "debug_trace"
+snippet debug_trace "debug_trace" w
 use Carp; # 'verbose';
 # cloak "die"
 # warn "warning"

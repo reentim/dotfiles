@@ -1,4 +1,4 @@
-snippet main "main"
+snippet main "main" w
 package {
 	import flash.display.*;
 	import flash.Events.*;
@@ -17,7 +17,7 @@ package {
 }
 endsnippet
 
-snippet class "class"
+snippet class "class" w
 ${1:public|internal} class ${2:name} ${3:extends } {
 	public function $2 (	) {
 		("start");
@@ -25,7 +25,7 @@ ${1:public|internal} class ${2:name} ${3:extends } {
 }
 endsnippet
 
-snippet all "all"
+snippet all "all" w
 package name {
 	${1:public|internal|final} class ${2:name} ${3:extends } {
 		private|public| static const FOO = "abc";
@@ -50,7 +50,7 @@ function A(){
 }
 endsnippet
 
-snippet switch "switch"
+snippet switch "switch" w
 switch(${1}){
 	case ${2}:
 		${3}
@@ -59,49 +59,49 @@ switch(${1}){
 }
 endsnippet
 
-snippet case "case"
+snippet case "case" w
 case ${1}:
 	${2}
 break;
 endsnippet
 
-snippet package "package"
+snippet package "package" w
 package ${1:package}{
 	${2}
 }
 endsnippet
 
-snippet wh "wh"
+snippet wh "wh" w
 while ${1:cond}{
 	${2}
 }
 endsnippet
 
-snippet do "do"
+snippet do "do" w
 do {
 	${2}
 } while (${1:cond})
 endsnippet
 
-snippet while "while"
+snippet while "while" w
 while ${1:cond}{
 	${2}
 }
 endsnippet
 
-snippet for "enumerate names"
+snippet for "enumerate names" w
 for (${1:var} in ${2:object}){
 	${3}
 }
 endsnippet
 
-snippet for "enumerate values"
+snippet for "enumerate values" w
 for each (${1:var} in ${2:object}){
 	${3}
 }
 endsnippet
 
-snippet get_set "get_set"
+snippet get_set "get_set" w
 function get ${1:name} {
 	return ${2}
 }
@@ -110,13 +110,13 @@ function set $1 (newValue) {
 }
 endsnippet
 
-snippet interface "interface"
+snippet interface "interface" w
 interface name {
 	function method(${1}):${2:returntype};
 }
 endsnippet
 
-snippet try "try"
+snippet try "try" w
 try {
 	${1}
 } catch (error:ErrorType) {
@@ -127,38 +127,38 @@ try {
 endsnippet
 
 # For Loop (same as c.snippet)
-snippet for "for (..) {..}"
+snippet for "for (..) {..}" w
 for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
 	${4:/* code */}
 }
 endsnippet
 
 # Custom For Loop
-snippet forr "forr"
+snippet forr "forr" w
 for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
 	${5:/* code */}
 }
 endsnippet
 
 # If Condition
-snippet if "if"
+snippet if "if" w
 if (${1:/* condition */}) {
 	${2:/* code */}
 }
 endsnippet
 
-snippet el "el"
+snippet el "el" w
 else {
 	${1}
 }
 endsnippet
 
 # Ternary conditional
-snippet t "t"
+snippet t "t" w
 ${1:/* condition */} ? ${2:a} : ${3:b}
 endsnippet
 
-snippet fun "fun"
+snippet fun "fun" w
 function ${1:function_name}(${2})${3}
 {
 	${4:/* code */}
@@ -166,7 +166,7 @@ function ${1:function_name}(${2})${3}
 endsnippet
 
 # FlxSprite (usefull when using the flixel library)
-snippet FlxSprite "FlxSprite"
+snippet FlxSprite "FlxSprite" w
 package
 {
 	import org.flixel.*

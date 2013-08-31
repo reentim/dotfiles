@@ -1,40 +1,40 @@
-snippet def "def"
+snippet def "def" w
 <%def name="${1:name}">
 	${2:}
 </%def>
 endsnippet
 
-snippet call "call"
+snippet call "call" w
 <%call expr="${1:name}">
 	${2:}
 </%call>
 endsnippet
 
-snippet doc "doc"
+snippet doc "doc" w
 <%doc>
 	${1:}
 </%doc>
 endsnippet
 
-snippet text "text"
+snippet text "text" w
 <%text>
 	${1:}
 </%text>
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 % for ${1:i} in ${2:iter}:
 	${3:}
 % endfor
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 % if ${1:condition}:
 	${2:}
 % endif
 endsnippet
 
-snippet if "if/else"
+snippet if "if/else" w
 % if ${1:condition}:
 	${2:}
 % else:
@@ -42,7 +42,7 @@ snippet if "if/else"
 % endif
 endsnippet
 
-snippet try "try"
+snippet try "try" w
 % try:
 	${1:}
 % except${2:}:
@@ -50,37 +50,37 @@ snippet try "try"
 % endtry
 endsnippet
 
-snippet wh "wh"
+snippet wh "wh" w
 % while ${1:}:
 	${2:}
 % endwhile
 endsnippet
 
-snippet $ "$"
+snippet $ "$" w
 ${ ${1:} }
 endsnippet
 
-snippet <% "<%"
+snippet <% "<%" w
 <% ${1:} %>
 endsnippet
 
-snippet <!% "<!%"
+snippet <!% "<!%" w
 <!% ${1:} %>
 endsnippet
 
-snippet inherit "inherit"
+snippet inherit "inherit" w
 <%inherit file="${1:filename}" />
 endsnippet
 
-snippet include "include"
+snippet include "include" w
 <%include file="${1:filename}" />
 endsnippet
 
-snippet namespace "namespace"
+snippet namespace "namespace" w
 <%namespace file="${1:name}" />
 endsnippet
 
-snippet page "page"
+snippet page "page" w
 <%page args="${1:}" />
 endsnippet
 

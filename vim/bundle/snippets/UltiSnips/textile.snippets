@@ -1,5 +1,5 @@
 # Jekyll post header
-snippet header "header"
+snippet header "header" w
 ---
 title: ${1:title}
 layout: post
@@ -8,27 +8,27 @@ date: ${2:date} ${3:hour:minute:second} -05:00
 endsnippet
 
 # Image
-snippet img "img"
+snippet img "img" w
 !${1:url}(${2:title}):${3:link}!
 endsnippet
 
 # Table
-snippet | "|"
+snippet | "|" w
 |${1}|${2}
 endsnippet
 
 # Link
-snippet link "link"
+snippet link "link" w
 "${1:link text}":${2:url}
 endsnippet
 
 # Acronym
-snippet ( "("
+snippet ( "(" w
 (${1:Expand acronym})${2}
 endsnippet
 
 # Footnote
-snippet fn "fn"
+snippet fn "fn" w
 [${1:ref number}] ${3}
 fn$1. ${2:footnote}
 endsnippet

@@ -1,17 +1,17 @@
-snippet #! "#!"
+snippet #! "#!" w
 #!/usr/bin/env python
 endsnippet
 
-snippet imp "imp"
+snippet imp "imp" w
 import ${1:module}
 endsnippet
 
-snippet from "from"
+snippet from "from" w
 from ${1:package} import ${2:module}
 endsnippet
 
 # Module Docstring
-snippet docs "docs"
+snippet docs "docs" w
 """
 File: ${1:`!v Filename('$1.py', 'foo.py')`}
 Author: `!v g:snips_author`
@@ -21,26 +21,26 @@ Description: ${2}
 """
 endsnippet
 
-snippet wh "wh"
+snippet wh "wh" w
 while ${1:condition}:
 	${2:# TODO: write code...}
 endsnippet
 
 # dowh - does the same as do...while in other languages
-snippet dowh "dowh"
+snippet dowh "dowh" w
 while True:
 	${1:# TODO: write code...}
 	if ${2:condition}:
 		break
 endsnippet
 
-snippet with "with"
+snippet with "with" w
 with ${1:expr} as ${2:var}:
 	${3:# TODO: write code...}
 endsnippet
 
 # New Class
-snippet cl "cl"
+snippet cl "cl" w
 class ${1:ClassName}(${2:object}):
 	"""${3:docstring for $1}"""
 	def __init__(self, ${4:arg}):
@@ -50,25 +50,25 @@ class ${1:ClassName}(${2:object}):
 endsnippet
 
 # New Function
-snippet def "def"
+snippet def "def" w
 def ${1:fname}(${2:`!v indent('.') ? 'self' : ''`}):
 	"""${3:docstring for $1}"""
 	${4:# TODO: write code...}
 endsnippet
 
-snippet deff "deff"
+snippet deff "deff" w
 def ${1:fname}(${2:`!v indent('.') ? 'self' : ''`}):
 	${3:# TODO: write code...}
 endsnippet
 
 # New Method
-snippet defs "defs"
+snippet defs "defs" w
 def ${1:mname}(self, ${2:arg}):
 	${3:# TODO: write code...}
 endsnippet
 
 # New Property
-snippet property "property"
+snippet property "property" w
 def ${1:foo}():
 	doc = "${2:The $1 property.}"
 	def fget(self):
@@ -82,57 +82,57 @@ $1 = property(**$1())
 endsnippet
 
 # Ifs
-snippet if "if"
+snippet if "if" w
 if ${1:condition}:
 	${2:# TODO: write code...}
 endsnippet
 
-snippet el "el"
+snippet el "el" w
 else:
 	${1:# TODO: write code...}
 endsnippet
 
-snippet ei "ei"
+snippet ei "ei" w
 elif ${1:condition}:
 	${2:# TODO: write code...}
 endsnippet
 
 # For
-snippet for "for"
+snippet for "for" w
 for ${1:item} in ${2:items}:
 	${3:# TODO: write code...}
 endsnippet
 
 # Encodes
-snippet cutf8 "cutf8"
+snippet cutf8 "cutf8" w
 # -*- coding: utf-8 -*-
 endsnippet
 
-snippet clatin1 "clatin1"
+snippet clatin1 "clatin1" w
 # -*- coding: latin-1 -*-
 endsnippet
 
-snippet cascii "cascii"
+snippet cascii "cascii" w
 # -*- coding: ascii -*-
 endsnippet
 
 # Lambda
-snippet ld "ld"
+snippet ld "ld" w
 ${1:var} = lambda ${2:vars} : ${3:action}
 endsnippet
 
-snippet . "."
+snippet . "." w
 self.
 endsnippet
 
-snippet try "Try/Except"
+snippet try "Try/Except" w
 try:
 	${1:# TODO: write code...}
 except ${2:Exception}, ${3:e}:
 	${4:raise $3}
 endsnippet
 
-snippet try "Try/Except/Else"
+snippet try "Try/Except/Else" w
 try:
 	${1:# TODO: write code...}
 except ${2:Exception}, ${3:e}:
@@ -141,7 +141,7 @@ else:
 	${5:# TODO: write code...}
 endsnippet
 
-snippet try "Try/Except/Finally"
+snippet try "Try/Except/Finally" w
 try:
 	${1:# TODO: write code...}
 except ${2:Exception}, ${3:e}:
@@ -150,7 +150,7 @@ finally:
 	${5:# TODO: write code...}
 endsnippet
 
-snippet try "Try/Except/Else/Finally"
+snippet try "Try/Except/Else/Finally" w
 try:
 	${1:# TODO: write code...}
 except ${2:Exception}, ${3:e}:
@@ -162,60 +162,60 @@ finally:
 endsnippet
 
 # if __name__ == '__main__':
-snippet ifmain "ifmain"
+snippet ifmain "ifmain" w
 if __name__ == '__main__':
 	${1:main()}
 endsnippet
 
 # __magic__
-snippet _ "_"
+snippet _ "_" w
 __${1:init}__${2}
 endsnippet
 
 # python debugger (pdb)
-snippet pdb "pdb"
+snippet pdb "pdb" w
 import pdb; pdb.set_trace()
 endsnippet
 
 # ipython debugger (ipdb)
-snippet ipdb "ipdb"
+snippet ipdb "ipdb" w
 import ipdb; ipdb.set_trace()
 endsnippet
 
 # ipython debugger (pdbbb)
-snippet pdbbb "pdbbb"
+snippet pdbbb "pdbbb" w
 import pdbpp; pdbpp.set_trace()
 endsnippet
 
-snippet pprint "pprint"
+snippet pprint "pprint" w
 import pprint; pprint.pprint(${1})${2}
 endsnippet
 
-snippet " """
+snippet " """ w
 """
 ${1:doc}
 """
 endsnippet
 
 # test function/method
-snippet test "test"
+snippet test "test" w
 def test_${1:description}(${2:`!v indent('.') ? 'self' : ''`}):
 	${3:# TODO: write code...}
 endsnippet
 
 # test case
-snippet testcase "testcase"
+snippet testcase "testcase" w
 class ${1:ExampleCase}(unittest.TestCase):
 	def test_${2:description}(self):
 		${3:# TODO: write code...}
 endsnippet
 
-snippet fut "fut"
+snippet fut "fut" w
 from __future__ import ${1}
 endsnippet
 
 #getopt
-snippet getopt "getopt"
+snippet getopt "getopt" w
 try:
 	# Short option syntax: "hv:"
 	# Long option syntax: "help" or "verbose="

@@ -1,143 +1,143 @@
 # Generic tags
-snippet % "%"
+snippet % "%" w
 {% ${1} %}${2}
 endsnippet
 
-snippet %% "%%"
+snippet %% "%%" w
 {% ${1:tag_name} %}
 ${2}
 {% end$1 %}
 endsnippet
 
-snippet { "{"
+snippet { "{" w
 {{ ${1} }}${2}
 endsnippet
 
 # Template Tags
-snippet autoescape "autoescape"
+snippet autoescape "autoescape" w
 {% autoescape ${1:off} %}
 	${2}
 {% endautoescape %}
 endsnippet
 
-snippet block "block"
+snippet block "block" w
 {% block ${1} %}
 	${2}
 {% endblock %}
 endsnippet
 
-snippet # "#"
+snippet # "#" w
 {# ${1:comment} #}
 endsnippet
 
-snippet comment "comment"
+snippet comment "comment" w
 {% comment %}
 	${1}
 {% endcomment %}
 endsnippet
 
-snippet cycle "cycle"
+snippet cycle "cycle" w
 {% cycle ${1:val1} ${2:val2} ${3:as ${4}} %}
 endsnippet
 
-snippet debug "debug"
+snippet debug "debug" w
 {% debug %}
 endsnippet
 
-snippet extends "extends"
+snippet extends "extends" w
 {% extends "${1:base.html}" %}
 endsnippet
 
-snippet filter "filter"
+snippet filter "filter" w
 {% filter ${1} %}
 	${2}
 {% endfilter %}
 endsnippet
 
-snippet firstof "firstof"
+snippet firstof "firstof" w
 {% firstof ${1} %}
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 {% for ${1} in ${2} %}
 	${3}
 {% endfor %}
 endsnippet
 
-snippet empty "empty"
+snippet empty "empty" w
 {% empty %}
 ${1}
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 {% if ${1} %}
 	${2}
 {% endif %}
 endsnippet
 
-snippet else "else"
+snippet else "else" w
 {% else %}
 	${1}
 endsnippet
 
-snippet elif "elif"
+snippet elif "elif" w
 {% elif ${1} %}
 	${2}
 endsnippet
 
-snippet ifchanged "ifchanged"
+snippet ifchanged "ifchanged" w
 {% ifchanged %}${1}{% endifchanged %}
 endsnippet
 
-snippet ifequal "ifequal"
+snippet ifequal "ifequal" w
 {% ifequal ${1} ${2} %}
 	${3}
 {% endifequal %}
 endsnippet
 
-snippet ifnotequal "ifnotequal"
+snippet ifnotequal "ifnotequal" w
 {% ifnotequal ${1} ${2} %}
 	${3}
 {% endifnotequal %}
 endsnippet
 
-snippet include "include"
+snippet include "include" w
 {% include "${1}" %}
 endsnippet
 
-snippet load "load"
+snippet load "load" w
 {% load ${1} %}
 endsnippet
 
-snippet now "now"
+snippet now "now" w
 {% now "${1:jS F Y H:i}" %}
 endsnippet
 
-snippet regroup "regroup"
+snippet regroup "regroup" w
 {% regroup ${1} by ${2} as ${3} %}
 endsnippet
 
-snippet spaceless "spaceless"
+snippet spaceless "spaceless" w
 {% spaceless %}${1}{% endspaceless %}
 endsnippet
 
-snippet ssi "ssi"
+snippet ssi "ssi" w
 {% ssi ${1} %}
 endsnippet
 
-snippet trans "trans"
+snippet trans "trans" w
 {% trans "${1:string}" %}
 endsnippet
 
-snippet url "url"
+snippet url "url" w
 {% url ${1} as ${2} %}
 endsnippet
 
-snippet widthratio "widthratio"
+snippet widthratio "widthratio" w
 {% widthratio ${1:this_value} ${2:max_value} ${3:100} %}
 endsnippet
 
-snippet with "with"
+snippet with "with" w
 {% with ${1} as ${2} %}
 	${3}
 {% endwith %}
@@ -148,91 +148,91 @@ endsnippet
 # expanding without the "|" character, these do not add the "|"
 # character.  These save a few keystrokes still.
 # Note: Template tags that take no arguments are not implemented.
-snippet add "add"
+snippet add "add" w
 add:"${1}"
 endsnippet
 
-snippet center "center"
+snippet center "center" w
 center:"${1}"
 endsnippet
 
-snippet cut "cut"
+snippet cut "cut" w
 cut:"${1}"
 endsnippet
 
-snippet date "date"
+snippet date "date" w
 date:"${1}"
 endsnippet
 
-snippet default "default"
+snippet default "default" w
 default:"${1}"
 endsnippet
 
-snippet defaultifnone "defaultifnone"
+snippet defaultifnone "defaultifnone" w
 default_if_none:"${1}"
 endsnippet
 
-snippet dictsort "dictsort"
+snippet dictsort "dictsort" w
 dictsort:"${1}"
 endsnippet
 
-snippet dictsortrev "dictsortrev"
+snippet dictsortrev "dictsortrev" w
 dictsortreversed:"${1}"
 endsnippet
 
-snippet divisibleby "divisibleby"
+snippet divisibleby "divisibleby" w
 divisibleby:"${1}"
 endsnippet
 
-snippet floatformat "floatformat"
+snippet floatformat "floatformat" w
 floatformat:"${1}"
 endsnippet
 
-snippet getdigit "getdigit"
+snippet getdigit "getdigit" w
 get_digit:"${1}"
 endsnippet
 
-snippet join "join"
+snippet join "join" w
 join:"${1}"
 endsnippet
 
-snippet lengthis "lengthis"
+snippet lengthis "lengthis" w
 length_is:"${1}"
 endsnippet
 
-snippet pluralize "pluralize"
+snippet pluralize "pluralize" w
 pluralize:"${1}"
 endsnippet
 
-snippet removetags "removetags"
+snippet removetags "removetags" w
 removetags:"${1}"
 endsnippet
 
-snippet slice "slice"
+snippet slice "slice" w
 slice:"${1}"
 endsnippet
 
-snippet stringformat "stringformat"
+snippet stringformat "stringformat" w
 stringformat:"${1}"
 endsnippet
 
-snippet time "time"
+snippet time "time" w
 time:"${1}"
 endsnippet
 
-snippet truncatewords "truncatewords"
+snippet truncatewords "truncatewords" w
 truncatewords:${1}
 endsnippet
 
-snippet truncatewordshtml "truncatewordshtml"
+snippet truncatewordshtml "truncatewordshtml" w
 truncatewords_html:${1}
 endsnippet
 
-snippet urlizetrunc "urlizetrunc"
+snippet urlizetrunc "urlizetrunc" w
 urlizetrunc:${1}
 endsnippet
 
-snippet wordwrap "wordwrap"
+snippet wordwrap "wordwrap" w
 wordwrap:${1}
 endsnippet
 

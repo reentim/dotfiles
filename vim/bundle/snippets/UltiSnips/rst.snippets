@@ -1,34 +1,34 @@
 # rst
-snippet : ":"
+snippet : ":" w
 :${1:field name}: ${2:field body}
 endsnippet
 
-snippet * "*"
+snippet * "*" w
 *${1:Emphasis}*
 endsnippet
 
-snippet ** "**"
+snippet ** "**" w
 **${1:Strong emphasis}**
 endsnippet
 
-snippet _ "_"
+snippet _ "_" w
 \`!v ${1:hyperlink-name}\`_
 .. _\`!v $1\`: ${2:link-block}
 endsnippet
 
-snippet = "="
+snippet = "=" w
 ${1:Title}
 =====${2:=}
 ${3}
 endsnippet
 
-snippet - "-"
+snippet - "-" w
 ${1:Title}
 -----${2:-}
 ${3}
 endsnippet
 
-snippet cont: "cont:"
+snippet cont: "cont:" w
 .. contents::
 endsnippet
 

@@ -1,41 +1,41 @@
 # append
-snippet ap "ap"
+snippet ap "ap" w
 append(${1:slice}, ${2:value})
 endsnippet
 
 # bool
-snippet bl "bl"
+snippet bl "bl" w
 bool
 endsnippet
 
 # byte 
-snippet bt "bt"
+snippet bt "bt" w
 byte
 endsnippet
 
 # break
-snippet br "br"
+snippet br "br" w
 break
 endsnippet
 
 # channel
-snippet ch "ch"
+snippet ch "ch" w
 chan ${1:int}
 endsnippet
 
 # case
-snippet cs "cs"
+snippet cs "cs" w
 case ${1:value}:
 	${2:/* code */}
 endsnippet
 
 # const
-snippet c "c"
+snippet c "c" w
 const ${1:NAME} = ${2:0}
 endsnippet
 
 # constants with iota
-snippet co "co"
+snippet co "co" w
 const (
 	${1:NAME1} = iota
 	${2:NAME2}
@@ -43,17 +43,17 @@ const (
 endsnippet
 
 # continue
-snippet cn "cn"
+snippet cn "cn" w
 continue
 endsnippet
 
 # defer 
-snippet df "df"
+snippet df "df" w
 defer ${1:func}()
 endsnippet
 
 # defer recover
-snippet dfr "dfr"
+snippet dfr "dfr" w
 defer func() {
 	if err := recover(); err != nil {
 		${1:/* code */}
@@ -62,7 +62,7 @@ defer func() {
 endsnippet
 
 # gpl
-snippet gpl "gpl"
+snippet gpl "gpl" w
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,45 +83,45 @@ ${2}
 endsnippet
 
 # int
-snippet i "i"
+snippet i "i" w
 int
 endsnippet
 
 # import 
-snippet im "im"
+snippet im "im" w
 import (
 	"${1:package}" 
 )${2}
 endsnippet
 
 # interface 
-snippet in "in"
+snippet in "in" w
 interface{}
 endsnippet
 
 # full interface snippet 
-snippet inf "inf"
+snippet inf "inf" w
 interface ${1:name} {
 	${2:/* methods */}
 }${3}
 endsnippet
 
 # if condition
-snippet if "if"
+snippet if "if" w
 if ${1:/* condition */} {
 	${2:/* code */}
 }${2}
 endsnippet
 
 # else snippet
-snippet el "el"
+snippet el "el" w
 else {
 	${1}
 }${2}
 endsnippet
 
 # error snippet
-snippet ir "ir"
+snippet ir "ir" w
 if err != nil {
 	return err
 }
@@ -129,32 +129,32 @@ ${1}
 endsnippet
 
 # false
-snippet f "f"
+snippet f "f" w
 false
 endsnippet
 
 # fallthrough
-snippet ft "ft"
+snippet ft "ft" w
 fallthrough
 endsnippet
 
 # float
-snippet fl "fl"
+snippet fl "fl" w
 float32
 endsnippet
 
 # float32
-snippet f3 "f3"
+snippet f3 "f3" w
 float32
 endsnippet
 
 # float64
-snippet f6 "f6"
+snippet f6 "f6" w
 float64
 endsnippet
 
 # if else
-snippet ie "ie"
+snippet ie "ie" w
 if ${1:/* condition */} {
 	${2:/* code */}
 } else {
@@ -164,7 +164,7 @@ ${4}
 endsnippet
 
 # for loop
-snippet fo "fo"
+snippet fo "fo" w
 for ${2:i} := 0; $2 < ${1:count}; $2${3:++} {
 	${4:/* code */}
 }
@@ -172,7 +172,7 @@ ${5}
 endsnippet
 
 # for range loop
-snippet fr "fr"
+snippet fr "fr" w
 for ${1:k}, ${2:v} := range ${3} {
 	${4:/* code */}
 }
@@ -180,7 +180,7 @@ ${5}
 endsnippet
 
 # function simple 
-snippet fun "fun"
+snippet fun "fun" w
 func ${1:funcName}(${2}) ${3:error} {
 	${4:/* code */}
 }
@@ -188,7 +188,7 @@ ${5}
 endsnippet
 
 # function on receiver 
-snippet fum "fum"
+snippet fum "fum" w
 func (self ${1:type}) ${2:funcName}(${3}) ${4:error} {
 	${5:/* code */}
 }
@@ -196,27 +196,27 @@ ${6}
 endsnippet
 
 # log printf
-snippet lf "lf"
+snippet lf "lf" w
 log.Printf("%${1:s}", ${2:var})${3}
 endsnippet
 
 # log printf
-snippet lp "lp"
+snippet lp "lp" w
 log.Println("${1}")${2}
 endsnippet
 
 # make
-snippet mk "mk"
+snippet mk "mk" w
 make(${1:[]string}, ${2:0})
 endsnippet
 
 # map 
-snippet mp "mp"
+snippet mp "mp" w
 map[${1:string}]${2:int}
 endsnippet
 
 # main()
-snippet main "main"
+snippet main "main" w
 func main() {
 	${1:/* code */}
 }
@@ -224,37 +224,37 @@ ${2}
 endsnippet
 
 # new
-snippet nw "nw"
+snippet nw "nw" w
 new(${1:type})
 endsnippet
 
 # panic 
-snippet pn "pn"
+snippet pn "pn" w
 panic("${1:msg}")
 endsnippet
 
 # print
-snippet pr "pr"
+snippet pr "pr" w
 fmt.Printf("%${1:s}\n", ${2:var})${3}
 endsnippet
 
 # range 
-snippet rn "rn"
+snippet rn "rn" w
 range ${1}
 endsnippet
 
 # return 
-snippet rt "rt"
+snippet rt "rt" w
 return ${1}
 endsnippet
 
 # result 
-snippet rs "rs"
+snippet rs "rs" w
 result
 endsnippet
 
 # select
-snippet sl "sl"
+snippet sl "sl" w
 select {
 case ${1:v1} := <-${2:chan1}
 	${3:/* code */}
@@ -266,12 +266,12 @@ default:
 endsnippet
 
 # string
-snippet sr "sr"
+snippet sr "sr" w
 string
 endsnippet
 
 # struct
-snippet st "st"
+snippet st "st" w
 struct ${1:name} {
 	${2:/* data */}
 }
@@ -279,7 +279,7 @@ ${3}
 endsnippet
 
 # switch 
-snippet sw "sw"
+snippet sw "sw" w
 switch ${1:var} {
 case ${2:value1}:
 	${3:/* code */}
@@ -290,17 +290,17 @@ default:
 }
 endsnippet
 
-snippet sp "sp"
+snippet sp "sp" w
 fmt.Sprintf("%${1:s}", ${2:var})${3}
 endsnippet
 
 # true 
-snippet t "t"
+snippet t "t" w
 true
 endsnippet
 
 # variable declaration
-snippet v "v"
+snippet v "v" w
 var ${1:t} ${2:string}
 endsnippet
 

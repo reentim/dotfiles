@@ -1,74 +1,74 @@
 # Generic tags
-snippet { "{"
+snippet { "{" w
 {{ ${1} }}
 endsnippet
 
 # Template tags
-snippet extends "extends"
+snippet extends "extends" w
 {% extends "${1:base.html}" %}
 endsnippet
 
-snippet autoescape "autoescape"
+snippet autoescape "autoescape" w
 {% autoescape ${1:xhtml_escape | None} %}
 endsnippet
 
-snippet apply "apply"
+snippet apply "apply" w
 {% apply ${1:function} %}
   ${2}
 {% end %}
 endsnippet
 
-snippet block "block"
+snippet block "block" w
 {% block ${1} %}
   ${2}
 {% end %}
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 {% for ${1:item} in ${2} %}
   ${3}
 {% end %}
 endsnippet
 
-snippet from "from"
+snippet from "from" w
 {% from ${1:x} import ${2:y} %}
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 {% if ${1:condition} %}
   ${2}
 {% end %}
 endsnippet
 
-snippet elif "elif"
+snippet elif "elif" w
 {% elif ${1:condition} %} 
 endsnippet
 
-snippet else "else"
+snippet else "else" w
 {% else %}
 endsnippet
 
-snippet import "import"
+snippet import "import" w
 {% import ${1:module} %}
 endsnippet
 
-snippet include "include"
+snippet include "include" w
 {% include "${1:filename}" %}
 endsnippet
 
-snippet module "module"
+snippet module "module" w
 {% module ${1:expression} %}
 endsnippet
 
-snippet raw "raw"
+snippet raw "raw" w
 {% raw ${1:expression} %}
 endsnippet
 
-snippet set "set"
+snippet set "set" w
 {% set ${1:x} = ${2:y} %}
 endsnippet
 
-snippet try "try"
+snippet try "try" w
 {% try %}
   ${1}
 {% except %}
@@ -78,7 +78,7 @@ snippet try "try"
 {% end %}
 endsnippet
 
-snippet while "while"
+snippet while "while" w
 {% while ${1:condition} %}
   ${2}
 {% end %}

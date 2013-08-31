@@ -3,7 +3,7 @@
 # Based on: http://wiki.opscode.com/display/chef/Resources
 # @TODO: Include Meta attributes and actions in all snippets
 # @TODO: Finish writing snippets for remaining Resources
-snippet cookbook_file "cookbook_file"
+snippet cookbook_file "cookbook_file" w
 # Cookbook File resource
 cookbook_file ${1:"/path/to/file"} do # The remote path where the file will reside
 	${2:#}backup ${3} # How many backups of this file to keep. Set to false  if you want no backups
@@ -18,7 +18,7 @@ cookbook_file ${1:"/path/to/file"} do # The remote path where the file will resi
 end
 endsnippet
 
-snippet execute "execute"
+snippet execute "execute" w
 # Execute resource
 execute ${1:"command to execute"} do # The command to execute
 	${2:#}creates ${3:nil} # A file this command creates - if the file exists, the command will not be run.
@@ -35,7 +35,7 @@ execute ${1:"command to execute"} do # The command to execute
 end
 endsnippet
 
-snippet link "link"
+snippet link "link" w
 # Link resource
 link ${1:"/target/file"} do # The file name of the link
 	${2:#}to ${3} # The real file you want to link to
@@ -47,7 +47,7 @@ link ${1:"/target/file"} do # The file name of the link
 end
 endsnippet
 
-snippet package "package"
+snippet package "package" w
 # Package resource
 package ${1:"package_name"} do # Name of the package to install
 	${2:#}version ${3:nil} # The version of the package to install/upgrade
@@ -62,7 +62,7 @@ package ${1:"package_name"} do # Name of the package to install
 end
 endsnippet
 
-snippet service "service"
+snippet service "service" w
 # Service resource
 service ${1:"service_name"} do # Name of the service
 	${2:#}enabled ${3:nil} # Whether the service is enabled at boot time
@@ -84,7 +84,7 @@ service ${1:"service_name"} do # Name of the service
 end
 endsnippet
 
-snippet file "file"
+snippet file "file" w
 # File resource
 file ${1:"/path/to/file"} do # Path to the file
 	${2:#}backup ${3:5} # How many backups of this file to keep. Set to false if you want no backups.
@@ -98,7 +98,7 @@ file ${1:"/path/to/file"} do # Path to the file
 end
 endsnippet
 
-snippet directory "directory"
+snippet directory "directory" w
 # Directory resource
 directory ${1:"/path/to/dir"} do # The path to the directory
 	${2:#}group ${3} # The group owner of the directory (string or id)
@@ -110,7 +110,7 @@ directory ${1:"/path/to/dir"} do # The path to the directory
 end
 endsnippet
 
-snippet template "template"
+snippet template "template" w
 # Template resource
 template ${1:"/path/to/file"} do # Path to the file
 	${2:#}cookbook ${3:nil} # Specify the cookbook where the template is located, default is current cookbook
@@ -128,7 +128,7 @@ template ${1:"/path/to/file"} do # Path to the file
 end
 endsnippet
 
-snippet svn "svn"
+snippet svn "svn" w
 # SCM Resource, Chef::Provider::Subversion
 svn ${1:"/destination/path"} do # Path to clone/checkout/export the source to
 	${2:#}repository ${3} # URI of the repository
@@ -145,7 +145,7 @@ svn ${1:"/destination/path"} do # Path to clone/checkout/export the source to
 end
 endsnippet
 
-snippet git "git"
+snippet git "git" w
 # SCM Resource, Chef::Provider::Git
 git ${1:"/destination/path"} do # Path to clone/checkout/export the source to
 	${2:#}repository ${3} # URI of the repository
@@ -163,7 +163,7 @@ git ${1:"/destination/path"} do # Path to clone/checkout/export the source to
 end
 endsnippet
 
-snippet deploy "deploy"
+snippet deploy "deploy" w
 # Deploy resource
 deploy ${1:"/deploy/dir/"} do # Path to deploy to
 	${2:#}deploy_to ${3} # The "meta root" for your application.

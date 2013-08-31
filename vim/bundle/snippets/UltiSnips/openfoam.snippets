@@ -1,19 +1,19 @@
 # 0/*
-snippet fv "fv"
+snippet fv "fv" w
 type		fixedValue;
 value		uniform ${1};
 endsnippet
 
-snippet zg "zg"
+snippet zg "zg" w
 type		zeroGradient;
 endsnippet
 
-snippet sym "sym"
+snippet sym "sym" w
 type		symmetryPlane;
 endsnippet
 
 # system/controlDict
-snippet forces "forces"
+snippet forces "forces" w
 forces
 {
 	type				forces;
@@ -29,7 +29,7 @@ endsnippet
 
 # system/fvSolution
 # solvers
-snippet gamg "gamg"
+snippet gamg "gamg" w
 ${1:p}
 {
 	solver          GAMG;
@@ -43,7 +43,7 @@ ${1:p}
 }
 endsnippet
 
-snippet pbicg "pbicg"
+snippet pbicg "pbicg" w
 ${1:U}
 {
 	solver          PBiCG;
@@ -54,7 +54,7 @@ ${1:U}
 endsnippet
 
 # PIMPLE
-snippet pimple "pimple"
+snippet pimple "pimple" w
 PIMPLE
 {
 	nOuterCorrectors 	${1:outer};

@@ -1,35 +1,35 @@
 # #import <...>
-snippet Imp "Imp"
+snippet Imp "Imp" w
 #import <${1:Cocoa/Cocoa.h}>${2}
 endsnippet
 
 # #import "..."
-snippet imp "imp"
+snippet imp "imp" w
 #import "${1:`!v Filename()`.h}"${2}
 endsnippet
 
 # @selector(...)
-snippet sel "sel"
+snippet sel "sel" w
 @selector(${1:method}:)${3}
 endsnippet
 
 # @"..." string
-snippet s "s"
+snippet s "s" w
 @"${1}"${2}
 endsnippet
 
 # Object
-snippet o "o"
+snippet o "o" w
 ${1:NSObject} *${2:foo} = [${3:$1 alloc}]${4};${5}
 endsnippet
 
 # NSLog(...)
-snippet log "log"
+snippet log "log" w
 NSLog(@"${1:%@}"${2});${3}
 endsnippet
 
 # Class
-snippet objc "objc"
+snippet objc "objc" w
 @interface ${1:`!v Filename('', 'someClass')`} : ${2:NSObject}
 {
 }
@@ -40,7 +40,7 @@ ${3}
 endsnippet
 
 # Class Interface
-snippet int "int"
+snippet int "int" w
 @interface ${1:`!v Filename('', 'someClass')`} : ${2:NSObject}
 {${3}
 }
@@ -48,7 +48,7 @@ ${4}
 @end
 endsnippet
 
-snippet @interface "@interface"
+snippet @interface "@interface" w
 @interface ${1:`!v Filename('', 'someClass')`} : ${2:NSObject}
 {${3}
 }
@@ -57,33 +57,33 @@ ${4}
 endsnippet
 
 # Class Implementation
-snippet impl "impl"
+snippet impl "impl" w
 @implementation ${1:`!v Filename('', 'someClass')`}
 ${2}
 @end
 endsnippet
 
-snippet @implementation "@implementation"
+snippet @implementation "@implementation" w
 @implementation ${1:`!v Filename('', 'someClass')`}
 ${2}
 @end
 endsnippet
 
 # Protocol
-snippet pro "pro"
+snippet pro "pro" w
 @protocol ${1:`!v Filename('$1Delegate', 'MyProtocol')`} ${2:<NSObject>}
 ${3}
 @end
 endsnippet
 
-snippet @protocol "@protocol"
+snippet @protocol "@protocol" w
 @protocol ${1:`!v Filename('$1Delegate', 'MyProtocol')`} ${2:<NSObject>}
 ${3}
 @end
 endsnippet
 
 # init Definition
-snippet init "init"
+snippet init "init" w
 - (id)init
 {
 	if (self = [super init]) {
@@ -94,7 +94,7 @@ snippet init "init"
 endsnippet
 
 # dealloc Definition
-snippet dealloc "dealloc"
+snippet dealloc "dealloc" w
 - (void) dealloc
 {
 	${1:deallocations}
@@ -102,16 +102,16 @@ snippet dealloc "dealloc"
 }
 endsnippet
 
-snippet su "su"
+snippet su "su" w
 [super ${1:init}]${2}
 endsnippet
 
-snippet ibo "ibo"
+snippet ibo "ibo" w
 IBOutlet ${1:NSSomeClass} *${2:$1};${3}
 endsnippet
 
 # Category
-snippet cat "cat"
+snippet cat "cat" w
 @interface ${1:NSObject} (${2:MyCategory})
 @end
 @implementation $1 ($2)
@@ -120,14 +120,14 @@ ${3}
 endsnippet
 
 # Category Interface
-snippet cath "cath"
+snippet cath "cath" w
 @interface ${1:`!v Filename('$1', 'NSObject')`} (${2:MyCategory})
 ${3}
 @end
 endsnippet
 
 # Method
-snippet m "m"
+snippet m "m" w
 - (${1:id})${2:method}
 {
 	${3}
@@ -135,17 +135,17 @@ snippet m "m"
 endsnippet
 
 # Method declaration
-snippet md "md"
+snippet md "md" w
 - (${1:id})${2:method};${3}
 endsnippet
 
 # IBAction declaration
-snippet ibad "ibad"
+snippet ibad "ibad" w
 - (IBAction)${1:method}:(${2:id})sender;${3}
 endsnippet
 
 # IBAction method
-snippet iba "iba"
+snippet iba "iba" w
 - (IBAction)${1:method}:(${2:id})sender
 {
 	${3}
@@ -153,7 +153,7 @@ snippet iba "iba"
 endsnippet
 
 # awakeFromNib method
-snippet wake "wake"
+snippet wake "wake" w
 - (void)awakeFromNib
 {
 	${1}
@@ -161,7 +161,7 @@ snippet wake "wake"
 endsnippet
 
 # Class Method
-snippet M "M"
+snippet M "M" w
 + (${1:id})${2:method}
 {
 	${3:return nil;}
@@ -169,7 +169,7 @@ snippet M "M"
 endsnippet
 
 # Sub-method (Call super)
-snippet sm "sm"
+snippet sm "sm" w
 - (${1:id})${2:method}
 {
 	[super $2];${3}
@@ -179,7 +179,7 @@ endsnippet
 
 # Accessor Methods For:
 # Object
-snippet objacc "objacc"
+snippet objacc "objacc" w
 - (${1:id})${2:thing}
 {
 	return $2;
@@ -193,19 +193,19 @@ snippet objacc "objacc"
 endsnippet
 
 # for (object in array)
-snippet forin "forin"
+snippet forin "forin" w
 for (${1:Class} *${2:some$1} in ${3:array}) {
 	${4}
 }
 endsnippet
 
-snippet fore "fore"
+snippet fore "fore" w
 for (${1:object} in ${2:array}) {
 	${3:statements}
 }
 endsnippet
 
-snippet forarray "forarray"
+snippet forarray "forarray" w
 unsigned int ${1:object}Count = [${2:array} count];
 for (unsigned int index = 0; index < $1Count; index++) {
 	${3:id} $1 = [$2 $1AtIndex:index];
@@ -213,7 +213,7 @@ for (unsigned int index = 0; index < $1Count; index++) {
 }
 endsnippet
 
-snippet fora "fora"
+snippet fora "fora" w
 unsigned int ${1:object}Count = [${2:array} count];
 for (unsigned int index = 0; index < $1Count; index++) {
 	${3:id} $1 = [$2 $1AtIndex:index];
@@ -222,13 +222,13 @@ for (unsigned int index = 0; index < $1Count; index++) {
 endsnippet
 
 # Try / Catch Block
-snippet @catch "@catch"
+snippet @catch "@catch" w
 @catch (${1:exception}) {
 	${2:handler}
 }
 endsnippet
 
-snippet @finally "@finally"
+snippet @finally "@finally" w
 @finally {
 	${1:statements}
 }
@@ -236,48 +236,48 @@ endsnippet
 
 # IBOutlet
 # @property (Objective-C 2.0)
-snippet prop "prop"
+snippet prop "prop" w
 @property (${1:retain}) ${2:NSSomeClass} ${3:*$2};${4}
 endsnippet
 
 # @synthesize (Objective-C 2.0)
-snippet syn "syn"
+snippet syn "syn" w
 @synthesize ${1:property};${2}
 endsnippet
 
 # [[ alloc] init]
-snippet alloc "alloc"
+snippet alloc "alloc" w
 [[${1:foo} alloc] init${2}];${3}
 endsnippet
 
-snippet a "a"
+snippet a "a" w
 [[${1:foo} alloc] init${2}];${3}
 endsnippet
 
 # retain
-snippet ret "ret"
+snippet ret "ret" w
 [${1:foo} retain];${2}
 endsnippet
 
 # release
-snippet rel "rel"
+snippet rel "rel" w
 [${1:foo} release];
 endsnippet
 
 # autorelease
-snippet arel "arel"
+snippet arel "arel" w
 [${1:foo} autorelease];
 endsnippet
 
 # autorelease pool
-snippet pool "pool"
+snippet pool "pool" w
 NSAutoreleasePool *${1:pool} = [[NSAutoreleasePool alloc] init];
 ${2:/* code */}
 [$1 drain];
 endsnippet
 
 # Throw an exception
-snippet except "except"
+snippet except "except" w
 NSException *${1:badness};
 $1 = [NSException exceptionWithName:@"${2:$1Name}"
                              reason:@"${3}"
@@ -285,58 +285,58 @@ $1 = [NSException exceptionWithName:@"${2:$1Name}"
 [$1 raise];
 endsnippet
 
-snippet prag "prag"
+snippet prag "prag" w
 #pragma mark ${1:-}
 endsnippet
 
-snippet cl "cl"
+snippet cl "cl" w
 @class ${1:Foo};${2}
 endsnippet
 
-snippet color "color"
+snippet color "color" w
 [[NSColor ${1:blackColor}] set];
 endsnippet
 
 # NSArray
-snippet array "array"
+snippet array "array" w
 NSMutableArray *${1:array} = [NSMutable array];${2}
 endsnippet
 
-snippet nsa "nsa"
+snippet nsa "nsa" w
 NSArray ${1}
 endsnippet
 
-snippet nsma "nsma"
+snippet nsma "nsma" w
 NSMutableArray ${1}
 endsnippet
 
-snippet aa "aa"
+snippet aa "aa" w
 NSArray * array;${1}
 endsnippet
 
-snippet ma "ma"
+snippet ma "ma" w
 NSMutableArray * array;${1}
 endsnippet
 
 # NSDictionary
-snippet dict "dict"
+snippet dict "dict" w
 NSMutableDictionary *${1:dict} = [NSMutableDictionary dictionary];${2}
 endsnippet
 
-snippet nsd "nsd"
+snippet nsd "nsd" w
 NSDictionary ${1}
 endsnippet
 
-snippet nsmd "nsmd"
+snippet nsmd "nsmd" w
 NSMutableDictionary ${1}
 endsnippet
 
 # NSString
-snippet nss "nss"
+snippet nss "nss" w
 NSString ${1}
 endsnippet
 
-snippet nsms "nsms"
+snippet nsms "nsms" w
 NSMutableString ${1}
 endsnippet
 

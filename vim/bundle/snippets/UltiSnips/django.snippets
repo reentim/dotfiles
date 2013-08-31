@@ -5,119 +5,119 @@
 # default or not.
 # Note: Optional arguments that are booleans will use the opposite since you
 # can either not specify them, or override them, e.g. auto_now_add=False.
-snippet auto "auto"
+snippet auto "auto" w
 ${1:FIELDNAME} = models.AutoField(${2})
 endsnippet
 
-snippet bool "bool"
+snippet bool "bool" w
 ${1:FIELDNAME} = models.BooleanField(${2:default=True})
 endsnippet
 
-snippet char "char"
+snippet char "char" w
 ${1:FIELDNAME} = models.CharField(max_length=${2}${3:, blank=True})
 endsnippet
 
-snippet comma "comma"
+snippet comma "comma" w
 ${1:FIELDNAME} = models.CommaSeparatedIntegerField(max_length=${2}${3:, blank=True})
 endsnippet
 
-snippet date "date"
+snippet date "date" w
 ${1:FIELDNAME} = models.DateField(${2:auto_now_add=True, auto_now=True}${3:, blank=True, null=True})
 endsnippet
 
-snippet datetime "datetime"
+snippet datetime "datetime" w
 ${1:FIELDNAME} = models.DateTimeField(${2:auto_now_add=True, auto_now=True}${3:, blank=True, null=True})
 endsnippet
 
-snippet decimal "decimal"
+snippet decimal "decimal" w
 ${1:FIELDNAME} = models.DecimalField(max_digits=${2}, decimal_places=${3})
 endsnippet
 
-snippet email "email"
+snippet email "email" w
 ${1:FIELDNAME} = models.EmailField(max_length=${2:75}${3:, blank=True})
 endsnippet
 
-snippet file "file"
+snippet file "file" w
 ${1:FIELDNAME} = models.FileField(upload_to=${2:path/for/upload}${3:, max_length=100})
 endsnippet
 
-snippet filepath "filepath"
+snippet filepath "filepath" w
 ${1:FIELDNAME} = models.FilePathField(path=${2:"/abs/path/to/dir"}${3:, max_length=100}${4:, match="*.ext"}${5:, recursive=True}${6:, blank=True, })
 endsnippet
 
-snippet float "float"
+snippet float "float" w
 ${1:FIELDNAME} = models.FloatField(${2})
 endsnippet
 
-snippet image "image"
+snippet image "image" w
 ${1:FIELDNAME} = models.ImageField(upload_to=${2:path/for/upload}${3:, height_field=height, width_field=width}${4:, max_length=100})
 endsnippet
 
-snippet int "int"
+snippet int "int" w
 ${1:FIELDNAME} = models.IntegerField(${2})
 endsnippet
 
-snippet ip "ip"
+snippet ip "ip" w
 ${1:FIELDNAME} = models.IPAddressField(${2})
 endsnippet
 
-snippet nullbool "nullbool"
+snippet nullbool "nullbool" w
 ${1:FIELDNAME} = models.NullBooleanField(${2})
 endsnippet
 
-snippet posint "posint"
+snippet posint "posint" w
 ${1:FIELDNAME} = models.PositiveIntegerField(${2})
 endsnippet
 
-snippet possmallint "possmallint"
+snippet possmallint "possmallint" w
 ${1:FIELDNAME} = models.PositiveSmallIntegerField(${2})
 endsnippet
 
-snippet slug "slug"
+snippet slug "slug" w
 ${1:FIELDNAME} = models.SlugField(max_length=${2:50}${3:, blank=True})
 endsnippet
 
-snippet smallint "smallint"
+snippet smallint "smallint" w
 ${1:FIELDNAME} = models.SmallIntegerField(${2})
 endsnippet
 
-snippet text "text"
+snippet text "text" w
 ${1:FIELDNAME} = models.TextField(${2:blank=True})
 endsnippet
 
-snippet time "time"
+snippet time "time" w
 ${1:FIELDNAME} = models.TimeField(${2:auto_now_add=True, auto_now=True}${3:, blank=True, null=True})
 endsnippet
 
-snippet url "url"
+snippet url "url" w
 ${1:FIELDNAME} = models.URLField(${2:verify_exists=False}${3:, max_length=200}${4:, blank=True})
 endsnippet
 
-snippet xml "xml"
+snippet xml "xml" w
 ${1:FIELDNAME} = models.XMLField(schema_path=${2:None}${3:, blank=True})
 endsnippet
 
 # Relational Fields
-snippet fk "fk"
+snippet fk "fk" w
 ${1:FIELDNAME} = models.ForeignKey(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, to_field=''})
 endsnippet
 
-snippet m2m "m2m"
+snippet m2m "m2m" w
 ${1:FIELDNAME} = models.ManyToManyField(${2:OtherModel}${3:, related_name=''}${4:, limit_choices_to=}${5:, symmetrical=False}${6:, through=''}${7:, db_table=''})
 endsnippet
 
-snippet o2o "o2o"
+snippet o2o "o2o" w
 ${1:FIELDNAME} = models.OneToOneField(${2:OtherModel}${3:, parent_link=True}${4:, related_name=''}${5:, limit_choices_to=}${6:, to_field=''})
 endsnippet
 
 # Code Skeletons
-snippet form "form"
+snippet form "form" w
 class ${1:FormName}(forms.Form):
 	"""${2:docstring}"""
 	${3}
 endsnippet
 
-snippet model "model"
+snippet model "model" w
 class ${1:ModelName}(models.Model):
 	"""${2:docstring}"""
 	${3}
@@ -132,23 +132,23 @@ class ${1:ModelName}(models.Model):
 		return ('${7:view_or_url_name}' ${8})
 endsnippet
 
-snippet modeladmin "modeladmin"
+snippet modeladmin "modeladmin" w
 class ${1:ModelName}Admin(admin.ModelAdmin):
 	${2}
 admin.site.register($1, $1Admin)
 endsnippet
 
-snippet tabularinline "tabularinline"
+snippet tabularinline "tabularinline" w
 class ${1:ModelName}Inline(admin.TabularInline):
 	model = $1
 endsnippet
 
-snippet stackedinline "stackedinline"
+snippet stackedinline "stackedinline" w
 class ${1:ModelName}Inline(admin.StackedInline):
 	model = $1
 endsnippet
 
-snippet r2r "r2r"
+snippet r2r "r2r" w
 return render_to_response('${1:template.html}', {
 		${2}
 	}${3:, context_instance=RequestContext(request)}

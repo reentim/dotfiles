@@ -1,75 +1,75 @@
 # Closure loop
-snippet forindo "forindo"
+snippet forindo "forindo" w
 for ${1:name} in ${2:array}
 	do ($1) ->
 		${3:// body}
 endsnippet
 
 # Array comprehension
-snippet fora "fora"
+snippet fora "fora" w
 for ${1:name} in ${2:array}
 	${3:# body...}
 endsnippet
 
 # Object comprehension
-snippet foro "foro"
+snippet foro "foro" w
 for ${1:key}, ${2:value} of ${3:object}
 	${4:# body...}
 endsnippet
 
 # Range comprehension (inclusive)
-snippet forr "forr"
+snippet forr "forr" w
 for ${1:name} in [${2:start}..${3:finish}]
 	${4:# body...}
 endsnippet
 
-snippet forrb "forrb"
+snippet forrb "forrb" w
 for ${1:name} in [${2:start}..${3:finish}] by ${4:step}
 	${5:# body...}
 endsnippet
 
 # Range comprehension (exclusive)
-snippet forrex "forrex"
+snippet forrex "forrex" w
 for ${1:name} in [${2:start}...${3:finish}]
 	${4:# body...}
 endsnippet
 
-snippet forrexb "forrexb"
+snippet forrexb "forrexb" w
 for ${1:name} in [${2:start}...${3:finish}] by ${4:step}
 	${5:# body...}
 endsnippet
 
 # Function
-snippet fun "fun"
+snippet fun "fun" w
 (${1:args}) ->
 	${2:# body...}
 endsnippet
 
 # Function (bound)
-snippet bfun "bfun"
+snippet bfun "bfun" w
 (${1:args}) =>
 	${2:# body...}
 endsnippet
 
 # Class
-snippet cla "class .."
+snippet cla "class .." w
 class ${1:`!v substitute(Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`}
 	${2}
 endsnippet
 
-snippet cla "class .. constructor: .."
+snippet cla "class .. constructor: .." w
 class ${1:`!v substitute(Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`}
 	constructor: (${2:args}) ->
 		${3}
 	${4}
 endsnippet
 
-snippet cla "class .. extends .."
+snippet cla "class .. extends .." w
 class ${1:`!v substitute(Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`} extends ${2:ParentClass}
 	${3}
 endsnippet
 
-snippet cla "class .. extends .. constructor: .."
+snippet cla "class .. extends .. constructor: .." w
 class ${1:`!v substitute(Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`} extends ${2:ParentClass}
 	constructor: (${3:args}) ->
 		${4}
@@ -77,13 +77,13 @@ class ${1:`!v substitute(Filename(), '\(_\|^\)\(.\)', '\u\2', 'g')`} extends ${2
 endsnippet
 
 # If
-snippet if "if"
+snippet if "if" w
 if ${1:condition}
 	${2:# body...}
 endsnippet
 
 # If __ Else
-snippet ife "ife"
+snippet ife "ife" w
 if ${1:condition}
 	${2:# body...}
 else
@@ -91,35 +91,35 @@ else
 endsnippet
 
 # Else if
-snippet elif "elif"
+snippet elif "elif" w
 else if ${1:condition}
 	${2:# body...}
 endsnippet
 
 # Ternary If
-snippet ifte "ifte"
+snippet ifte "ifte" w
 if ${1:condition} then ${2:value} else ${3:other}
 endsnippet
 
 # Unless
-snippet unl "unl"
+snippet unl "unl" w
 ${1:action} unless ${2:condition}
 endsnippet
 
 # Switch
-snippet swi "swi"
+snippet swi "swi" w
 switch ${1:object}
 	when ${2:value}
 		${3:# body...}
 endsnippet
 
 # Log
-snippet log "log"
+snippet log "log" w
 console.log ${1}
 endsnippet
 
 # Try __ Catch
-snippet try "try"
+snippet try "try" w
 try
 	${1}
 catch ${2:error}
@@ -127,12 +127,12 @@ catch ${2:error}
 endsnippet
 
 # Require
-snippet req "req"
+snippet req "req" w
 ${2:$1} = require '${1:sys}'${3}
 endsnippet
 
 # Export
-snippet exp "exp"
+snippet exp "exp" w
 ${1:root} = exports ? this
 endsnippet
 

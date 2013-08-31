@@ -1,31 +1,31 @@
-snippet #! "#!"
+snippet #! "#!" w
 #!/usr/bin/env lua
 $1
 endsnippet
 
-snippet local "local"
+snippet local "local" w
 local ${1:x} = ${2:1}
 endsnippet
 
-snippet fun "fun"
+snippet fun "fun" w
 function ${1:fname}(${2:...})
 	${3:-- body}
 end
 endsnippet
 
-snippet for "for"
+snippet for "for" w
 for ${1:i}=${2:1},${3:10} do
 	${4:print(i)}
 end
 endsnippet
 
-snippet forp "forp"
+snippet forp "forp" w
 for ${1:i},${2:v} in pairs(${3:table_name}) do
    ${4:-- body}
 end
 endsnippet
 
-snippet fori "fori"
+snippet fori "fori" w
 for ${1:i},${2:v} in ipairs(${3:table_name}) do
    ${4:-- body}
 end

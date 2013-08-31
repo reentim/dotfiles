@@ -1,35 +1,35 @@
-snippet #! "#!"
+snippet #! "#!" w
 #!/usr/bin/env falcon
 endsnippet
 
 # Import	
-snippet imp "imp"
+snippet imp "imp" w
 import ${1:module}
 endsnippet
 
 # Function
-snippet fun "fun"
+snippet fun "fun" w
 function ${2:function_name}(${3})	
 	${4:/* code */}
 end	
 endsnippet
 
 # Class
-snippet class "class"
+snippet class "class" w
 class ${1:class_name}(${2:class_params})
 	${3:/* members/methods */}
 end
 endsnippet
 
 # If 
-snippet if "if"
+snippet if "if" w
 if ${1:condition}
 	${2:/* code */}		
 end
 endsnippet
 
 # If else
-snippet ife "ife"
+snippet ife "ife" w
 if ${1:condition}
 	${2:/* code */}		
 else
@@ -38,13 +38,13 @@ end
 endsnippet
 
 # If else if	
-snippet elif "elif"
+snippet elif "elif" w
 elif ${1:condition}
 	${2:/* code */}	        
 endsnippet
 
 # Switch case
-snippet switch "switch"
+snippet switch "switch" w
 switch ${1:expression}
 	case ${2:item}
 	case ${3:item}
@@ -53,7 +53,7 @@ end
 endsnippet
 
 # Select
-snippet select "select"
+snippet select "select" w
 select ${1:variable}
 	case ${2:TypeSpec}
 	case ${3:TypeSpec}
@@ -62,21 +62,21 @@ end
 endsnippet
 
 # For/in Loop
-snippet forin "forin"
+snippet forin "forin" w
 for ${1:element} in ${2:container}
 	${3:/* code */}
 end
 endsnippet
 
 # For/to Loop
-snippet forto "forto"
+snippet forto "forto" w
 for ${1:lowerbound} to ${2:upperbound}
 	${3:/* code */}
 end
 endsnippet
 
 # While Loop
-snippet while "while"
+snippet while "while" w
 while ${1:conidition}
 	${2:/* code */}	
 end

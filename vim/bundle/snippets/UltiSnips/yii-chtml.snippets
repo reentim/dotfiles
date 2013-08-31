@@ -1,308 +1,308 @@
 #--------------------Yii CHtml---------------------------------
 #Yii CHtml::radioButton
-snippet yhrb "yhrb"
+snippet yhrb "yhrb" w
 echo CHtml::radioButton('${1:name}', ${2:false},array(${3:optionName}=>${4:optionValue} ); 
 endsnippet
 
 #Yii CHtml::asset
-snippet yhass "yhass"
+snippet yhass "yhass" w
 echo CHtml::asset('${1:path}'); 
 endsnippet
 
 #Yii CHtml::activeLabelEx
-snippet yhale "yhale"
+snippet yhale "yhale" w
 echo CHtml::activeLabelEx(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::encodeArray
-snippet yheca "yheca"
+snippet yheca "yheca" w
 echo CHtml::encodeArray(array(${1})); 
 endsnippet
 
 #Yii CHtml::normalizeUrl
-snippet yhnurl "yhnurl"
+snippet yhnurl "yhnurl" w
 echo CHtml::normalizeUrl(array('${1}')); 
 endsnippet
 
 #Yii CHtml::resetButton
-snippet yhsb "yhsb"
+snippet yhsb "yhsb" w
 echo CHtml::submitButton('${1:label}',array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::linkButton
-snippet yhlinkb "yhlinkb"
+snippet yhlinkb "yhlinkb" w
 echo CHtml::linkButton('${1:lable}',array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeTextArea
-snippet yhata "yhata"
+snippet yhata "yhata" w
 echo CHtml::activeTextArea(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::ajaxButton
-snippet yhajb "yhajb"
+snippet yhajb "yhajb" w
 echo CHtml::ajaxButton('${1:label}', '${2:url}',array('${3:ajaxOptionName}'=>${4:ajaxOptionValue}),array('${5:optionName}'=>${6:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeId
-snippet yhai "yhai"
+snippet yhai "yhai" w
 echo CHtml::activeId(${1:model}, '${2:attribute}'); 
 endsnippet
 
 #Yii CHtml::activeCheckBox
-snippet yhacb "yhacb"
+snippet yhacb "yhacb" w
 echo CHtml::activeCheckBox(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeHiddenField
-snippet yhahf "yhahf"
+snippet yhahf "yhahf" w
 echo CHtml::activeHiddenField(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::encode
-snippet yhec "yhec"
+snippet yhec "yhec" w
 echo CHtml::encode(${1:text}); 
 endsnippet
 
 #Yii CHtml::metaTag
-snippet yhmtag "yhmtag"
+snippet yhmtag "yhmtag" w
 echo CHtml::metaTag('${1:content}', '${2:name}', '${3:httpEquiv}',array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::dropDownList
-snippet yhddl "yhddl"
+snippet yhddl "yhddl" w
 echo CHtml::dropDownList('${1:name}', '${2:select}', array(${3}),array('${4:optionName}'=>${5:optionValue}));
 endsnippet
 
 #Yii CHtml::listBox
-snippet yhlb "yhlb"
+snippet yhlb "yhlb" w
 echo CHtml::listBox('${1:name}', '${2:select}',array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::script
-snippet yhjs "yhjs"
+snippet yhjs "yhjs" w
 echo CHtml::script('${1:test}'); 
 endsnippet
 
 #Yii CHtml::ajax
-snippet yhaj "yhaj"
+snippet yhaj "yhaj" w
 echo CHtml::ajax(array(${1})); 
 endsnippet
 
 #Yii CHtml::textField
-snippet yhtf "yhtf"
+snippet yhtf "yhtf" w
 echo CHtml::textField('${1:name}', '${2:value}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activePasswordField
-snippet yhapf "yhapf"
+snippet yhapf "yhapf" w
 echo CHtml::activePasswordField(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::listData
-snippet yhld "yhld"
+snippet yhld "yhld" w
 echo CHtml::listData(array(${1}),'${2:valueField}', '${3:textField}','${4:groupField}'); 
 endsnippet
 
 #Yii CHtml::mailto
-snippet yhmt "yhmt"
+snippet yhmt "yhmt" w
 echo CHtml::mailto('${1:text}', '${2:email}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::image
-snippet yhimg "yhimg"
+snippet yhimg "yhimg" w
 echo CHtml::image('${1:src}', '${2:alt}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeListBox
-snippet yhalb "yhalb"
+snippet yhalb "yhalb" w
 echo CHtml::activeListBox(${1:model}, '${2:attribute}', array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeFileField
-snippet yhaff "yhaff"
+snippet yhaff "yhaff" w
 echo CHtml::activeFileField(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::closeTag
-snippet yhct "yhct"
+snippet yhct "yhct" w
 echo CHtml::closeTag('${1:tag}'); 
 endsnippet
 
 #Yii CHtml::activeInputField
-snippet yhaif "yhaif"
+snippet yhaif "yhaif" w
 echo CHtml::activeInputField('${1:type}', ${2:model}, '${3:attribute}',array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::scriptFile
-snippet yhjsf "yhjsf"
+snippet yhjsf "yhjsf" w
 echo CHtml::scriptFile('${1:url}'); 
 endsnippet
 
 #Yii CHtml::radioButtonList
-snippet yhrbl "yhrbl"
+snippet yhrbl "yhrbl" w
 echo CHtml::radioButtonList('${1:name}', ${2:select}, array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::cssFile
-snippet yhcssf "yhcssf"
+snippet yhcssf "yhcssf" w
 echo CHtml::cssFile('${1:url}','${2:media}'); 
 endsnippet
 
 #Yii CHtml::error
-snippet yherr "yherr"
+snippet yherr "yherr" w
 echo CHtml::error(${1:model}, '${2:attribute}'); 
 endsnippet
 
 #Yii CHtml::passwordField
-snippet yhpf "yhpf"
+snippet yhpf "yhpf" w
 echo CHtml::passwordField('${1:name}', '${2:value}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::hiddenField
-snippet yhhf "yhhf"
+snippet yhhf "yhhf" w
 echo CHtml::hiddenField('${1:name}', '${2:value}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::cdata
-snippet yhc "yhc"
+snippet yhc "yhc" w
 echo CHtml::cdata(${1:text}); 
 endsnippet
 
 #Yii CHtml::link
-snippet yhlink "yhlink"
+snippet yhlink "yhlink" w
 echo CHtml::link('${1:text}',array(${2}),array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::errorSummary
-snippet yherrs "yherrs"
+snippet yherrs "yherrs" w
 echo CHtml::errorSummary(${1:model},'${2:headerHtml}','${3:footerHtml}'); 
 endsnippet
 
 #Yii CHtml::tag
-snippet yht "yht"
+snippet yht "yht" w
 echo CHtml::tag('${1:tag}',array('${2:optionName}'=>${3:optionValue}),${4:false},${5:true}); 
 endsnippet
 
 #Yii CHtml::ajaxLink
-snippet yhajl "yhajl"
+snippet yhajl "yhajl" w
 echo CHtml::ajaxLink('${1:label}', '${2:url}',array('${3:ajaxOptionName}'=>${4:ajaxOptionValue}),array('${5:optionName}'=>${6:optionValue})); 
 endsnippet
 
 #Yii CHtml::label
-snippet yhlabel "yhlabel"
+snippet yhlabel "yhlabel" w
 echo CHtml::label('${1:label}', '${2:for}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeName
-snippet yhan "yhan"
+snippet yhan "yhan" w
 echo CHtml::activeName(${1:model}, '${2:attribute}'); 
 endsnippet
 
 #Yii CHtml::statefulForm
-snippet yhsform "yhsform"
+snippet yhsform "yhsform" w
 echo CHtml::statefulForm(array('${1}'), '${2:post}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::fileField
-snippet yhff "yhff"
+snippet yhff "yhff" w
 echo CHtml::fileField('${1:name}', '${2:value}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeTextField
-snippet yhatf "yhatf"
+snippet yhatf "yhatf" w
 echo CHtml::activeTextField(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::css
-snippet yhcss "yhcss"
+snippet yhcss "yhcss" w
 echo CHtml::css('${1:test}','${2:media}'); 
 endsnippet
 
 #Yii CHtml::imageButton
-snippet yhimgb "yhimgb"
+snippet yhimgb "yhimgb" w
 echo CHtml::imageButton('${1:src}',array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::ajaxSubmitButton
-snippet yhajsb "yhajsb"
+snippet yhajsb "yhajsb" w
 echo CHtml::ajaxSubmitButton('${1:label}', '${2:url}',array('${3:ajaxOptionName}'=>${4:ajaxOptionValue}),array('${5:optionName}'=>${6:optionValue})); 
 endsnippet
 
 #Yii CHtml::button
-snippet yhb "yhb"
+snippet yhb "yhb" w
 echo CHtml::button('${1:label}',array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::listOptions
-snippet yhlo "yhlo"
+snippet yhlo "yhlo" w
 echo CHtml::listOptions('${1:selection}', array(${2}), array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeCheckBoxList
-snippet yhacbl "yhacbl"
+snippet yhacbl "yhacbl" w
 echo CHtml::activeCheckBoxList(${1:model}, '${2:attribute}', array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::openTag
-snippet yhot "yhot"
+snippet yhot "yhot" w
 echo CHtml::openTag('${1:tag}', array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::checkBox
-snippet yhcb "yhcb"
+snippet yhcb "yhcb" w
 echo CHtml::checkBox('${1:name}', ${2:false}, array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::textArea
-snippet yhta "yhta"
+snippet yhta "yhta" w
 echo CHtml::textArea('${1:name}', '${2:value}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::linkTag
-snippet yhlinkt "yhlinkt"
+snippet yhlinkt "yhlinkt" w
 echo CHtml::linkTag('${1:relation}', '${2:type}', '${3:href}', '${4:media}',array('${5:optionName}'=>${6:optionValue})); 
 endsnippet
 
 #Yii CHtml::resetButton
-snippet yhrsb "yhrsb"
+snippet yhrsb "yhrsb" w
 echo CHtml::resetButton('${1:label}',array('${2:optionName}'=>${3:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeRadioButtonList
-snippet yharbl "yharbl"
+snippet yharbl "yharbl" w
 echo CHtml::activeRadioButtonList(${1:model}, '${2:attribute}', array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::checkBoxList
-snippet yhcbl "yhcbl"
+snippet yhcbl "yhcbl" w
 echo CHtml::checkBoxList('${1:name}', ${2:select}, array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::form
-snippet yhform "yhform"
+snippet yhform "yhform" w
 echo CHtml::form(array('${1}'), '${2:post}',array('${3:optionName}'=>${4:optionValue}));
 endsnippet
 
 #Yii CHtml::beginForm
-snippet yhbeform "yhbeform"
+snippet yhbeform "yhbeform" w
 echo CHtml::beginForm(array('${1}'), '${2:post}',array('${3:optionName}'=>${4:optionValue}));
 ${5}
 echo CHtml::endForm(); 
 endsnippet
 
 #Yii CHtml::activeDropDownList
-snippet yhaddl "yhaddl"
+snippet yhaddl "yhaddl" w
 echo CHtml::activeDropDownList(${1:model}, '${2:attribute}', array(${3}),array('${4:optionName}'=>${5:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeRadioButton
-snippet yharb "yharb"
+snippet yharb "yharb" w
 echo CHtml::activeRadioButton(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 
 #Yii CHtml::activeLabel
-snippet yhal "yhal"
+snippet yhal "yhal" w
 echo CHtml::activeLabel(${1:model}, '${2:attribute}',array('${3:optionName}'=>${4:optionValue})); 
 endsnippet
 

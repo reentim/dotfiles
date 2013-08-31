@@ -1,51 +1,51 @@
 # Progress/OpenEdge ABL snippets
 # define
-snippet defbuf "defbuf"
+snippet defbuf "defbuf" w
 DEFINE BUFFER b_${1:TableName} FOR $1 ${2}.
 endsnippet
 
-snippet defvar "defvar"
+snippet defvar "defvar" w
 DEFINE VARIABLE ${1:VariableName} AS ${2}.
 endsnippet
 
-snippet nl "nl"
+snippet nl "nl" w
 NO-LOCK
 endsnippet
 
-snippet ne "ne"
+snippet ne "ne" w
 NO-ERROR
 endsnippet
 
-snippet nle "nle"
+snippet nle "nle" w
 NO-LOCK NO-ERROR
 endsnippet
 
-snippet ini "ini"
+snippet ini "ini" w
 INITIAL ${1:?}
 endsnippet
 
-snippet nu "nu"
+snippet nu "nu" w
 NO-UNDO
 endsnippet
 
-snippet err "err"
+snippet err "err" w
 ERROR
 endsnippet
 
-snippet ff "ff"
+snippet ff "ff" w
 FIND FIRST ${1:BufferName}
 ${2:WHERE $1.${3}} ${4}
 endsnippet
 
-snippet input "input"
+snippet input "input" w
 DEFINE INPUT PARAMETER ${1:ParamName} AS ${2}.
 endsnippet
 
-snippet output "output"
+snippet output "output" w
 DEFINE OUTPUT PARAMETER ${1:ParamName} AS ${2:ParamType}.
 endsnippet
 
-snippet proc "proc"
+snippet proc "proc" w
 /******************************************************************************/
 PROCEDURE ${1:ProcName}:
 	${2}
@@ -53,40 +53,40 @@ END PROCEDURE. /* $1 */
 /******************************************************************************/
 endsnippet
 
-snippet alert "alert"
+snippet alert "alert" w
 MESSAGE "${1:MessageContent}" ${2:Data} VIEW-AS ALERT-BOX.
 endsnippet
 
-snippet if "if"
+snippet if "if" w
 IF ${1:Condition}
 THEN ${2:Action}
 ${3:ELSE ${4:OtherWise}}
 endsnippet
 
-snippet do "do"
+snippet do "do" w
 DO${1: Clauses}:
 	${2}
 END.
 endsnippet
 
 # datatypes
-snippet int "int"
+snippet int "int" w
 INTEGER
 endsnippet
 
-snippet char "char"
+snippet char "char" w
 CHARACTER
 endsnippet
 
-snippet log "log"
+snippet log "log" w
 LOGICAL
 endsnippet
 
-snippet dec "dec"
+snippet dec "dec" w
 DECIMAL
 endsnippet
 
-snippet sep "sep"
+snippet sep "sep" w
 /* ------------------------------------------------------------------------- */ 
 endsnippet
 
