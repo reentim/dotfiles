@@ -1,8 +1,8 @@
 " Appearance
 " ------------------------------------------------------------------------------
-  set guifont=FF-Letter-Gothic-z:h13
+  set guifont=FF-Letter-Gothic-t:h13
   colorscheme solarized
-  set background=dark
+  set background=light
   let g:indent_guides_auto_colors = 1
 	set colorcolumn=80
 
