@@ -23,6 +23,8 @@
   aa      = add -A
   diw     = diff --word-diff
   dsw     = diff --staged --word-diff
+  dis     = diff --stat
+  dss     = diff --staged --stat
   pf      = pull --ff-only
   amend   = commit --amend
   unstage = reset HEAD
