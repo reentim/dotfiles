@@ -287,3 +287,7 @@
     onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
     onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
     onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
+
+    " text-object based on matchit matching
+    vnoremap ac :<C-U>silent! normal! V<C-U>call <SNR>51_Match_wrapper('',1,'v') <CR>m'gv``
+    onoremap ac :normal Vaf<CR>
