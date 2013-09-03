@@ -53,15 +53,17 @@ function! FullUnderline(linechar)
 endfunction
 
 function! SplitHTMLAttrs()
-  normal 0dw
-  :s/ /\r/g
-
-  " fix indentation, for self closing tags, will indent parent and move
-  " cursor...
-  normal vat=
-
-  " ...so move it back
-  normal `._
+  normal ma
+  let line = getline('.')
+  if line =~ "<%" && &filetype == "eruby"
+    :s/\((\)/\1\r
+    " :s/\(,\)\(\s:\|\s"\)/\1\r\2/g
+    :s/\(,\)/\1\r/g
+    :s/\(\s\?)\s%>\)/\r\1/g
+  else
+    :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
+  endif
+  normal $=`a
 endfunction
 
 function! TrimWhiteSpace()

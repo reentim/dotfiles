@@ -190,7 +190,7 @@
     autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
 
   " Split HTML attributes
-    nnoremap <leader>S :call SplitHTMLAttrs()<CR>
+    nnoremap <leader>S :silent! call SplitHTMLAttrs()<CR>
 
   " Shortcut to invoke watch / browser refresh script in background...
     let g:watching = 0
