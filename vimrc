@@ -5,6 +5,7 @@
     set backspace=indent,eol,start
     set history=10000
     set encoding=utf-8
+    set fileencoding=utf-8
     set showcmd
     set ttyfast
     set ttimeout
@@ -102,7 +103,7 @@
     let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
-    let g:html_indent_inctags = "html,body,head,tbody"
+    let g:html_indent_inctags = "html,body,head,tbody,p,li"
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 

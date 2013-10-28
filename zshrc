@@ -31,3 +31,5 @@ export WORDCHARS='*?[]~&;!$%^<>'
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
 bindkey    "^[3;5~"         delete-char
+
+export LC_ALL="en_AU.UTF-8"
