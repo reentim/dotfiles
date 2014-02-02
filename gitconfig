@@ -14,6 +14,7 @@
   l       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   graph   = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   g       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
+  dl      = "!f() { git l master.. --no-merges; }; f"
   st      = status -sb
   ci      = commit --verbose
   cim     = commit -m
@@ -33,4 +34,4 @@
   tool = vimdiff
   defaultToUpstream = true
 [push]
-  default = tracking
+  default = current
