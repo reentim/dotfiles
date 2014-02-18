@@ -34,4 +34,4 @@
   tool = vimdiff
   defaultToUpstream = true
 [push]
-  default = current
+  default = tracking
