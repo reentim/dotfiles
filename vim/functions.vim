@@ -177,3 +177,45 @@ function! RunFile()
     echo "Don't know what sort of file this is."
   endif
 endfunction
+
+function! RunCurrentTest(context)
+  if InTestFile()
+    call SetTestFile()
+    if a:context == 'at_line'
+      call SetTestFileLine()
+    endif
+  endif
+  if a:context == 'at_line'
+    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . ":" . TestFileLine()
+  else
+    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile()
+  endif
+endfunction
+
+function! TestPrefix()
+  if glob(".zeus.sock") != ""
+    return "zeus"
+  else
+    return "bundle exec"
+  endif
+endfunction
+
+function! InTestFile()
+  return match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\)$') != -1
+endfunction
+
+function! SetTestFile()
+  let g:test_file=@%
+endfunction
+
+function! SetTestFileLine()
+  let g:test_file_line = line(".")
+endfunction
+
+function! TestFile()
+  return g:test_file
+endfunction
+
+function! TestFileLine()
+  return g:test_file_line
+endfunction
