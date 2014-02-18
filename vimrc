@@ -46,7 +46,11 @@
     colorscheme solarized
   endif
 
-  set background=dark
+  if $ITERM_PROFILE == 'Solarized Light'
+    set background=light
+  else
+    set background=dark
+  endif
 
   " Highlight trailing whitespace, but not during insertion
     highlight TrailingWhitespace ctermbg=red guibg=red
@@ -72,7 +76,7 @@
 
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
-  autocmd FileType php,c,sh
+  autocmd FileType php,c
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   autocmd FileType gitcommit let b:noResumeCursorPosition=1
@@ -124,6 +128,7 @@
     let g:CommandTMaxHeight=10
     set wildignore+=public/css
     set wildignore+=tmp
+    set wildignore+=_site
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
@@ -167,7 +172,6 @@
   " Edit vim-related files
     nnoremap <leader>ev :e $MYVIMRC<CR>
     nnoremap <leader>ef :e ~/.vim/functions.vim<CR>
-    nnoremap <leader>ew :e ~/.vim/whims.vim<CR>
 
   " Reload .vimrc
     nnoremap <leader>er :source $MYVIMRC<CR>
