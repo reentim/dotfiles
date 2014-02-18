@@ -14,8 +14,6 @@
     syntax on
 
   " Actual preferences
-    set sidescrolloff=15
-    set scrolloff=2
     set autoread
     set mouse=a
     set ttymouse=xterm2 " better selection and dragging, especially inside tmux
@@ -103,7 +101,7 @@
     let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
-    let g:html_indent_inctags = "html,body,head,tbody,p,li"
+    let g:html_indent_inctags = "html,body,head,tbody,p,li,label"
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 
@@ -125,6 +123,7 @@
     let g:CommandTClearMap='<C-w>'
     let g:CommandTMaxHeight=10
     set wildignore+=public/css
+    set wildignore+=tmp
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz

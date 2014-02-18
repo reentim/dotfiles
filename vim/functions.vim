@@ -161,7 +161,7 @@ function! CloseBuffer()
 endfunction
 
 function! RunFile()
-  if &ft == "bash"
+  if &ft == "bash" || &ft == "sh"
     !clear && time bash %:p
   elseif &ft == "ruby"
     !clear && time ruby %:p
