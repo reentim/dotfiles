@@ -20,6 +20,7 @@ autoload -U colors && colors
 setopt inc_append_history
 setopt share_history
 setopt hist_ignore_all_dups
+setopt interactivecomments
 export HISTSIZE=100000
 export HISTFILE="$HOME/.history"
 export SAVEHIST=$HISTSIZE
