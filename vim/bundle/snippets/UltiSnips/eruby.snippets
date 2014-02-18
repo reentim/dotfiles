@@ -14,7 +14,7 @@ snippet % "%" w
 <% ${1} %>
 endsnippet
 
-snippet = "=" w
+snippet = "=" i
 <%= ${1} %>${2}
 endsnippet
 
@@ -35,39 +35,39 @@ snippet for "for" w
 endsnippet
 
 snippet rp "rp" w
-<%= render :partial => '${1:item}' %>
+<%= render partial: '${1:item}' %>
 endsnippet
 
 snippet rpl "rpl" w
-<%= render :partial => '${1:item}', :locals => { :${2:name} => '${3:value}'$4 } %>
+<%= render partial: '${1:item}', locals: { :${2:name} => '${3:value}'$4 } %>
 endsnippet
 
 snippet rps "rps" w
-<%= render :partial => '${1:item}', :status => ${2:500} %>
+<%= render partial: '${1:item}', status: ${2:500} %>
 endsnippet
 
 snippet rpc "rpc" w
-<%= render :partial => '${1:item}', :collection => ${2:items} %>
+<%= render partial: '${1:item}', collection: ${2:items} %>
 endsnippet
 
 snippet lia "lia" w
-<%= link_to '${1:link text...}', :action => '${2:index}' %>
+<%= link_to '${1:link text...}', action: '${2:index}' %>
 endsnippet
 
 snippet liai "liai" w
-<%= link_to '${1:link text...}', :action => '${2:edit}', :id => ${3:@item} %>
+<%= link_to '${1:link text...}', action: '${2:edit}', id: ${3:@item} %>
 endsnippet
 
 snippet lic "lic" w
-<%= link_to '${1:link text...}', :controller => '${2:items}' %>
+<%= link_to '${1:link text...}', controller: '${2:items}' %>
 endsnippet
 
 snippet lica "lica" w
-<%= link_to '${1:link text...}', :controller => '${2:items}', :action => '${3:index}' %>
+<%= link_to '${1:link text...}', controller: '${2:items}', action: '${3:index}' %>
 endsnippet
 
 snippet licai "licai" w
-<%= link_to '${1:link text...}', :controller => '${2:items}', :action => '${3:edit}', :id => ${4:@item} %>
+<%= link_to '${1:link text...}', controller: '${2:items}', action: '${3:edit}', id: ${4:@item} %>
 endsnippet
 
 snippet yield "yield" w
@@ -188,15 +188,15 @@ snippet ofcfs "ofcfs" w
 endsnippet
 
 snippet rf "rf" w
-<%= render :file => "${1:file}"${2} %>
+<%= render file: "${1:file}"${2} %>
 endsnippet
 
 snippet rt "rt" w
-<%= render :template => "${1:file}"${2} %>
+<%= render template: "${1:file}"${2} %>
 endsnippet
 
 snippet slt "slt" w
-<%= stylesheet_link_tag ${1::all}, :cache => ${2:true} %>
+<%= stylesheet_link_tag ${1::all}, cache: ${2:true} %>
 endsnippet
 
 snippet sslt "sslt" w
