@@ -183,9 +183,9 @@
   " Run scripts
     nnoremap <leader>r :call RunFile()<CR>
 
-  " Run tests / specs
-    nnoremap <leader>f :wa\|:!clear && time bundle exec rspec --color --tty --format documentation %:p<CR>
-    nnoremap <leader>z :wa\|:!clear && time zeus rspec --color --tty --format documentation %:p<CR>
+  " Run tests
+    nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
+    nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
 
   " Load Ruby into irb session
     autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
