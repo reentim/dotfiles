@@ -186,9 +186,22 @@ function! RunCurrentTest(context)
     endif
   endif
   if a:context == 'at_line'
-    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . ":" . TestFileLine()
+    let line_options = ":" . TestFileLine()
   else
-    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile()
+    let line_options = ""
+  endif
+
+  if TmuxTestWindowRunning()
+    echo 'yes'
+  else
+    echo 'no'
+  endif
+
+  if TmuxTestWindowRunning()
+    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options . "' C-m"
+    redraw!
+  else
+    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options
   endif
 endfunction
 
@@ -197,6 +210,18 @@ function! TestPrefix()
     return "zeus"
   else
     return "bundle exec"
+  endif
+endfunction
+
+function! TmuxTestWindowRunning()
+  call system("tmux send-keys -t spec:spec")
+  let return_code = v:shell_error
+
+  " 0 is falsy in VimScript
+  if return_code == 0
+    return 1
+  else
+    return 0
   endif
 endfunction
 
