@@ -73,8 +73,10 @@
   filetype plugin indent on
   set autoindent
   set smartindent
-
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
+
+  autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
+  autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
 
   autocmd FileType php,c
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
