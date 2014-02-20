@@ -45,6 +45,9 @@
 		source ~/.aliases
 	fi
 
+  # $ITERM_PROFILE needs to be exported in order to send it over ssh
+  export ITERM_PROFILE=$ITERM_PROFILE
+
 # Do conditional stuff
 # ------------------------------------------------------------------------------
 	if [ $NPM_INSTALLED ]; then
