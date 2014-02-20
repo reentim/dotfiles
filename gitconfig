@@ -30,8 +30,11 @@
   amend   = commit --amend
   unstage = reset HEAD
   ff      = merge --ff-only
+  ctags   = "!.git/hooks/ctags"
 [merge]
   tool = vimdiff
   defaultToUpstream = true
 [push]
   default = tracking
+[init]
+  templatedir = ~/.git_template
