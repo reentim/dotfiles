@@ -145,6 +145,10 @@
   " coffee-script
     highlight link coffeeSpaceError NONE
 
+  " YouCompleteMe
+    let g:ycm_collect_identifiers_from_tags_files = 1
+    let g:ycm_seed_identifiers_with_syntax = 1
+
 " Searching
 " ==============================================================================
   set hlsearch
@@ -257,6 +261,10 @@
     set listchars+=trail:.
     set listchars+=extends:>
     set listchars+=precedes:<
+
+" Ctags
+" ==============================================================================
+  set tags+=.git/tags
 
 " General custom mappings
 " ==============================================================================
