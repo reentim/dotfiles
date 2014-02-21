@@ -264,6 +264,10 @@
     set listchars+=extends:>
     set listchars+=precedes:<
 
+  " Copy the last yanked register to host
+  vnoremap <leader>c :call CopyToHost()<CR>
+
+
 " Ctags
 " ==============================================================================
   set tags+=.git/tags
