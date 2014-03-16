@@ -38,3 +38,5 @@
   default = tracking
 [init]
   templatedir = ~/.git_template
+[rerere]
+	enabled = true
