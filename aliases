@@ -40,3 +40,14 @@ alias ta='t a'
 alias ff='find . -type f 2>/dev/null| ack -i '
 alias heredoc="read -rd '' HEREDOC << 'EOF'"
 alias cdr='cd $(git rev-parse --show-cdup)'
+
+function staging_deploy_1 {
+  bundle exec cap staging1 deploy -S branch=\"$(git rev-parse --abbrev-ref HEAD)\" -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+}
+function staging_deploy_2 {
+  bundle exec cap staging2 deploy -S branch=\"$(git rev-parse --abbrev-ref HEAD)\" -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+}
+
+function delete_merged_branches {
+  git branch --merged | grep -v "*" | xargs -n 1 git branch -d
+}
