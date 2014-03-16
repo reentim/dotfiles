@@ -259,6 +259,7 @@ function! CopyToHost()
   let selection = GetVisualSelection()
   call writefile(selection, $HOME . "/.vim-clipboard.txt")
   call system("cat ~/.vim-clipboard.txt | ssh client 'pbcopy'")
+  echom 'Copied to clipboard!'
 endfunction
 
 function! ItermProfile()
