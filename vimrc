@@ -40,13 +40,13 @@
   set laststatus=2
   set t_Co=256
 
-  if $TERM_PROGRAM == 'Apple_Terminal' || $ITERM_PROFILE == 'Black'
+  if $TERM_PROGRAM == 'Apple_Terminal' || ItermProfile() =~ 'Black'
     colorscheme Tomorrow-Night-Bright
   else
     colorscheme solarized
   endif
 
-  if $ITERM_PROFILE == 'Solarized Light'
+  if ItermProfile() =~ 'Solarized Light'
     set background=light
   else
     set background=dark

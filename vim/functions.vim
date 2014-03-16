@@ -260,3 +260,11 @@ function! CopyToHost()
   call writefile(selection, $HOME . "/.vim-clipboard.txt")
   call system("cat ~/.vim-clipboard.txt | ssh client 'pbcopy'")
 endfunction
+
+function! ItermProfile()
+  if filereadable($HOME . "/.iterm_profile")
+    return readfile($HOME . "/.iterm_profile")[0]
+  else
+    return $ITERM_PROFILE
+  endif
+endfunction
