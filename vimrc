@@ -135,7 +135,6 @@
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
-    nnoremap <leader>t  :wa\|:CommandTFlush<CR>\|:CommandT<CR>
 
   " Ctrl-P
     let g:ctrlp_working_path_mode = ''
