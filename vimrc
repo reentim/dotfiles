@@ -85,11 +85,12 @@
 
   " Spell-checking
     if has('spell')
-      autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal spell
-      autocmd FileType eruby                    setlocal spell
-      autocmd FileType markdown                 setlocal spell
-      autocmd BufNewFile,BufRead *.tpl.php      setlocal spell
-      autocmd BufNewFile,BufRead html           setlocal spell
+      autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal spell
+      autocmd BufNewFile,BufRead COMMIT_EDITMSG  setlocal spell
+      autocmd FileType eruby                     setlocal spell
+      autocmd FileType markdown                  setlocal spell
+      autocmd BufNewFile,BufRead *.tpl.php       setlocal spell
+      autocmd BufNewFile,BufRead html            setlocal spell
     endif
 
 " Plugins
