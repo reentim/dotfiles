@@ -152,6 +152,9 @@
     let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_seed_identifiers_with_syntax = 1
 
+  " Ack - use Ag
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+
 " Searching
 " ==============================================================================
   set hlsearch
