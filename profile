@@ -48,6 +48,10 @@
   # $ITERM_PROFILE needs to be exported in order to send it over ssh
   export ITERM_PROFILE=$ITERM_PROFILE
 
+  # Store $ITERM_PROFILE in a file, to be read in e.g. tmux sessions with
+  # out-of-date environment variables
+  echo $ITERM_PROFILE > ~/.iterm_profile
+
 # Do conditional stuff
 # ------------------------------------------------------------------------------
 	if [ $NPM_INSTALLED ]; then
