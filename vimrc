@@ -153,6 +153,7 @@
 
   " Ack - use Ag
   let g:ackprg = 'ag --nogroup --nocolor --column'
+  cabbrev Ag Ack
 
 " Searching
 " ==============================================================================
@@ -269,7 +270,6 @@
 
   " Copy the last yanked register to host
   vnoremap <leader>c :call CopyToHost()<CR>
-
 
 " Ctags
 " ==============================================================================
