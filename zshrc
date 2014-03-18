@@ -27,7 +27,7 @@ export SAVEHIST=$HISTSIZE
 
 setopt rmstarsilent # don't warn on 'rm *'
 
-export WORDCHARS='*?[]~&;!$%^<>'
+export WORDCHARS='*?[]~&;!$%^<>-'
 
 # Fixing delete key in OSX
 bindkey    "^[[3~"          delete-char
