@@ -11,7 +11,7 @@ alias ls="ls $ls_opt"
 
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	# use GNU ls if it's available
-	if (which gls > /dev/null); then
+	if $(which gls > /dev/null); then
 		alias ls="gls $ls_opt"
 	else
 		alias ls='ls -CFG'
@@ -25,8 +25,8 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 fi
 
 alias l='ls -lGgh' # list, omit group, omit owner, human readable sizes
-alias ll='ls -la' # list, show all files
-alias la='ls -A' # no list, show almost all
+alias ll='ls -la'  # list, show all files
+alias la='ls -A'   # no list, show almost all
 
 # Key-saving shortcuts
 alias vi='vim'
@@ -37,17 +37,23 @@ alias t='tmux'
 alias ta='t a'
 
 # Kind of new things
-alias ff='find . -type f 2>/dev/null| ack -i '
-alias heredoc="read -rd '' HEREDOC << 'EOF'"
-alias cdr='cd $(git rev-parse --show-cdup)'
+alias ff='find . -type f 2>/dev/null | ack -i '
+alias cdr='cd $(git rev-parse --show-cdup)'     # cd to git root
 
-function staging_deploy_1 {
-  bundle exec cap staging1 deploy -S branch=\"$(git rev-parse --abbrev-ref HEAD)\" -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+function staging-deploy-1 {
+  bundle exec cap staging1 deploy
+    -S branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+    -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
 }
-function staging_deploy_2 {
-  bundle exec cap staging2 deploy -S branch=\"$(git rev-parse --abbrev-ref HEAD)\" -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+function staging-deploy-2 {
+  bundle exec cap staging2 deploy
+    -S branch=\"$(git rev-parse --abbrev-ref HEAD)\"
+    -S php_branch=\"$(git rev-parse --abbrev-ref HEAD)\"
 }
 
-function delete_merged_branches {
-  git branch --merged | grep -v "*" | xargs -n 1 git branch -d
+function delete-local-merged-branches {
+  git branch --merged |
+    grep -v "*" |
+    grep -v master |
+    xargs -n 1 git branch -d
 }
