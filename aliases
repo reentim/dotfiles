@@ -57,3 +57,12 @@ function delete-local-merged-branches {
     grep -v master |
     xargs -n 1 git branch -d
 }
+
+function delete-remote-merged-branches {
+  git branch -a --merged origin/master |
+    grep --color=never remotes |
+    grep -v HEAD |
+    grep -v master |
+    sed "s:remotes/origin/::g" |
+    xargs -L 1 git push origin --delete
+}
