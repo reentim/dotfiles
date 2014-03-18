@@ -52,6 +52,9 @@
   # out-of-date environment variables
   echo $ITERM_PROFILE > ~/.iterm_profile
 
+  # Setting for some scripts designed to run inside a VM and talk to host
+  export SCRIPTED_SSH_ENABLED=true
+
 # Do conditional stuff
 # ------------------------------------------------------------------------------
 	if [ $NPM_INSTALLED ]; then

@@ -35,9 +35,9 @@ alias duh='du -csh'
 alias sr='screen -r'
 alias t='tmux'
 alias ta='t a'
+alias sshu='ssh -A ubuntu@'
 
 # Kind of new things
-alias ff='find . -type f 2>/dev/null | ack -i '
 alias cdr='cd $(git rev-parse --show-cdup)'     # cd to git root
 
 function staging-deploy-1 {
