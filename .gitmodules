@@ -116,3 +116,7 @@
 	path = vim/bundle/vim-textobj-rubyblock
 	url = git@github.com:nelstrom/vim-textobj-rubyblock.git
   ignore = dirty
+[submodule "vim/bundle/vim-change-hash-syntax"]
+	path = vim/bundle/vim-change-hash-syntax
+	url = git@github.com:ck3g/vim-change-hash-syntax.git
+  ignore = dirty
