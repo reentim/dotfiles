@@ -1,0 +1,10 @@
+#!/bin/bash
+
+A=$1
+B=$2
+
+function compare {
+  diff <(find $A -type f -print0 | xargs -0 shasum) <(find $B -type f -print0 | xargs -0 shasum | sed "s:$B:$A:g")
+}
+
+compare

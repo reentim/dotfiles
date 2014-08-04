@@ -13,12 +13,13 @@ end
 
 desc "Install dotfiles."
 task :install do
-  exclude   = %w{Rakefile README.md .gitmodules ssh}
+  exclude = %w{Rakefile README.md .gitmodules ssh}
   linkables = Dir.glob('*') - exclude
+  link_as_visible = %w{bin}
 
   linkables.each do |file|
     source = File.join(DOTFILES_DIR, file)
-    target = File.join(HOME, ".#{file}")
+    target = File.join(HOME, "#{'.' unless link_as_visible.include?(file)}#{file}")
 
     make_link(source, target)
   end

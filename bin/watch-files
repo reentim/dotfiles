@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+# watch.rb by Brett Terpstra, 2011 <http://brettterpstra.com>
+# with credit to Carlo Zottmann <https://github.com/carlo/haml-sass-file-watcher>
+
+trap("SIGINT") { exit }
+
+if ARGV[0] == '-h' || ARGV[0] == '--help'
+  puts "Usage: watch DIRECTORY[=.] URL[=localhost] BROWSER[=\"Google Chrome\"]"
+  exit
+end
+
+def ssh_client_available
+  return false unless ENV['SSH_CLIENT']
+  %x[ssh -q client exit]
+  $?.exitstatus == 0
+end
+
+# TODO: proper option parsing
+WATCH_FOLDER = ARGV[0].nil? ? '.' : ARGV[0]
+URL          = ARGV[1].nil? ? 'localhost' : ARGV[1]
+BROWSER      = ARGV[2].nil? ? 'Google Chrome' : ARGV[2]
+
+filetypes = ['css', 'html', 'rb', 'erb', 'js', 'scss']
+REFRESH_ACTION = {
+         "Google Chrome" => "tell atab to reload",
+  "Google Chrome Canary" => "tell atab to reload",
+                "Safari" => "tell atab to do javascript \"window.location.reload()\""
+}
+
+# non-recursive
+# files = filetypes.map { |type| Dir.glob(File.join(WATCH_FOLDER, "*.#{type}")) }.flatten
+
+# recursive
+files = filetypes.map { |type| Dir.glob(File.join(WATCH_FOLDER, "**", "*.#{type}")) }.flatten
+
+abort "\nNo files found!" unless files.any?
+
+puts "Watching #{files.count} files in #{WATCH_FOLDER} for changes..."
+
+def refresh_browser
+  puts "Refreshing #{BROWSER} tabs with URLs containing '#{URL}'... "
+
+  if has_osascript
+    %x[apple_scipt]
+  elsif ssh_client_available
+    %x[echo '#{apple_script}' | ssh client]
+  end
+end
+
+def has_osascript
+  %x[which osascript > /dev/null]
+  $?.exitstatus == 0
+end
+
+def apple_script
+%Q{osascript<<HEREDOC
+  tell application "#{BROWSER}"
+    set windowList to every window
+    repeat with aWindow in windowList
+      set tabList to every tab of aWindow
+      repeat with atab in tabList
+        if (URL of atab contains "#{URL}") then
+          #{REFRESH_ACTION[BROWSER]}
+        end if
+      end repeat
+    end repeat
+  end tell
+HEREDOC
+}
+end
+
+def report_changes(changed_file)
+  puts "Detected change in #{changed_file[0]}"
+end
+
+while true do
+  new_hash = files.collect {|f| [ f, File.stat(f).mtime.to_i ] }
+  hash ||= new_hash
+  diff_hash = new_hash - hash
+
+  unless diff_hash.empty?
+    hash = new_hash
+
+    diff_hash.each do |df|
+      report_changes(df)
+    end
+
+    refresh_browser
+  end
+
+  sleep 0.25
+end
