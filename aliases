@@ -35,7 +35,7 @@ alias duh='du -csh'
 alias sr='screen -r'
 alias t='tmux'
 alias ta='t a'
-alias sshu='ssh -A ubuntu@'
+alias sshu='ssh -A -l ubuntu '
 
 # Kind of new things
 alias cdr='cd $(git rev-parse --show-cdup)'     # cd to git root
@@ -65,4 +65,8 @@ function delete-remote-merged-branches {
     grep -v master |
     sed "s:remotes/origin/::g" |
     xargs -L 1 git push origin --delete
+}
+
+function ssh-flippa-worker {
+  ssh -A -l ubuntu $(cd ~/flippa/rails && bx cap production | ag worker | head -n 1 | sed 's/Found worker server: //')
 }
