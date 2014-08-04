@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# find file
+
+pattern=$1
+shift
+search_path=${*:-'.'}
+
+find $search_path -type f 2>/dev/null | ag -i $pattern
