@@ -140,6 +140,14 @@
 
   " Ctrl-P
     let g:ctrlp_working_path_mode = ''
+    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_prompt_mappings = {
+      \ 'PrtSelectMove("j")':   ['<c-j>', '<down>', '<c-n>'],
+      \ 'PrtSelectMove("k")':   ['<c-k>', '<up>', '<c-p>'],
+      \ 'PrtHistory(-1)':       [],
+      \ 'PrtHistory(1)':        [],
+      \ }
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
