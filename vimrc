@@ -131,6 +131,7 @@
     let g:CommandTClearMap='<C-w>'
     let g:CommandTMaxHeight=10
     set wildignore+=public/css
+    set wildignore+=public/assets
     set wildignore+=tmp
     set wildignore+=_site
     set wildignore+=*.png,*.jpg,*.gif
