@@ -147,6 +147,8 @@ function! HiddenBuffers()
   return hidden_buffers
 endfunction
 
+" :bdelete also closes the current window; this function attempts to close the
+" current buffer while leaving the window intact.
 function! CloseBuffer()
   if len(HiddenBuffers()) > 0
     execute "buffer" . HiddenBuffers()[0]
