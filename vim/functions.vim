@@ -191,13 +191,10 @@ function! RunCurrentTest(context)
     let line_options = ""
   endif
 
-  if TmuxTestWindowRunning()
-    echo 'yes'
-  else
-    echo 'no'
-  endif
-
-  if TmuxTestWindowRunning()
+  if TmuxTestPaneRunning()
+    exe ":silent !tmux send-keys -t 2 'clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options . "' C-m"
+    redraw!
+  elseif TmuxTestWindowRunning()
     exe ":silent !tmux send-keys -t spec:spec 'clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options . "' C-m"
     redraw!
   else
@@ -219,6 +216,18 @@ function! TmuxTestWindowRunning()
 
   " 0 is falsy in VimScript
   if return_code == 0
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+function! TmuxTestPaneRunning()
+  return 0
+  call system("[[ $(printf %d $(tmux list-panes | wc -l)) > 1 ]]")
+  let multiple_splits = v:shell_error
+
+  if multiple_splits == 0
     return 1
   else
     return 0
