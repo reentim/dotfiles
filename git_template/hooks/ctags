@@ -3,5 +3,7 @@ set -e
 PATH="/usr/local/bin:$PATH"
 dir="`git rev-parse --git-dir`"
 trap 'rm -f "$dir/tags.$$"' EXIT INT TERM
+mkdir .git/tags_lock 2>/dev/null || exit 0
+trap "rmdir .git/tags_lock; rm .git/tags.$$" EXIT
 git ls-files|ctags --tag-relative --fields=+l -L - -f$dir/tags.$$
 mv $dir/tags.$$ $dir/tags
