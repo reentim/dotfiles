@@ -199,6 +199,7 @@
   " Run tests
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
+    cabbrev Rspec :!clear && bundle exec rspec %
 
   " Load Ruby into irb session
     autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
