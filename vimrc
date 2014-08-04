@@ -82,6 +82,7 @@
     \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   autocmd FileType gitcommit let b:noResumeCursorPosition=1
+  autocmd FileType gitrebase let b:noResumeCursorPosition=1
 
   " Spell-checking
     if has('spell')
