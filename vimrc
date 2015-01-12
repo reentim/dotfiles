@@ -319,3 +319,13 @@
     " text-object based on matchit matching
     vnoremap ac :<C-U>silent! normal! V<C-U>call <SNR>51_Match_wrapper('',1,'v') <CR>m'gv``
     onoremap ac :normal Vaf<CR>
+
+    " Search for conflict markers
+    nnoremap ,m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
+
+    command! BD :call DeleteInactiveBufs()
+    command! Bd :call CloseBuffer()
+    cnoreabbrev bd Bd
+    cnoreabbrev Bd BD
+
+    cnoreabbrev git Git

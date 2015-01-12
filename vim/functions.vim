@@ -60,6 +60,9 @@ function! SplitHTMLAttrs()
     " :s/\(,\)\(\s:\|\s"\)/\1\r\2/g
     :s/\(,\)/\1\r/g
     :s/\(\s\?)\s%>\)/\r\1/g
+  elseif line =~ "/>"
+    :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
+    :s/\(\s\/>\)/\r\1/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
   endif
@@ -147,19 +150,12 @@ function! HiddenBuffers()
   return hidden_buffers
 endfunction
 
-" :bdelete also closes the current window; this function attempts to close the
-" current buffer while leaving the window intact.
+" :bdelete also closes the current window; this function closes the buffer while
+" leaving the window intact.
 function! CloseBuffer()
-  if len(HiddenBuffers()) > 0
-    execute "buffer" . HiddenBuffers()[0]
-  else
     enew
-  endif
-
-  if buffer_name('%') != ""
     split #
     bdelete
-  endif
 endfunction
 
 function! RunFile()
@@ -279,4 +275,35 @@ function! ItermProfile()
   else
     return $ITERM_PROFILE
   endif
+endfunction
+
+function! DeleteInactiveBufs()
+  "From tabpagebuflist() help, get a list of all buffers in all tabs
+  let tablist = []
+  for i in range(tabpagenr('$'))
+    call extend(tablist, tabpagebuflist(i + 1))
+  endfor
+
+  "Below originally inspired by Hara Krishna Dara and Keith Roberts
+  "http://tech.groups.yahoo.com/group/vim/message/56425
+  let nWipeouts = 0
+  for i in range(1, bufnr('$'))
+    if bufexists(i) && !getbufvar(i,"&mod") && index(tablist, i) == -1 && buflisted(i)
+      "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs AND the buffer is listed (don't blow away Command-T, ControlP, etc)
+      silent exec 'bwipeout' i
+      let nWipeouts = nWipeouts + 1
+    endif
+  endfor
+  echomsg nWipeouts . ' buffer(s) wiped out'
+endfunction
+
+function! PromoteVariableToMethod()
+  execute "normal ddmb/defkodefjokkp==kdddt=?defA pxj_dw`b"
+endfunction
+
+function! InteractiveRebaseFixup()
+  while search('\vpick [0-9a-f]{7} fix [0-9a-f]{7}$')
+    normal $*nddnp
+    normal cwf
+  endwhile
 endfunction
