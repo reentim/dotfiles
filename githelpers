@@ -1,13 +1,19 @@
 #!/bin/bash
 
-HASH="%C(yellow)%h%C(reset)"
-RELATIVE_TIME="%C(green)%ar%C(reset)"
-AUTHOR="%C(bold blue)%an%C(reset)"
-REFS="%C(red)%d%C(reset)"
-SUBJECT="%s"
+unwip() {
+  if [ `git log --format=%B -n 1 HEAD` = 'wip' ]; then
+    git reset --soft HEAD~1;
+    git reset HEAD;
+  fi;
+}
 
-# FORMAT="$HASH{$RELATIVE_TIME{$AUTHOR{$REFS $SUBJECT"
-# git log --graph --pretty="tformat:$FORMAT" | column -t -s '{' | less -FXRS
-
-FORMAT="$HASH $RELATIVE_TIME $AUTHOR{$REFS{$SUBJECT"
-git log --graph --pretty="tformat:$FORMAT" | column -t -s '{' | less -FXRS
+recent_branch() {
+  git reflog -n 1000 |
+    grep 'checkout: moving' |
+    grep -oE --color=never "\S+$" |
+    grep -v "\^" |
+    awk ' !x[$0]++' | # remove duplicates while preserving sort order
+    tail -n +2 |
+    selecta |
+    xargs git checkout
+}
