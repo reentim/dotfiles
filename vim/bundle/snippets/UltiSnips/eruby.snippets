@@ -14,8 +14,12 @@ snippet % "%" w
 <% ${1} %>
 endsnippet
 
-snippet = "=" i
+snippet = "=" w
 <%= ${1} %>${2}
+endsnippet
+
+snippet == "=="
+<%== ${1} %>${2}
 endsnippet
 
 snippet end "end" w
@@ -75,7 +79,7 @@ snippet yield "yield" w
 endsnippet
 
 snippet conf "conf" w
-<% content_for :${1:head} do %>
+<% content_for(:${1:head}) do %>
 	${2}
 <% end %>
 endsnippet
