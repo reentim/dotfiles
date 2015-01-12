@@ -1,5 +1,7 @@
 require 'rake'
 
+task default: :install
+
 HOME = Dir.home
 DOTFILES_DIR = File.dirname(__FILE__)
 
@@ -36,4 +38,3 @@ task :ssh do
     make_link(source, target)
   end
 end
-
