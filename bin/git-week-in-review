@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo -e "$(
+for i in {1..7}; do
+  date +"%A %d %B" --date="`expr $i - 1` days ago"
+  echo "---"
+  git --no-pager shortlog --all --since="$i days ago" --until="`expr $i - 1` days ago"
+  echo ""
+done
+)" | less
