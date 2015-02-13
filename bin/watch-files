@@ -2,6 +2,8 @@
 # watch.rb by Brett Terpstra, 2011 <http://brettterpstra.com>
 # with credit to Carlo Zottmann <https://github.com/carlo/haml-sass-file-watcher>
 
+require "rake"
+
 trap("SIGINT") { exit }
 
 if ARGV[0] == '-h' || ARGV[0] == '--help'
@@ -20,25 +22,26 @@ WATCH_FOLDER = ARGV[0].nil? ? '.' : ARGV[0]
 URL          = ARGV[1].nil? ? 'localhost' : ARGV[1]
 BROWSER      = ARGV[2].nil? ? 'Google Chrome' : ARGV[2]
 
-filetypes = ['css', 'html', 'rb', 'erb', 'js', 'scss']
+FILETYPES = ['css', 'html', 'rb', 'erb', 'js', 'scss']
 REFRESH_ACTION = {
          "Google Chrome" => "tell atab to reload",
   "Google Chrome Canary" => "tell atab to reload",
                 "Safari" => "tell atab to do javascript \"window.location.reload()\""
 }
 
-# non-recursive
-# files = filetypes.map { |type| Dir.glob(File.join(WATCH_FOLDER, "*.#{type}")) }.flatten
-
 # recursive
-files = filetypes.map { |type| Dir.glob(File.join(WATCH_FOLDER, "**", "*.#{type}")) }.flatten
+def files
+  @files ||= FILETYPES.map do |type|
+    FileList[File.join(WATCH_FOLDER, "**", "*.#{type}")].exclude(/node_modules/)
+  end.flatten
+end
 
 abort "\nNo files found!" unless files.any?
 
-puts "Watching #{files.count} files in #{WATCH_FOLDER} for changes..."
+puts "Watching #{files.count} files in #{WATCH_FOLDER} for changes, with #{BROWSER} poised to refresh tabs with URLs containing '#{URL}'..."
 
 def refresh_browser
-  puts "Refreshing #{BROWSER} tabs with URLs containing '#{URL}'... "
+  puts "Refreshing #{BROWSER} tabs with URLs containing '#{URL}'..."
 
   if has_osascript
     %x[apple_scipt]
@@ -73,8 +76,16 @@ def report_changes(changed_file)
   puts "Detected change in #{changed_file[0]}"
 end
 
+tick = 0
 while true do
-  new_hash = files.collect {|f| [ f, File.stat(f).mtime.to_i ] }
+  tick += 1
+
+  new_hash = files.collect { |f|
+    [
+      f,
+      File.exists?(f) ? File.stat(f).mtime.to_i : nil
+    ]
+  }
   hash ||= new_hash
   diff_hash = new_hash - hash
 
@@ -86,6 +97,11 @@ while true do
     end
 
     refresh_browser
+  end
+
+  if tick >= 9
+    tick = 0
+    @files = nil
   end
 
   sleep 0.25
