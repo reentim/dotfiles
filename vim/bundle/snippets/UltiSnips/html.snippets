@@ -519,6 +519,10 @@ snippet figure "figure" w
 <figure>${1}</figure>
 endsnippet
 
+snippet figure. "figure." w
+<figure class="${1}">${2}</figure>
+endsnippet
+
 snippet footer "footer" w
 <footer>
 	${1}
@@ -885,7 +889,7 @@ snippet link:atom "link:atom" w
 endsnippet
 
 snippet link:css "link:css" w
-<link rel="stylesheet" href="${1:style.css}" type="text/css" media="${2:all}" />${3}
+<link rel="stylesheet" href="${1:style.css}" />${3}
 endsnippet
 
 snippet link:favicon "link:favicon" w
@@ -1364,6 +1368,6 @@ snippet bogan "bogan" w
   </p>
 endsnippet
 
-snippet c "c" i
- class="${1}"
+snippet c "c" w
+class="${1}"
 endsnippet
