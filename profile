@@ -16,124 +16,125 @@
 
 # Check environment
 # ------------------------------------------------------------------------------
-	SYSTEM_TYPE=$(uname)
+  SYSTEM_TYPE=$(uname)
 
-	if [ -d $HOME/.rbenv ]; then
-		RBENV_INSTALLED=1
-	fi
+  if [ -d $HOME/.rbenv ]; then
+    RBENV_INSTALLED=1
+  fi
 
-	if [ -d /usr/local/Library/Homebrew ]; then
-		HOMEBREW_INSTALLED=1
-	fi
+  if [ -d /usr/local/Library/Homebrew ]; then
+    HOMEBREW_INSTALLED=1
+  fi
 
-	if (which npm > /dev/null); then
-		NPM_INSTALLED=1
-	fi
+  if (which npm > /dev/null); then
+    NPM_INSTALLED=1
+  fi
 
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
-	export PATH=/usr/local/bin:$PATH
-	export LESS=-Ri
+  export PATH=/usr/local/bin:$PATH
+  export LESS=-Ri
 
-	# vim temp files go in /tmp/ directories
-	mkdir -p /tmp/vimtemp
-	mkdir -p /tmp/vimswap
-	mkdir -p /tmp/vimundo
+  # vim temp files go in /tmp/ directories
+  mkdir -p /tmp/vimtemp
+  mkdir -p /tmp/vimswap
+  mkdir -p /tmp/vimundo
 
-	# Alias definitions
-	if [ -f ~/.aliases ]; then
-		source ~/.aliases
-	fi
+  # Alias definitions
+  if [ -f ~/.aliases ]; then
+    source ~/.aliases
+  fi
 
   if [ -n "$ITERM_PROFILE" ]; then
     # $ITERM_PROFILE needs to be exported in order to send it over ssh
     export ITERM_PROFILE=$ITERM_PROFILE
 
-  # Store $ITERM_PROFILE in a file, to be read in e.g. tmux sessions with
-  # out-of-date environment variables
-  echo $ITERM_PROFILE > ~/.iterm_profile
+    # Store $ITERM_PROFILE in a session-specific file, to be read in e.g. tmux
+    # sessions with out-of-date environment variables
+    echo $ITERM_PROFILE > /tmp/$ITERM_SESSION_ID-iterm_profile
+  fi
 
   # Setting for some scripts designed to run inside a VM and talk to host
   export SCRIPTED_SSH_ENABLED=true
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
-	if [ $NPM_INSTALLED ]; then
-		export PATH="/usr/local/share/npm/bin:$PATH"
-		export NODE_PATH='/usr/local/lib/node_modules'
-	fi
+  if [ $NPM_INSTALLED ]; then
+    export PATH="/usr/local/share/npm/bin:$PATH"
+    export NODE_PATH='/usr/local/lib/node_modules'
+  fi
 
-	if [ -d $HOME/bin ]; then
-		export PATH="$HOME/bin:$PATH"
-	fi
+  if [ -d $HOME/bin ]; then
+    export PATH="$HOME/bin:$PATH"
+  fi
 
-	if [ $RBENV_INSTALLED ]; then
-		export PATH="$HOME/.rbenv/bin:$PATH"
-		eval "$(rbenv init -)"
-	fi
+  if [ $RBENV_INSTALLED ]; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+  fi
 
-	# z - a fuzzy finder for directory changing
-	#    installed under Homebrew on MacOS, otherwise available in dotfiles
-	if [ $HOMEBREW_INSTALLED ]; then
-		if [ -f `brew --prefix`/etc/profile.d/z.sh ]; then
-			source `brew --prefix`/etc/profile.d/z.sh
-		fi
-	else
-		if [ -f ~/.dotfiles/lib/z/z.sh ]; then
-			source ~/.dotfiles/lib/z/z.sh
-		fi
-	fi
+  # z - a fuzzy finder for directory changing
+  #    installed under Homebrew on MacOS, otherwise available in dotfiles
+  if [ $HOMEBREW_INSTALLED ]; then
+    if [ -f `brew --prefix`/etc/profile.d/z.sh ]; then
+      source `brew --prefix`/etc/profile.d/z.sh
+    fi
+  else
+    if [ -f ~/.dotfiles/lib/z/z.sh ]; then
+      source ~/.dotfiles/lib/z/z.sh
+    fi
+  fi
 
-	# Homebrew stuff
-	if [ $HOMEBREW_INSTALLED ]; then
-		[ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
-	fi
+  # Homebrew stuff
+  if [ $HOMEBREW_INSTALLED ]; then
+    [ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
+  fi
 
-	# Bash specific
-	if [ -n "$BASH_VERSION" ]; then
-		source ~/.bash_colors
+  # Bash specific
+  if [ -n "$BASH_VERSION" ]; then
+    source ~/.bash_colors
 
-		HOST_COLOR=${BRIGHT_CYAN}
-		DIR_COLOR=${BRIGHT_VIOLET}
-		USER_COLOR=${BRIGHT_YELLOW}
+    HOST_COLOR=${BRIGHT_CYAN}
+    DIR_COLOR=${BRIGHT_VIOLET}
+    USER_COLOR=${BRIGHT_YELLOW}
 
-		# Include human readable colour shortcuts
-		if [ -f ~/.bash_colors ]; then
-			. ~/.bash_colors
-		fi
+    # Include human readable colour shortcuts
+    if [ -f ~/.bash_colors ]; then
+      . ~/.bash_colors
+    fi
 
-		# History stuff
-		export HISTCONTROL=erasedups
-		export HISTSIZE=10000
-		shopt -s histappend
+    # History stuff
+    export HISTCONTROL=erasedups
+    export HISTSIZE=10000
+    shopt -s histappend
 
-		if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
+    if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
 
-		source ~/.bash_custom
+    source ~/.bash_custom
 
-		if [ $HOMEBREW_INSTALLED ]; then
-			if [ -f `brew --prefix`/etc/bash_completion ]; then
-				source `brew --prefix`/etc/bash_completion
-			fi
-		else
-			if [ -f /etc/bash_completion.d/git ]; then
-				. /etc/bash_completion.d/git
-			fi
-		fi
-	fi
+    if [ $HOMEBREW_INSTALLED ]; then
+      if [ -f `brew --prefix`/etc/bash_completion ]; then
+        source `brew --prefix`/etc/bash_completion
+      fi
+    else
+      if [ -f /etc/bash_completion.d/git ]; then
+        . /etc/bash_completion.d/git
+      fi
+    fi
+  fi
 
-	if [ $SYSTEM_TYPE = 'Linux' ]; then
-		# Ensure MySQL is on the PATH, if necessary
-		if [ -f /etc/profile.d/mysql.server.sh ]; then
-			source /etc/profile.d/mysql.server.sh
-		fi
+  if [ $SYSTEM_TYPE = 'Linux' ]; then
+    # Ensure MySQL is on the PATH, if necessary
+    if [ -f /etc/profile.d/mysql.server.sh ]; then
+      source /etc/profile.d/mysql.server.sh
+    fi
 
-		# Custom git-ff (https://github.com/pda/babushka-deps/blob/master/git/git-ff)
-		# never seems to work with my setup; remove it.
-		if [ -f /usr/local/bin/git-ff ]; then
-			sudo rm /usr/local/bin/git-ff
-		fi
-	fi
+    # Custom git-ff (https://github.com/pda/babushka-deps/blob/master/git/git-ff)
+    # never seems to work with my setup; remove it.
+    if [ -f /usr/local/bin/git-ff ]; then
+      sudo rm /usr/local/bin/git-ff
+    fi
+  fi
 
   export GOPATH=$HOME/go
   export PATH=$PATH:$GOPATH/bin
