@@ -83,3 +83,9 @@ function delete-remote-merged-branches {
     sed "s:remotes/origin/::g" |
     xargs -L 1 git push origin --delete
 }
+
+function deploy {
+  git checkout master &&
+    git pull --ff-only &&
+    bundle exec cap production deploy
+}
