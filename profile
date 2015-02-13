@@ -45,8 +45,9 @@
 		source ~/.aliases
 	fi
 
-  # $ITERM_PROFILE needs to be exported in order to send it over ssh
-  export ITERM_PROFILE=$ITERM_PROFILE
+  if [ -n "$ITERM_PROFILE" ]; then
+    # $ITERM_PROFILE needs to be exported in order to send it over ssh
+    export ITERM_PROFILE=$ITERM_PROFILE
 
   # Store $ITERM_PROFILE in a file, to be read in e.g. tmux sessions with
   # out-of-date environment variables
