@@ -134,3 +134,6 @@
 			sudo rm /usr/local/bin/git-ff
 		fi
 	fi
+
+  export GOPATH=$HOME/go
+  export PATH=$PATH:$GOPATH/bin
