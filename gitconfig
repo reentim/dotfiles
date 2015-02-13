@@ -1,6 +1,8 @@
 [user]
   name = Timothy Reen
   email = reentim@gmail.com
+[github]
+  user = reentim
 [core]
   editor = vim
   excludesfile = "~/.gitignore-global"
