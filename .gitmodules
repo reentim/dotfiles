@@ -41,10 +41,6 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/vim-matchit"]
-	path = vim/bundle/vim-matchit
-	url = git@github.com:vim-scripts/matchit.zip.git
-  ignore = dirty
 [submodule "vim/bundle/xterm-color-table.vim"]
 	path = vim/bundle/xterm-color-table.vim
 	url = https://github.com/vim-scripts/xterm-color-table.vim.git
@@ -126,3 +122,6 @@
 [submodule "lib/selecta"]
 	path = lib/selecta
 	url = git@github.com:garybernhardt/selecta.git
+[submodule "vim/bundle/vim-matchit"]
+	path = vim/bundle/vim-matchit
+	url = git@github.com:tmhedberg/matchit.git
