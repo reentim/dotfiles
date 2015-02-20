@@ -194,7 +194,7 @@
     nnoremap <leader>ef :e ~/.vim/functions.vim<CR>
 
   " Reload .vimrc
-    nnoremap <leader>er :source $MYVIMRC<CR>
+    nnoremap <leader>er :source $MYVIMRC\|:CommandTFlush<CR>
 
   " Edit snippets
     nnoremap <leader>es :UltiSnipsEdit<CR>
