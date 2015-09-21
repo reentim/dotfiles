@@ -21,6 +21,7 @@
     set nowrap
     set textwidth=80
     set colorcolumn=80
+    set splitright
     let mapleader = ","
 
   " Pathogen
@@ -40,16 +41,16 @@
   set laststatus=2
   set t_Co=256
 
-  if $TERM_PROGRAM == 'Apple_Terminal' || ItermProfile() =~ 'Black'
-    colorscheme Tomorrow-Night-Bright
-  else
+  if ItermProfile() =~ 'Solarized'
     colorscheme solarized
-  endif
 
-  if ItermProfile() =~ 'Solarized Light'
-    set background=light
+    if ItermProfile() =~ 'Light'
+      set background=light
+    else
+      set background=dark
+    endif
   else
-    set background=dark
+    colorscheme Tomorrow-Night-Bright
   endif
 
   " Highlight trailing whitespace, but not during insertion
@@ -83,6 +84,7 @@
 
   autocmd FileType gitcommit let b:noResumeCursorPosition=1
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
+  autocmd FileType git-rebase-todo let b:noResumeCursorPosition=1
 
   " Spell-checking
     if has('spell')
@@ -139,11 +141,14 @@
     let g:CommandTMaxHeight=10
     set wildignore+=public/css
     set wildignore+=public/assets
+    set wildignore+=node_modules
+    set wildignore+=bower_components
     set wildignore+=tmp
     set wildignore+=_site
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
+    nnoremap <leader>t :CommandTFlush<CR>\|:CommandT<CR>
 
   " Ctrl-P
     let g:ctrlp_working_path_mode = ''
@@ -155,6 +160,11 @@
       \ 'PrtHistory(-1)':       [],
       \ 'PrtHistory(1)':        [],
       \ }
+    let g:ctrlp_user_command = [
+      \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
+      \ 'find %s -type f'
+    \ ]
+    let g:ctrlp_use_caching = 0
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -164,9 +174,9 @@
   " coffee-script
     highlight link coffeeSpaceError NONE
 
-  " YouCompleteMe
-    let g:ycm_collect_identifiers_from_tags_files = 1
-    let g:ycm_seed_identifiers_with_syntax = 1
+  " " YouCompleteMe
+  "   let g:ycm_collect_identifiers_from_tags_files = 1
+  "   let g:ycm_seed_identifiers_with_syntax = 1
 
   " Ack - use Ag
   let g:ackprg = 'ag --nogroup --nocolor --column'
