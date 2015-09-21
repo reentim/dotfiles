@@ -94,6 +94,13 @@
       autocmd BufNewFile,BufRead html            setlocal spell
     endif
 
+  " jrnl journaling tool
+  autocmd BufNewFile,BufRead jrnl*
+    \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nu
+  autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> j gj
+  autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> k gk
+  autocmd BufNewFile,BufRead jrnl* vnew
+
 " Plugins
 " ==============================================================================
   " Surround
