@@ -89,3 +89,11 @@ function deploy {
     git pull --ff-only &&
     bundle exec cap production deploy
 }
+
+function staging-deploy {
+  git push && git push staging staging:master
+}
+
+function production-deploy {
+  git push && git push heroku master
+}
