@@ -7,3 +7,4 @@ else
 fi
 
 echo $1 > ~/.iterm_profile
+echo $1 > /tmp/$ITERM_SESSION_ID-iterm_profile

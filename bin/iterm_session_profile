@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+cat /tmp/$ITERM_SESSION_ID-iterm_profile

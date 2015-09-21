@@ -4,7 +4,7 @@ function server() {
   python -m SimpleHTTPServer "$port"
 }
 
-function iterm_profile {
+function export-iterm-profile {
   export ITERM_PROFILE=$1
   set_iterm_profile $1
 }
