@@ -8,12 +8,11 @@ unwip() {
 }
 
 recent_branch() {
-  git reflog -n 1000 |
-    grep 'checkout: moving' |
-    grep -oE --color=never "\S+$" |
-    grep -v "\^" |
-    awk ' !x[$0]++' | # remove duplicates while preserving sort order
-    tail -n +2 |
-    selecta |
-    xargs git checkout
+    echo "
+      puts '`git reflog -n 100 | grep 'checkout: moving'`'.lines.
+        map { |l| l.strip.split('to ').last }.uniq & '`git branch`'.lines.
+        map { |l| l.strip }
+    " | ruby |
+        selecta |
+        xargs git checkout
 }
