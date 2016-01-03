@@ -3,12 +3,12 @@
   "linewrap": 79,
   "encrypt": false,
   "default_minute": 0,
-  "tagsymbols": "@#",
-  "editor": "open -b jp.informationarchitects.WriterForMacOSX -Wn",
-  "editor": "vim",
+  "tagsymbols": "@",
+  "editor": "open -b org.vim.MacVim -W",
+  "editor": "open -b pro.writer.mac -W",
   "timeformat": "%Y-%m-%d %H:%M",
   "highlight": true,
   "journals": {
-    "default": "~/Dropbox/Apps/Day One/Journal.dayone"
+    "default": "/Users/tim/journal.txt"
   }
 }
