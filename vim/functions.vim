@@ -63,6 +63,8 @@ function! SplitHTMLAttrs()
   elseif line =~ "/>"
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
     :s/\(\s\/>\)/\r\1/g
+  elseif &filetype == "ruby"
+    :s/,/,\r/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
   endif

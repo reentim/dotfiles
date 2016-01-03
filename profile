@@ -70,7 +70,7 @@
 
   if [ $RBENV_INSTALLED ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
+    eval "$(rbenv init - zsh)"
   fi
 
   # z - a fuzzy finder for directory changing

@@ -98,10 +98,9 @@
 
   " jrnl journaling tool
   autocmd BufNewFile,BufRead jrnl*
-    \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nu
+    \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nonu
   autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> j gj
   autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> k gk
-  autocmd BufNewFile,BufRead jrnl* vnew
 
 " Plugins
 " ==============================================================================
@@ -322,7 +321,7 @@
     onoremap ac :normal Vaf<CR>
 
     " Search for conflict markers
-    nnoremap ,m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
+    nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
 
     command! BD :call DeleteInactiveBufs()
     command! Bd :call CloseBuffer()
