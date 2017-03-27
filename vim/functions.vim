@@ -164,7 +164,11 @@ function! RunFile()
   if &ft == "bash" || &ft == "sh"
     !clear && time bash %:p
   elseif &ft == "ruby"
-    !clear && time ruby %:p
+    if expand('%t') == "Gemfile"
+      !clear && time bundle
+    else
+      !clear && time ruby %:p
+    endif
   elseif &ft == "python"
     !clear && time python %:p
   elseif &ft == "javascript"
@@ -179,6 +183,9 @@ function! RunFile()
 endfunction
 
 function! RunCurrentTest(context)
+  " exe ":!clear && time yarn test"
+  " return
+
   if InTestFile()
     call SetTestFile()
     if a:context == 'at_line'
@@ -225,19 +232,21 @@ function! TmuxTestWindowRunning()
 endfunction
 
 function! TmuxTestPaneRunning()
-  return 0
-  call system("[[ $(printf %d $(tmux list-panes | wc -l)) > 1 ]]")
-  let multiple_splits = v:shell_error
+  if g:tmux_test_pane_enabled == 1
+    call system("[[ $(printf %d $(tmux list-panes | wc -l)) > 1 ]]")
+    let multiple_splits = v:shell_error
 
-  if multiple_splits == 0
-    return 1
-  else
-    return 0
+    if multiple_splits == 0
+      return 1
+    else
+      return 0
+    endif
   endif
 endfunction
 
 function! InTestFile()
-  return match(expand("%"), '\(.feature\|_spec.rb\|_test.rb\)$') != -1
+  let pattern = '\(.feature\|_spec.rb\|_test.rb\|test.js\)$'
+  return match(expand("%"), pattern) != -1
 endfunction
 
 function! SetTestFile()
@@ -356,4 +365,8 @@ endfunction
 
 function! ShouldToExpect()
   %s/\(\S\+\).should\(\s\+\)==\s*\(.\+\)/expect(\1).to\2eq(\3)/
+endfunction
+
+function! Debounce(command)
+  execute a:command
 endfunction

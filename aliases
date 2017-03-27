@@ -59,13 +59,14 @@ function pullreq {
 function stage {
   branch=$(git rev-parse --abbrev-ref HEAD)
 
-  git co staging-$1 &&
+  git co staging &&
     git fetch &&
-    git reset --hard origin/staging-$1 &&
+    git reset --hard origin/staging &&
     git merge --no-ff origin/$branch &&
     git push &&
     git co $branch &&
-    bundle exec cap staging$1 deploy
+    # bundle exec cap staging$1 deploy
+    staging-deploy
 }
 
 function delete-local-merged-branches {

@@ -94,7 +94,7 @@
 
   autocmd FileType gitcommit let b:noResumeCursorPosition=1
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
-  autocmd FileType git-rebase-todo let b:noResumeCursorPosition=1
+  autocmd FileType gitrebase :call InteractiveRebaseFixup()
 
   " Spell-checking
     if has('spell')
