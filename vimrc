@@ -175,7 +175,6 @@
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
     let g:UltiSnipsJumpForwardTrigger = "<C-]>"
-    let g:UltiSnipsSnippetsDir        = "~/.vim/bundle/snippets/UltiSnips"
 
   " coffee-script
     highlight link coffeeSpaceError NONE
@@ -220,7 +219,7 @@
     nnoremap <leader>er :source $MYVIMRC<CR>
 
   " Edit snippets
-    nnoremap <leader>es :UltiSnipsEdit<CR>
+    nnoremap <leader>es :UltiSnipsEdit!<CR>
 
   " Open current file / directory in MacOS
     nnoremap <leader>o :!open %<CR><CR>
