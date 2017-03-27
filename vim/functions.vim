@@ -191,14 +191,16 @@ function! RunCurrentTest(context)
     let line_options = ""
   endif
 
+  let test_command = " rspec --color --tty -f doc "
+
   if TmuxTestPaneRunning()
-    exe ":silent !tmux send-keys -t 2 'clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options . "' C-m"
+    exe ":silent !tmux send-keys -t 2 'clear && time " . TestPrefix() . test_command . TestFile() . line_options . "' C-m"
     redraw!
   elseif TmuxTestWindowRunning()
-    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options . "' C-m"
+    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . TestPrefix() . test_command . TestFile() . line_options . "' C-m"
     redraw!
   else
-    exe ":!clear && time " . TestPrefix() . " rspec --color --tty -f doc " . TestFile() . line_options
+    exe ":!clear && time " . TestPrefix() . test_command . TestFile() . line_options
   endif
 endfunction
 
@@ -308,4 +310,50 @@ function! InteractiveRebaseFixup()
     normal $*nddnp
     normal cwf
   endwhile
+endfunction
+
+" Creates a find command ignoring paths and files set in wildignore
+function! FindWithWildignore(path)
+  let excluding=""
+  for entry in split(&wildignore,",")
+    let excluding.= (match(entry,'*/*') ? " ! -ipath \'" . a:path . "/" : " ! -iname \'") . entry . "\' "
+  endfor
+  return "find " . a:path . "/* -type f \\\( " . excluding . " \\\)"
+endfunction
+
+function! SelectaCommand(choice_command, selecta_args, vim_command)
+  try
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec a:vim_command . " " . selection
+endfunction
+
+function! SelectaFile(path)
+  call SelectaCommand(FindWithWildignore(a:path), "", ":e")
+endfunction
+
+"Fuzzy select
+function! SelectaIdentifier()
+  " Yank the word under the cursor into the z register
+  normal "zyiw
+  " Fuzzy match files in the current directory, starting with the word under
+  " the cursor
+  call SelectaCommand("find * -type f", "-s " . @z, ":e")
+endfunction
+nnoremap <c-g> :call SelectaIdentifier()<cr>
+
+function! SelectaBuffer()
+  let bufnrs = filter(range(1, bufnr("$")), 'buflisted(v:val)')
+  let buffers = map(bufnrs, 'bufname(v:val)')
+  call SelectaCommand('echo "' . join(buffers, "\n") . '"', "", ":b")
+endfunction
+
+function! ShouldToExpect()
+  %s/\(\S\+\).should\(\s\+\)==\s*\(.\+\)/expect(\1).to\2eq(\3)/
 endfunction

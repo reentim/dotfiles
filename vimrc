@@ -33,6 +33,16 @@
       source ~/.vim/functions.vim
     endif
 
+    set wildignore+=public/css/**
+    set wildignore+=public/assets/**
+    set wildignore+=node_modules/**
+    set wildignore+=bower_components/**
+    set wildignore+=tmp/**,log/**
+    set wildignore+=_site/**
+    set wildignore+=*.png,*.jpg,*.gif
+    set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
+    set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
+
 " Aesthetics
 " ==============================================================================
   set nonumber
@@ -121,7 +131,7 @@
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 
-  " delimitmate
+  " Delimitmate
     let delimitMate_expand_cr = 1
     let delimitMate_expand_space = 1
 
@@ -133,10 +143,23 @@
       exe "hi IndentGuidesEven ctermbg=" . g:colorscheme_indent_guide_even
     endif
 
+  " Selecta replaces CommandT
+    nnoremap <leader>t :call SelectaFile(".")<cr>
+    nnoremap <leader>gv :call SelectaFile("app/views")<cr>
+    nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
+    nnoremap <leader>gm :call SelectaFile("app/models")<cr>
+    nnoremap <leader>gh :call SelectaFile("app/helpers")<cr>
+    nnoremap <leader>gl :call SelectaFile("lib")<cr>
+    nnoremap <leader>gp :call SelectaFile("public")<cr>
+    nnoremap <leader>gs :call SelectaFile("app/assets/stylesheets")<cr>
+    nnoremap <leader>gj :call SelectaFile("app/assets/javascripts")<cr>
+    nnoremap <leader>gf :call SelectaFile("features")<cr>
+
+    " Fuzzy select a buffer. Open the selected buffer with :b.
+    nnoremap <leader>b :call SelectaBuffer()<cr>
+
   " Ctrl-P
     let g:ctrlp_working_path_mode = ''
-    let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-    let g:ctrlp_use_caching = 0
     let g:ctrlp_prompt_mappings = {
       \ 'PrtSelectMove("j")':   ['<c-j>', '<down>', '<c-n>'],
       \ 'PrtSelectMove("k")':   ['<c-k>', '<up>', '<c-p>'],
@@ -194,7 +217,7 @@
     nnoremap <leader>ef :e ~/.vim/functions.vim<CR>
 
   " Reload .vimrc
-    nnoremap <leader>er :source $MYVIMRC\|:CommandTFlush<CR>
+    nnoremap <leader>er :source $MYVIMRC<CR>
 
   " Edit snippets
     nnoremap <leader>es :UltiSnipsEdit<CR>
@@ -329,49 +352,3 @@
     cnoreabbrev Bd BD
 
     cnoreabbrev git Git
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Selecta Mappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Run a given vim command on the results of fuzzy selecting from a given shell
-" command. See usage below.
-function! SelectaCommand(choice_command, selecta_args, vim_command)
-  try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
-  catch /Vim:Interrupt/
-    " Swallow the ^C so that the redraw below happens; otherwise there will be
-    " leftovers from selecta on the screen
-    redraw!
-    return
-  endtry
-  redraw!
-  exec a:vim_command . " " . selection
-endfunction
-
-function! SelectaFile(path)
-  call SelectaCommand("find " . a:path . "/* -type f", "", ":e")
-endfunction
-
-nnoremap <leader>t :call SelectaFile(".")<cr>
-nnoremap <leader>gv :call SelectaFile("app/views")<cr>
-nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
-nnoremap <leader>gm :call SelectaFile("app/models")<cr>
-nnoremap <leader>gh :call SelectaFile("app/helpers")<cr>
-nnoremap <leader>gl :call SelectaFile("lib")<cr>
-nnoremap <leader>gp :call SelectaFile("public")<cr>
-nnoremap <leader>gs :call SelectaFile("app/assets/stylesheets")<cr>
-nnoremap <leader>gj :call SelectaFile("app/assets/javascripts")<cr>
-nnoremap <leader>gf :call SelectaFile("features")<cr>
-
-"Fuzzy select
-function! SelectaIdentifier()
-  " Yank the word under the cursor into the z register
-  normal "zyiw
-  " Fuzzy match files in the current directory, starting with the word under
-  " the cursor
-  call SelectaCommand("find * -type f", "-s " . @z, ":e")
-endfunction
-nnoremap <c-g> :call SelectaIdentifier()<cr>
-
-
-let g:ycm_disable_for_files_larger_than_kb = 1
