@@ -121,3 +121,6 @@
 [submodule "vim/bundle/vim-snippets"]
 	path = vim/bundle/vim-snippets
 	url = git@github.com:honza/vim-snippets.git
+[submodule "vim/bundle/vim-ember"]
+	path = vim/bundle/vim-ember
+	url = git@github.com:joukevandermaas/vim-ember-hbs.git
