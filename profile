@@ -30,6 +30,10 @@
     NPM_INSTALLED=1
   fi
 
+  if (which yarn > /dev/null); then
+    YARN_INSTALLED=1
+  fi
+
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
   export PATH=/usr/local/bin:$PATH
@@ -62,6 +66,10 @@
   if [ $NPM_INSTALLED ]; then
     export PATH="/usr/local/share/npm/bin:$PATH"
     export NODE_PATH='/usr/local/lib/node_modules'
+  fi
+
+  if [ $YARN_INSTALLED ]; then
+    export PATH="$PATH:`yarn global bin`"
   fi
 
   if [ -d $HOME/bin ]; then
