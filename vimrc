@@ -45,7 +45,7 @@
 
 " Aesthetics
 " ==============================================================================
-  set nonumber
+  set nu
   set wildmenu
   set ruler
   set laststatus=2
@@ -175,6 +175,11 @@
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
     let g:UltiSnipsJumpForwardTrigger = "<C-]>"
+
+    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-ember
+    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine-arrow
+    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine
+    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-node
 
   " coffee-script
     highlight link coffeeSpaceError NONE
