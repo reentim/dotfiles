@@ -183,8 +183,10 @@ function! RunFile()
 endfunction
 
 function! RunCurrentTest(context)
-  " exe ":!clear && time yarn test"
-  " return
+  if &filetype == "javascript"
+    exe ":!clear && time yarn test"
+    return
+  endif
 
   if InTestFile()
     call SetTestFile()
@@ -199,15 +201,16 @@ function! RunCurrentTest(context)
   endif
 
   let test_command = " rspec --color --tty -f doc "
+  let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
 
   if TmuxTestPaneRunning()
-    exe ":silent !tmux send-keys -t 2 'clear && time " . TestPrefix() . test_command . TestFile() . line_options . "' C-m"
+    exe ":silent !tmux send-keys -t 2 'clear && time " . l:test_string . "' C-m"
     redraw!
   elseif TmuxTestWindowRunning()
-    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . TestPrefix() . test_command . TestFile() . line_options . "' C-m"
+    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . l:test_string . "' C-m"
     redraw!
   else
-    exe ":!clear && time " . TestPrefix() . test_command . TestFile() . line_options
+    exe ":!clear && time " . l:test_string
   endif
 endfunction
 
@@ -215,7 +218,7 @@ function! TestPrefix()
   if glob(".zeus.sock") != ""
     return "zeus"
   else
-    return "bundle exec"
+    return ""
   endif
 endfunction
 
@@ -258,7 +261,11 @@ function! SetTestFileLine()
 endfunction
 
 function! TestFile()
-  return g:test_file
+  if exists("g:test_file")
+    return g:test_file
+  else
+    return expand('%')
+  endif
 endfunction
 
 function! TestFileLine()
