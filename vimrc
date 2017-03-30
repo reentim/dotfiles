@@ -213,8 +213,8 @@
 " Leader shortcuts
 " ==============================================================================
   " Edit vim-related files
-    nnoremap <leader>ev :e $MYVIMRC<CR>
-    nnoremap <leader>ef :e ~/.vim/functions.vim<CR>
+    nnoremap <leader>ev :lcd ~/.dotfiles\|e $MYVIMRC<CR>
+    nnoremap <leader>ef :lcd ~/.dotfiles\|e ~/.dotfiles/vim/functions.vim<CR>
 
   " Reload .vimrc
     nnoremap <leader>er :source $MYVIMRC<CR>
