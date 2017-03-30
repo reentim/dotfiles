@@ -136,12 +136,6 @@
     if [ -f /etc/profile.d/mysql.server.sh ]; then
       source /etc/profile.d/mysql.server.sh
     fi
-
-    # Custom git-ff (https://github.com/pda/babushka-deps/blob/master/git/git-ff)
-    # never seems to work with my setup; remove it.
-    if [ -f /usr/local/bin/git-ff ]; then
-      sudo rm /usr/local/bin/git-ff
-    fi
   fi
 
   export GOPATH=$HOME/go
