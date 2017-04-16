@@ -124,3 +124,6 @@
 [submodule "vim/bundle/vim-ember"]
 	path = vim/bundle/vim-ember
 	url = git@github.com:joukevandermaas/vim-ember-hbs.git
+[submodule "vim/bundle/vim-jsx"]
+	path = vim/bundle/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
