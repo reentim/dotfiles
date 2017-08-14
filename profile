@@ -34,6 +34,10 @@
     YARN_INSTALLED=1
   fi
 
+  if (which direnv > /dev/null); then
+    eval "$(direnv hook zsh)"
+  fi
+
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
   export PATH=/usr/local/bin:$PATH
