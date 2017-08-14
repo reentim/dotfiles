@@ -78,7 +78,7 @@ function delete-local-merged-branches {
 }
 
 function delete-remote-merged-branches {
-  git branch -a --merged origin/development |
+  git branch -a --merged origin/master |
     grep --color=never remotes |
     grep -v HEAD |
     grep -v staging |
