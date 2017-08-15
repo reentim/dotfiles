@@ -6,9 +6,11 @@
   "tagsymbols": "@",
   "editor": "open -b org.vim.MacVim -W",
   "editor": "open -b pro.writer.mac -W",
+  "editor": "vim",
   "timeformat": "%Y-%m-%d %H:%M",
   "highlight": true,
   "journals": {
-    "default": "/Users/tim/journal.txt"
+    "default": "/Users/tim/journal.txt",
+    "dev": "/Users/tim/dev/dev-journal.txt"
   }
 }

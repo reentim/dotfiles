@@ -1,1 +1,31 @@
+global !p
+from javascript_snippets import (
+  semi, space_before_function_paren, keyword_spacing
+)
+endglobal
 
+snippet cl "console.log"
+console.log(${0})`!p snip.rv = semi(snip)`
+endsnippet
+
+snippet then
+.then((${1:result}) => {
+  ${0}
+})`!p snip.rv = semi(snip)`
+endsnippet
+
+snippet catch
+.catch((${1:error}) => {
+  ${0}
+})`!p snip.rv = semi(snip)`
+endsnippet
+
+snippet f
+${1:function} (${2:args}) {
+  ${0}
+}
+endsnippet
+
+snippet => "anonymous function" w
+(${1}) => { ${0:${VISUAL}} }
+endsnippet

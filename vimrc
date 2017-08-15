@@ -36,16 +36,18 @@
     set wildignore+=public/css/**
     set wildignore+=public/assets/**
     set wildignore+=node_modules/**
+    set wildignore+=client/node_modules/**
     set wildignore+=bower_components/**
     set wildignore+=tmp/**,log/**
     set wildignore+=_site/**
+    set wildignore+=*.gitkeep
     set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
 
 " Aesthetics
 " ==============================================================================
-  set nu
+  set nonu
   set wildmenu
   set ruler
   set laststatus=2
@@ -86,15 +88,18 @@
   set smartindent
   set expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
-  autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
-  autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
+  augroup vimrc
+    autocmd!
 
-  autocmd FileType php,c
-    \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+    autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
+    autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
 
-  autocmd FileType gitcommit let b:noResumeCursorPosition=1
-  autocmd FileType gitrebase let b:noResumeCursorPosition=1
-  autocmd FileType gitrebase :call InteractiveRebaseFixup()
+    autocmd FileType php,c
+      \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+
+    autocmd FileType gitcommit let b:noResumeCursorPosition=1
+    autocmd FileType gitrebase let b:noResumeCursorPosition=1
+    autocmd FileType gitrebase :call InteractiveRebaseFixup()
 
   " Spell-checking
     if has('spell')
@@ -106,14 +111,20 @@
       autocmd BufNewFile,BufRead html            setlocal spell
     endif
 
-  " jrnl journaling tool
-  autocmd BufNewFile,BufRead jrnl*
-    \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nonu
-  autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> j gj
-  autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> k gk
+  " When Vim opens, jump to last cursor position
+    autocmd BufReadPost * call ResumeCursorPosition()
 
-" Plugins
-" ==============================================================================
+  " Aggressive autosaving
+    autocmd InsertLeave * silent! update
+    autocmd CursorMoved * silent! update
+    autocmd BufLeave,FocusLost * silent! wall
+
+    " jrnl journaling tool
+    autocmd BufNewFile,BufRead jrnl*
+      \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nonu
+    autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> j gj
+    autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> k gk
+
   " Surround
     " with method: ascii 'm'
       autocmd FileType javascript let b:surround_109 = "function() { \r }"
@@ -123,11 +134,26 @@
       autocmd FileType javascript let b:surround_105 = "if () { \r }"
       autocmd FileType ruby       let b:surround_105 = "if \r end"
 
+    " Ultisnips
+      autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
+      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-ember
+      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine-arrow
+      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine
+      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-node
+
+    " Load Ruby into irb session
+      autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
+
+  augroup END
+
+" Plugins
+" ==============================================================================
+
   " Syntastic
     let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
-    let g:html_indent_inctags = "html,body,head,tbody,p,li,label"
+    let g:html_indent_inctags = "html,body,head,tbody,p,li,label,g"
     let g:html_indent_script1 = "inc"
     let g:html_indent_style1 = "inc"
 
@@ -175,14 +201,17 @@
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
     let g:UltiSnipsJumpForwardTrigger = "<C-]>"
-
-    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-ember
-    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine-arrow
-    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine
-    autocmd FileType javascript :UltiSnipsAddFiletypes javascript-node
+    let g:ultisnips_javascript = {
+          \ 'keyword-spacing': 'always',
+          \ 'semi': 'never',
+          \ 'space-before-function-paren': 'always',
+          \ }
 
   " coffee-script
     highlight link coffeeSpaceError NONE
+
+  " JSX
+    let g:jsx_ext_required = 0
 
   " Ack - use Ag
     let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -213,8 +242,8 @@
 " Leader shortcuts
 " ==============================================================================
   " Edit vim-related files
-    nnoremap <leader>ev :lcd ~/.dotfiles\|e $MYVIMRC<CR>
-    nnoremap <leader>ef :lcd ~/.dotfiles\|e ~/.dotfiles/vim/functions.vim<CR>
+    nnoremap <leader>ev :e $MYVIMRC<CR>
+    nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
 
   " Reload .vimrc
     nnoremap <leader>er :source $MYVIMRC<CR>
@@ -234,29 +263,36 @@
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
     cabbrev Rspec :!clear && bundle exec rspec %
 
-  " Load Ruby into irb session
-    autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
-
   " Split HTML attributes
     nnoremap <leader>S :silent! call SplitHTMLAttrs()<CR>
 
   " Shortcut to invoke watch / browser refresh script in background...
-    let g:watching = 0
-    nnoremap <leader>c :call SetWatch()<CR><CR>
+    " let g:watching = 0
+    " nnoremap <leader>c :call SetWatch()<CR><CR>
     " ...and tidy up afterwards
-    autocmd VimLeave * :call RemoveWatch()
+    " autocmd VimLeave * :call RemoveWatch()
 
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
 
+  " Switching between tests and code
+    nnoremap <leader>. :call OpenTestAlternate()<cr>
+
+  " Search for conflict markers
+    nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
+
   " Underlining, relies on vim-commentary plugin
-  " ----------------------------------------------------
+  " --------------------------------------------
     nnoremap <leader>l :call Underline('-')<CR>
     nnoremap <leader>u :call Underline('=')<CR>
 
   " 80 character underline
     nnoremap <silent> <leader>8l :call FullUnderline('-')<CR>
     nnoremap <silent> <leader>8u :call FullUnderline('=')<CR>
+
+  " Promote to let
+    :command! PromoteToLet :call PromoteToLet()
+    nnoremap <leader>e :PromoteToLet<cr>
 
 " Folding
 " ==============================================================================
@@ -286,14 +322,6 @@
     set dir=/tmp/vimswap//
     set undofile
     set undodir=/tmp/vimundo//
-
-  " When Vim opens, jump to last cursor position
-    autocmd BufReadPost * call ResumeCursorPosition()
-
-  " Aggressive autosaving
-    autocmd InsertLeave * silent! update
-    autocmd CursorMoved * silent! update
-    autocmd BufLeave,FocusLost * silent! wall
 
   " Toggle the display of invisible characters
     nnoremap <F5> :set invlist<CR>
@@ -342,9 +370,6 @@
     " text-object based on matchit matching
     vnoremap ac :<C-U>silent! normal! V<C-U>call <SNR>51_Match_wrapper('',1,'v') <CR>m'gv``
     onoremap ac :normal Vaf<CR>
-
-    " Search for conflict markers
-    nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
 
     command! BD :call DeleteInactiveBufs()
     command! Bd :call CloseBuffer()
