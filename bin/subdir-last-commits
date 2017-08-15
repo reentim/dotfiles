@@ -11,7 +11,7 @@ repo_name() {
 }
 
 git_log() {
-  git --no-pager -C $dir log --pretty=format:'%at | %ad | %an | %s' -n 1
+  git --no-pager -C $dir log --date=local --pretty=format:'%at | %ad | %an | %s' -n 1
 }
 
 main |
