@@ -15,7 +15,7 @@ end
 
 desc "Install dotfiles."
 task :install do
-  exclude = %w{Rakefile README.md .gitmodules ssh}
+  exclude = %w{Rakefile README.md .gitmodules ssh Library}
   linkables = Dir.glob('*') - exclude
   link_as_visible = %w{bin}
 
@@ -37,4 +37,14 @@ task :ssh do
 
     make_link(source, target)
   end
+end
+
+desc "Install macOS custom keybindings"
+task :keybindings do
+  file = "Library/KeyBindings/DefaultKeyBinding.dict"
+  system "mkdir -p #{File.join(HOME, 'Library/KeyBindings')}"
+  make_link(
+    File.join(DOTFILES_DIR, file),
+    File.join(HOME, file)
+  )
 end
