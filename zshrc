@@ -6,10 +6,6 @@ for source in $auto_sources; do
   source ~/.zsh/$source.zsh
 done
 
-# Set custom prompt
-if [ -n "$TMUX" ]; then
-  export ZLE_RPROMPT_INDENT=0
-fi
 setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
@@ -28,7 +24,8 @@ export HISTSIZE=100000
 export HISTFILE="$HOME/.history"
 export SAVEHIST=$HISTSIZE
 
-setopt rmstarsilent # don't warn on 'rm *'
+# do not warn on 'rm *'
+setopt rmstarsilent
 
 export WORDCHARS='*?[]~&;!$%^<>-'
 

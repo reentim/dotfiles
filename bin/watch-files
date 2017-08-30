@@ -6,66 +6,34 @@ require "rake"
 
 trap("SIGINT") { exit }
 
-if ARGV[0] == '-h' || ARGV[0] == '--help'
-  puts "Usage: watch DIRECTORY[=.] URL[=localhost] BROWSER[=\"Google Chrome\"]"
-  exit
-end
-
-def ssh_client_available
-  return false unless ENV['SSH_CLIENT']
-  %x[ssh -q client exit]
-  $?.exitstatus == 0
-end
-
-# TODO: proper option parsing
-WATCH_FOLDER = ARGV[0].nil? ? '.' : ARGV[0]
-URL          = ARGV[1].nil? ? 'localhost' : ARGV[1]
-BROWSER      = ARGV[2].nil? ? 'Google Chrome' : ARGV[2]
-
 FILETYPES = ['css', 'html', 'rb', 'erb', 'js', 'scss']
-REFRESH_ACTION = {
-         "Google Chrome" => "tell atab to reload",
-  "Google Chrome Canary" => "tell atab to reload",
-                "Safari" => "tell atab to do javascript \"window.location.reload()\""
-}
 
 # recursive
 def files
   @files ||= FILETYPES.map do |type|
-    FileList[File.join(WATCH_FOLDER, "**", "*.#{type}")].exclude(/node_modules/)
+    FileList[File.join(".", "**", "*.#{type}")].exclude(/node_modules/)
   end.flatten
 end
 
 abort "\nNo files found!" unless files.any?
 
-puts "Watching #{files.count} files in #{WATCH_FOLDER} for changes, with #{BROWSER} poised to refresh tabs with URLs containing '#{URL}'..."
-
 def refresh_browser
-  puts "Refreshing #{BROWSER} tabs with URLs containing '#{URL}'..."
-
-  if has_osascript
-    %x[apple_scipt]
-  elsif ssh_client_available
-    %x[echo '#{apple_script}' | ssh client]
-  end
-end
-
-def has_osascript
-  %x[which osascript > /dev/null]
-  $?.exitstatus == 0
+  puts 'Refreshing...'
+  apple_script
 end
 
 def apple_script
-%Q{osascript<<HEREDOC
-  tell application "#{BROWSER}"
+%x{osascript<<HEREDOC
+  tell application "Google Chrome"
     set windowList to every window
+
     repeat with aWindow in windowList
       set tabList to every tab of aWindow
+
       repeat with atab in tabList
-        if (URL of atab contains "#{URL}") then
-          #{REFRESH_ACTION[BROWSER]}
-        end if
+        tell atab to reload
       end repeat
+
     end repeat
   end tell
 HEREDOC

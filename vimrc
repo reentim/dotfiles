@@ -1,5 +1,5 @@
 " General
-" ==============================================================================
+" ================================================================================
   " Sensible defaults
     set nocompatible
     set backspace=indent,eol,start
@@ -13,17 +13,6 @@
     set shell=bash
     syntax on
 
-  " Actual preferences
-    set autoread
-    set mouse=a
-    set ttymouse=xterm2 " better selection and dragging, especially inside tmux
-    set showmatch
-    set nowrap
-    set textwidth=80
-    set colorcolumn=80
-    set splitright
-    let mapleader = ","
-
   " Pathogen
     call pathogen#infect()
     call pathogen#helptags()
@@ -33,27 +22,75 @@
       source ~/.vim/functions.vim
     endif
 
-    set wildignore+=public/css/**
-    set wildignore+=public/assets/**
-    set wildignore+=node_modules/**
-    set wildignore+=client/node_modules/**
-    set wildignore+=bower_components/**
-    set wildignore+=tmp/**,log/**
-    set wildignore+=_site/**
-    set wildignore+=*.gitkeep
-    set wildignore+=*.png,*.jpg,*.gif
+  " Actual preferences
+    set autoread
+    set mouse=a
+    set ttymouse=sgr " 'The mouse works even in columns beyond 223'
+    set showmatch
+    set nowrap
+
+    if LongestLine() <= 80
+      set textwidth=80
+    endif
+
+    set colorcolumn=80
+    set splitright
+    let mapleader = ","
+    set nojoinspaces
+    " set winwidth=72 " the current window will be at least 72 spaces wide
+    set winheight=16
+    " set winheight=32
+    set cursorline
+
+    " Use the old vim regex engine for faster syntax highlighting
+    set re=1
+
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
+    set wildignore+=*.gitkeep
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
+    set wildignore+=*.png,*.jpg,*.gif
+    set wildignore+=.keep
+    set wildignore+=_site
+    set wildignore+=_site/**
+    set wildignore+=bower_components
+    set wildignore+=bower_components/**
+    set wildignore+=client/node_modules/**
+    set wildignore+=node_modules
+    set wildignore+=node_modules/**
+    set wildignore+=public/assets
+    set wildignore+=public/assets/**
+    set wildignore+=public/css
+    set wildignore+=public/css/**
+    set wildignore+=public/packs-test/**
+    set wildignore+=tmp
+    set wildignore+=tmp/**,log/**
+
+    " Netw directory listing
+    let g:netrw_liststyle = 3
+    let g:netrw_browse_split = 4
+    let g:netrw_winsize = 20
+
+    " this is useful if leaving Netrw open
+    " set noequalalways
 
 " Aesthetics
 " ==============================================================================
-  set nonu
+  set nu
   set wildmenu
   set ruler
   set laststatus=2
   set t_Co=256
+  set fillchars+=vert:\ " Hide pipe character in window separators
 
-  if ItermProfile() =~ 'Solarized'
+  " if (has("termguicolors"))
+  "   set termguicolors
+  " endif
+
+  if $TERM_PROGRAM =~ 'Apple_Terminal'
+    " colorscheme Tomorrow-Night-Bright
+    colorscheme solarized
+    set background=light
+  elseif ItermProfile() =~ 'Solarized'
     colorscheme solarized
 
     if ItermProfile() =~ 'Light'
@@ -77,8 +114,8 @@
   " https://gist.github.com/sos4nt/3187620).
   " If echo `tput sitm`italics`tput ritm` produces italic text, then this should
   " work (maybe)
-    if &term =~ "italic"
-        highlight Comment cterm=italic
+    if &term =~ "italic" || &term =~ "tmux"
+      highlight Comment cterm=italic
     endif
 
 " Filetype dependent formatting
@@ -91,11 +128,15 @@
   augroup vimrc
     autocmd!
 
+    autocmd FileType ruby :call CdToProjectRoot()
+
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
 
-    autocmd FileType php,c
-      \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+    autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal nowrap
+
+    " autocmd FileType php,c
+    "   \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtabABCfff
 
     autocmd FileType gitcommit let b:noResumeCursorPosition=1
     autocmd FileType gitrebase let b:noResumeCursorPosition=1
@@ -119,6 +160,8 @@
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
 
+    nnoremap <silent> <CR> :wall\|:nohlsearch<CR>
+
     " jrnl journaling tool
     autocmd BufNewFile,BufRead jrnl*
       \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nonu
@@ -136,21 +179,30 @@
 
     " Ultisnips
       autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-ember
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine-arrow
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-node
 
-    " Load Ruby into irb session
-      autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
-
+    " Tell vim-commentary about JSX
+    autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
   augroup END
 
 " Plugins
 " ==============================================================================
+  " ALE - Asynchronous Lint Engine
+  let g:ale_completion_delay = 50
+  let g:ale_enabled = 1
+  let g:ale_sign_column_always = 1
+	let g:ale_fixers = {
+	\ 'javascript': ['eslint', 'prettier'],
+  \ 'ruby': ['rufo', 'rubocop'],
+	\}
 
-  " Syntastic
-    let g:syntastic_mode_map = { 'mode': 'passive' }
+  nnoremap ]a :ALENext<CR>
+  nnoremap [a :ALEPrevious<CR>
+
+
+  " Splitjoin
+    let g:splitjoin_ruby_hanging_args = 0
+    let g:splitjoin_ruby_curly_braces = 0
+    let g:splitjoin_trailing_comma = 1
 
   " indent html
     let g:html_indent_inctags = "html,body,head,tbody,p,li,label,g"
@@ -169,17 +221,27 @@
       exe "hi IndentGuidesEven ctermbg=" . g:colorscheme_indent_guide_even
     endif
 
+    " nnoremap <leader>h :CommandTHelp<CR>
+
   " Selecta replaces CommandT
-    nnoremap <leader>t :call SelectaFile(".")<cr>
-    nnoremap <leader>gv :call SelectaFile("app/views")<cr>
-    nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
-    nnoremap <leader>gm :call SelectaFile("app/models")<cr>
-    nnoremap <leader>gh :call SelectaFile("app/helpers")<cr>
-    nnoremap <leader>gl :call SelectaFile("lib")<cr>
-    nnoremap <leader>gp :call SelectaFile("public")<cr>
-    nnoremap <leader>gs :call SelectaFile("app/assets/stylesheets")<cr>
-    nnoremap <leader>gj :call SelectaFile("app/assets/javascripts")<cr>
-    nnoremap <leader>gf :call SelectaFile("features")<cr>
+    nnoremap <leader>t :call SelectaGitFile(".")<cr>
+    nnoremap <leader>gc :call SelectaGitFile("app/controllers")<cr>
+    nnoremap <leader>gf :call SelectaGitFile("features")<cr>
+    nnoremap <leader>gh :call SelectaGitFile("app/helpers")<cr>
+    nnoremap <leader>gj :call SelectaGitFile("app/assets/javascripts")<cr>
+    nnoremap <leader>gl :call SelectaGitFile("lib")<cr>
+    nnoremap <leader>gm :call SelectaGitFile("app/models")<cr>
+    nnoremap <leader>gp :call SelectaGitFile("app/javascript/packs")<cr>
+    nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
+    nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
+    nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
+
+    " Branch files
+    nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<cr>
+
+
+    " Fuzzy select git files in current file directory
+    nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<cr>
 
     " Fuzzy select a buffer. Open the selected buffer with :b.
     nnoremap <leader>b :call SelectaBuffer()<cr>
@@ -192,11 +254,16 @@
       \ 'PrtHistory(-1)':       [],
       \ 'PrtHistory(1)':        [],
       \ }
-    let g:ctrlp_user_command = [
-      \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
-      \ 'find %s -type f'
-    \ ]
-    let g:ctrlp_use_caching = 0
+
+    " Selecta uses git ls-files, so Ctrl-P can be for non-git files, maybe?:
+
+    " let g:ctrlp_user_command = [
+    "   \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
+    "   \ 'find %s -type f'
+    " \ ]
+
+    let g:ctrlp_use_caching = 1
+    let g:ctrlp_match_window = 'min:10,max:20'
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -224,7 +291,6 @@
   set incsearch
   set ignorecase
   set smartcase
-  nnoremap <silent> <CR> :nohlsearch<CR>
 
   " Search for selected text, forwards or backwards
   " -----------------------------------------------
@@ -263,8 +329,8 @@
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
     cabbrev Rspec :!clear && bundle exec rspec %
 
-  " Split HTML attributes
-    nnoremap <leader>S :silent! call SplitHTMLAttrs()<CR>
+  " Split HTML attributes, Ruby lines
+    nnoremap <leader>S :silent! call SplitLine()<CR>
 
   " Shortcut to invoke watch / browser refresh script in background...
     " let g:watching = 0
@@ -290,10 +356,6 @@
     nnoremap <silent> <leader>8l :call FullUnderline('-')<CR>
     nnoremap <silent> <leader>8u :call FullUnderline('=')<CR>
 
-  " Promote to let
-    :command! PromoteToLet :call PromoteToLet()
-    nnoremap <leader>e :PromoteToLet<cr>
-
 " Folding
 " ==============================================================================
   set foldmethod=indent
@@ -307,12 +369,6 @@
   " switch to new split window
     nnoremap <leader>w <C-w>v<C-w>l
     nnoremap <leader>h :split<CR><C-w>j
-
-  " moving around windows
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
 
 " Behaviour
 " ==============================================================================
@@ -377,3 +433,19 @@
     cnoreabbrev Bd BD
 
     cnoreabbrev git Git
+
+		nnoremap <leader>pr obinding.pry<ESC>
+		nnoremap <leader>n :call RenameFile()<cr>
+    nnoremap <leader>s :call SortIndentLevel()<CR>
+
+		" " This is for working with Relay
+		" set includeexpr=substitute(v:fname,'Loader','','')
+		set path+=app/javascript/packs/**
+
+    " Italics handling (neccessary?)
+		let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+		let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+
+    " Scale back completion sources because the completion window sometimes has
+    " a big delay to show up -- maybe due to tags?
+    set complete=.,w,b,u

@@ -52,7 +52,7 @@ function! FullUnderline(linechar)
   normal `a
 endfunction
 
-function! SplitHTMLAttrs()
+function! SplitLine()
   normal ma
   let line = getline('.')
   if line =~ "<%" && &filetype == "eruby"
@@ -64,9 +64,11 @@ function! SplitHTMLAttrs()
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
     :s/\(\s\/>\)/\r\1/g
   elseif &filetype == "ruby"
-    :s/,/,\r/g
+    :s/\./\r./g
+    " :s/,/,\r/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
+    :s/>/\r>/g
   endif
   normal $=`a
 endfunction
@@ -158,22 +160,26 @@ function! CloseBuffer()
     enew
     split #
     bdelete
-    bnext
+    " bnext
 endfunction
 
 function! RunFile()
   if &ft == "bash" || &ft == "sh"
-    !clear && time bash %:p
+    call RunInShell('bash %:p')
   elseif &ft == "ruby"
-    if expand('%t') == "Gemfile"
-      !clear && time bundle
+    if expand('%:t') == "Gemfile"
+      call RunInShell('bundle')
+    elseif expand('%:h') == "db/migrate"
+      call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
+    elseif expand('%:t') == 'routes.rb'
+      call RunInShell('bundle exec rails routes')
     else
-      !clear && time ruby %:p
+      call RunInShell('ruby %:p')
     endif
   elseif &ft == "python"
-    !clear && time python %:p
+    call RunInShell('python %:p')
   elseif &ft == "javascript"
-    !clear && time node %:p
+    call RunInShell('node %:p')
   elseif &ft == "vim"
     source %:p
   elseif &ft
@@ -183,48 +189,118 @@ function! RunFile()
   endif
 endfunction
 
-function! RunCurrentTest(context)
-  if &filetype == "javascript"
-    exe ":!clear && time $(yarn bin)/mocha --require test/helper.js " . expand('%')
-    return
-  endif
+function! RailsMigrationVersion(filename)
+  return split(a:filename, "_")[0]
+endfunction
 
+function! RunInShell(command)
+  if ShouldSendOutputToTmux()
+    call RunShellCommandInTmux(a:command)
+  else
+    execute ":!clear && time " . a:command
+  endif
+endfunction
+
+function! ShouldSendOutputToTmux()
+  return TmuxWindowOrPaneRunning() && $TMUX != ''
+endfunction
+
+function! RailsMigrationStatus(version)
+  if ShellDidSucceed('test -f db/structure.sql')
+    " structure.sql contains a list of migrated versions
+    if ShellDidSucceed("grep " . a:version . " db/structure.sql")
+      return 'up'
+    else
+      return 'down'
+    endif
+  elseif ShellDidSucceed('test -f db/schema.rb')
+    " schema.rb only contains latest migration version
+    if ShellDidSucceed("grep " . a:version . " db/schema.rb")
+      return 'up'
+    else
+      " just assume the status is down
+      return 'down'
+
+      " or...
+      " determine true status of migration
+      let migration_status = split(ChomppedSystem("rails db:migrate:status | grep " . a:version))[0]
+      return l:migration_status
+    endif
+  endif
+  throw "Can't determine migration status"
+endfunction
+
+function! RunRailsMigration(version)
+  let migration_status = RailsMigrationStatus(a:version)
+
+  if l:migration_status == 'up'
+    call RunInShell("bundle exec rake db:migrate:down VERSION=" . a:version)
+  elseif l:migration_status == 'down'
+    call RunInShell("bundle exec rake db:migrate:up VERSION=" . a:version)
+  endif
+endfunction
+
+function! RunCurrentTest(context)
   if InTestFile()
     call SetTestFile()
     if a:context == 'at_line'
       call SetTestFileLine()
     endif
   endif
+
   if a:context == 'at_line'
     let line_options = ":" . TestFileLine()
   else
     let line_options = ""
   endif
 
-  let test_command = " rspec --color --tty -f doc "
-  let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
+  let test_string = TestRunner() . TestFile() . l:line_options
 
-  if TmuxTestPaneRunning()
-    exe ":silent !tmux send-keys -t 2 'clear && time " . l:test_string . "' C-m"
-    redraw!
-  elseif TmuxTestWindowRunning()
-    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . l:test_string . "' C-m"
-    redraw!
-  else
-    exe ":!clear && time " . l:test_string
-  endif
+  call RunInShell(l:test_string)
+
 endfunction
 
-function! TestPrefix()
-  if glob(".zeus.sock") != ""
-    return "zeus"
+function! ChomppedSystem(command)
+  " strip away the last byte of output
+  return system(a:command)[:-2]
+endfunction
+
+function! RunShellCommandInTmux(shell_command)
+  if TmuxTestWindowRunning()
+    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane-in-window spec:spec` 'clear && time " . a:shell_command . "' C-m"
+    redraw!
+  elseif TmuxTestPaneRunning()
+    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane` 'clear && time " . a:shell_command . "' C-m"
+    redraw!
   else
-    return ""
+    echoerr "Couldn't find tmux window or pane"
+    return 0
   endif
 endfunction
 
 function! TmuxTestWindowRunning()
-  call system("tmux send-keys -t spec:spec")
+  return ShellDidSucceed('tmux-find-recipient-pane-in-window spec:spec')
+endfunction
+
+function! TmuxTestPaneRunning()
+  return ShellDidSucceed('tmux-find-recipient-pane')
+endfunction
+
+function! TmuxWindowOrPaneRunning()
+  return TmuxTestWindowRunning() || TmuxTestPaneRunning()
+endfunction
+
+function! TestRunner()
+  if &filetype == "javascript" || &filetype == "javascript.jsx"
+    return " yarn jest "
+  else
+    return " bundle exec rspec --color --tty -f doc "
+  endif
+endfunction
+
+function! ShellDidSucceed(shell_command)
+  call system(a:shell_command)
+
   let return_code = v:shell_error
 
   " 0 is falsy in VimScript
@@ -232,19 +308,6 @@ function! TmuxTestWindowRunning()
     return 1
   else
     return 0
-  endif
-endfunction
-
-function! TmuxTestPaneRunning()
-  if g:tmux_test_pane_enabled == 1
-    call system("[[ $(printf %d $(tmux list-panes | wc -l)) > 1 ]]")
-    let multiple_splits = v:shell_error
-
-    if multiple_splits == 0
-      return 1
-    else
-      return 0
-    endif
   endif
 endfunction
 
@@ -291,11 +354,7 @@ function! CopyToHost()
 endfunction
 
 function! ItermProfile()
-  if filereadable("/tmp/" . $ITERM_SESSION_ID . "-iterm_profile")
-    return readfile("/tmp/" . $ITERM_SESSION_ID . "-iterm_profile")[0]
-  else
-    return $ITERM_PROFILE
-  endif
+  return $ITERM_PROFILE
 endfunction
 
 function! DeleteInactiveBufs()
@@ -355,7 +414,15 @@ function! SelectaFile(path)
   call SelectaCommand(FindWithWildignore(a:path), "", ":e")
 endfunction
 
-"Fuzzy select
+function! SelectaGitFile(path)
+  call SelectaCommand("git ls-files -co --exclude-standard " . a:path . " | uniq", "", ":e")
+endfunction
+
+function! SelectaGitCurrentBranchFile()
+  call SelectaCommand("git diff --name-only $(git merge-base --fork-point origin/staging)", "", ":e")
+endfunction
+
+" Fuzzy select
 function! SelectaIdentifier()
   " Yank the word under the cursor into the z register
   normal "zyiw
@@ -404,4 +471,62 @@ function! AlternateForCurrentFile()
     end
   endif
   return new_file
+endfunction
+
+function! CdToProjectRoot()
+  call system("git rev-parse --git-dir")
+
+  if v:shell_error != 0
+    return
+  endif
+
+  exec 'cd ' . system("git rev-parse --show-toplevel")
+endfunction
+
+function! LetToInstanceMethod()
+  :s/let../@/
+  :s/) { / = /
+  :s/ }$//
+endfunction
+
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+
+function! SortIndentLevel()
+	normal mz
+	call SelectIndent()
+  execute "normal! :sort\<CR>"
+	normal `z
+endfunction
+
+" Visually select contiguous block of text sharing the same indent level
+function! SelectIndent()
+  let cur_line = line(".")
+  let cur_ind = indent(cur_line)
+  let line = cur_line
+
+  " Selection top
+  while indent(line - 1) == cur_ind && strwidth(getline(line - 1)) > 0
+    let line = line - 1
+  endw
+  exe "normal " . line . "G"
+  exe "normal V"
+
+  " Selection bottom
+  let line = cur_line
+  while indent(line + 1) == cur_ind && strwidth(getline(line + 1)) > 0
+    let line = line + 1
+  endw
+  exe "normal " . line . "G"
+endfunction
+
+function! LongestLine()
+  return system("gwc -L " . bufname("%") . " | cut -d ' ' -f 1")
 endfunction

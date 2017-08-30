@@ -1,3 +1,6 @@
 .DS_Store
 vim-matchit/doc/tags
 .rspec
+*.icloud
+.idea
+tags

@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+FILE = File.join(ENV['HOME'], 'iCloud-Drive/dev/todo.txt')
+
+def main
+  puts FILE
+end
+
+main

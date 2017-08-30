@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if (tmux-find-recipient-pane-in-window spec:spec > /dev/null 2>&1); then
+  echo $(tmux-find-recipient-pane-in-window spec:spec)
+else
+  if $(tmux-find-recipient-pane > /dev/null 2>&1); then
+    echo $(tmux-find-recipient-pane)
+  else
+    exit 1
+  fi
+fi
