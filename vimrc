@@ -38,6 +38,7 @@
     set wildignore+=node_modules/**
     set wildignore+=client/node_modules/**
     set wildignore+=bower_components/**
+    set wildignore+=public/packs-test/**
     set wildignore+=tmp/**,log/**
     set wildignore+=_site/**
     set wildignore+=*.gitkeep

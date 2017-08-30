@@ -23,6 +23,7 @@
   ds      = diff --staged
   aa      = add -A
   amend   = commit --amend
+  from    = "!f() { git fetch && git rebase origin/master; }; f"
   ff      = merge --ff-only
   noff    = merge --no-ff
   mmnoff  = "!f() { branch=$(git rev-parse --abbrev-ref HEAD); git co master && git merge --no-ff origin/$branch; }; f"
