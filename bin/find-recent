@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Find files in path, matching pattern, reverse sorted by date modified.
+#
+# find-recent app/graphql
+set -e
+
+find_in="$1"
+shift
+pattern="$1"
+shift
+
+find $find_in -name "$pattern" -printf "%T@\t%Tc\t%p\n" | sort -nr | awk -F '\t' '{ print $3 }'

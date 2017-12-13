@@ -52,7 +52,7 @@ function! FullUnderline(linechar)
   normal `a
 endfunction
 
-function! SplitHTMLAttrs()
+function! SplitLine()
   normal ma
   let line = getline('.')
   if line =~ "<%" && &filetype == "eruby"
@@ -64,7 +64,8 @@ function! SplitHTMLAttrs()
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
     :s/\(\s\/>\)/\r\1/g
   elseif &filetype == "ruby"
-    :s/,/,\r/g
+    :s/\./\r./g
+    " :s/,/,\r/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
   endif
@@ -184,8 +185,8 @@ function! RunFile()
 endfunction
 
 function! RunCurrentTest(context)
-  if &filetype == "javascript"
-    exe ":!clear && time $(yarn bin)/mocha --require test/helper.js " . expand('%')
+  if &filetype == "javascript" || &filetype == "javascript.jsx"
+    exe ":!clear && time $(yarn bin)/jest " . expand('%')
     return
   endif
 
@@ -205,7 +206,7 @@ function! RunCurrentTest(context)
   let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
 
   if TmuxTestPaneRunning()
-    exe ":silent !tmux send-keys -t 2 'clear && time " . l:test_string . "' C-m"
+    exe ":silent !tmux send-keys -t " . g:tmux_test_pane_number  . " 'clear && time " . l:test_string . "' C-m"
     redraw!
   elseif TmuxTestWindowRunning()
     exe ":silent !tmux send-keys -t spec:spec 'clear && time " . l:test_string . "' C-m"
@@ -355,6 +356,10 @@ function! SelectaFile(path)
   call SelectaCommand(FindWithWildignore(a:path), "", ":e")
 endfunction
 
+function! SelectaGitFile(path)
+  call SelectaCommand("git ls-files", "", ":e")
+endfunction
+
 "Fuzzy select
 function! SelectaIdentifier()
   " Yank the word under the cursor into the z register
@@ -404,4 +409,15 @@ function! AlternateForCurrentFile()
     end
   endif
   return new_file
+endfunction
+
+function! CdToProjectRoot()
+  call system("git rev-parse --git-dir")
+
+  if v:shell_error != 0
+    return
+  endif
+
+  exec 'cd ' . expand('%:p:h')
+  exec 'cd ' . system("git rev-parse --show-cdup")
 endfunction

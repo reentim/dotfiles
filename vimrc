@@ -16,7 +16,7 @@
   " Actual preferences
     set autoread
     set mouse=a
-    set ttymouse=xterm2 " better selection and dragging, especially inside tmux
+    set ttymouse=sgr " 'The mouse works even in columns beyond 223'
     set showmatch
     set nowrap
     set textwidth=80
@@ -46,9 +46,17 @@
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
 
+    " Netw directory listing
+    let g:netrw_liststyle = 3
+    let g:netrw_browse_split = 4
+    let g:netrw_winsize = 20
+
+    " this is useful if leaving Netrw open
+    " set noequalalways
+
 " Aesthetics
 " ==============================================================================
-  set nonu
+  set nu
   set wildmenu
   set ruler
   set laststatus=2
@@ -91,6 +99,8 @@
 
   augroup vimrc
     autocmd!
+
+    autocmd FileType ruby :call CdToProjectRoot()
 
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
@@ -170,8 +180,13 @@
       exe "hi IndentGuidesEven ctermbg=" . g:colorscheme_indent_guide_even
     endif
 
+
+  " Control P lives again
+    " nnoremap <leader>t :CtrlP<cr>
+
   " Selecta replaces CommandT
-    nnoremap <leader>t :call SelectaFile(".")<cr>
+    " nnoremap <leader>t :call SelectaFile(".")<cr>
+    nnoremap <leader>t :call SelectaGitFile(".")<cr>
     nnoremap <leader>gv :call SelectaFile("app/views")<cr>
     nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
     nnoremap <leader>gm :call SelectaFile("app/models")<cr>
@@ -197,7 +212,8 @@
       \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
       \ 'find %s -type f'
     \ ]
-    let g:ctrlp_use_caching = 0
+    let g:ctrlp_use_caching = 1
+    let g:ctrlp_match_window = 'min:10,max:20'
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -212,7 +228,7 @@
     highlight link coffeeSpaceError NONE
 
   " JSX
-    let g:jsx_ext_required = 0
+    " let g:jsx_ext_required = 0
 
   " Ack - use Ag
     let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -242,6 +258,8 @@
 
 " Leader shortcuts
 " ==============================================================================
+    nnoremap <leader>s :!make update-schema && `yarn bin`/relay-compiler --src ./app/javascript --schema schema.graphql<CR>
+
   " Edit vim-related files
     nnoremap <leader>ev :e $MYVIMRC<CR>
     nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
@@ -259,13 +277,17 @@
   " Run scripts
     nnoremap <leader>r :call RunFile()<CR>
 
+    nnoremap <leader>c :!clear && `yarn bin`/flow<CR>
+
   " Run tests
+    let g:tmux_test_pane_enabled = 0
+    let g:tmux_test_pane_number = 3
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
     cabbrev Rspec :!clear && bundle exec rspec %
 
-  " Split HTML attributes
-    nnoremap <leader>S :silent! call SplitHTMLAttrs()<CR>
+  " Split HTML attributes, Ruby lines
+    nnoremap <leader>S :silent! call SplitLine()<CR>
 
   " Shortcut to invoke watch / browser refresh script in background...
     " let g:watching = 0
@@ -290,10 +312,6 @@
   " 80 character underline
     nnoremap <silent> <leader>8l :call FullUnderline('-')<CR>
     nnoremap <silent> <leader>8u :call FullUnderline('=')<CR>
-
-  " Promote to let
-    :command! PromoteToLet :call PromoteToLet()
-    nnoremap <leader>e :PromoteToLet<cr>
 
 " Folding
 " ==============================================================================
