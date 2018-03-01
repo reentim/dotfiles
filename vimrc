@@ -228,7 +228,7 @@
     highlight link coffeeSpaceError NONE
 
   " JSX
-    " let g:jsx_ext_required = 0
+    let g:jsx_ext_required = 0
 
   " Ack - use Ag
     let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -281,7 +281,7 @@
 
   " Run tests
     let g:tmux_test_pane_enabled = 0
-    let g:tmux_test_pane_number = 3
+    let g:tmux_test_pane_number = 2
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
     cabbrev Rspec :!clear && bundle exec rspec %

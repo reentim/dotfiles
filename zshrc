@@ -10,6 +10,7 @@ done
 if [ -n "$TMUX" ]; then
   export ZLE_RPROMPT_INDENT=0
 fi
+
 setopt PROMPT_SUBST
 autoload -U promptinit
 promptinit
