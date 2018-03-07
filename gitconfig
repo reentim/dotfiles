@@ -28,6 +28,7 @@
   fros    = "!f() { git fetch && git rebase origin/staging; }; f"
   pf      = pull --ff-only
   ff      = merge --ff-only
+  pf      = pull --ff-only
   noff    = merge --no-ff
   mmnoff  = "!f() { branch=$(git rev-parse --abbrev-ref HEAD); git co master && git merge --no-ff origin/$branch; }; f"
   ctags   = "!.git/hooks/ctags"

@@ -144,5 +144,3 @@
 
   export GOPATH=$HOME/go
   export PATH=$PATH:$GOPATH/bin
-
-eval "$(direnv hook zsh)"
