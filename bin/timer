@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+FILE = "#{ENV['HOME']}/iCloud-Drive/cubes.csv"
+
+def main
+  start = Time.now
+  gets
+  stop = Time.now
+
+  date_time = %Q[#{Time.now}, #{stop - start}\n]
+
+  puts date_time
+  puts "\nPress <enter> to save"
+
+  begin
+    gets
+  rescue Interrupt
+    abort
+  end
+
+  File.open(FILE, 'a') do |file|
+    file.write(date_time)
+  end
+
+  puts "PB:", File.readlines(FILE).map { |line|
+    line
+      .split(', ')
+      .reverse
+  }.min
+end
+
+main
