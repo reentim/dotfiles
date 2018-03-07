@@ -23,6 +23,11 @@
     set colorcolumn=80
     set splitright
     let mapleader = ","
+    set nojoinspaces
+    set winwidth=84 " the current window will be at least 72 spaces wide
+
+    " Use the old vim regex engine for faster syntax highlighting
+    set re=1
 
   " Pathogen
     call pathogen#infect()
@@ -258,7 +263,7 @@
 
 " Leader shortcuts
 " ==============================================================================
-    nnoremap <leader>s :!make update-schema && `yarn bin`/relay-compiler --src ./app/javascript --schema schema.graphql<CR>
+    nnoremap <leader>s :!make update-schema && `yarn bin`/relay-compiler --src ./app/javascript --schema schema.json<CR>
 
   " Edit vim-related files
     nnoremap <leader>ev :e $MYVIMRC<CR>
@@ -396,3 +401,17 @@
     cnoreabbrev Bd BD
 
     cnoreabbrev git Git
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>

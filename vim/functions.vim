@@ -185,11 +185,6 @@ function! RunFile()
 endfunction
 
 function! RunCurrentTest(context)
-  if &filetype == "javascript" || &filetype == "javascript.jsx"
-    exe ":!clear && time $(yarn bin)/jest " . expand('%')
-    return
-  endif
-
   if InTestFile()
     call SetTestFile()
     if a:context == 'at_line'
@@ -202,7 +197,12 @@ function! RunCurrentTest(context)
     let line_options = ""
   endif
 
-  let test_command = " rspec --color --tty -f doc "
+  if &filetype == "javascript" || &filetype == "javascript.jsx"
+    let test_command = " yarn jest "
+  else
+    let test_command = " rspec --color --tty -f doc "
+  endif
+
   let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
 
   if TmuxTestPaneRunning()
