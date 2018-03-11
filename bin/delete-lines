@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# WIP
+
+unless system 'git ls-files > /dev/null 2>&1'
+  abort 'Deleting lines is dangerous! Must be in a git repository'
+end
+
+files = %x(git ls-files --cached --others --exclude-standard).lines
+
+files.each do |file|
+  # %x(sed -i '' /after_action/d #{file})
+end
