@@ -357,7 +357,7 @@ function! SelectaFile(path)
 endfunction
 
 function! SelectaGitFile(path)
-  call SelectaCommand("git ls-files", "", ":e")
+  call SelectaCommand("git ls-files -co --exclude-standard | uniq", "", ":e")
 endfunction
 
 "Fuzzy select
