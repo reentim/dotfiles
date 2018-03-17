@@ -205,11 +205,13 @@ function! RunCurrentTest(context)
 
   let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
 
-  if TmuxTestPaneRunning()
-    exe ":silent !tmux send-keys -t " . g:tmux_test_pane_number  . " 'clear && time " . l:test_string . "' C-m"
+  if TmuxTestWindowRunning()
+    call system("tmux clear-history -t spec:spec.left")
+    exe ":silent !tmux send-keys -t spec:spec.left C-c C-m 'clear && time " . l:test_string . "' C-m"
     redraw!
-  elseif TmuxTestWindowRunning()
-    exe ":silent !tmux send-keys -t spec:spec 'clear && time " . l:test_string . "' C-m"
+  elseif TmuxTestPaneRunning()
+    call system("tmux clear-history -t right")
+    exe ":silent !tmux send-keys -t right C-c C-m 'clear && time " . l:test_string . "' C-m"
     redraw!
   else
     exe ":!clear && time " . l:test_string
@@ -225,7 +227,7 @@ function! TestPrefix()
 endfunction
 
 function! TmuxTestWindowRunning()
-  call system("tmux send-keys -t spec:spec")
+  call system("tmux send-keys -t spec:spec.left")
   let return_code = v:shell_error
 
   " 0 is falsy in VimScript
@@ -237,15 +239,14 @@ function! TmuxTestWindowRunning()
 endfunction
 
 function! TmuxTestPaneRunning()
-  if g:tmux_test_pane_enabled == 1
-    call system("[[ $(printf %d $(tmux list-panes | wc -l)) > 1 ]]")
-    let multiple_splits = v:shell_error
+  call system("tmux send-keys -t right")
+  let return_code = v:shell_error
 
-    if multiple_splits == 0
-      return 1
-    else
-      return 0
-    endif
+  " 0 is falsy in VimScript
+  if return_code == 0
+    return 1
+  else
+    return 0
   endif
 endfunction
 
