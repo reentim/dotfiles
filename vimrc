@@ -75,6 +75,8 @@
     else
       set background=dark
     endif
+  elseif ItermProfile() =~ 'Dracula'
+    colorscheme dracula
   else
     colorscheme Tomorrow-Night-Bright
   endif
