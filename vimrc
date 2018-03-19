@@ -194,15 +194,16 @@
   " Selecta replaces CommandT
     " nnoremap <leader>t :call SelectaFile(".")<cr>
     nnoremap <leader>t :call SelectaGitFile(".")<cr>
-    nnoremap <leader>gv :call SelectaFile("app/views")<cr>
-    nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
-    nnoremap <leader>gm :call SelectaFile("app/models")<cr>
-    nnoremap <leader>gh :call SelectaFile("app/helpers")<cr>
-    nnoremap <leader>gl :call SelectaFile("lib")<cr>
-    nnoremap <leader>gp :call SelectaFile("public")<cr>
-    nnoremap <leader>gs :call SelectaFile("app/assets/stylesheets")<cr>
-    nnoremap <leader>gj :call SelectaFile("app/assets/javascripts")<cr>
-    nnoremap <leader>gf :call SelectaFile("features")<cr>
+    nnoremap <leader>gc :call SelectaGitFile("app/controllers")<cr>
+    nnoremap <leader>gf :call SelectaGitFile("features")<cr>
+    nnoremap <leader>gh :call SelectaGitFile("app/helpers")<cr>
+    nnoremap <leader>gj :call SelectaGitFile("app/assets/javascripts")<cr>
+    nnoremap <leader>gl :call SelectaGitFile("lib")<cr>
+    nnoremap <leader>gm :call SelectaGitFile("app/models")<cr>
+    nnoremap <leader>gp :call SelectaGitFile("app/javascript/packs")<cr>
+    nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
+    nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
+    nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
 
     " Fuzzy select a buffer. Open the selected buffer with :b.
     nnoremap <leader>b :call SelectaBuffer()<cr>

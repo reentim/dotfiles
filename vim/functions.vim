@@ -64,8 +64,8 @@ function! SplitLine()
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
     :s/\(\s\/>\)/\r\1/g
   elseif &filetype == "ruby"
-    :s/\./\r./g
-    " :s/,/,\r/g
+    " :s/\./\r./g
+    :s/,/,\r/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
   endif
@@ -358,7 +358,7 @@ function! SelectaFile(path)
 endfunction
 
 function! SelectaGitFile(path)
-  call SelectaCommand("git ls-files -co --exclude-standard | uniq", "", ":e")
+  call SelectaCommand("git ls-files -co --exclude-standard " . a:path . " | uniq", "", ":e")
 endfunction
 
 "Fuzzy select
