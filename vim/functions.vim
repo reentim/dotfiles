@@ -189,11 +189,9 @@ endfunction
 function! RunRailsMigration(migration_filename)
   let migration_version = split(a:migration_filename, "_")[0]
 
-  call system("file db/structure.sql")
-
-  if v:shell_error != 0
+  if !ShellDidSucceed('file db/structure.sql')
     return
-  endif
+  end
 
   if system("stat -c '%U' db/structure.sql") =~ 'root'
     call system("sudo chown `whoami` db/structure.sql")
@@ -231,8 +229,6 @@ function! RunCurrentTest(context)
   endif
 
   let test_string = "clear && time " . TestRunner() . TestFile() . l:line_options
-  exe ":!" . l:test_string
-  return
 
   if TmuxWindowOrPaneRunning()
     call RunShellCommandInTmux(l:test_string)
