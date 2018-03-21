@@ -288,8 +288,6 @@
     nnoremap <leader>c :!clear && `yarn bin`/flow<CR>
 
   " Run tests
-    let g:tmux_test_pane_enabled = 0
-    let g:tmux_test_pane_number = 2
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
     cabbrev Rspec :!clear && bundle exec rspec %

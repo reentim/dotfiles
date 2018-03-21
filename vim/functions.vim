@@ -166,8 +166,10 @@ function! RunFile()
   if &ft == "bash" || &ft == "sh"
     !clear && time bash %:p
   elseif &ft == "ruby"
-    if expand('%t') == "Gemfile"
+    if expand('%:t') == "Gemfile"
       !clear && time bundle
+    elseif expand('%:h') == "db/migrate"
+      call RunRailsMigration(expand('%:t'))
     else
       !clear && time ruby %:p
     endif
@@ -184,6 +186,36 @@ function! RunFile()
   endif
 endfunction
 
+function! RunRailsMigration(migration_filename)
+  let migration_version = split(a:migration_filename, "_")[0]
+
+  call system("file db/structure.sql")
+
+  if v:shell_error != 0
+    return
+  endif
+
+  if system("stat -c '%U' db/structure.sql") =~ 'root'
+    call system("sudo chown `whoami` db/structure.sql")
+  endif
+
+  call system("grep " . l:migration_version . " db/structure.sql")
+
+  if v:shell_error == 0
+    if TmuxWindowOrPaneRunning()
+      call RunShellCommandInTmux("bundle exec rake db:migrate:down VERSION=" . l:migration_version)
+    else
+      execute ":!bundle exec rake db:migrate:down VERSION=" . l:migration_version . ""
+    endif
+  elseif v:shell_error == 1
+    if TmuxWindowOrPaneRunning()
+      call RunShellCommandInTmux("bundle exec rake db:migrate:up VERSION=" . l:migration_version)
+    else
+      execute ":!bundle exec rake db:migrate:up VERSION=" . l:migration_version . ""
+    endif
+  endif
+endfunction
+
 function! RunCurrentTest(context)
   if InTestFile()
     call SetTestFile()
@@ -191,63 +223,69 @@ function! RunCurrentTest(context)
       call SetTestFileLine()
     endif
   endif
+
   if a:context == 'at_line'
     let line_options = ":" . TestFileLine()
   else
     let line_options = ""
   endif
 
-  if &filetype == "javascript" || &filetype == "javascript.jsx"
-    let test_command = " yarn jest "
-  else
-    let test_command = " rspec --color --tty -f doc "
-  endif
+  let test_string = "clear && time " . TestRunner() . TestFile() . l:line_options
+  exe ":!" . l:test_string
+  return
 
-  let test_string = TestPrefix() . l:test_command . TestFile() . l:line_options
-
-  if TmuxTestWindowRunning()
-    call system("tmux clear-history -t spec:spec.left")
-    exe ":silent !tmux send-keys -t spec:spec.left C-c C-m 'clear && time " . l:test_string . "' C-m"
-    redraw!
-  elseif TmuxTestPaneRunning()
-    call system("tmux clear-history -t right")
-    exe ":silent !tmux send-keys -t right C-c C-m 'clear && time " . l:test_string . "' C-m"
+  if TmuxWindowOrPaneRunning()
+    call RunShellCommandInTmux(l:test_string)
     redraw!
   else
-    exe ":!clear && time " . l:test_string
+    exe ":!" . l:test_string
   endif
 endfunction
 
-function! TestPrefix()
-  if glob(".zeus.sock") != ""
-    return "zeus"
+function! RunShellCommandInTmux(shell_command)
+  if TmuxTestWindowRunning()
+    execute ":silent !tmux send-keys -t spec:spec.left C-c C-m ' " . a:shell_command . "' C-m"
+    redraw!
+  elseif TmuxTestPaneRunning()
+    execute ":silent !tmux send-keys -t right C-c C-m ' " . a:shell_command . "' C-m"
+    redraw!
   else
-    return ""
+    echoerr "Couldn't find tmux window or pane"
+    return 0
+  endif
+endfunction
+
+function! TmuxWindowOrPaneRunning()
+  return TmuxTestWindowRunning() || TmuxTestPaneRunning()
+endfunction
+
+function! TestRunner()
+  if &filetype == "javascript" || &filetype == "javascript.jsx"
+    return " yarn jest "
+  else
+    return " rspec --color --tty -f doc "
+  endif
+endfunction
+
+function! ShellDidSucceed(shell_command)
+  call system(a:shell_command)
+
+  let return_code = v:shell_error
+
+  " 0 is falsy in VimScript
+  if return_code == 0
+    return 1
+  else
+    return 0
   endif
 endfunction
 
 function! TmuxTestWindowRunning()
-  call system("tmux send-keys -t spec:spec.left")
-  let return_code = v:shell_error
-
-  " 0 is falsy in VimScript
-  if return_code == 0
-    return 1
-  else
-    return 0
-  endif
+  return ShellDidSucceed("tmux send-keys -t spec:spec.left")
 endfunction
 
 function! TmuxTestPaneRunning()
-  call system("tmux send-keys -t right")
-  let return_code = v:shell_error
-
-  " 0 is falsy in VimScript
-  if return_code == 0
-    return 1
-  else
-    return 0
-  endif
+  return ShellDidSucceed("tmux send-keys -t right") && system("tmux list-panes | wc -l") > 1
 endfunction
 
 function! InTestFile()
@@ -419,6 +457,5 @@ function! CdToProjectRoot()
     return
   endif
 
-  exec 'cd ' . expand('%:p:h')
-  exec 'cd ' . system("git rev-parse --show-cdup")
+  exec 'cd ' . system("git rev-parse --show-toplevel")
 endfunction
