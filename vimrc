@@ -333,12 +333,6 @@
     nnoremap <leader>w <C-w>v<C-w>l
     nnoremap <leader>h :split<CR><C-w>j
 
-  " moving around windows
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
-
 " Behaviour
 " ==============================================================================
   " Central temporary directories
