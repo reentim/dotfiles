@@ -39,18 +39,25 @@
       source ~/.vim/functions.vim
     endif
 
-    set wildignore+=public/css/**
-    set wildignore+=public/assets/**
-    set wildignore+=node_modules/**
-    set wildignore+=client/node_modules/**
-    set wildignore+=bower_components/**
-    set wildignore+=public/packs-test/**
-    set wildignore+=tmp/**,log/**
-    set wildignore+=_site/**
-    set wildignore+=*.gitkeep
-    set wildignore+=*.png,*.jpg,*.gif
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
+    set wildignore+=*.gitkeep
     set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
+    set wildignore+=*.png,*.jpg,*.gif
+    set wildignore+=.keep
+    set wildignore+=_site
+    set wildignore+=_site/**
+    set wildignore+=bower_components
+    set wildignore+=bower_components/**
+    set wildignore+=client/node_modules/**
+    set wildignore+=node_modules
+    set wildignore+=node_modules/**
+    set wildignore+=public/assets
+    set wildignore+=public/assets/**
+    set wildignore+=public/css
+    set wildignore+=public/css/**
+    set wildignore+=public/packs-test/**
+    set wildignore+=tmp
+    set wildignore+=tmp/**,log/**
 
     " Netw directory listing
     let g:netrw_liststyle = 3

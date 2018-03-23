@@ -164,19 +164,21 @@ endfunction
 
 function! RunFile()
   if &ft == "bash" || &ft == "sh"
-    call RunInShell('clear && time bash %:p')
+    call RunInShell('bash %:p')
   elseif &ft == "ruby"
     if expand('%:t') == "Gemfile"
-      call RunInShell('clear && time bundle')
+      call RunInShell('bundle')
     elseif expand('%:h') == "db/migrate"
       call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
+    elseif expand('%:t') == 'routes.rb'
+      call RunInShell('bundle exec rails routes')
     else
-      call RunInShell('clear && time ruby %:p')
+      call RunInShell('ruby %:p')
     endif
   elseif &ft == "python"
-    call RunInShell('clear && time python %:p')
+    call RunInShell('python %:p')
   elseif &ft == "javascript"
-    call RunInShell('clear && time node %:p')
+    call RunInShell('node %:p')
   elseif &ft == "vim"
     source %:p
   elseif &ft
@@ -194,7 +196,7 @@ function! RunInShell(command)
   if TmuxWindowOrPaneRunning()
     call RunShellCommandInTmux(a:command)
   else
-    execute ":! " . a:command
+    execute ":!clear && time " . a:command
   endif
 endfunction
 
@@ -245,14 +247,10 @@ function! RunCurrentTest(context)
     let line_options = ""
   endif
 
-  let test_string = "clear && time " . TestRunner() . TestFile() . l:line_options
+  let test_string = TestRunner() . TestFile() . l:line_options
 
-  if TmuxWindowOrPaneRunning()
-    call RunShellCommandInTmux(l:test_string)
-    redraw!
-  else
-    exe ":!" . l:test_string
-  endif
+  call RunInShell(l:test_string)
+
 endfunction
 
 function! ChomppedSystem(command)
