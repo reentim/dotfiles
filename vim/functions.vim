@@ -164,19 +164,19 @@ endfunction
 
 function! RunFile()
   if &ft == "bash" || &ft == "sh"
-    !clear && time bash %:p
+    call RunInShell('clear && time bash %:p')
   elseif &ft == "ruby"
     if expand('%:t') == "Gemfile"
-      !clear && time bundle
+      call RunInShell('clear && time bundle')
     elseif expand('%:h') == "db/migrate"
-      call RunRailsMigration(expand('%:t'))
+      call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
     else
-      !clear && time ruby %:p
+      call RunInShell('clear && time ruby %:p')
     endif
   elseif &ft == "python"
-    !clear && time python %:p
+    call RunInShell('clear && time python %:p')
   elseif &ft == "javascript"
-    !clear && time node %:p
+    call RunInShell('clear && time node %:p')
   elseif &ft == "vim"
     source %:p
   elseif &ft
@@ -186,31 +186,48 @@ function! RunFile()
   endif
 endfunction
 
-function! RunRailsMigration(migration_filename)
-  let migration_version = split(a:migration_filename, "_")[0]
+function! RailsMigrationVersion(filename)
+  return split(a:filename, "_")[0]
+endfunction
 
-  if !ShellDidSucceed('file db/structure.sql')
-    return
-  end
-
-  if system("stat -c '%U' db/structure.sql") =~ 'root'
-    call system("sudo chown `whoami` db/structure.sql")
+function! RunInShell(command)
+  if TmuxWindowOrPaneRunning()
+    call RunShellCommandInTmux(a:command)
+  else
+    execute ":! " . a:command
   endif
+endfunction
 
-  call system("grep " . l:migration_version . " db/structure.sql")
+function! RailsMigrationStatus(version)
+  if ShellDidSucceed('test -f db/structure.sql')
+    " structure.sql contains a list of migrated versions
+    if ShellDidSucceed("grep " . a:version . " db/structure.sql")
+      return 'up'
+    endif
+  elseif ShellDidSucceed('test -f db/schema.rb')
+    " schema.rb only contains latest migration version
+    if ShellDidSucceed("grep " . a:version . " db/schema.rb")
+      return 'up'
+    else
+      " just assume the status is down
+      return 'down'
 
-  if v:shell_error == 0
-    if TmuxWindowOrPaneRunning()
-      call RunShellCommandInTmux("bundle exec rake db:migrate:down VERSION=" . l:migration_version)
-    else
-      execute ":!bundle exec rake db:migrate:down VERSION=" . l:migration_version . ""
+      " or...
+      " determine true status of migration
+      let migration_status = split(ChomppedSystem("rails db:migrate:status | grep " . a:version))[0]
+      return l:migration_status
     endif
-  elseif v:shell_error == 1
-    if TmuxWindowOrPaneRunning()
-      call RunShellCommandInTmux("bundle exec rake db:migrate:up VERSION=" . l:migration_version)
-    else
-      execute ":!bundle exec rake db:migrate:up VERSION=" . l:migration_version . ""
-    endif
+  endif
+  throw "Can't determine migration status"
+endfunction
+
+function! RunRailsMigration(version)
+  let migration_status = RailsMigrationStatus(a:version)
+
+  if l:migration_status == 'up'
+    call RunInShell("bundle exec rake db:migrate:down VERSION=" . a:version)
+  elseif l:migration_status == 'down'
+    call RunInShell("bundle exec rake db:migrate:up VERSION=" . a:version)
   endif
 endfunction
 
@@ -238,17 +255,30 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
+function! ChomppedSystem(command)
+  " strip away the last byte of output
+  return system(a:command)[:-2]
+endfunction
+
 function! RunShellCommandInTmux(shell_command)
   if TmuxTestWindowRunning()
-    execute ":silent !tmux send-keys -t spec:spec.left C-c C-m ' " . a:shell_command . "' C-m"
+    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane-in-window spec:spec` 'clear && time " . a:shell_command . "' C-m"
     redraw!
   elseif TmuxTestPaneRunning()
-    execute ":silent !tmux send-keys -t right C-c C-m ' " . a:shell_command . "' C-m"
+    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane` 'clear && time " . a:shell_command . "' C-m"
     redraw!
   else
     echoerr "Couldn't find tmux window or pane"
     return 0
   endif
+endfunction
+
+function! TmuxTestWindowRunning()
+  return ShellDidSucceed('tmux-find-recipient-pane-in-window spec:spec')
+endfunction
+
+function! TmuxTestPaneRunning()
+  return ShellDidSucceed('tmux-find-recipient-pane')
 endfunction
 
 function! TmuxWindowOrPaneRunning()
@@ -274,14 +304,6 @@ function! ShellDidSucceed(shell_command)
   else
     return 0
   endif
-endfunction
-
-function! TmuxTestWindowRunning()
-  return ShellDidSucceed("tmux send-keys -t spec:spec.left")
-endfunction
-
-function! TmuxTestPaneRunning()
-  return ShellDidSucceed("tmux send-keys -t right") && system("tmux list-panes | wc -l") > 1
 endfunction
 
 function! InTestFile()
@@ -395,7 +417,7 @@ function! SelectaGitFile(path)
   call SelectaCommand("git ls-files -co --exclude-standard " . a:path . " | uniq", "", ":e")
 endfunction
 
-"Fuzzy select
+" Fuzzy select
 function! SelectaIdentifier()
   " Yank the word under the cursor into the z register
   normal "zyiw

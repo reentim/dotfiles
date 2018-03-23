@@ -24,7 +24,8 @@
     set splitright
     let mapleader = ","
     set nojoinspaces
-    set winwidth=84 " the current window will be at least 72 spaces wide
+    set winwidth=72 " the current window will be at least 72 spaces wide
+    set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
     set re=1
@@ -94,7 +95,7 @@
   " If echo `tput sitm`italics`tput ritm` produces italic text, then this should
   " work (maybe)
     if &term =~ "italic"
-        highlight Comment cterm=italic
+      highlight Comment cterm=italic
     endif
 
 " Filetype dependent formatting
@@ -281,8 +282,6 @@
 
   " Run scripts
     nnoremap <leader>r :call RunFile()<CR>
-
-    nnoremap <leader>c :!clear && `yarn bin`/flow<CR>
 
   " Run tests
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>

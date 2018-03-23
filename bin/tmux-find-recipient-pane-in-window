@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Finds the best tmux pane to be the recipient of `tmux send-keys` i.e. running
+# things asynchronously from a terminal editor
+
+set -o pipefail
+
+target_window="$1"
+shift
+
+function main {
+  tmux list-panes -t $target_window -F "#{pane_height},#{pane_current_command},#D,#{pane_active}" |
+    grep "bash\|zsh" | # running a shell
+    sort -r          |
+    head -1          |
+    cut -d , -f 3
+}
+
+main
