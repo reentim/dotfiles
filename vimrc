@@ -188,11 +188,7 @@
     endif
 
 
-  " Control P lives again
-    " nnoremap <leader>t :CtrlP<cr>
-
   " Selecta replaces CommandT
-    " nnoremap <leader>t :call SelectaFile(".")<cr>
     nnoremap <leader>t :call SelectaGitFile(".")<cr>
     nnoremap <leader>gc :call SelectaGitFile("app/controllers")<cr>
     nnoremap <leader>gf :call SelectaGitFile("features")<cr>
@@ -201,6 +197,7 @@
     nnoremap <leader>gl :call SelectaGitFile("lib")<cr>
     nnoremap <leader>gm :call SelectaGitFile("app/models")<cr>
     nnoremap <leader>gp :call SelectaGitFile("app/javascript/packs")<cr>
+    nnoremap <leader>gp :call SelectaGitFile("public")<cr>
     nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
     nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
     nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
