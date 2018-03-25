@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# require 'csv'
+require "#{ENV['HOME']}/bin/selecta"
+
+FILE = "#{ENV['HOME']}/iCloud-Drive/multitimes.csv"
+
+  # sort by
+  # p CSV.read(FILE).sort { |a, b| a[1] > b[1] }
+#
+#
+def main
+  puts "WIP"
+end
+
+main
