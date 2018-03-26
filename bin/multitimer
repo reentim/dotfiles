@@ -1,16 +1,83 @@
 #!/usr/bin/env ruby
 
-# require 'csv'
-require "#{ENV['HOME']}/bin/selecta"
+require 'csv'
 
 FILE = "#{ENV['HOME']}/iCloud-Drive/multitimes.csv"
+COLUMNS = %w(task_name started_at ended_at duration_in_seconds)
 
-  # sort by
-  # p CSV.read(FILE).sort { |a, b| a[1] > b[1] }
-#
-#
 def main
-  puts "WIP"
+  data = CSV.read(FILE).sort
+
+  tasks = data
+    .map { |row| row[COLUMNS.index('task_name')] }
+    .uniq
+    .join("\n")
+
+  selected_task =  %x(echo "#{tasks}" | selecta).chomp
+
+  saved_duration = saved_duration(selected_task, data)
+
+  if selected_task.empty?
+    puts 'Enter name of new task:'
+    selected_task = gets.chomp
+    puts selected_task
+    puts
+  else
+    puts selected_task
+    puts
+    puts "Current duration: #{saved_duration}\n\n"
+  end
+
+  puts <<~EOF
+    [enter] start timer
+  EOF
+
+  begin
+    input = gets.chomp
+  rescue Interrupt
+    abort
+  end
+
+  if input == ''
+    started_at = Time.now
+    puts "Timer started at #{started_at}\n\n"
+  end
+
+  puts <<~EOF
+    [enter] end timer
+  EOF
+
+  begin
+    input = gets.chomp
+  rescue Interrupt
+    abort
+  end
+
+  if input == ''
+    ended_at  = Time.now
+    puts "Timer ended at #{ended_at}\n"
+    puts "---"
+    puts "#{selected_task}: duration in seconds (this session): #{duration(started_at, ended_at)}"
+    puts "                  duration in seconds (total): #{duration(started_at, ended_at) + saved_duration}"
+    puts "                  duration in hours (total): #{((duration(started_at, ended_at) + saved_duration) / 3600).round(2)}"
+    save("#{selected_task},#{started_at},#{ended_at},#{duration(started_at, ended_at)}")
+  end
+
+end
+
+def save(entry)
+  File.open(FILE, 'a') { |f| f.write("#{entry.chomp}\n") }
+end
+
+def saved_duration(task, task_data)
+  return task_data
+    .select { |row| row[COLUMNS.index('task_name')] == task }
+    .map { |row| row[COLUMNS.index('duration_in_seconds')].to_f }
+    .sum
+end
+
+def duration(start_time, end_time)
+  return end_time - start_time
 end
 
 main
