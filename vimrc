@@ -205,7 +205,6 @@
     nnoremap <leader>gl :call SelectaGitFile("lib")<cr>
     nnoremap <leader>gm :call SelectaGitFile("app/models")<cr>
     nnoremap <leader>gp :call SelectaGitFile("app/javascript/packs")<cr>
-    nnoremap <leader>gp :call SelectaGitFile("public")<cr>
     nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
     nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
     nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
@@ -394,8 +393,8 @@
     onoremap ac :normal Vaf<CR>
 
     command! BD :call DeleteInactiveBufs()
-    command! Bd :call CloseBuffer()
-    cnoreabbrev bd Bd
+    " command! Bd :call CloseBuffer()
+    " cnoreabbrev bd Bd
     cnoreabbrev Bd BD
 
     cnoreabbrev git Git

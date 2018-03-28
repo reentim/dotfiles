@@ -10,7 +10,7 @@ shift
 
 function main {
   tmux list-panes -t $target_window -F "#{pane_height},#{pane_current_command},#D,#{pane_active}" |
-    grep "bash\|zsh" | # running a shell
+    grep "make\|bash\|zsh" | # running a shell
     sort -r          |
     head -1          |
     cut -d , -f 3
