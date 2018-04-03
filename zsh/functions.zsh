@@ -4,7 +4,9 @@ function server() {
   python -m SimpleHTTPServer "$port"
 }
 
-function export-iterm-profile {
-  export ITERM_PROFILE=$1
-  set_iterm_profile $1
+function prof() {
+  profile=`enumerate-profiles | selecta`
+
+  export ITERM_PROFILE=$profile
+  set-profile $profile
 }

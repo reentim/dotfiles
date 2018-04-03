@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+def main
+  profile_name = ARGV.join(' ')
+
+  abort if profile_name.empty?
+
+  set_profile(profile_name)
+end
+
+def set_profile(profile_name)
+  system(
+    %Q{echo "\033]50;SetProfile=#{profile_name}\a"}
+  )
+end
+
+main

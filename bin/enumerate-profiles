@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+themes = [
+  'Solarized Light',
+  'Solarized Dark',
+  'Black',
+]
+
+fonts = [
+  'SF',
+  'Plex',
+  'Input Mono',
+  'Input Mono Narrow',
+]
+
+puts themes.map { |theme| fonts.map { |font| "#{theme} - #{font}" } }

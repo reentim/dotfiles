@@ -347,11 +347,7 @@ function! CopyToHost()
 endfunction
 
 function! ItermProfile()
-  if filereadable("/tmp/" . $ITERM_SESSION_ID . "-iterm_profile")
-    return readfile("/tmp/" . $ITERM_SESSION_ID . "-iterm_profile")[0]
-  else
-    return $ITERM_PROFILE
-  endif
+  return $ITERM_PROFILE
 endfunction
 
 function! DeleteInactiveBufs()

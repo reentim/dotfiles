@@ -4,7 +4,11 @@ FILE = "#{ENV['HOME']}/iCloud-Drive/cubes.csv"
 
 def main
   start = Time.now
-  gets
+  begin
+    gets
+  rescue Interrupt
+    abort
+  end
   stop = Time.now
 
   date_time = %Q[#{Time.now}, #{stop - start}\n]
