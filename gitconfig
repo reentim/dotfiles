@@ -24,6 +24,8 @@
   ff      = merge --ff-only
   fixup   = commit --fixup
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
+  rom     = "!f() { git rebase origin/master; }; f"
+  ros     = "!f() { git rebase origin/staging; }; f"
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   fros    = "!f() { git fetch && git rebase origin/staging; }; f"
   l       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"

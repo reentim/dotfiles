@@ -25,6 +25,7 @@
     let mapleader = ","
     set nojoinspaces
     set winwidth=72 " the current window will be at least 72 spaces wide
+    set winheight=16
     set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
