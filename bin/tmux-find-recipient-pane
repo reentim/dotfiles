@@ -11,7 +11,7 @@ function main {
     grep "bash\|zsh" | # running a shell
     sort -r          |
     head -1          |
-    cut -d , -f 3
+    cut -d , -f 3      # split on comma, take third field (pane id)
 }
 
 main
