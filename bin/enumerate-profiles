@@ -11,6 +11,7 @@ fonts = [
   'Plex',
   'Input Mono',
   'Input Mono Narrow',
+  'Inconsolata',
 ]
 
 puts themes.map { |theme| fonts.map { |font| "#{theme} - #{font}" } }
