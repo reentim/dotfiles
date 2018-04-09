@@ -215,6 +215,9 @@
     nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
     nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
 
+    " Fuzzy select git files in current file directory
+    nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<cr>
+
     " Fuzzy select a buffer. Open the selected buffer with :b.
     nnoremap <leader>b :call SelectaBuffer()<cr>
 

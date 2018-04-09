@@ -142,5 +142,5 @@
     fi
   fi
 
-  export GOPATH=$HOME/go
+  export GOPATH=/usr/local/go
   export PATH=$PATH:$GOPATH/bin
