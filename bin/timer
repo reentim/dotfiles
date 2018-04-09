@@ -2,25 +2,21 @@
 
 FILE = "#{ENV['HOME']}/iCloud-Drive/cubes.csv"
 
+# https://blog.dnsimple.com/2018/03/elapsed-time-with-ruby-the-right-way/
+
 def main
-  start = Time.now
-  begin
-    gets
-  rescue Interrupt
-    abort
-  end
-  stop = Time.now
+  start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+  await_keypress
+
+  stop = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
   date_time = %Q[#{Time.now}, #{stop - start}\n]
 
   puts date_time
   puts "\nPress <enter> to save"
 
-  begin
-    gets
-  rescue Interrupt
-    abort
-  end
+  await_keypress
 
   File.open(FILE, 'a') do |file|
     file.write(date_time)
@@ -31,6 +27,14 @@ def main
       .split(', ')
       .reverse
   }.min
+end
+
+def await_keypress
+  begin
+    gets
+  rescue Interrupt
+    abort
+  end
 end
 
 main

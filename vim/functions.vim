@@ -193,11 +193,15 @@ function! RailsMigrationVersion(filename)
 endfunction
 
 function! RunInShell(command)
-  if TmuxWindowOrPaneRunning()
+  if ShouldSendOutputToTmux()
     call RunShellCommandInTmux(a:command)
   else
     execute ":!clear && time " . a:command
   endif
+endfunction
+
+function! ShouldSendOutputToTmux()
+  return TmuxWindowOrPaneRunning() && $TMUX != ''
 endfunction
 
 function! RailsMigrationStatus(version)

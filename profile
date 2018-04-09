@@ -144,3 +144,10 @@
 
   export GOPATH=/usr/local/go
   export PATH=$PATH:$GOPATH/bin
+
+export NVM_DIR="$HOME/.nvm"
+source "/usr/local/opt/nvm/nvm.sh"
+
+eval "$(rbenv init -)"
+
+eval "$(direnv hook zsh)"

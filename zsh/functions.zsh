@@ -5,7 +5,11 @@ function server() {
 }
 
 function prof() {
-  profile=`enumerate-profiles | selecta`
+  if [ -z "$1" ]; then
+    profile=`enumerate-profiles | selecta`
+  else
+    profile="$*"
+  fi
 
   export ITERM_PROFILE=$profile
   set-profile $profile
