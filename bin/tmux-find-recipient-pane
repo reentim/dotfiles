@@ -8,7 +8,7 @@ set -o pipefail
 function main {
   tmux list-panes -F "#{pane_height},#{pane_current_command},#D,#{pane_active}" |
     grep ",0$"       | # only inactive panes
-    grep "bash\|zsh" | # running a shell
+    grep "make\|bash\|zsh" | # running a shell
     sort -r          |
     head -1          |
     cut -d , -f 3      # split on comma, take third field (pane id)

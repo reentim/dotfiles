@@ -205,6 +205,8 @@ function! RailsMigrationStatus(version)
     " structure.sql contains a list of migrated versions
     if ShellDidSucceed("grep " . a:version . " db/structure.sql")
       return 'up'
+    else
+      return 'down'
     endif
   elseif ShellDidSucceed('test -f db/schema.rb')
     " schema.rb only contains latest migration version
@@ -287,7 +289,7 @@ function! TestRunner()
   if &filetype == "javascript" || &filetype == "javascript.jsx"
     return " yarn jest "
   else
-    return " rspec --color --tty -f doc "
+    return " bundle exec rspec --color --tty -f doc "
   endif
 endfunction
 

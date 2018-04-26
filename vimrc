@@ -121,8 +121,8 @@
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
 
-    autocmd FileType php,c
-      \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+    " autocmd FileType php,c
+    "   \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
     autocmd FileType gitcommit let b:noResumeCursorPosition=1
     autocmd FileType gitrebase let b:noResumeCursorPosition=1
@@ -142,6 +142,7 @@
     autocmd BufReadPost * call ResumeCursorPosition()
 
   " Aggressive autosaving
+
     autocmd InsertLeave * silent! update
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
