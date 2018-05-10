@@ -148,5 +148,4 @@
 export NVM_DIR="$HOME/.nvm"
 source "/usr/local/opt/nvm/nvm.sh"
 
-eval "$(direnv hook zsh)"
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"

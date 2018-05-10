@@ -24,7 +24,7 @@
     set splitright
     let mapleader = ","
     set nojoinspaces
-    set winwidth=72 " the current window will be at least 72 spaces wide
+    " set winwidth=72 " the current window will be at least 72 spaces wide
     set winheight=16
     set cursorline
 
