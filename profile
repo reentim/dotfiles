@@ -97,10 +97,10 @@
     fi
   fi
 
-  # Homebrew stuff
-  if [ $HOMEBREW_INSTALLED ]; then
-    [ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
-  fi
+  # # Homebrew stuff
+  # if [ $HOMEBREW_INSTALLED ]; then
+  #   [ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
+  # fi
 
   # Bash specific
   if [ -n "$BASH_VERSION" ]; then
@@ -148,6 +148,5 @@
 export NVM_DIR="$HOME/.nvm"
 source "/usr/local/opt/nvm/nvm.sh"
 
-eval "$(rbenv init -)"
-
 eval "$(direnv hook zsh)"
+export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"

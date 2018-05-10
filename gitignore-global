@@ -2,3 +2,5 @@
 vim-matchit/doc/tags
 .rspec
 *.icloud
+.idea
+tags

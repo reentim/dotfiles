@@ -8,12 +8,12 @@ themes = [
 
 fonts = [
   'Anon',
-  'Input Mono Narrow',
   'Inconsolata',
-  'Source',
+  'Input Mono Narrow',
   'Input Mono',
   'Plex',
   'SF',
+  'Source',
 ]
 
 puts themes.map { |theme| fonts.map { |font| "#{theme} - #{font}" } }

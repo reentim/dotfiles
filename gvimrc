@@ -20,3 +20,6 @@
   autocmd BufLeave,FocusLost * silent! wall
   set vb " use (nonexistent) visual bell instead of audio
   nnoremap <leader>eg :e $MYGVIMRC<cr>
+
+  " Selecta doesn't work :(
+  nnoremap <leader>t :CtrlP<CR>

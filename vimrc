@@ -70,7 +70,7 @@
 
 " Aesthetics
 " ==============================================================================
-  set nu
+  set nonu
   set wildmenu
   set ruler
   set laststatus=2
@@ -176,14 +176,19 @@
 
 " Plugins
 " ==============================================================================
+  " ALE - Asynchronous Lint Engine
+  let g:ale_enabled = 0
+
+	let g:ale_fixers = {
+	\ 'javascript': ['eslint', 'prettier'],
+  \ 'ruby': ['rufo'],
+	\}
+  let g:ale_sign_column_always = 1
 
   " Splitjoin
     let g:splitjoin_ruby_hanging_args = 0
     let g:splitjoin_ruby_curly_braces = 0
     let g:splitjoin_trailing_comma = 1
-
-  " Syntastic
-    let g:syntastic_mode_map = { 'mode': 'passive' }
 
   " indent html
     let g:html_indent_inctags = "html,body,head,tbody,p,li,label,g"
@@ -230,10 +235,14 @@
       \ 'PrtHistory(-1)':       [],
       \ 'PrtHistory(1)':        [],
       \ }
-    let g:ctrlp_user_command = [
-      \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
-      \ 'find %s -type f'
-    \ ]
+
+    " Selecta uses git ls-files, so Ctrl-P can be for non-git files, maybe?:
+
+    " let g:ctrlp_user_command = [
+    "   \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
+    "   \ 'find %s -type f'
+    " \ ]
+
     let g:ctrlp_use_caching = 1
     let g:ctrlp_match_window = 'min:10,max:20'
 
@@ -422,3 +431,7 @@ function! RenameFile()
     endif
 endfunction
 map <leader>n :call RenameFile()<cr>
+
+" This is for working with Relay
+set includeexpr=substitute(v:fname,'Loader','','')
+set path+=app/javascript/packs/**
