@@ -477,3 +477,9 @@ function! CdToProjectRoot()
 
   exec 'cd ' . system("git rev-parse --show-toplevel")
 endfunction
+
+function! LetToInstanceMethod()
+  :s/let../@/
+  :s/) { / = /
+  :s/ }$//
+endfunction
