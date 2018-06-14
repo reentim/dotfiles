@@ -61,6 +61,12 @@
   # Setting for some scripts designed to run inside a VM and talk to host
   export SCRIPTED_SSH_ENABLED=true
 
+  # Add the default private key to the ssh agent, if there are none already
+  # added
+  if ! (ssh-add -l > /dev/null); then
+    ssh-add -K
+  fi
+
 # Do conditional stuff
 # ------------------------------------------------------------------------------
   if [ $YARN_INSTALLED ]; then
