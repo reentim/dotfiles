@@ -21,6 +21,7 @@ fi
 if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	if (which gstat > /dev/null); then
 		alias stat="gstat"
+		alias numfmt="gnumfmt"
 	fi
 fi
 
