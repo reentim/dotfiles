@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+file=$1
+
+if (which gstat > /dev/null); then
+  gstat --printf="%s\n" $file | gnumfmt --to=iec-i --suffix=B --format="%.3f"
+else
+  stat --printf="%s\n" $file | numfmt --to=iec-i --suffix=B --format="%.3f"
+fi
+
