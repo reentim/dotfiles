@@ -1,5 +1,5 @@
 " General
-" ==============================================================================
+" ================================================================================
   " Sensible defaults
     set nocompatible
     set backspace=indent,eol,start
@@ -13,24 +13,6 @@
     set shell=bash
     syntax on
 
-  " Actual preferences
-    set autoread
-    set mouse=a
-    set ttymouse=sgr " 'The mouse works even in columns beyond 223'
-    set showmatch
-    set nowrap
-    set textwidth=80
-    set colorcolumn=80
-    set splitright
-    let mapleader = ","
-    set nojoinspaces
-    " set winwidth=72 " the current window will be at least 72 spaces wide
-    set winheight=16
-    set cursorline
-
-    " Use the old vim regex engine for faster syntax highlighting
-    set re=1
-
   " Pathogen
     call pathogen#infect()
     call pathogen#helptags()
@@ -39,6 +21,29 @@
     if filereadable(expand("~/.vim/functions.vim"))
       source ~/.vim/functions.vim
     endif
+
+  " Actual preferences
+    set autoread
+    set mouse=a
+    set ttymouse=sgr " 'The mouse works even in columns beyond 223'
+    set showmatch
+    set nowrap
+
+    if LongestLine() <= 80
+      set textwidth=80
+    endif
+
+    set colorcolumn=80
+    set splitright
+    let mapleader = ","
+    set nojoinspaces
+    " set winwidth=72 " the current window will be at least 72 spaces wide
+    set winheight=16
+    " set winheight=32
+    set cursorline
+
+    " Use the old vim regex engine for faster syntax highlighting
+    set re=1
 
     set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
     set wildignore+=*.gitkeep
@@ -70,13 +75,22 @@
 
 " Aesthetics
 " ==============================================================================
-  set nonu
+  set nu
   set wildmenu
   set ruler
   set laststatus=2
   set t_Co=256
+  set fillchars+=vert:\ " Hide pipe character in window separators
 
-  if ItermProfile() =~ 'Solarized'
+  " if (has("termguicolors"))
+  "   set termguicolors
+  " endif
+
+  if $TERM_PROGRAM =~ 'Apple_Terminal'
+    " colorscheme Tomorrow-Night-Bright
+    colorscheme solarized
+    set background=light
+  elseif ItermProfile() =~ 'Solarized'
     colorscheme solarized
 
     if ItermProfile() =~ 'Light'
@@ -84,8 +98,6 @@
     else
       set background=dark
     endif
-  elseif ItermProfile() =~ 'Dracula'
-    colorscheme dracula
   else
     colorscheme Tomorrow-Night-Bright
   endif
@@ -102,7 +114,7 @@
   " https://gist.github.com/sos4nt/3187620).
   " If echo `tput sitm`italics`tput ritm` produces italic text, then this should
   " work (maybe)
-    if &term =~ "italic"
+    if &term =~ "italic" || &term =~ "tmux"
       highlight Comment cterm=italic
     endif
 
@@ -121,8 +133,10 @@
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal textwidth=72
     autocmd BufNewFile,BufRead COMMIT_EDITMSG setlocal colorcolumn=72
 
+    autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal nowrap
+
     " autocmd FileType php,c
-    "   \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+    "   \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtabABCfff
 
     autocmd FileType gitcommit let b:noResumeCursorPosition=1
     autocmd FileType gitrebase let b:noResumeCursorPosition=1
@@ -142,10 +156,11 @@
     autocmd BufReadPost * call ResumeCursorPosition()
 
   " Aggressive autosaving
-
     autocmd InsertLeave * silent! update
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
+
+    nnoremap <silent> <CR> :wall\|:nohlsearch<CR>
 
     " jrnl journaling tool
     autocmd BufNewFile,BufRead jrnl*
@@ -164,26 +179,25 @@
 
     " Ultisnips
       autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-ember
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine-arrow
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-jasmine
-      " autocmd FileType javascript :UltiSnipsAddFiletypes javascript-node
 
-    " Load Ruby into irb session
-      autocmd FileType rb,ruby nnoremap <buffer> <leader>a :w\|:!clear && irb -r %:p<CR>
-
+    " Tell vim-commentary about JSX
+    autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
   augroup END
 
 " Plugins
 " ==============================================================================
   " ALE - Asynchronous Lint Engine
-  let g:ale_enabled = 0
-
+  let g:ale_completion_delay = 50
+  let g:ale_enabled = 1
+  let g:ale_sign_column_always = 1
 	let g:ale_fixers = {
 	\ 'javascript': ['eslint', 'prettier'],
-  \ 'ruby': ['rufo'],
+  \ 'ruby': ['rufo', 'rubocop'],
 	\}
-  let g:ale_sign_column_always = 1
+
+  nnoremap ]a :ALENext<CR>
+  nnoremap [a :ALEPrevious<CR>
+
 
   " Splitjoin
     let g:splitjoin_ruby_hanging_args = 0
@@ -207,6 +221,7 @@
       exe "hi IndentGuidesEven ctermbg=" . g:colorscheme_indent_guide_even
     endif
 
+    " nnoremap <leader>h :CommandTHelp<CR>
 
   " Selecta replaces CommandT
     nnoremap <leader>t :call SelectaGitFile(".")<cr>
@@ -220,6 +235,10 @@
     nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
     nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
     nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
+
+    " Branch files
+    nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<cr>
+
 
     " Fuzzy select git files in current file directory
     nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<cr>
@@ -272,7 +291,6 @@
   set incsearch
   set ignorecase
   set smartcase
-  nnoremap <silent> <CR> :nohlsearch<CR>
 
   " Search for selected text, forwards or backwards
   " -----------------------------------------------
@@ -289,8 +307,6 @@
 
 " Leader shortcuts
 " ==============================================================================
-    nnoremap <leader>s :!make update-schema && `yarn bin`/relay-compiler --src ./app/javascript --schema schema.json<CR>
-
   " Edit vim-related files
     nnoremap <leader>ev :e $MYVIMRC<CR>
     nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
@@ -412,26 +428,24 @@
     onoremap ac :normal Vaf<CR>
 
     command! BD :call DeleteInactiveBufs()
-    " command! Bd :call CloseBuffer()
-    " cnoreabbrev bd Bd
+    command! Bd :call CloseBuffer()
+    cnoreabbrev bd Bd
     cnoreabbrev Bd BD
 
     cnoreabbrev git Git
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RENAME CURRENT FILE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
-map <leader>n :call RenameFile()<cr>
+		nnoremap <leader>pr obinding.pry<ESC>
+		nnoremap <leader>n :call RenameFile()<cr>
+    nnoremap <leader>s :call SortIndentLevel()<CR>
 
-" This is for working with Relay
-set includeexpr=substitute(v:fname,'Loader','','')
-set path+=app/javascript/packs/**
+		" " This is for working with Relay
+		" set includeexpr=substitute(v:fname,'Loader','','')
+		set path+=app/javascript/packs/**
+
+    " Italics handling (neccessary?)
+		let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+		let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+
+    " Scale back completion sources because the completion window sometimes has
+    " a big delay to show up -- maybe due to tags?
+    set complete=.,w,b,u

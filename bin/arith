@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+def times_table_number
+  (2..12).to_a.sample
+end
+
+def times_table_question
+  a = times_table_number
+  b = times_table_number
+
+  puts "#{a} x #{b}"
+  start_time = Time.now
+
+  answer = gets.chomp.to_i
+  end_time = Time.now
+
+  if answer == (a * b)
+    puts "✅"
+  else
+    puts "🚨"
+    puts a * b
+  end
+
+  puts end_time - start_time
+end
+
+times_table_question

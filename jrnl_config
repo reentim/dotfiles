@@ -1,16 +1,15 @@
 {
-  "default_hour": 9,
-  "linewrap": 79,
-  "encrypt": false,
-  "default_minute": 0,
-  "tagsymbols": "@",
-  "editor": "open -b org.vim.MacVim -W",
-  "editor": "open -b pro.writer.mac -W",
-  "editor": "vim",
-  "timeformat": "%Y-%m-%d %H:%M",
-  "highlight": true,
+  "default_hour": 9, 
+  "linewrap": 79, 
+  "encrypt": false, 
+  "default_minute": 0, 
+  "tagsymbols": "@", 
+  "editor": "vim", 
+  "timeformat": "%Y-%m-%d %H:%M", 
+  "highlight": true, 
   "journals": {
-    "default": "/Users/tim/journal.txt",
+    "default": "/Users/tim/iCloud-Drive/2018-journal.txt", 
+    "innowell": "/Users/tim/iCloud-Drive/innowell-journal.txt", 
     "dev": "/Users/tim/dev/dev-journal.txt"
   }
 }

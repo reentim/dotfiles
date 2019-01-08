@@ -8,10 +8,13 @@ themes = [
 
 fonts = [
   'Anon',
+  'Fira Code',
   'Inconsolata',
+  'Input Mono Condensed',
   'Input Mono Narrow',
   'Input Mono',
   'Plex',
+  'Pragmata',
   'SF',
   'Source',
 ]

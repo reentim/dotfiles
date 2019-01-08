@@ -1,6 +1,11 @@
 " Appearance
 " ==============================================================================
-  set guifont=SF\ Mono
+  " set guifont=SF\ Mono
+  "
+  set macligatures
+  set guifont=Fira\ Code:h12
+  " set guifont=Iosevka\ Term:h12
+
   colorscheme solarized
   set background=light
   let g:indent_guides_auto_colors = 1

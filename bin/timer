@@ -14,7 +14,7 @@ def main
   date_time = %Q[#{Time.now}, #{stop - start}\n]
 
   puts date_time
-  puts "\nPress <enter> to save"
+  puts "\nPress <ENTER> to save"
 
   await_keypress
 
@@ -23,9 +23,9 @@ def main
   end
 
   puts "PB:", File.readlines(FILE).map { |line|
-    line
-      .split(', ')
+    line.split(', ')
       .reverse
+      .map { |column| column.include?("\n") ? column.chomp.to_f : column }
   }.min
 end
 

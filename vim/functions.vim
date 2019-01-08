@@ -68,6 +68,7 @@ function! SplitLine()
     " :s/,/,\r/g
   else
     :s/\(\s\w\+\(\-\?\)\w\+=\)/\r\1/g
+    :s/>/\r>/g
   endif
   normal $=`a
 endfunction
@@ -159,7 +160,7 @@ function! CloseBuffer()
     enew
     split #
     bdelete
-    bnext
+    " bnext
 endfunction
 
 function! RunFile()
@@ -417,6 +418,10 @@ function! SelectaGitFile(path)
   call SelectaCommand("git ls-files -co --exclude-standard " . a:path . " | uniq", "", ":e")
 endfunction
 
+function! SelectaGitCurrentBranchFile()
+  call SelectaCommand("git diff --name-only $(git merge-base --fork-point origin/staging)", "", ":e")
+endfunction
+
 " Fuzzy select
 function! SelectaIdentifier()
   " Yank the word under the cursor into the z register
@@ -482,4 +487,49 @@ function! LetToInstanceMethod()
   :s/let../@/
   :s/) { / = /
   :s/ }$//
+endfunction
+
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+
+function! SortIndentLevel()
+	normal mz
+	call SelectIndent()
+  execute "normal! :sort\<CR>"
+	normal `z
+endfunction
+
+" Visually select contiguous block of text sharing the same indent level
+function! SelectIndent()
+  let cur_line = line(".")
+  let cur_ind = indent(cur_line)
+  let line = cur_line
+
+  " Selection top
+  while indent(line - 1) == cur_ind && strwidth(getline(line - 1)) > 0
+    let line = line - 1
+  endw
+  exe "normal " . line . "G"
+  exe "normal V"
+
+  " Selection bottom
+  let line = cur_line
+  while indent(line + 1) == cur_ind && strwidth(getline(line + 1)) > 0
+    let line = line + 1
+  endw
+  exe "normal " . line . "G"
+endfunction
+
+function! LongestLine()
+  return system("gwc -L " . bufname("%") . " | cut -d ' ' -f 1")
+endfunction
+
+function! Foo()
 endfunction

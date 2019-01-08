@@ -38,6 +38,7 @@ alias sr='screen -r'
 alias t='tmux'
 alias ta='t a'
 alias sshu='ssh -A -l ubuntu '
+alias todo='todo.sh'
 
 # Kind of new things
 alias cdr='cd $(git rev-parse --show-cdup)'     # cd to git root

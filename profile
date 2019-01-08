@@ -26,16 +26,12 @@
     HOMEBREW_INSTALLED=1
   fi
 
-  if (which npm > /dev/null); then
-    NPM_INSTALLED=1
-  fi
-
   if (which yarn > /dev/null); then
     YARN_INSTALLED=1
   fi
 
   if (which direnv > /dev/null); then
-    eval "$(direnv hook zsh)"
+    DIRENV_INSTALLED=1
   fi
 
 # Stuff we always want to do
@@ -73,11 +69,6 @@
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
-  if [ $NPM_INSTALLED ]; then
-    export PATH="/usr/local/share/npm/bin:$PATH"
-    export NODE_PATH='/usr/local/lib/node_modules'
-  fi
-
   if [ $YARN_INSTALLED ]; then
     export PATH="$PATH:`yarn global bin`"
   fi
@@ -103,32 +94,29 @@
     fi
   fi
 
-  # # Homebrew stuff
-  # if [ $HOMEBREW_INSTALLED ]; then
-  #   [ -d /usr/local/bin ] && export PATH=$(echo /usr/local/bin:$PATH | sed -e 's;:/usr/local/bin;;')
-  # fi
+  if [ $DIRENV_INSTALLED ]; then
+    eval "$(direnv hook zsh)"
+  fi
 
   # Bash specific
   if [ -n "$BASH_VERSION" ]; then
-    source ~/.bash_colors
-
-    HOST_COLOR=${BRIGHT_CYAN}
-    DIR_COLOR=${BRIGHT_VIOLET}
-    USER_COLOR=${BRIGHT_YELLOW}
-
     # Include human readable colour shortcuts
     if [ -f ~/.bash_colors ]; then
-      . ~/.bash_colors
+      source ~/.bash_colors
+    fi
+
+    if [ -f ~/.bash_colors ]; then
+      source ~/.bash_custom
+    fi
+
+    if [ -f ~/.bashrc ]; then
+      source ~/.bashrc
     fi
 
     # History stuff
     export HISTCONTROL=erasedups
     export HISTSIZE=10000
     shopt -s histappend
-
-    if [ -f ~/.bashrc ]; then source ~/.bashrc; fi
-
-    source ~/.bash_custom
 
     if [ $HOMEBREW_INSTALLED ]; then
       if [ -f `brew --prefix`/etc/bash_completion ]; then
@@ -138,13 +126,6 @@
       if [ -f /etc/bash_completion.d/git ]; then
         . /etc/bash_completion.d/git
       fi
-    fi
-  fi
-
-  if [ $SYSTEM_TYPE = 'Linux' ]; then
-    # Ensure MySQL is on the PATH, if necessary
-    if [ -f /etc/profile.d/mysql.server.sh ]; then
-      source /etc/profile.d/mysql.server.sh
     fi
   fi
 

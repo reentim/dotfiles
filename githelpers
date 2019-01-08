@@ -10,11 +10,16 @@ unwip() {
 }
 
 recent_branch() {
-    echo "
-      puts '`git reflog -n 100 | grep 'checkout: moving'`'.lines.
-        map { |l| l.strip.split('to ').last }.uniq & '`git branch`'.lines.
-        map { |l| l.strip }
-    " | ruby |
-        selecta |
-        xargs git checkout
+  echo "
+    puts '`git reflog -n 100 | grep 'checkout: moving'`'.lines.
+      map { |l| l.strip.split('to ').last }.uniq & '`git branch`'.lines.
+      map { |l| l.strip }
+  " | ruby |
+      selecta |
+      xargs git checkout
+}
+
+branch_diff() {
+  branch=$1
+  git diff $(git merge-base --fork-point origin/staging $branch)..$branch
 }

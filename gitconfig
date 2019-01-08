@@ -15,6 +15,7 @@
 [alias]
   aa      = add -A
   amend   = commit --amend
+  bd      = "!. ~/.githelpers && branch_diff"
   ci      = commit --verbose
   cim     = commit -m
   co      = checkout
@@ -22,10 +23,8 @@
   di      = diff
   ds      = diff --staged
   ff      = merge --ff-only
-  fixup   = commit --fixup
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
-  rom     = "!f() { git rebase origin/master; }; f"
-  ros     = "!f() { git rebase origin/staging; }; f"
+  fixup   = commit --fixup
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   fros    = "!f() { git fetch && git rebase origin/staging; }; f"
   l       = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
@@ -35,10 +34,11 @@
   pf      = pull --ff-only
   pf      = pull --ff-only
   r       = "!. ~/.githelpers && recent_branch"
+  rom     = "!f() { git rebase origin/master; }; f"
   rom     = rebase origin/master
+  ros     = "!f() { git rebase origin/staging; }; f"
   s       = "!f() { git branch -a | cut -c 3- | sed 's:remotes/origin/::' | sort | uniq | selecta | xargs git checkout; }; f"
   st      = status -sb
-  uncommit = reset --soft
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
   wip     = "!f() { git add -A && git commit --no-verify -m 'wip'; }; f"
