@@ -22,6 +22,10 @@
     RBENV_INSTALLED=1
   fi
 
+  if (which chruby-exec > /dev/null); then
+    CHRUBY_INSTALLED=1
+  fi
+
   if [ -d /usr/local/Library/Homebrew ]; then
     HOMEBREW_INSTALLED=1
   fi
@@ -36,7 +40,6 @@
 
 # Stuff we always want to do
 # ------------------------------------------------------------------------------
-  export PATH=/usr/local/bin:$PATH
   export LESS=-Ri
 
   # vim temp files go in /tmp/ directories
@@ -49,18 +52,6 @@
     source ~/.aliases
   fi
 
-  if [ -n "$ITERM_PROFILE" ]; then
-    # $ITERM_PROFILE needs to be exported in order to send it over ssh
-    export ITERM_PROFILE=$ITERM_PROFILE
-
-    # Store $ITERM_PROFILE in a session-specific file, to be read in e.g. tmux
-    # sessions with out-of-date environment variables
-    echo $ITERM_PROFILE > /tmp/$ITERM_SESSION_ID-iterm_profile
-  fi
-
-  # Setting for some scripts designed to run inside a VM and talk to host
-  export SCRIPTED_SSH_ENABLED=true
-
   # Add the default private key to the ssh agent, if there are none already
   # added
   if ! (ssh-add -l > /dev/null); then
@@ -69,17 +60,25 @@
 
 # Do conditional stuff
 # ------------------------------------------------------------------------------
-  if [ $YARN_INSTALLED ]; then
-    export PATH="$PATH:`yarn global bin`"
-  fi
-
   if [ -d $HOME/bin ]; then
     export PATH="$HOME/bin:$PATH"
+  fi
+
+  # Include the working directory's bin dir in PATH
+  if ! (echo $PATH | grep ^\./bin); then
+    export PATH="./bin:$PATH"
   fi
 
   if [ $RBENV_INSTALLED ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init - zsh)"
+  fi
+
+  if [ $CHRUBY_INSTALLED ]; then
+    source /usr/local/opt/chruby/share/chruby/chruby.sh
+    source /usr/local/opt/chruby/share/chruby/auto.sh
+
+    chruby 'ruby-2.6.2'
   fi
 
   # z - a fuzzy finder for directory changing
@@ -97,42 +96,3 @@
   if [ $DIRENV_INSTALLED ]; then
     eval "$(direnv hook zsh)"
   fi
-
-  # Bash specific
-  if [ -n "$BASH_VERSION" ]; then
-    # Include human readable colour shortcuts
-    if [ -f ~/.bash_colors ]; then
-      source ~/.bash_colors
-    fi
-
-    if [ -f ~/.bash_colors ]; then
-      source ~/.bash_custom
-    fi
-
-    if [ -f ~/.bashrc ]; then
-      source ~/.bashrc
-    fi
-
-    # History stuff
-    export HISTCONTROL=erasedups
-    export HISTSIZE=10000
-    shopt -s histappend
-
-    if [ $HOMEBREW_INSTALLED ]; then
-      if [ -f `brew --prefix`/etc/bash_completion ]; then
-        source `brew --prefix`/etc/bash_completion
-      fi
-    else
-      if [ -f /etc/bash_completion.d/git ]; then
-        . /etc/bash_completion.d/git
-      fi
-    fi
-  fi
-
-  export GOPATH=/usr/local/go
-  export PATH=$PATH:$GOPATH/bin
-
-export NVM_DIR="$HOME/.nvm"
-source "/usr/local/opt/nvm/nvm.sh"
-
-export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
