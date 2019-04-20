@@ -53,5 +53,5 @@ desc "Italic terminal"
 task :italic do
   %x[tic ./terminals/xterm-256color-italic.terminfo]
   %x[tic ./terminals/screen-256color-italic.terminfo]
-  %x[tic ./terminals/tmux.terminfo]
+  %x[tic ./terminals/tmux-256color.terminfo]
 end
