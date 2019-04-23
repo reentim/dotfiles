@@ -1,0 +1,4 @@
+*.log
+**.min.js
+vendor
+public

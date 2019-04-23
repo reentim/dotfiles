@@ -166,15 +166,19 @@ syntax on
 	\ 'javascript': ['eslint', 'prettier'],
   \ 'ruby': ['rufo', 'rubocop'],
 	\}
-
+	let g:ale_pattern_options = {
+	\ '.*schema\.rb$': {'ale_enabled': 0},
+	\}
   nnoremap ]a :ALENext<CR>
   nnoremap [a :ALEPrevious<CR>
+
+  cnoreabbrev alefix ALEFix
 
 
   " Splitjoin
     let g:splitjoin_ruby_hanging_args = 0
     let g:splitjoin_ruby_curly_braces = 0
-    let g:splitjoin_trailing_comma = 1
+    let g:splitjoin_trailing_comma = 0 " je regret
 
   " indent html
     let g:html_indent_inctags = "html,body,head,tbody,p,li,label,g"
@@ -278,7 +282,8 @@ syntax on
   " Run tests
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-    cabbrev Rspec :!clear && bundle exec rspec %
+    cabbrev Rspec :!clear && bundle exec rspec %<CR>
+    " nnoremap <CR> :call RunCurrentTest('at_line')<CR>
 
   " Split HTML attributes, Ruby lines
     nnoremap <leader>S :silent! call SplitLine()<CR>
@@ -372,10 +377,12 @@ syntax on
     vnoremap ac :<C-U>silent! normal! V<C-U>call <SNR>51_Match_wrapper('',1,'v') <CR>m'gv``
     onoremap ac :normal Vaf<CR>
 
-    command! BD :call DeleteInactiveBufs()
-    command! Bd :call CloseBuffer()
-    cnoreabbrev bd Bd
-    cnoreabbrev Bd BD
+    " CloseBuffer has some bugs! It leaves cursor in strange place
+    "
+    " command! BD :call DeleteInactiveBufs()
+    " command! Bd :call CloseBuffer()
+    " cnoreabbrev bd Bd
+    " cnoreabbrev Bd BD
 
     cnoreabbrev git Git
 
