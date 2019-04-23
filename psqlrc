@@ -1,6 +1,11 @@
-\set HISTFILE ~/.psql/history-:DBNAME
-\set HISTCONTROL ignoredups
 \set COMP_KEYWORD_CASE upper
-\pset null '[NULL]'
+
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+
+\pset null '(null)'
+
 \pset border 2
+\pset linestyle ascii
+
 \x auto
