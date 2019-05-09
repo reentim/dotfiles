@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# gstat seems better than stat, but
+# seems not to support completion
+
+if (which gstat > /dev/null); then
+  gstat $*
+else
+  stat $*
+fi
