@@ -89,7 +89,7 @@ syntax on
   filetype plugin indent on
   set autoindent
   set smartindent
-  set expandtab tabstop=2 softtabstop=2 shiftwidth=2
+  set expandtab tabstop=4 softtabstop=2 shiftwidth=2
 
   augroup vimrc
     autocmd!
@@ -237,7 +237,12 @@ syntax on
 
   " Ack - use Ag
     let g:ackprg = 'ag --nogroup --nocolor --column'
+    let g:ackhighlight = 1
     cabbrev Ag Ack
+
+    " Using vim's :grep, :copen, :cn, :cp to come close to Ack.vim
+    set grepprg=ag\ --vimgrep\ $*
+    set grepformat=%f:%l:%c:%m
 
 " Searching
 " ==============================================================================

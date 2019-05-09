@@ -1,10 +1,8 @@
 " Appearance
 " ==============================================================================
-  " set guifont=SF\ Mono
   "
   set macligatures
-  set guifont=Fira\ Code:h12
-  " set guifont=Iosevka\ Term:h12
+  set guifont=Input\ Mono:h12
 
   colorscheme solarized
   set background=light
