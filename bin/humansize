@@ -2,9 +2,7 @@
 
 file=$1
 
-if (which gstat > /dev/null); then
-  gstat --printf="%s\n" $file | gnumfmt --to=iec-i --suffix=B --format="%.3f"
-else
-  stat --printf="%s\n" $file | numfmt --to=iec-i --suffix=B --format="%.3f"
-fi
-
+stat=$(stat -f "%z" $file)
+echo "$stat bytes"
+echo $stat | numfmt --to=iec-i --suffix=B --format="%.2f"
+echo $stat | numfmt --to=si --suffix=B --format="%.2f"
