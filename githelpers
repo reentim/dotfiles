@@ -2,6 +2,11 @@
 
 set -e
 
+wip() {
+  git add -A
+  git commit --no-verify -m 'wip'
+}
+
 unwip() {
   if [ "`git log --format=%B -n 1 HEAD`" = "wip" ]; then
     git reset --soft HEAD~1;
@@ -9,17 +14,33 @@ unwip() {
   fi;
 }
 
-recent_branch() {
-  echo "
-    puts '`git reflog -n 100 | grep 'checkout: moving'`'.lines.
-      map { |l| l.strip.split('to ').last }.uniq & '`git branch`'.lines.
-      map { |l| l.strip }
-  " | ruby |
-      selecta |
-      xargs git checkout
+diff_branch() {
+  branch=$1
+  git diff $(git merge-base --fork-point $FORK_POINT $branch)..$branch
 }
 
-branch_diff() {
-  branch=$1
-  git diff $(git merge-base --fork-point origin/staging $branch)..$branch
+merge_branch_origin_to_master() {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  git checkout master
+  git merge --no-ff origin/$branch
+}
+
+selecta_branch() {
+  git branch -a |
+    cut -c 3- |
+    sed 's:remotes/origin/::' |
+    grep -v HEAD |
+    sort -u |
+    selecta |
+    xargs git checkout
+}
+
+selecta_recent_branch() {
+  git checkout $(
+    git reflog -n 100 |
+      grep "checkout:" |
+      grep -Eo "\S+$" |
+      sort -u |
+      selecta
+  )
 }
