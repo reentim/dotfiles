@@ -1,17 +1,17 @@
 " General
 " ================================================================================
-  " Sensible defaults
-    set nocompatible
-    set backspace=indent,eol,start
-    set history=10000
-    set encoding=utf-8
-    set fileencoding=utf-8
-    set showcmd
-    set ttyfast
-    set ttimeout
-    set ttimeoutlen=10
-    set shell=bash
-    syntax on
+" Sensible defaults
+set nocompatible
+set backspace=indent,eol,start
+set history=10000
+set encoding=utf-8
+set fileencoding=utf-8
+set showcmd
+set ttyfast
+set ttimeout
+set ttimeoutlen=10
+set shell=bash
+syntax on
 
   " Pathogen
     call pathogen#infect()
@@ -37,33 +37,11 @@
     set splitright
     let mapleader = ","
     set nojoinspaces
-    " set winwidth=72 " the current window will be at least 72 spaces wide
     set winheight=16
-    " set winheight=32
     set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
     set re=1
-
-    set wildignore+=*.doc,*.docx,*.xls,*.xlsx,*.rtf,*.pdf
-    set wildignore+=*.gitkeep
-    set wildignore+=*.mp3,*.mp4,*.mkv,*.avi,*.zip,*.rar,*.iso,*.dmg,*.gz
-    set wildignore+=*.png,*.jpg,*.gif
-    set wildignore+=.keep
-    set wildignore+=_site
-    set wildignore+=_site/**
-    set wildignore+=bower_components
-    set wildignore+=bower_components/**
-    set wildignore+=client/node_modules/**
-    set wildignore+=node_modules
-    set wildignore+=node_modules/**
-    set wildignore+=public/assets
-    set wildignore+=public/assets/**
-    set wildignore+=public/css
-    set wildignore+=public/css/**
-    set wildignore+=public/packs-test/**
-    set wildignore+=tmp
-    set wildignore+=tmp/**,log/**
 
     " Netw directory listing
     let g:netrw_liststyle = 3
@@ -82,13 +60,8 @@
   set t_Co=256
   set fillchars+=vert:\ " Hide pipe character in window separators
 
-  " if (has("termguicolors"))
-  "   set termguicolors
-  " endif
-
   if $TERM_PROGRAM =~ 'Apple_Terminal'
-    " colorscheme Tomorrow-Night-Bright
-    colorscheme solarized
+    colorscheme Tomorrow-Night-Bright
     set background=light
   elseif ItermProfile() =~ 'Solarized'
     colorscheme solarized
@@ -101,13 +74,6 @@
   else
     colorscheme Tomorrow-Night-Bright
   endif
-
-  " Highlight trailing whitespace, but not during insertion
-    highlight TrailingWhitespace ctermbg=red guibg=red
-    au BufEnter    * match TrailingWhitespace /\s\+$/
-    au InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-    au InsertLeave * match TrailingWhitespace /\s\+$/
-    au BufWinLeave * call clearmatches()
 
   " Italic comments. This requires a terminal emulator that supports italic
   " text, e.g. iTerm2 with setting enabled, and an appropriate TERMINFO (see
@@ -135,8 +101,8 @@
 
     autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal nowrap
 
-    " autocmd FileType php,c
-    "   \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtabABCfff
+    autocmd FileType php,c
+      \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
     autocmd FileType gitcommit let b:noResumeCursorPosition=1
     autocmd FileType gitrebase let b:noResumeCursorPosition=1
@@ -148,7 +114,6 @@
       autocmd BufNewFile,BufRead COMMIT_EDITMSG  setlocal spell
       autocmd FileType eruby                     setlocal spell
       autocmd FileType markdown                  setlocal spell
-      autocmd BufNewFile,BufRead *.tpl.php       setlocal spell
       autocmd BufNewFile,BufRead html            setlocal spell
     endif
 
@@ -182,6 +147,13 @@
 
     " Tell vim-commentary about JSX
     autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
+
+    " Highlight trailing whitespace, but not during insertion, and not in help
+    highlight TrailingWhitespace ctermbg=red guibg=red
+    autocmd BufEnter    * match TrailingWhitespace /\s\+$/
+    autocmd InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
+    autocmd InsertLeave * match TrailingWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
   augroup END
 
 " Plugins
@@ -224,21 +196,17 @@
     " nnoremap <leader>h :CommandTHelp<CR>
 
   " Selecta replaces CommandT
-    nnoremap <leader>t :call SelectaGitFile(".")<cr>
-    nnoremap <leader>gc :call SelectaGitFile("app/controllers")<cr>
-    nnoremap <leader>gf :call SelectaGitFile("features")<cr>
-    nnoremap <leader>gh :call SelectaGitFile("app/helpers")<cr>
-    nnoremap <leader>gj :call SelectaGitFile("app/assets/javascripts")<cr>
-    nnoremap <leader>gl :call SelectaGitFile("lib")<cr>
-    nnoremap <leader>gm :call SelectaGitFile("app/models")<cr>
-    nnoremap <leader>gp :call SelectaGitFile("app/javascript/packs")<cr>
-    nnoremap <leader>gq :call SelectaGitFile("app/graphql")<cr>
-    nnoremap <leader>gs :call SelectaGitFile("spec/")<cr>
-    nnoremap <leader>gv :call SelectaGitFile("app/views")<cr>
+    nnoremap <leader>t  :call SelectaFile(".")<cr>
+    nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
+    nnoremap <leader>gl :call SelectaFile("lib")<cr>
+    nnoremap <leader>gm :call SelectaFile("app/models")<cr>
+    nnoremap <leader>gp :call SelectaFile("app/javascript/packs")<cr>
+    nnoremap <leader>gq :call SelectaFile("app/graphql")<cr>
+    nnoremap <leader>gs :call SelectaFile("spec")<cr>
+    nnoremap <leader>gv :call SelectaFile("app/views")<cr>
 
     " Branch files
     nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<cr>
-
 
     " Fuzzy select git files in current file directory
     nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<cr>
@@ -246,24 +214,7 @@
     " Fuzzy select a buffer. Open the selected buffer with :b.
     nnoremap <leader>b :call SelectaBuffer()<cr>
 
-  " Ctrl-P
-    let g:ctrlp_working_path_mode = ''
-    let g:ctrlp_prompt_mappings = {
-      \ 'PrtSelectMove("j")':   ['<c-j>', '<down>', '<c-n>'],
-      \ 'PrtSelectMove("k")':   ['<c-k>', '<up>', '<c-p>'],
-      \ 'PrtHistory(-1)':       [],
-      \ 'PrtHistory(1)':        [],
-      \ }
-
-    " Selecta uses git ls-files, so Ctrl-P can be for non-git files, maybe?:
-
-    " let g:ctrlp_user_command = [
-    "   \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
-    "   \ 'find %s -type f'
-    " \ ]
-
-    let g:ctrlp_use_caching = 1
-    let g:ctrlp_match_window = 'min:10,max:20'
+    nnoremap <c-g> :call SelectaIdentifier()<cr>
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -331,12 +282,6 @@
 
   " Split HTML attributes, Ruby lines
     nnoremap <leader>S :silent! call SplitLine()<CR>
-
-  " Shortcut to invoke watch / browser refresh script in background...
-    " let g:watching = 0
-    " nnoremap <leader>c :call SetWatch()<CR><CR>
-    " ...and tidy up afterwards
-    " autocmd VimLeave * :call RemoveWatch()
 
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
@@ -440,7 +385,7 @@
 
 		" " This is for working with Relay
 		" set includeexpr=substitute(v:fname,'Loader','','')
-		set path+=app/javascript/packs/**
+		" set path+=app/javascript/packs/**
 
     " Italics handling (neccessary?)
 		let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
