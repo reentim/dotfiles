@@ -172,9 +172,9 @@ function! RunFile()
     elseif expand('%:h') == "db/migrate"
       call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
     elseif expand('%:t') == 'routes.rb'
-      call RunInShell('bundle exec rails routes')
+      call RunInShell('rails routes')
     else
-      call RunInShell('ruby %:p')
+      call RunInShell('ruby %')
     endif
   elseif &ft == "python"
     call RunInShell('python %:p')
@@ -182,6 +182,8 @@ function! RunFile()
     call RunInShell('node %:p')
   elseif &ft == "vim"
     source %:p
+  elseif &ft == "c"
+    call RunInShell('gcc % && clear && ./a.out')
   elseif &ft
     execute "echo \"Don't know how to run" . &ft . " files.\""
   else
@@ -234,9 +236,9 @@ function! RunRailsMigration(version)
   let migration_status = RailsMigrationStatus(a:version)
 
   if l:migration_status == 'up'
-    call RunInShell("bundle exec rake db:migrate:down VERSION=" . a:version)
+    call RunInShell("rake db:migrate:down VERSION=" . a:version)
   elseif l:migration_status == 'down'
-    call RunInShell("bundle exec rake db:migrate:up VERSION=" . a:version)
+    call RunInShell("rake db:migrate:up VERSION=" . a:version)
   endif
 endfunction
 
@@ -294,7 +296,7 @@ function! TestRunner()
   if &filetype == "javascript" || &filetype == "javascript.jsx"
     return " yarn jest "
   else
-    return " bundle exec rspec --color --tty -f doc "
+    return " rspec --color --tty -f doc "
   endif
 endfunction
 
@@ -354,7 +356,7 @@ function! CopyToHost()
 endfunction
 
 function! ItermProfile()
-  return $ITERM_PROFILE
+  return system("iterm_session_profile")
 endfunction
 
 function! DeleteInactiveBufs()
@@ -394,7 +396,11 @@ function! FindWithWildignore(path)
   for entry in split(&wildignore,",")
     let excluding.= (match(entry,'*/*') ? " ! -ipath \'" . a:path . "/" : " ! -iname \'") . entry . "\' "
   endfor
-  return "find " . a:path . "/* -type f \\\( " . excluding . " \\\)"
+  if len(excluding) > 0
+    return "find " . a:path . "/* -type f \\\( " . excluding . " \\\)"
+  else
+    return "find " . a:path . "/* -type f"
+  end
 endfunction
 
 function! SelectaCommand(choice_command, selecta_args, vim_command)
@@ -411,15 +417,23 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
 endfunction
 
 function! SelectaFile(path)
+  if InGitDir()
+    call SelectaGitFile(a:path)
+  else
+    call SelectaFoundFile(a:path)
+  endif
+endfunction
+
+function! SelectaFoundFile(path)
   call SelectaCommand(FindWithWildignore(a:path), "", ":e")
 endfunction
 
 function! SelectaGitFile(path)
-  call SelectaCommand("git ls-files -co --exclude-standard " . a:path . " | uniq", "", ":e")
+  call SelectaCommand("git ls-files --cached --others --exclude-standard " . a:path . " | uniq", "", ":e")
 endfunction
 
 function! SelectaGitCurrentBranchFile()
-  call SelectaCommand("git diff --name-only $(git merge-base --fork-point origin/staging)", "", ":e")
+  call SelectaCommand("git diff --name-only $(git merge-base --fork-point " . $FORK_POINT . ")", "", ":e")
 endfunction
 
 " Fuzzy select
@@ -430,7 +444,6 @@ function! SelectaIdentifier()
   " the cursor
   call SelectaCommand("find * -type f", "-s " . @z, ":e")
 endfunction
-nnoremap <c-g> :call SelectaIdentifier()<cr>
 
 function! SelectaBuffer()
   let bufnrs = filter(range(1, bufnr("$")), 'buflisted(v:val)')
@@ -473,14 +486,15 @@ function! AlternateForCurrentFile()
   return new_file
 endfunction
 
-function! CdToProjectRoot()
+function! InGitDir()
   call system("git rev-parse --git-dir")
+  return v:shell_error == 0
+endfunction
 
-  if v:shell_error != 0
-    return
+function! CdToProjectRoot()
+  if InGitDir()
+    exec 'cd ' . system("git rev-parse --show-toplevel")
   endif
-
-  exec 'cd ' . system("git rev-parse --show-toplevel")
 endfunction
 
 function! LetToInstanceMethod()
