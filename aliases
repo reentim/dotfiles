@@ -9,7 +9,7 @@ alias grep='grep --color=auto'
 ls_opt='--color=auto --group-directories-first --file-type --time-style=+"%Y-%m-%d %X"'
 alias ls="ls $ls_opt"
 
-if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+if [[ $(uname) == 'Darwin' ]]; then
 	# use GNU ls if it's available
 	if $(which gls > /dev/null); then
 		alias ls="gls $ls_opt"
@@ -18,7 +18,7 @@ if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
 	fi
 fi
 
-if [[ $SYSTEM_TYPE == 'Darwin' ]]; then
+if [[ $(uname) == 'Darwin' ]]; then
 	if (which gstat > /dev/null); then
 		alias stat="gstat"
 		alias numfmt="gnumfmt"
