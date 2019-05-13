@@ -8,19 +8,19 @@ ls_opt='--color=auto --group-directories-first --file-type --time-style=+"%F %T"
 alias ls="ls $ls_opt"
 
 if [[ $(uname) == 'Darwin' ]]; then
-	# use GNU ls if it's available
-	if $(which gls > /dev/null); then
-		alias ls="gls $ls_opt"
-	else
-		alias ls='ls -CFG'
-	fi
+  # use GNU ls if it's available
+  if $(which gls > /dev/null); then
+    alias ls="gls $ls_opt"
+  else
+    alias ls='ls -CFG'
+  fi
 fi
 
 if [[ $(uname) == 'Darwin' ]]; then
-	if (which gstat > /dev/null); then
-		alias stat="gstat"
-		alias numfmt="gnumfmt"
-	fi
+  if (which gstat > /dev/null); then
+    alias stat="gstat"
+    alias numfmt="gnumfmt"
+  fi
 fi
 
 alias l='ls -lGgh' # list, omit group, omit owner, human readable sizes
