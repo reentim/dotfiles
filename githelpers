@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -36,12 +36,13 @@ selecta_branch() {
 }
 
 selecta_recent_branch() {
-  git checkout $(
-    git reflog -n 100 |
-      grep "checkout:" |
-      grep -Eo "\S+$" |
-      awk '!x[$0]++' | # remove duplicates without changing order
-      grep -v $(git rev-parse --abbrev-ref HEAD) |
-      selecta
-  )
+  bash << EOS
+    cat <(git reflog -n 100 | grep 'checkout:' | grep -Eo "\S+$")
+        <(git branch | cut -c 3-)
+EOS
 }
+
+ # | awk '!x[$0]++'
+#         | grep -v $(git rev-parse --abbrev-ref HEAD) \
+#         | selecta \
+#         | xargs git checkout

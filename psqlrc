@@ -1,11 +1,11 @@
-\set COMP_KEYWORD_CASE upper
+/* \set COMP_KEYWORD_CASE upper */
 
-\set HISTFILE ~/.psql_history- :DBNAME
-\set HISTCONTROL ignoredups
+/* \set HISTFILE ~/.psql_history- :DBNAME */
+/* \set HISTCONTROL ignoredups */
 
-\pset null '(null)'
+/* \pset null '(null)' */
 
-\pset border 2
-\pset linestyle ascii
+/* \pset border 2 */
+/* \pset linestyle ascii */
 
-\x auto
+/* \x auto */
