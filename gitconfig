@@ -43,10 +43,10 @@
   tool = vimdiff
   defaultToUpstream = true
 [push]
-  default = tracking
+  default = current
 [init]
   templatedir = ~/.git_template
 [rerere]
-	enabled = true
+  enabled = true
 [remote "origin"]
   prune = true
