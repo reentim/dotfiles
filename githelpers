@@ -40,7 +40,8 @@ selecta_recent_branch() {
     git reflog -n 100 |
       grep "checkout:" |
       grep -Eo "\S+$" |
-      sort -u |
+      awk '!x[$0]++' | # remove duplicates without changing order
+      grep -v $(git rev-parse --abbrev-ref HEAD) |
       selecta
   )
 }
