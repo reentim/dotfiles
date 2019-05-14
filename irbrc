@@ -51,18 +51,3 @@ end
 def paste
   `pbpaste`
 end
-
-class Client
-  puts " --> Client.execute_in_all"
-  def self.execute_in_all
-    result = {}
-    Apartment.tenant_names.each do |tenant_name|
-      Apartment::Tenant.switch tenant_name do
-        result[tenant_name] = yield
-      end
-      print '.'
-    end
-    puts ''
-    result
-  end
-end
