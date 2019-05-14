@@ -16,7 +16,7 @@ unwip() {
 
 diff_branch() {
   branch=$1
-  git diff $(git merge-base --fork-point $FORK_POINT $branch)..$branch
+  git diff $(git merge-base --fork-point origin/$FORK_POINT $branch)..$branch
 }
 
 merge_branch_origin_to_master() {
@@ -37,8 +37,9 @@ selecta_branch() {
 
 selecta_recent_branch() {
 bash << EOS
-  cat <(git reflog -n 100 | grep 'checkout:' | grep -Eo "\S+$") \
+  cat <(git reflog -n 100 | grep -E 'checkout:|Branch: renamed' | grep -Eo "\S+$") \
       <(git branch | cut -c 3-) \
+      | sed 's:refs/heads/::' \
       | awk '!x[\$0]++' \
       | grep -v $(git rev-parse --abbrev-ref HEAD) \
       | selecta \

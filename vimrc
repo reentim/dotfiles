@@ -1,17 +1,17 @@
 " General
 " ================================================================================
-" Sensible defaults
-set nocompatible
-set backspace=indent,eol,start
-set history=10000
-set encoding=utf-8
-set fileencoding=utf-8
-set showcmd
-set ttyfast
-set ttimeout
-set ttimeoutlen=10
-set shell=bash
-syntax on
+  " Sensible defaults
+  set nocompatible
+  set backspace=indent,eol,start
+  set history=10000
+  set encoding=utf-8
+  set fileencoding=utf-8
+  set showcmd
+  set ttyfast
+  set ttimeout
+  set ttimeoutlen=10
+  set shell=bash
+  syntax on
 
   " Pathogen
     call pathogen#infect()
@@ -341,9 +341,6 @@ syntax on
     set listchars+=extends:>
     set listchars+=precedes:<
 
-  " Copy the last yanked register to host
-  vnoremap <leader>c :call CopyToHost()<CR>
-
 " Ctags
 " ==============================================================================
   set tags+=.git/tags
@@ -389,10 +386,7 @@ syntax on
     " cnoreabbrev bd Bd
     " cnoreabbrev Bd BD
 
-    cnoreabbrev git Git
-
-		nnoremap <leader>pr obinding.pry<ESC>
-		nnoremap <leader>n :call RenameFile()<cr>
+    nnoremap <leader>n :call RenameFile()<cr>
     nnoremap <leader>s :call SortIndentLevel()<CR>
 
 		" " This is for working with Relay
