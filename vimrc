@@ -62,7 +62,6 @@
 
   if $TERM_PROGRAM =~ 'Apple_Terminal'
     colorscheme Tomorrow-Night-Bright
-    set background=light
   elseif ItermProfile() =~ 'Solarized'
     colorscheme solarized
 

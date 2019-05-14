@@ -2,18 +2,21 @@ require 'rake'
 
 task default: :install
 
-HOME = Dir.home
 DOTFILES_DIR = File.dirname(__FILE__)
 
 def make_link(source, target)
+  require 'fileutils'
+
   if File.exist?(target)
-    puts "Skipping exiting file: #{target}"
+    backup = File.join(Dir.home, '.dotfiles.old')
+    FileUtils.mkdir_p(backup)
+    FileUtils.mv(target, backup)
   else
     system %[ln -vsf #{source} #{target}]
   end
 end
 
-desc "Install dotfiles."
+desc "Install dotfiles"
 task :install do
   exclude = %w{Rakefile README.md .gitmodules ssh Library}
   linkables = Dir.glob('*') - exclude
@@ -21,37 +24,43 @@ task :install do
 
   linkables.each do |file|
     source = File.join(DOTFILES_DIR, file)
-    target = File.join(HOME, "#{'.' unless link_as_visible.include?(file)}#{file}")
+    target = File.join(Dir.home, "#{'.' unless link_as_visible.include?(file)}#{file}")
 
     make_link(source, target)
   end
 end
 
-desc "Keep SSH_AUTH_SOCK for screen / tmux sessions."
+desc "Keep SSH_AUTH_SOCK for screen / tmux sessions"
 task :ssh do
   linkables = Dir.glob('ssh/*').map { |l| File.basename(l) }
-
   linkables.each do |file|
     source = File.join(DOTFILES_DIR, "ssh", file)
-    target = File.join(HOME, ".ssh", file)
-
+    target = File.join(Dir.home, ".ssh", file)
     make_link(source, target)
   end
 end
 
-desc "Install macOS custom keybindings"
+desc "Install custom macOS keybindings"
 task :keybindings do
   file = "Library/KeyBindings/DefaultKeyBinding.dict"
-  system "mkdir -p #{File.join(HOME, 'Library/KeyBindings')}"
+  system "mkdir -p #{File.join(Dir.home, 'Library/KeyBindings')}"
   make_link(
     File.join(DOTFILES_DIR, file),
-    File.join(HOME, file)
+    File.join(Dir.home, file)
   )
 end
 
-desc "Italic terminal"
+desc "Italic terminals"
 task :italic do
-  %x[tic ./terminals/xterm-256color-italic.terminfo]
-  %x[tic ./terminals/screen-256color-italic.terminfo]
-  %x[tic ./terminals/tmux-256color.terminfo]
+  Dir.glob('terminals/*').map do |terminfo|
+    %x[tic #{File.join(DOTFILES_DIR, 'terminals', terminfo)}]
+  end
+end
+
+desc "Symlink iCloud Drive"
+task :link_icloud_drive do
+  make_link(
+    File.join(Dir.home, 'Library/Mobile\ Documents/com~apple~CloudDocs'),
+    File.join(Dir.home, 'iCloud-Drive'),
+  )
 end

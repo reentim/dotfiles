@@ -56,7 +56,12 @@ export LESS=-Ri
 
 if [ $RBENV_INSTALLED ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init - zsh)"
+  if [ $BASH_VERSION ]; then
+    eval "$(rbenv init - bash)"
+  fi
+  if [ $ZSH_VERSION ]; then
+    eval "$(rbenv init - zsh)"
+  fi
 fi
 
 if [ $CHRUBY_INSTALLED ]; then
@@ -87,5 +92,10 @@ else
 fi
 
 if [ $DIRENV_INSTALLED ]; then
-  eval "$(direnv hook zsh)"
+  if [ $BASH_VERSION ]; then
+    eval "$(direnv hook bash)"
+  fi
+  if [ $ZSH_VERSION ]; then
+    eval "$(direnv hook zsh)"
+  fi
 fi
