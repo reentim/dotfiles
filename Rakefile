@@ -3,31 +3,41 @@ require 'rake'
 task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
+EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library].freeze
+LINK_VISIBLY = %w[bin].freeze
+LINKABLES = (Dir.glob('*') - EXCLUDE).freeze
 
 def make_link(source, target)
-  require 'fileutils'
-
-  if File.exist?(target)
-    backup = File.join(Dir.home, '.dotfiles.old')
-    FileUtils.mkdir_p(backup)
-    FileUtils.mv(target, backup)
-  else
+  unless File.exist?(target)
     system %[ln -vsf #{source} #{target}]
+  end
+end
+
+def linked?(source, target)
+  File.symlink?(target) && File.readlink(target) == source
+end
+
+def remove_link(source, target)
+  File.delete(target) if linked?(source, target)
+end
+
+def each_linkable(&block)
+  LINKABLES.each do |file|
+    source = File.join(DOTFILES_DIR, file)
+    target = File.join(Dir.home,
+                       LINK_VISIBLY.include?(file) ? ".#{file}" : file)
+    yield(source, target)
   end
 end
 
 desc "Install dotfiles"
 task :install do
-  exclude = %w{Rakefile README.md .gitmodules ssh Library}
-  linkables = Dir.glob('*') - exclude
-  link_as_visible = %w{bin}
+  each_dotfile { |source, target|  make_link(source, target) }
+end
 
-  linkables.each do |file|
-    source = File.join(DOTFILES_DIR, file)
-    target = File.join(Dir.home, "#{'.' unless link_as_visible.include?(file)}#{file}")
-
-    make_link(source, target)
-  end
+desc "Remove dotfiles"
+task :remove do
+  each_dotfile { |source, target| remove_link(source, target) }
 end
 
 desc "Keep SSH_AUTH_SOCK for screen / tmux sessions"
