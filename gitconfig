@@ -28,6 +28,7 @@
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   l       = log --oneline --decorate --graph
   la      = log --oneline --decorate --graph --all
+  pretty  = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
   lpr     = log --patch --reverse
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   noff    = merge --no-ff
