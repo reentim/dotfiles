@@ -27,7 +27,7 @@
     set mouse=a
     set ttymouse=sgr " 'The mouse works even in columns beyond 223'
     set showmatch
-    set nowrap
+    set wrap
 
     if LongestLine() <= 80
       set textwidth=80
@@ -53,7 +53,7 @@
 
 " Aesthetics
 " ==============================================================================
-  set nu
+  set nonu
   set wildmenu
   set ruler
   set laststatus=2
