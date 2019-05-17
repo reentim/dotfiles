@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+files = Dir.glob('spec/**/*').select { |file| File.file?(file) }
+
+specs = files.select do |file|
+  File.basename(file).match?(/_spec.rb$/)
+end
+
+unmirrored = specs.reject do |spec|
+  File.exists?(
+    spec.sub(/^spec\//, 'app/')
+        .sub(/_spec.rb$/, '.rb')
+  )
+end
+
+non_specs = files.reject do |file|
+  [
+    File.basename(file).match?(/_spec.rb$/),
+    file.match?(/shared_examples\//),
+    file.match?(/spec\/fixtures\//),
+    file.match?(/spec\/factories\//),
+  ].any?
+end
+
+
+puts "Specs not mirrored by code:"
+puts unmirrored.map { |path| "\t#{path}" }
+
+puts "Non-spec files:"
+puts non_specs.map { |path| "\t#{path}" }
