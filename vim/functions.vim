@@ -544,3 +544,9 @@ endfunction
 function! LongestLine()
   return system("gwc -L " . bufname("%") . " | cut -d ' ' -f 1")
 endfunction
+
+function! SetJournalOptions()
+  setlocal filetype=text wrap tw=0 spell nonu columns=80 colorcolumn=0
+  nnoremap <buffer> k gk
+  nnoremap <buffer> j gj
+endfunction
