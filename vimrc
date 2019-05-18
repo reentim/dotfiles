@@ -53,7 +53,7 @@
 
 " Aesthetics
 " ==============================================================================
-  set nonu
+  set nu
   set wildmenu
   set ruler
   set laststatus=2
@@ -127,10 +127,7 @@
     nnoremap <silent> <CR> :wall\|:nohlsearch<CR>
 
     " jrnl journaling tool
-    autocmd BufNewFile,BufRead jrnl*
-      \ setlocal filetype=text wrap linebreak breakat-=@ textwidth=0 spell nonu
-    autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> j gj
-    autocmd BufNewFile,BufRead jrnl* nnoremap <buffer> k gk
+    autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
 
   " Surround
     " with method: ascii 'm'
@@ -353,8 +350,8 @@
   " Make Y consistent with C and D.  See :help Y.
     nnoremap Y y$
 
-  " Get directory of current file
-    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>
+  " Get directory of current file, relative to current path
+    cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
 
   " Hash rockets and arrows
     inoremap <c-l> =><space>
