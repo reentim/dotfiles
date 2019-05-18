@@ -33,7 +33,7 @@ alias sr='screen -r'
 alias t='tmux'
 alias ta='t a'
 alias sshu='ssh -A -l ubuntu '
-alias cdr='cd $(git rev-parse --show-cdup)'
+alias cdr='cd $(git rev-parse --show-cdup 2>/dev/null)'
 
 function delete-local-merged-branches {
   git branch --merged |
