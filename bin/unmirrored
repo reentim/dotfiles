@@ -1,0 +1,63 @@
+#!/usr/bin/env ruby --disable-gems
+
+def main
+  if ARGV.empty? || ARGV.include?('--help') || ARGV.include?('-h')
+    abort <<~EOS
+      usage: unmirrored target_dir [source_dir [alt_source_dir ...]]
+        e.g. unmirrored spec app lib
+    EOS
+  end
+
+  target = ARGV[0]
+  postfix = target
+  sources = ARGV[1..-1].empty? ? Dir.glob('*/') : ARGV[1..-1]
+  sources.map! { |source| source.delete '/' }
+
+  all_files = Dir.glob("#{target}/**/*.*")
+
+  target_files = all_files.select do |file|
+    File.basename(file).match?(/_#{postfix}\./)
+  end
+
+  unmirrored = target_files.reject do |file_path|
+    sources.map do |source|
+      mirror_exists?(file_path, source, target, postfix)
+    end.any?
+  end
+
+  missing_postfix = all_files.reject do |file|
+    File.basename(file).match?(/_#{postfix}\./) || postfix_not_required?(postfix, file)
+  end
+
+  if unmirrored.any?
+    puts "Target files without a mirroring source file:"
+    puts unmirrored.map { |path| "\t#{path}" }
+  end
+
+  puts if unmirrored.any? && missing_postfix.any?
+
+  if missing_postfix.any?
+    puts "Files missing _#{postfix} postfix:"
+    puts missing_postfix.map { |path| "\t#{path}" }
+  end
+end
+
+def mirror_exists?(file_path, source, target, postfix)
+  File.exists?(expected_source_path(file_path, target, source, postfix))
+end
+
+def expected_source_path(file_path, target, source, postfix)
+  file_path
+    .sub(/^#{target}/, source)
+    .sub(/\_#{postfix}\./, '.')
+end
+
+def postfix_not_required?(postfix, filename)
+  [
+    filename.match?(/shared_examples\//),
+    filename.match?(/spec\/fixtures\//),
+    filename.match?(/spec\/factories\//),
+  ].any?
+end
+
+main
