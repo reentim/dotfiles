@@ -5,10 +5,3 @@ console.log("Underscore.js preloaded as `_u`\n");
 var repl = require("repl");
 var context = repl.start({}).context;
 context._u = require('/usr/local/lib/node_modules/underscore');
-
-process.stdin.on('keypress', function(s, key) {
-  if (typeof(key) != 'undefined') {
-    if (key.ctrl && key.name == 'l')
-      process.stdout.write('\u001B[2J\u001B[0;0f');
-  }
-});
