@@ -183,7 +183,7 @@ function! RunFile()
   elseif &ft == "vim"
     source %:p
   elseif &ft == "c"
-    call RunInShell('gcc % && clear && ./a.out')
+    call RunInShell('gcc % -o %:r && clear && ./%:r')
   elseif &ft
     execute "echo \"Don't know how to run" . &ft . " files.\""
   else
