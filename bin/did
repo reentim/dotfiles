@@ -1,0 +1,84 @@
+#!/usr/bin/env ruby --disable-gems
+
+require 'time'
+require 'csv'
+
+TODO = File.join(Dir.home, 'iCloud-Drive/todo.txt')
+DONE = File.join(Dir.home, 'iCloud-Drive/done.txt')
+
+def main
+  return list_done if ARGV[0] == 'ls'
+
+  tasks = CSV.parse(File.read(TODO))
+  abort "Nothing to do!" if tasks.empty?
+
+  task_descriptions = tasks.map(&:first).join("\n")
+
+  begin
+    selection = %x[echo "#{task_descriptions}" | selecta].chomp
+    done_task = tasks.find { |task| task.first == selection }
+  rescue Interrupt
+    abort
+  end
+
+  File.open(DONE, 'a') do |done_file|
+    done_file.write(CSV.generate_line(done_task + [Time.now.iso8601]))
+  end
+
+  todos = tasks.delete_if(&:empty?) - [done_task]
+
+  CSV.open(TODO, 'w') do |todo_file|
+    todos.each { |todo| todo_file << todo }
+  end
+
+  puts "Marked \"#{selection}\" as done in #{completion_interval(done_task)}"
+end
+
+def list_done
+  done = CSV.read(DONE)
+    .delete_if(&:empty?)
+    .map do |row|
+      [
+        row[0],
+        '/ started',
+        added_ago(row[1]) + ' ago',
+        '/ completed in',
+        completed_in(row[1], row[2])
+      ].join("\s")
+    end
+  puts done
+end
+
+def added_ago(timestring)
+  return '' if timestring.nil?
+  interval(Time.now - Time.parse(timestring))
+end
+
+def completed_in(timestring, completed_timestring)
+  return '' if timestring.nil? || completed_timestring.nil?
+  interval(Time.parse(completed_timestring) - Time.parse(timestring))
+end
+
+def completion_interval(task)
+  interval(Time.now - Time.parse(task.last))
+end
+
+def pluralize(count, word)
+  word += 's' if count > 1
+  [count, word].join("\s")
+end
+
+def interval(seconds)
+  case seconds
+  when 0..90
+    "#{pluralize(seconds.to_i, 'second')}"
+  when 90..5400
+	"#{pluralize(seconds.to_i/60, 'minute')}"
+  when 5400..129_600
+	"#{pluralize(seconds.to_i/3600, 'hour')} #{interval(seconds.to_i % 3600)}"
+  else
+	"#{pluralize(seconds.to_i/86_400, 'day')} #{interval(seconds.to_i % 86_400)}"
+  end
+end
+
+main

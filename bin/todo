@@ -1,9 +1,76 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby --disable-gems
 
-FILE = File.join(ENV['HOME'], 'iCloud-Drive/dev/todo.txt')
+require 'time'
+require 'csv'
+
+FILE = File.join(Dir.home, 'iCloud-Drive/todo.txt')
 
 def main
-  puts FILE
+  todos = []
+  if ARGV.any?
+    if ARGV[0] == 'ls'
+      list_todos
+      exit 1
+    end
+    todos << ARGV.join("\s")
+  else
+    loop do
+      begin
+        input = gets
+        break if input.nil?
+        todos << input.chomp
+      rescue Interrupt
+        save(todos)
+        exit 1
+      end
+    end
+  end
+  save(todos)
+end
+
+def save(todos)
+  return if todos.empty?
+
+  CSV.open(FILE, 'a') do |file|
+    todos.each { |todo| file << [todo, Time.now.iso8601] }
+  end
+
+  puts "Added #{todos.count} #{todos.count > 1 ? 'items' : 'item'}"
+end
+
+def pluralize(count, word)
+  word += 's' if count > 1
+  [count, word].join("\s")
+end
+
+def list_todos
+  todos = CSV.read(FILE)
+  return if todos.empty?
+
+  # longest_todo = todos.max { |a, b| a[0].size <=> b[0].size }.first.length
+  longest_todo = 0
+  pretty_todo = todos.map do |row|
+    [
+      row.first.ljust(longest_todo),
+      '/',
+      interval(Time.now - Time.parse(row.last)),
+      'ago',
+    ].join("\s")
+  end
+  puts pretty_todo
+end
+
+def interval(seconds)
+  case seconds
+  when 0..90
+    "#{pluralize(seconds.to_i, 'second')}"
+  when 90..5400
+	"#{pluralize(seconds.to_i/60, 'minute')}"
+  when 5400..129_600
+	"#{pluralize(seconds.to_i/3600, 'hour')} #{interval(seconds.to_i % 3600)}"
+  else
+	"#{pluralize(seconds.to_i/86_400, 'day')} #{interval(seconds.to_i % 86_400)}"
+  end
 end
 
 main
