@@ -52,7 +52,7 @@ fi
 # branch from e.g. development
 export FORK_POINT="master"
 
-export LESS=-Ri
+export LESS=Ri
 
 if [ $RBENV_INSTALLED ]; then
   export PATH="$HOME/.rbenv/bin:$PATH"

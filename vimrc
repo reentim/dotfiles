@@ -27,7 +27,7 @@
     set mouse=a
     set ttymouse=sgr " 'The mouse works even in columns beyond 223'
     set showmatch
-    set wrap
+    set nowrap
 
     if LongestLine() <= 80
       set textwidth=80
@@ -35,9 +35,12 @@
 
     set colorcolumn=80
     set splitright
+    set splitbelow
+    set noequalalways
     let mapleader = ","
     set nojoinspaces
     set winheight=16
+    set winwidth=81
     set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
