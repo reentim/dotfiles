@@ -15,8 +15,20 @@ unwip() {
 }
 
 diff_branch() {
-  branch=$1
-  git diff $(git merge-base --fork-point origin/$FORK_POINT $branch)..$branch
+  if [[ $1 == *"--"* ]]; then
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    options=$*
+  else
+    branch=$1
+    options=${@:2}
+  fi
+  git diff $options $(git merge-base --fork-point origin/$FORK_POINT $branch)..$branch
+}
+
+log_patch_reverse_branch() {
+  options=$*
+  start=$(git merge-base --fork-point origin/$FORK_POINT)
+  git log $start..HEAD --patch --reverse $options
 }
 
 merge_branch_origin_to_master() {
@@ -45,4 +57,24 @@ bash << EOS
       | selecta \
       | xargs git checkout
 EOS
+}
+
+tail_origin_log() {
+  log_options=$1
+  branch='origin/master'
+  interval=360
+
+  while true; do
+    clear
+
+    git --no-pager log --color --graph $log_options $branch -20 \
+      | head -n $(expr $(tput lines) - 1)
+
+    for i in $(seq $interval); do
+      printf "\rRefreshing in %d" $(($interval - $i))
+      sleep 1
+    done
+
+    git fetch
+  done
 }
