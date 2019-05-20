@@ -28,7 +28,7 @@ diff_branch() {
 log_patch_reverse_branch() {
   options=$*
   start=$(git merge-base --fork-point origin/$FORK_POINT)
-  git log $start..HEAD --patch --reverse $options
+  git --no-pager log $start..HEAD --patch --reverse --color $options | less -p '^commit'
 }
 
 merge_branch_origin_to_master() {

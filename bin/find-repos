@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+scan_repos() {
+  for gitdir in $(find ~/dev/code/** -type d -name '.git'); do
+    echo $gitdir/../
+  done
+}

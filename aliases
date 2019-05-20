@@ -61,3 +61,5 @@ function staging-deploy {
 function production-deploy {
   git push && git push heroku master
 }
+
+alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
