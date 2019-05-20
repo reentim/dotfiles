@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 
-scan_repos() {
-  for gitdir in $(find ~/dev/code/** -type d -name '.git'); do
-    echo $gitdir/../
-  done
+set -e
+
+main() {
+  if [ -f ~/.found_repos ]; then
+    modified=$(/usr/bin/stat -f "%m" ~/.found_repos)
+    now=$(date "+%s")
+    ttl_seconds=604800 # 1 week
+    expires_at=$(($modified + 1 ))
+    if [ $expires_at -lt $now ]; then
+      $(find_repos)
+    fi
+    cat ~/.found_repos
+  else
+    >&2 echo "Building cache..."
+    find_repos
+  fi
 }
+
+find_repos() {
+  found=$(find ~/dev/code/* -type d -name '.git')
+  echo "$found" | tee -a  ~/.found_repos
+}
+
+main
