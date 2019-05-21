@@ -14,3 +14,8 @@ function prof() {
   export ITERM_PROFILE=$profile
   set-profile $profile
 }
+
+
+function proj() {
+  cd "$(find-repos | selecta)"
+}

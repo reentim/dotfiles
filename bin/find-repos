@@ -2,25 +2,36 @@
 
 set -e
 
+path=${1-$HOME}
+cache="$HOME/.found_repos"
+
 main() {
+  ensure_fresh_cache
+  read_cache
+}
+
+ensure_fresh_cache() {
   if [ -f ~/.found_repos ]; then
-    modified=$(/usr/bin/stat -f "%m" ~/.found_repos)
+    modified=$(/usr/bin/stat -f "%m" $cache)
     now=$(date "+%s")
     ttl_seconds=604800 # 1 week
-    expires_at=$(($modified + 1 ))
+    expires_at=$(($modified + $ttl_seconds ))
     if [ $expires_at -lt $now ]; then
-      $(find_repos)
+      rebuild_cache
     fi
-    cat ~/.found_repos
   else
-    >&2 echo "Building cache..."
-    find_repos
+    rebuild_cache
   fi
 }
 
-find_repos() {
-  found=$(find ~/dev/code/* -type d -name '.git')
-  echo "$found" | tee -a  ~/.found_repos
+read_cache() {
+  cat $cache
+}
+
+rebuild_cache () {
+  >&2 echo "Rebuilding cache..."
+  find $path -type d -name '.git' \
+    | sed -E "s:/.git$::" > $cache
 }
 
 main

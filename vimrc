@@ -40,7 +40,7 @@
     let mapleader = ","
     set nojoinspaces
     set winheight=16
-    set winwidth=81
+    set winwidth=86
     set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
@@ -359,6 +359,8 @@
   " Hash rockets and arrows
     inoremap <c-l> =><space>
     inoremap <c-j> ->
+
+    nnoremap <leader>pr ddObinding.pry<ESC>
 
   " Moving back and forth between lines of same or lower indentation.
     nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
