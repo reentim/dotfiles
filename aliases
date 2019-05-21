@@ -64,4 +64,4 @@ function production-deploy {
 
 alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
 
-alias asdf="cd $(find-repos | xargs selecta)"
+alias asdf="find-repos | xargs selecta | cd"
