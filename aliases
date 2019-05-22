@@ -62,6 +62,17 @@ function production-deploy {
   git push uat master && heroku pipelines:promote -a adboxapp
 }
 
+zz() {
+  cd $(
+    cat ~/.z \
+      | awk -F '|' '{ print $2,$3,$1 }' \
+      | sort -nr \
+      | awk '{ print $3 }' \
+      | selecta
+  )
+}
+
+alias killpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | xargs kill -s SIGTERM"
 alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
 
 alias asdf="find-repos | xargs selecta | cd"
