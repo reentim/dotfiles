@@ -199,25 +199,25 @@
     " nnoremap <leader>h :CommandTHelp<CR>
 
   " Selecta replaces CommandT
-    nnoremap <leader>t  :call SelectaFile(".")<cr>
-    nnoremap <leader>gc :call SelectaFile("app/controllers")<cr>
-    nnoremap <leader>gl :call SelectaFile("lib")<cr>
-    nnoremap <leader>gm :call SelectaFile("app/models")<cr>
-    nnoremap <leader>gp :call SelectaFile("app/javascript/packs")<cr>
-    nnoremap <leader>gq :call SelectaFile("app/graphql")<cr>
-    nnoremap <leader>gs :call SelectaFile("spec")<cr>
-    nnoremap <leader>gv :call SelectaFile("app/views")<cr>
+    nnoremap <leader>t  :call SelectaFile(".")<CR>
+    nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
+    nnoremap <leader>gl :call SelectaFile("lib")<CR>
+    nnoremap <leader>gm :call SelectaFile("app/models")<CR>
+    nnoremap <leader>gp :call SelectaFile("app/javascript/packs")<CR>
+    nnoremap <leader>gq :call SelectaFile("app/graphql")<CR>
+    nnoremap <leader>gs :call SelectaFile("spec")<CR>
+    nnoremap <leader>gv :call SelectaFile("app/views")<CR>
 
     " Branch files
-    nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<cr>
+    nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 
     " Fuzzy select git files in current file directory
-    nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<cr>
+    nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<CR>
 
     " Fuzzy select a buffer. Open the selected buffer with :b.
-    nnoremap <leader>b :call SelectaBuffer()<cr>
+    nnoremap <leader>b :call SelectaBuffer()<CR>
 
-    nnoremap <c-g> :call SelectaIdentifier()<cr>
+    nnoremap <c-g> :call SelectaIdentifier()<CR>
 
   " Ultisnips
     let g:UltiSnipsExpandTrigger      = "<C-]>"
@@ -294,8 +294,14 @@
   " Paste mode
     nnoremap <leader>p :set invpaste<CR>
 
+  " Add pry binding
+    nnoremap <leader>pr ddObinding.pry<ESC>
+
+  " Parenthesise
+    nnoremap <leader>P _f r(<ESC>$a)<ESC>
+
   " Switching between tests and code
-    nnoremap <leader>. :call OpenTestAlternate()<cr>
+    nnoremap <leader>. :call OpenTestAlternate()<CR>
 
   " Search for conflict markers
     nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
@@ -386,7 +392,7 @@
     " cnoreabbrev bd Bd
     " cnoreabbrev Bd BD
 
-    nnoremap <leader>n :call RenameFile()<cr>
+    nnoremap <leader>n :call RenameFile()<CR>
     nnoremap <leader>s :call SortIndentLevel()<CR>
 
 		" " This is for working with Relay
