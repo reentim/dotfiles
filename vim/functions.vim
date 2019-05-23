@@ -243,23 +243,65 @@ function! RunRailsMigration(version)
 endfunction
 
 function! RunCurrentTest(context)
-  if InTestFile()
-    call SetTestFile()
-    if a:context == 'at_line'
-      call SetTestFileLine()
-    endif
+  let l:test_command = TestCommand(a:context)
+  if type(l:test_command) == 1
+    call RunInShell(l:test_command)
+  else
+    echom 'No test to run'
   endif
+endfunction
 
+function! RunSavedTest()
+  let l:test_command = SavedTestCommand()
+  if type(l:test_command) == 1
+    call RunInShell(l:test_command)
+  else
+    echom 'No test to run'
+  endif
+endfunction
+
+function! SavedTestCommand()
+  if exists("g:saved_test_command")
+    return g:saved_test_command
+  endif
+endfunction
+
+function! SetTestCommand(context)
+  call SetTestFile()
   if a:context == 'at_line'
+    call SetTestFileLine()
     let line_options = ":" . TestFileLine()
   else
     let line_options = ""
   endif
+  let g:saved_test_command = TestRunner() . TestFile() . l:line_options
+endfunction
 
-  let test_string = TestRunner() . TestFile() . l:line_options
+function! TestCommand(context)
+  if InTestFile()
+    call SetTestCommand(a:context)
+  end
+  return SavedTestCommand()
+endfunction
 
-  call RunInShell(l:test_string)
+function! SetTestFile()
+  let g:test_file=@%
+endfunction
 
+function! SetTestFileLine()
+  let g:test_file_line = line(".")
+endfunction
+
+function! TestFile()
+  if exists("g:test_file")
+    return g:test_file
+  else
+    return expand('%')
+  endif
+endfunction
+
+function! TestFileLine()
+  return g:test_file_line
 endfunction
 
 function! ChomppedSystem(command)
@@ -268,6 +310,7 @@ function! ChomppedSystem(command)
 endfunction
 
 function! RunShellCommandInTmux(shell_command)
+  " TODO: use tools like tt or tmux-recipient instead of this
   if TmuxTestWindowRunning()
     execute ":silent !tmux send-keys -t `tmux-find-recipient-pane-in-window spec:spec` 'clear && time " . a:shell_command . "' C-m"
     redraw!
@@ -316,26 +359,6 @@ endfunction
 function! InTestFile()
   let pattern = '\(.feature\|_spec.rb\|_test.rb\|test.js\)$'
   return match(expand("%"), pattern) != -1
-endfunction
-
-function! SetTestFile()
-  let g:test_file=@%
-endfunction
-
-function! SetTestFileLine()
-  let g:test_file_line = line(".")
-endfunction
-
-function! TestFile()
-  if exists("g:test_file")
-    return g:test_file
-  else
-    return expand('%')
-  endif
-endfunction
-
-function! TestFileLine()
-  return g:test_file_line
 endfunction
 
 function! GetVisualSelection()
