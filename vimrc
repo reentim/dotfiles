@@ -127,7 +127,7 @@
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
 
-    nnoremap <silent> <CR> :wall\|:nohlsearch<CR>
+    nnoremap <silent> \ :nohl<CR>
 
     " jrnl journaling tool
     autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
@@ -286,8 +286,7 @@
   " Run tests
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-    cabbrev Rspec :!clear && bundle exec rspec %<CR>
-    " nnoremap <CR> :call RunCurrentTest('at_line')<CR>
+    nnoremap <CR> :call RunSavedTest()<CR>
 
   " Split HTML attributes, Ruby lines
     nnoremap <leader>S :silent! call SplitLine()<CR>
