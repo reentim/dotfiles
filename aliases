@@ -59,7 +59,7 @@ function staging-deploy {
 }
 
 function production-deploy {
-  git push && git push heroku master
+  git push uat master && heroku pipelines:promote -a adboxapp
 }
 
 alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
