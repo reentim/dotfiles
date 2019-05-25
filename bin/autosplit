@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby --disable-gems
+
+def main
+  pane_width, pane_height, window_width, window_height = %x[
+    tmux display -p '\#{pane_width} \#{pane_height} \#{window_width} \#{window_height}'
+  ].split.map(&:to_i)
+
+  width_pc = (1 / (window_width / pane_width.to_f)).round(2)
+  height_pc = (1 / (window_height / pane_height.to_f)).round(2)
+
+  if width_pc > height_pc
+    puts 'split-window -h'
+  else
+    puts 'split-window -v'
+  end
+end
+
+main

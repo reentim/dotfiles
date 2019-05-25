@@ -13,4 +13,4 @@ for db in $dbs; do
   fi
 done
 
-tmux split-window "$cmd"
+tmux $(autosplit) "$cmd"
