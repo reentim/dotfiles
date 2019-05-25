@@ -63,13 +63,20 @@ function production-deploy {
 }
 
 zz() {
-  cd $(
-    cat ~/.z \
-      | awk -F '|' '{ print $2,$3,$1 }' \
-      | sort -nr \
-      | awk '{ print $3 }' \
-      | selecta
-  )
+  arg=$*
+  if [ $args ]; then
+    cd $(
+      z -l $args | tac | awk '{ print $2 }' | selecta
+    )
+  else
+    cd $(
+      cat ~/.z \
+        | awk -F '|' '{ print $2,$3,$1 }' \
+        | sort -nr \
+        | awk '{ print $3 }' \
+        | selecta
+    )
+  fi
 }
 
 alias killpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | xargs kill -s SIGTERM"
