@@ -11,7 +11,7 @@ main() {
     cmd='irb'
   fi
 
-  tmux split-window "cd $dir && $cmd"
+  tmux $(autosplit) "cd $dir && $cmd"
 }
 
 is_rails() {
