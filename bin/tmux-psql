@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+dir=$1
+gitroot_path=$(cd $dir && git rev-parse --show-toplevel)
+basename=$(basename $gitroot_path)
+dbs=$(psql -c "copy (select datname from pg_database where datistemplate = false) to stdout")
+
+for db in $dbs; do
+  cmd="psql"
+  if [ "${basename}" == "$db" ] || [ "${basename}_development" == "$db" ]; then
+    cmd="psql -d $db"
+    break
+  fi
+done
+
+tmux split-window "$cmd"
