@@ -1,0 +1,28 @@
+#/usr/bin/env bash
+
+dir=$1
+
+main() {
+  if $(is_rails); then
+    cmd='rails console'
+  elif $(has_pry); then
+    cmd='pry'
+  else
+    cmd='irb'
+  fi
+
+  tmux split-window "cd $dir && $cmd"
+}
+
+is_rails() {
+  railsdir=$(cd ${dir} && git rev-parse --show-toplevel)
+  if ! [[ -f "$railsdir/bin/rails" ]]; then
+    echo 1
+  fi
+}
+
+has_pry() {
+  return $(which pry > /dev/null 2>&1)
+}
+
+main
