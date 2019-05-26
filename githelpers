@@ -27,7 +27,7 @@ diff_branch() {
 
 log_patch() {
   options=$*
-  git --no-pager log $options --patch --color | less --pattern '^commit'
+  git --no-pager log $options --patch --decorate --color | less --pattern '^commit'
 }
 
 log_patch_reverse_branch() {
@@ -72,7 +72,7 @@ tail_origin_log() {
   while true; do
     clear
 
-    git --no-pager log --color --graph $log_options $branch -20 \
+    git --no-pager log --color --graph --decorate $log_options $branch -20 \
       | head -n $(expr $(tput lines) - 1)
 
     sleep $interval
