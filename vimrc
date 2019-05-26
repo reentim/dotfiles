@@ -37,10 +37,10 @@
     set splitright
     set splitbelow
     set noequalalways
-    let mapleader = ","
+    let mapleader = ','
     set nojoinspaces
     set winheight=16
-    set winwidth=86
+    set winwidth=72
     set cursorline
 
     " Use the old vim regex engine for faster syntax highlighting
@@ -127,7 +127,7 @@
     autocmd CursorMoved * silent! update
     autocmd BufLeave,FocusLost * silent! wall
 
-    nnoremap <silent> \ :nohl<CR>
+    nnoremap <silent> <CR> :nohl<CR>
 
     " jrnl journaling tool
     autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
@@ -286,7 +286,7 @@
   " Run tests
     nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
     nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-    nnoremap <CR> :call RunSavedTest()<CR>
+    nnoremap \ :call RunSavedTest()<CR>
 
   " Split HTML attributes, Ruby lines
     nnoremap <leader>S :silent! call SplitLine()<CR>
