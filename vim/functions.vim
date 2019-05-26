@@ -204,7 +204,7 @@ function! RunInShell(command)
 endfunction
 
 function! ShouldSendOutputToTmux()
-  return TmuxWindowOrPaneRunning() && $TMUX != ''
+  return ShellDidSucceed('tmux-recipient') && $TMUX != ''
 endfunction
 
 function! RailsMigrationStatus(version)
@@ -310,29 +310,8 @@ function! ChomppedSystem(command)
 endfunction
 
 function! RunShellCommandInTmux(shell_command)
-  " TODO: use tools like tt or tmux-recipient instead of this
-  if TmuxTestWindowRunning()
-    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane-in-window spec:spec` 'clear && time " . a:shell_command . "' C-m"
-    redraw!
-  elseif TmuxTestPaneRunning()
-    execute ":silent !tmux send-keys -t `tmux-find-recipient-pane` 'clear && time " . a:shell_command . "' C-m"
-    redraw!
-  else
-    echoerr "Couldn't find tmux window or pane"
-    return 0
-  endif
-endfunction
-
-function! TmuxTestWindowRunning()
-  return ShellDidSucceed('tmux-find-recipient-pane-in-window spec:spec')
-endfunction
-
-function! TmuxTestPaneRunning()
-  return ShellDidSucceed('tmux-find-recipient-pane')
-endfunction
-
-function! TmuxWindowOrPaneRunning()
-  return TmuxTestWindowRunning() || TmuxTestPaneRunning()
+  execute ":silent !tt " . a:shell_command
+  redraw!
 endfunction
 
 function! TestRunner()
