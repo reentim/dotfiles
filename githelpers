@@ -25,10 +25,15 @@ diff_branch() {
   git diff $options $(git merge-base --fork-point origin/$FORK_POINT $branch)..$branch
 }
 
+log_patch() {
+  options=$*
+  git --no-pager log $options --patch --color | less --pattern '^commit'
+}
+
 log_patch_reverse_branch() {
   options=$*
   start=$(git merge-base --fork-point origin/$FORK_POINT)
-  git --no-pager log $start..HEAD --patch --reverse --color $options | less -p '^commit'
+  git --no-pager log $start..HEAD --patch --reverse --color $options | less --pattern '^commit'
 }
 
 merge_branch_origin_to_master() {
@@ -74,4 +79,14 @@ tail_origin_log() {
 
     git fetch
   done
+}
+
+pretty_log() {
+  git log --graph --pretty=format:"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s"
+}
+
+pretty_shortdate_log() {
+  git --no-pager log --graph --color --pretty=format:"%C(yellow)%h %C(green)|%ar|%C(red)%d%C(reset) %s" \
+    | sed -E "s/\|([0-9]+) ([a-z]).*\|/\1\2/" \
+    | less
 }

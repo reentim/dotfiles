@@ -26,11 +26,13 @@
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
   fixup   = commit --fixup
   from    = "!f() { git fetch && git rebase origin/master; }; f"
-  l       = log --oneline --decorate --graph
+  l       = "!. ~/.githelpers && pretty_shortdate_log"
+  ; l       = log --oneline --decorate --graph
   la      = log --oneline --decorate --graph --all
-  pretty  = log --graph --pretty=format:\"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s\"
-  lpr     = log --patch --reverse
+  lp      = "!. ~/.githelpers && log_patch"
+  lpr     = "!. ~/.githelpers && log_patch --reverse"
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
+  pretty  = "!. ~/.githelpers && pretty_log"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   noff    = merge --no-ff
   pf      = pull --ff-only
