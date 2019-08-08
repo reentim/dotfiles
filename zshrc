@@ -30,10 +30,10 @@ setopt rmstarsilent
 export WORDCHARS='*?[]~&;!$%^<>-'
 
 # Fixing delete key in OSX
-bindkey    "^[[3~"          delete-char
-bindkey    "^[3;5~"         delete-char
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+
+bindkey "" backward-kill-line
+bindkey "" kill-line
 
 export LC_ALL="en_AU.UTF-8"
-
-# heroku autocomplete setup
-# HEROKU_AC_ZSH_SETUP_PATH=/Users/tim/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;

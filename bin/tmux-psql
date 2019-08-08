@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -xe
+
 dir=$1
 gitroot_path=$(cd $dir && git rev-parse --show-toplevel)
 basename=$(basename $gitroot_path)
@@ -7,6 +9,9 @@ dbs=$(psql -c "copy (select datname from pg_database where datistemplate = false
 
 for db in $dbs; do
   cmd="psql"
+  if [ "${basename}" == "core" ]; then
+    cmd="psql -d myadbox_development"
+  fi
   if [ "${basename}" == "$db" ] || [ "${basename}_development" == "$db" ]; then
     cmd="psql -d $db"
     break

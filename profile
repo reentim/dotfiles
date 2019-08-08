@@ -14,7 +14,11 @@ if [ -d $HOME/.rbenv ]; then
 fi
 
 if (which chruby-exec > /dev/null); then
-  CHRUBY_INSTALLED=1
+  # CHRUBY_INSTALLED=1
+fi
+
+if [ -f "/usr/local/share/gem_home/gem_home.sh" ]; then
+  # GEM_HOME_INSTALLED=1
 fi
 
 if [ -d /usr/local/Library/Homebrew ]; then
@@ -27,6 +31,10 @@ fi
 
 if (which direnv > /dev/null); then
   DIRENV_INSTALLED=1
+fi
+
+if [ -d "$HOME/Applications/Visual Studio Code.app" ]; then
+  VSCODE_INSTALLED=1
 fi
 
 # vim temp files go in /tmp/ directories
@@ -43,14 +51,16 @@ if [ -n "$ITERM_PROFILE" ]; then
   echo $ITERM_PROFILE > /tmp/$ITERM_SESSION_ID-iterm_profile
 fi
 
-# Add the default private key to the ssh agent, if there are none already added
+# Add private keys to the ssh agent, if there are none already added
 if ! (ssh-add -l > /dev/null); then
-  ssh-add -K
+  find ~/.ssh -type f \
+    -exec bash -c '[[ "$(file "$1")" == *"private key"* ]]' bash {} ';' \
+    -print | xargs ssh-add -K
 fi
 
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
-export FORK_POINT="master"
+export DEFAULT_BRANCH="master"
 
 export LESS=Ri
 
@@ -68,8 +78,26 @@ if [ $CHRUBY_INSTALLED ]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh
   source /usr/local/opt/chruby/share/chruby/auto.sh
 
-  chruby 'ruby-2.6.2'
+  chruby ruby
 fi
+
+if [ $GEM_HOME_INSTALLED ]; then
+  source /usr/local/share/gem_home/gem_home.sh
+
+  function gem_home_auto() {
+    if [ -f "Gemfile" ]; then
+      gem_home -
+      gem_home .
+    fi
+  }
+
+  if [[ -n "$ZSH_VERSION"  ]]; then
+    if [[ ! "$preexec_functions" == *gem_home_auto*  ]]; then
+      preexec_functions+=("gem_home_auto")
+    fi
+  fi
+fi
+
 
 if ! (echo $PATH | grep $HOME/bin > /dev/null) && [ -d $HOME/bin ]; then
   export PATH="$HOME/bin:$PATH"
@@ -77,6 +105,10 @@ fi
 
 if ! (echo $PATH | grep ^\./bin > /dev/null); then
   export PATH="./bin:$PATH"
+fi
+
+if [ $VSCODE_INSTALLED ]; then
+  export PATH="$PATH:$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
 # z - a fuzzy finder for directory changing installed under Homebrew on MacOS,
