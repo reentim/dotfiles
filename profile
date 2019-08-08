@@ -17,6 +17,10 @@ if (which chruby-exec > /dev/null); then
   CHRUBY_INSTALLED=1
 fi
 
+if [ -f "/usr/local/share/gem_home/gem_home.sh" ]; then
+  GEM_HOME_INSTALLED=1
+fi
+
 if [ -d /usr/local/Library/Homebrew ]; then
   HOMEBREW_INSTALLED=1
 fi
@@ -68,7 +72,11 @@ if [ $CHRUBY_INSTALLED ]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh
   source /usr/local/opt/chruby/share/chruby/auto.sh
 
-  chruby 'ruby-2.6.2'
+  chruby ruby
+fi
+
+if [ $GEM_HOME_INSTALLED ]; then
+  source /usr/local/share/gem_home/gem_home.sh
 fi
 
 if ! (echo $PATH | grep $HOME/bin > /dev/null) && [ -d $HOME/bin ]; then
