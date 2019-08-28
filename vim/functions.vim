@@ -95,14 +95,10 @@ function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
   " Jump to the next or previous line that has the same level or a lower
   " level of indentation than the current line.
   "
-  " exclusive (bool): true: Motion is exclusive
-  " false: Motion is inclusive
-  " fwd (bool): true: Go to next line
-  " false: Go to previous line
-  " lowerlevel (bool): true: Go to line with lower indentation level
-  " false: Go to line with the same indentation level
-  " skipblanks (bool): true: Skip blank lines
-  " false: Don't skip blank lines
+  " exclusive (bool):  true: motion is exclusive; false: motion is inclusive
+  " fwd (bool):        true: go to next line; false: go to previous line
+  " lowerlevel (bool): true: go to line with lower level; false: go to line with the same level
+  " skipblanks (bool): true: skip blank lines; false: don't skip blank lines
 
   let line = line('.')
   let column = col('.')
@@ -128,7 +124,6 @@ endfunction
 function! ResumeCursorPosition()
   " Checks to make sure the last position is valid and not in an event handler.
   " Can be disabled by setting b:noResumeCursorPosition
-
   if exists('b:noResumeCursorPosition')
     return
   endif
@@ -204,20 +199,20 @@ function! RunInShell(command)
 endfunction
 
 function! ShouldSendOutputToTmux()
-  return ShellDidSucceed('tmux-recipient') && $TMUX != ''
+  return ShellOK('tmux-recipient') && $TMUX != ''
 endfunction
 
 function! RailsMigrationStatus(version)
-  if ShellDidSucceed('test -f db/structure.sql')
+  if ShellOK('test -f db/structure.sql')
     " structure.sql contains a list of migrated versions
-    if ShellDidSucceed("grep " . a:version . " db/structure.sql")
+    if ShellOK("grep " . a:version . " db/structure.sql")
       return 'up'
     else
       return 'down'
     endif
-  elseif ShellDidSucceed('test -f db/schema.rb')
+  elseif ShellOK('test -f db/schema.rb')
     " schema.rb only contains latest migration version
-    if ShellDidSucceed("grep " . a:version . " db/schema.rb")
+    if ShellOK("grep " . a:version . " db/schema.rb")
       return 'up'
     else
       " just assume the status is down
@@ -322,7 +317,7 @@ function! TestRunner()
   endif
 endfunction
 
-function! ShellDidSucceed(shell_command)
+function! ShellOK(shell_command)
   call system(a:shell_command)
 
   let return_code = v:shell_error
@@ -385,11 +380,13 @@ function! PromoteVariableToMethod()
   execute "normal ddmb/defkodefjokkp==kdddt=?defA pxj_dw`b"
 endfunction
 
-function! InteractiveRebaseFixup()
-  while search('\vpick [0-9a-f]{7} fix [0-9a-f]{7}$')
-    normal $*NddNp
-    normal cwf
-  endwhile
+function! InteractiveRuby()
+  if ShellOK('which pry')
+    let l:irb = 'pry'
+  else
+    let l:irb = 'irb'
+  endif
+  call RunInShell(l:irb . ' -r ' . expand('%:p'))
 endfunction
 
 " Creates a find command ignoring paths and files set in wildignore
@@ -435,7 +432,7 @@ function! SelectaGitFile(path)
 endfunction
 
 function! SelectaGitCurrentBranchFile()
-  call SelectaCommand("git diff --name-only $(git merge-base --fork-point " . $FORK_POINT . ")", "", ":e")
+  call SelectaCommand("git diff --name-only $(git merge-base --fork-point " . $DEFAULT_BRANCH . ")", "", ":e")
 endfunction
 
 " Fuzzy select
@@ -461,31 +458,13 @@ function! Debounce(command)
   execute a:command
 endfunction
 
-function! OpenTestAlternate()
-  let new_file = AlternateForCurrentFile()
-  exec ':e ' . new_file
-endfunction
-
-function! AlternateForCurrentFile()
-  let current_file = expand("%")
-  let new_file = current_file
-  let in_spec = match(current_file, '^spec/') != -1
-  let going_to_spec = !in_spec
-  let in_app = match(current_file, '\<controllers\>') != -1 || match(current_file, '\<models\>') != -1 || match(current_file, '\<views\>') != -1 || match(current_file, '\<helpers\>') != -1
-  if going_to_spec
-    if in_app
-      let new_file = substitute(new_file, '^app/', '', '')
-    end
-    let new_file = substitute(new_file, '\.e\?rb$', '_spec.rb', '')
-    let new_file = 'spec/' . new_file
+function! OpenAlternateFile(path)
+  let l:alternate = system("alt " . a:path)
+  if empty(l:alternate)
+    echom "No alternate file for " . a:path
   else
-    let new_file = substitute(new_file, '_spec\.rb$', '.rb', '')
-    let new_file = substitute(new_file, '^spec/', '', '')
-    if in_app
-      let new_file = 'app/' . new_file
-    end
+    exec ':e ' . l:alternate
   endif
-  return new_file
 endfunction
 
 function! InGitDir()
@@ -551,4 +530,29 @@ function! SetJournalOptions()
   setlocal filetype=text wrap tw=0 spell nonu columns=80 colorcolumn=0
   nnoremap <buffer> k gk
   nnoremap <buffer> j gj
+endfunction
+
+function! SetColorscheme()
+  if $TERM_PROGRAM =~ 'Apple_Terminal'
+    colorscheme Tomorrow-Night-Bright
+  elseif ItermProfile() =~ 'Solarized'
+    colorscheme solarized
+    if ItermProfile() =~ 'Light'
+      set background=light
+    else
+      set background=dark
+    endif
+  else
+    colorscheme Tomorrow-Night-Bright
+  endif
+endfunction
+
+function! AutocmdCommitMessage()
+  let b:noResumeCursorPosition=1
+  setlocal textwidth=72
+  setlocal colorcolumn=72
+endfunction
+
+function! AutocmdPullRequestMessage()
+  setlocal wrap
 endfunction
