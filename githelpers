@@ -22,17 +22,17 @@ diff_branch() {
     branch=$1
     options=${@:2}
   fi
-  git diff $options $(git merge-base --fork-point origin/$FORK_POINT $branch)..$branch
+  git diff $options $(git merge-base --fork-point origin/$DEFAULT_BRANCH $branch)..$branch
 }
 
 log_patch() {
   options=$*
-  git --no-pager log $options --patch --decorate --color | less --pattern '^commit'
+  git --no-pager log --color --patch $options --decorate | less --pattern '^commit'
 }
 
 log_patch_reverse_branch() {
   options=$*
-  start=$(git merge-base --fork-point origin/$FORK_POINT)
+  start=$(git merge-base --fork-point origin/$DEFAULT_BRANCH)
   git --no-pager log $start..HEAD --patch --reverse --color $options | less --pattern '^commit'
 }
 

@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby --disable-gems
+
+def main
+  if ARGV.empty?
+    input = $stdin.read.strip.chomp.chars
+  else
+    input = ARGV.join("\s").strip.chomp.chars
+  end
+  debil = []
+  should_upcase = !upcase?(input[0])
+
+  until input.empty?
+    char = input.shift
+    if char == "\s"
+      debil << char
+      next
+    end
+
+    if should_upcase
+      debil << char.upcase
+    else
+      debil << char.downcase
+    end
+    should_upcase = !should_upcase
+  end
+
+  print debil.join
+end
+
+def upcase?(char)
+  char.upcase == char
+end
+
+main

@@ -23,7 +23,7 @@ set laststatus=2
 set listchars+=extends:>
 set listchars+=precedes:<
 set listchars+=trail:.
-set listchars=tab:▸\ ,eol:↵
+set listchars=tab:▸\ ,eol:↵ ,space:·
 set mouse=a
 set nocompatible
 set noequalalways

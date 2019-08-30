@@ -3,9 +3,9 @@ require 'rake'
 task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
-EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library].freeze
-LINK_VISIBLY = %w[bin].freeze
-LINKABLES = (Dir.glob('*') - EXCLUDE).freeze
+EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library]
+LINK_VISIBLY = %w[bin lib]
+LINKABLES = (Dir.glob('*') - EXCLUDE)
 
 desc "Install dotfiles"
 task :install do
@@ -38,9 +38,9 @@ task :keybindings do
 end
 
 desc "Italic terminals"
-task :italic do
+task :italic_terminals do
   Dir.glob('terminals/*').map do |terminfo|
-    %x[tic #{File.join(DOTFILES_DIR, 'terminals', terminfo)}]
+    %x[tic #{File.join(DOTFILES_DIR, terminfo)}]
   end
 end
 
@@ -49,6 +49,14 @@ task :link_icloud_drive do
   make_link(
     File.join(Dir.home, 'Library/Mobile\ Documents/com~apple~CloudDocs'),
     File.join(Dir.home, 'iCloud-Drive'),
+  )
+end
+
+desc "Symlink dev"
+task :link_dev do
+  make_link(
+    File.join(Dir.home, 'Library/Mobile\ Documents/com~apple~CloudDocs/dev'),
+    File.join(Dir.home, 'dev'),
   )
 end
 
