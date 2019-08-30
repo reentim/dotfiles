@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require "net/http"
+require "time"
+require "uri"
+
+def main
+  dir = File.join(Dir.home, "iCloud-Drive", "pinboard-backups")
+  Dir.mkdir(dir) unless File.directory?(dir)
+
+  bookmarks = Net::HTTP.get(URI("https://api.pinboard.in/v1/posts/all?auth_token=#{ENV['PINBOARD_TOKEN']}&format=json"))
+
+  File.open(File.join(dir, "#{Time.now.iso8601}.json"), "w") do |file|
+    file << bookmarks
+  end
+end
+
+main
