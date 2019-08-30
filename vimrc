@@ -20,10 +20,10 @@ set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
+set listchars=tab:▸\ ,eol:↵
 set listchars+=extends:>
 set listchars+=precedes:<
 set listchars+=trail:.
-set listchars=tab:▸\ ,eol:↵
 set mouse=a
 set nocompatible
 set noequalalways
@@ -175,7 +175,7 @@ nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
 nnoremap <leader>8u :call FullUnderline('=')<CR>
 nnoremap <leader>b :call SelectaBuffer()<CR>
-nnoremap <leader>d :!open <C-R>=expand('%:p:h').'/'<CR><CR>
+nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
