@@ -160,25 +160,25 @@ endfunction
 
 function! RunFile()
   if &ft == "bash" || &ft == "sh"
-    call RunInShell('bash %:p')
+    call Shell('bash ' . expand('%:p'))
   elseif &ft == "ruby"
     if expand('%:t') == "Gemfile"
-      call RunInShell('bundle')
+      call Shell('bundle')
     elseif expand('%:h') == "db/migrate"
       call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
     elseif expand('%:t') == 'routes.rb'
-      call RunInShell('rails routes')
+      call Shell('rails routes')
     else
-      call RunInShell('ruby %')
+      call Shell('ruby ' . expand('%'))
     endif
   elseif &ft == "python"
-    call RunInShell('python %:p')
+    call Shell('python ' . expand('%:p'))
   elseif &ft == "javascript"
-    call RunInShell('node %:p')
+    call Shell('node ' . expand('%:p'))
   elseif &ft == "vim"
     source %:p
   elseif &ft == "c"
-    call RunInShell('gcc % -o %:r && clear && ./%:r')
+    call Shell('gcc ' . expand('%') . ' -o ' . expand('%:r') . ' && clear && ./' . expand('%:r'))
   elseif &ft
     execute "echo \"Don't know how to run" . &ft . " files.\""
   else
@@ -188,14 +188,6 @@ endfunction
 
 function! RailsMigrationVersion(filename)
   return split(a:filename, "_")[0]
-endfunction
-
-function! RunInShell(command)
-  if ShouldSendOutputToTmux()
-    call RunShellCommandInTmux(a:command)
-  else
-    execute ":!clear && time " . a:command
-  endif
 endfunction
 
 function! ShouldSendOutputToTmux()
@@ -231,16 +223,16 @@ function! RunRailsMigration(version)
   let migration_status = RailsMigrationStatus(a:version)
 
   if l:migration_status == 'up'
-    call RunInShell("rake db:migrate:down VERSION=" . a:version)
+    call Shell("rake db:migrate:down VERSION=" . a:version)
   elseif l:migration_status == 'down'
-    call RunInShell("rake db:migrate:up VERSION=" . a:version)
+    call Shell("rake db:migrate:up VERSION=" . a:version)
   endif
 endfunction
 
 function! RunCurrentTest(context)
   let l:test_command = TestCommand(a:context)
   if type(l:test_command) == 1
-    call RunInShell(l:test_command)
+    call Shell(l:test_command)
   else
     echom 'No test to run'
   endif
@@ -249,7 +241,7 @@ endfunction
 function! RunSavedTest()
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
-    call RunInShell(l:test_command)
+    call Shell(l:test_command)
   else
     echom 'No test to run'
   endif
@@ -304,9 +296,16 @@ function! ChomppedSystem(command)
   return system(a:command)[:-2]
 endfunction
 
-function! RunShellCommandInTmux(shell_command)
-  execute ":silent !tt " . a:shell_command
-  redraw!
+function! Shell(command)
+  if ShouldSendOutputToTmux()
+    call AsyncShell("tt time " . a:command)
+  else
+    execute ":!clear && time " . a:command
+  endif
+endfunction
+
+function! AsyncShell(command)
+  let job = job_start(['sh', '-c', a:command])
 endfunction
 
 function! TestRunner()
@@ -317,8 +316,8 @@ function! TestRunner()
   endif
 endfunction
 
-function! ShellOK(shell_command)
-  call system(a:shell_command)
+function! ShellOK(command)
+  call system(a:command)
 
   let return_code = v:shell_error
 
@@ -386,7 +385,7 @@ function! InteractiveRuby()
   else
     let l:irb = 'irb'
   endif
-  call RunInShell(l:irb . ' -r ' . expand('%:p'))
+  call Shell(l:irb . ' -r ' . expand('%:p'))
 endfunction
 
 " Creates a find command ignoring paths and files set in wildignore
@@ -452,10 +451,6 @@ endfunction
 
 function! ShouldToExpect()
   %s/\(\S\+\).should\(\s\+\)==\s*\(.\+\)/expect(\1).to\2eq(\3)/
-endfunction
-
-function! Debounce(command)
-  execute a:command
 endfunction
 
 function! OpenAlternateFile(path)
