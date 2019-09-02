@@ -180,6 +180,7 @@ nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
