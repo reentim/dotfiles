@@ -64,8 +64,24 @@ export DEFAULT_BRANCH="master"
 
 export LESS=Ri
 
+function prepend_path() {
+  if ! (echo $PATH | grep $1 >/dev/null 2>&1); then
+    export PATH="$1:$PATH"
+  else
+    return 1
+  fi
+}
+
+function append_path() {
+  if ! (echo $PATH | grep $1 >/dev/null 2>&1); then
+    export PATH="$PATH:$1"
+  else
+    return 1
+  fi
+}
+
 if [ $RBENV_INSTALLED ]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
+  prepend_path "$HOME/.rbenv/bin"
   if [ $BASH_VERSION ]; then
     eval "$(rbenv init - bash)"
   fi
@@ -98,9 +114,8 @@ if [ $GEM_HOME_INSTALLED ]; then
   fi
 fi
 
-
-if ! (echo $PATH | grep $HOME/bin > /dev/null) && [ -d $HOME/bin ]; then
-  export PATH="$HOME/bin:$PATH"
+if [ -d $HOME/bin ]; then
+  prepend_path "$HOME/bin"
 fi
 
 if ! (echo $PATH | grep ^\./bin > /dev/null); then
@@ -108,7 +123,7 @@ if ! (echo $PATH | grep ^\./bin > /dev/null); then
 fi
 
 if [ $VSCODE_INSTALLED ]; then
-  export PATH="$PATH:$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+  append_path "$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
 # z - a fuzzy finder for directory changing installed under Homebrew on MacOS,
