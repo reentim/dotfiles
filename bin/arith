@@ -1,27 +1,137 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby --disable-gems
+# encoding: utf-8
 
 def times_table_number
   (2..12).to_a.sample
 end
 
-def times_table_question
-  a = times_table_number
-  b = times_table_number
-
-  puts "#{a} x #{b}"
-  start_time = Time.now
-
-  answer = gets.chomp.to_i
-  end_time = Time.now
-
-  if answer == (a * b)
-    puts "✅"
-  else
-    puts "🚨"
-    puts a * b
-  end
-
-  puts end_time - start_time
+def main
+  Quiz.new.start
+rescue Interrupt
+  abort
 end
 
-times_table_question
+class Input
+  def self.take
+    gets.chomp
+  end
+end
+
+class Question
+  CORRECT = "✅ "
+  INCORRECT = "❌"
+  TYPES = [
+    'Multiplication',
+    'Addition',
+    'Subtraction',
+    'Division',
+  ]
+
+  def initialize
+    @a = value
+    @b = value
+  end
+
+  def to_s
+    "#{@a} #{operator_str} #{@b}"
+  end
+
+  def value(figures = 3)
+    (10**(figures - 1)..(10**figures - 1)).to_a.sample
+  end
+
+  def ask
+    print "#{self} = "
+    @timer = Timer.new
+    @given_answer = Input.take
+    if correctly_answered?
+      puts "#{CORRECT}"
+    else
+      puts "#{INCORRECT} #{correct_answer}"
+    end
+    puts "#{@timer.elapsed}s"
+    puts "---"
+  end
+
+  def correctly_answered?
+    @given_answer == correct_answer
+  end
+
+  def correct_answer
+    @a.send(operator, @b).to_s
+  end
+end
+
+class Multiplication < Question
+  def operator
+    :*
+  end
+
+  def operator_str
+    "x"
+  end
+end
+
+class TimesTable < Multiplication
+  def value
+    (2..12).to_a.sample
+  end
+end
+
+class Addition < Question
+  def operator
+    :+
+  end
+
+  def operator_str
+    "+"
+  end
+end
+
+class Subtraction < Question
+  def operator
+    :-
+  end
+
+  def operator_str
+    "-"
+  end
+end
+
+class Division < Question
+  def operator
+    :/
+  end
+
+  def operator_str
+    "÷"
+  end
+end
+
+class Quiz
+  def initialize(question_count = 10)
+    @questions = (1..question_count).map { Object.const_get(Question::TYPES.sample).new }
+  end
+
+  def start
+    @questions.each(&:ask)
+  end
+end
+
+class Timer
+  def initialize
+    @start = get_time
+  end
+
+  def elapsed
+    (get_time - @start).round(2)
+  end
+
+  private
+
+  def get_time
+    Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  end
+end
+
+main
