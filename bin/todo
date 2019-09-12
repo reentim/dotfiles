@@ -11,8 +11,13 @@ class Todos
   FILE = File.join(Dir.home, 'iCloud-Drive/todo.txt')
 
   def initialize(args)
-    if args[0] == 'ls' && args.count == 1
-      return list
+    if args.count == 1
+      case args.first
+      when 'ls'
+        return list
+      when 'edit'
+        return edit
+      end
     end
 
     todos = []
@@ -33,6 +38,10 @@ class Todos
     save(todos)
   end
 
+  def edit
+    system((ENV['EDITOR'] || 'vim'), FILE)
+  end
+
   def save(todos)
     return if todos.empty?
 
@@ -45,17 +54,18 @@ class Todos
 
   def saved_todos
     @_saved_todos ||= CSV.read(FILE).map do |todo|
-      [interval(Time.now - Time.parse(todo[0]), format: :short) + ' ago', todo[1]]
+      [interval(Time.now - Time.parse(todo[0])) + ' ago', todo[1]]
     end
   end
 
   def list
     return unless saved_todos.any?
+
     saved_todos.map do |todo|
-      puts <<~EOS
-        #{todo[0].rjust(saved_todos.map(&:first).max { |i| i.length }.length)} \
-        - #{todo[1]}
-      EOS
+      puts [
+        todo[0].rjust(saved_todos.map(&:first).max_by(&:length).length),
+        todo[1]
+      ].join(" - ")
     end
   end
 end
