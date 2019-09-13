@@ -79,6 +79,13 @@ zz() {
   fi
 }
 
+git-rm-submodule() {
+  path_to_submodule=$1
+  git submodule deinit $path_to_submodule
+  git rm $path_to_submodule
+  rm -rf .git/modules/${path_to_submodule}
+}
+
 alias killpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | xargs kill -s SIGTERM"
 alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
 
