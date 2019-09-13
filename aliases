@@ -87,6 +87,6 @@ git-rm-submodule() {
 }
 
 alias killpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | xargs kill -s SIGTERM"
-alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' '"
+alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | tee >(pbcopy)"
 
 alias asdf="find-repos | xargs selecta | cd"
