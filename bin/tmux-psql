@@ -12,7 +12,7 @@ for db in $dbs; do
   if [ "${basename}" == "core" ]; then
     cmd="psql -d myadbox_development"
   fi
-  if [ "${basename}" == "$db" ] || [ "${basename}_development" == "$db" ]; then
+  if [ "${basename}" == "$db" ] || [ "${basename}_development" == "$db" ] || [ "${basename}_dev" == "$db" ]; then
     cmd="psql -d $db"
     break
   fi
