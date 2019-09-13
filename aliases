@@ -22,7 +22,7 @@ if [[ $(uname) == 'Darwin' ]]; then
   fi
 fi
 
-alias l='ls -lGgh' # list, omit group, omit owner, human readable sizes
+alias l='ls -1' # list, omit group, omit owner, human readable sizes
 alias ll='ls -la'  # list, show all files
 alias la='ls -A'   # no list, show almost all
 alias vi='vim'
