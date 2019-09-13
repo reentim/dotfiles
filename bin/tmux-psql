@@ -1,21 +1,17 @@
 #!/usr/bin/env bash
 
-set -xe
+main() {
+  dir=$1
 
-dir=$1
-gitroot_path=$(cd $dir && git rev-parse --show-toplevel)
-basename=$(basename $gitroot_path)
-dbs=$(psql -c "copy (select datname from pg_database where datistemplate = false) to stdout")
+  found_db="$(finddb ${dir})"
 
-for db in $dbs; do
-  cmd="psql"
-  if [ "${basename}" == "core" ]; then
-    cmd="psql -d myadbox_development"
+  if [ "$found_db" ]; then
+    cmd="psql -d $found_db"
+  else
+    cmd="psql"
   fi
-  if [ "${basename}" == "$db" ] || [ "${basename}_development" == "$db" ] || [ "${basename}_dev" == "$db" ]; then
-    cmd="psql -d $db"
-    break
-  fi
-done
 
-tmux $(autosplit) "$cmd"
+  tmux $(autosplit) "$cmd"
+}
+
+main $*
