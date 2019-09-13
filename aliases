@@ -90,3 +90,11 @@ alias killpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 
 alias findpid="ps axww -o pid,user,%cpu,%mem,start,time,command | selecta | sed 's/^ *//' | cut -f1 -d' ' | tee >(pbcopy)"
 
 alias asdf="find-repos | xargs selecta | cd"
+
+function fresh-internet() {
+  if [ -f latest.dump ]; then
+    mv latest.dump* /tmp
+  fi
+  heroku pg:backups:download -a $(basename $(pwd))
+  pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
+}
