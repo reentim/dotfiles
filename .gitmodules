@@ -133,3 +133,6 @@
 [submodule "lib/selecta"]
 	path = lib/selecta
 	url = git@github.com:garybernhardt/selecta.git
+[submodule "tmux/tmux-resurrect"]
+	path = tmux/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect
