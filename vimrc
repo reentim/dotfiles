@@ -82,7 +82,7 @@ set autoindent
 set smartindent
 set expandtab tabstop=4 softtabstop=2 shiftwidth=2
 
-augroup vimrc autocmd FileType gitrebase let b:noResumeCursorPosition=1
+augroup vimrc
   autocmd!
 
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
