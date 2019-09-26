@@ -177,12 +177,15 @@ nnoremap <leader>8u :call FullUnderline('=')<CR>
 nnoremap <leader>b :call SelectaBuffer()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
+nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
-nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
+nnoremap <leader>ad :ALEDisable<CR>
+nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
 nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<CR>
 nnoremap <leader>gl :call SelectaFile("lib")<CR>
