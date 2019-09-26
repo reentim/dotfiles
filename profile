@@ -47,6 +47,9 @@ if [ -f ~/.aliases ]; then
   source ~/.aliases
 fi
 
+# Free up C-s for fwd-i-search
+stty -ixon
+
 if [ -n "$ITERM_PROFILE" ]; then
   echo $ITERM_PROFILE > /tmp/$ITERM_SESSION_ID-iterm_profile
 fi
