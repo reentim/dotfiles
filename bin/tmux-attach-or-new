@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Attach to an existing detached session.
+# If none exist, create a new session.
+
+main() {
+  if (tmux list-session >/dev/null 2>&1) &&
+     (tmux ls | grep -v "(attached)$" >/dev/null 2>&1); then
+    tmux attach
+  else
+    tmux new
+  fi
+}
+
+main
