@@ -549,5 +549,5 @@ function! AutocmdCommitMessage()
 endfunction
 
 function! AutocmdPullRequestMessage()
-  setlocal wrap
+  let b:noResumeCursorPosition=1
 endfunction
