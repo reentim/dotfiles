@@ -1,10 +1,10 @@
-function server() {
+server() {
   local port="${1:-8000}"
-  open "http://localhost:${port}/"
   python -m SimpleHTTPServer "$port"
+  open "http://localhost:${port}/"
 }
 
-function prof() {
+prof() {
   if [ -z "$1" ]; then
     profile=`enumerate-profiles | selecta`
   else
@@ -16,6 +16,93 @@ function prof() {
 }
 
 
-function proj() {
+proj() {
   cd "$(find-repos | selecta)"
+}
+
+prepend_path() {
+  if ! (echo $PATH | grep --fixed-strings $1 >/dev/null 2>&1); then
+    export PATH="$1:$PATH"
+  fi
+}
+
+append_path() {
+  if ! (echo $PATH | grep --fixed-strings $1 >/dev/null 2>&1); then
+    export PATH="$PATH:$1"
+  fi
+}
+
+delete-local-merged-branches() {
+  git branch --merged |
+    grep -v "*" |
+    grep -v master |
+    grep -v staging |
+    xargs -n 1 git branch --delete
+}
+
+delete-remote-merged-branches() {
+  git branch -a --merged origin/$DEFAULT_BRANCH |
+    grep --color=never remotes |
+    grep -v HEAD |
+    grep -v staging |
+    grep -v developement |
+    grep -v master |
+    sed "s:remotes/origin/::g" |
+    xargs -L 1 git push origin --delete
+}
+
+staging-deploy() {
+  git push && git push staging staging:master
+}
+
+production-deploy() {
+  git push uat master && heroku pipelines:promote -a adboxapp
+}
+
+zz() {
+  arg=$*
+  if [ $args ]; then
+    cd $(
+      z -l $args | tac | awk '{ print $2 }' | selecta
+    )
+  else
+    cd $(
+      cat ~/.z \
+        | awk -F '|' '{ print $2,$3,$1 }' \
+        | sort -nr \
+        | awk '{ print $3 }' \
+        | selecta
+    )
+  fi
+}
+
+git-rm-submodule() {
+  path_to_submodule=$1
+  git submodule deinit $path_to_submodule
+  git rm $path_to_submodule
+  rm -rf .git/modules/${path_to_submodule}
+}
+
+killpid() {
+  ps axww -o pid,user,%cpu,%mem,start,time,command \
+    | selecta \
+    | sed 's/^ *//' \
+    | cut -f1 -d' ' \
+    | xargs kill -s SIGTERM
+}
+
+findpid() {
+  ps axww -o pid,user,%cpu,%mem,start,time,command \
+    | selecta \
+    | sed 's/^ *//' \
+    | cut -f1 -d' ' \
+    | tee >(pbcopy)
+}
+
+fresh-internet() {
+  if [ -f latest.dump ]; then
+    mv latest.dump* /tmp
+  fi
+  heroku pg:backups:download -a $(basename $(pwd))
+  pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
 }
