@@ -60,6 +60,14 @@ task :link_dev do
   )
 end
 
+desc "Symlink iA Writer documents"
+task :link_ia_writer do
+  make_link(
+    File.join(Dir.home, 'Library/Mobile\ Documents/27N4MQEA55~pro~writer/Documents'),
+    File.join(Dir.home, 'writer'),
+  )
+end
+
 def make_link(source, target)
   unless File.exist?(target)
     system %[ln -vsf #{source} #{target}]
