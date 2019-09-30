@@ -69,6 +69,7 @@ export LESS=Ri
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
+  prepend_path "$HOME/.rbenv/shims"
 
   if ! (echo $PATH | grep --fixed-strings "$HOME/.rbenv/shims" >/dev/null 2>&1); then
     if [ $BASH_VERSION ]; then
