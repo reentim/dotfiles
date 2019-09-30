@@ -67,29 +67,16 @@ export DEFAULT_BRANCH="master"
 
 export LESS=Ri
 
-function prepend_path() {
-  if ! (echo $PATH | grep $1 >/dev/null 2>&1); then
-    export PATH="$1:$PATH"
-  else
-    return 1
-  fi
-}
-
-function append_path() {
-  if ! (echo $PATH | grep $1 >/dev/null 2>&1); then
-    export PATH="$PATH:$1"
-  else
-    return 1
-  fi
-}
-
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
-  if [ $BASH_VERSION ]; then
-    eval "$(rbenv init - bash)"
-  fi
-  if [ $ZSH_VERSION ]; then
-    eval "$(rbenv init - zsh)"
+
+  if ! (echo $PATH | grep --fixed-strings "$HOME/.rbenv/shims" >/dev/null 2>&1); then
+    if [ $BASH_VERSION ]; then
+      eval "$(rbenv init - bash)"
+    fi
+    if [ $ZSH_VERSION ]; then
+      eval "$(rbenv init - zsh)"
+    fi
   fi
 fi
 
