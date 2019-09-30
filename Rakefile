@@ -37,8 +37,8 @@ task :keybindings do
   )
 end
 
-desc "Italic terminals"
-task :italic_terminals do
+desc "Compile terminals"
+task :terminals do
   Dir.glob('terminals/*').map do |terminfo|
     %x[tic #{File.join(DOTFILES_DIR, terminfo)}]
   end
