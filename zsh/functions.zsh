@@ -20,16 +20,17 @@ proj() {
   cd "$(find-repos | selecta)"
 }
 
+path_without() {
+  arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
+  echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
+}
+
 prepend_path() {
-  if ! (echo $PATH | grep --fixed-strings $1 >/dev/null 2>&1); then
-    export PATH="$1:$PATH"
-  fi
+  export PATH="$1:$(path_without $1)"
 }
 
 append_path() {
-  if ! (echo $PATH | grep --fixed-strings $1 >/dev/null 2>&1); then
-    export PATH="$PATH:$1"
-  fi
+  export PATH="$(path_without $1):$1"
 }
 
 delete-local-merged-branches() {
