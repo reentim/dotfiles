@@ -1,10 +1,12 @@
-source ~/.profile
+start=$($HOME/bin/monotonic-clock)
 
 auto_sources=(`for f in ~/.zsh/*.zsh; do basename $f .zsh; done`)
 
 for source in $auto_sources; do
   source ~/.zsh/$source.zsh
 done
+
+source ~/.profile
 
 setopt PROMPT_SUBST
 autoload -U promptinit
@@ -37,3 +39,7 @@ bindkey "" backward-kill-line
 bindkey "" kill-line
 
 export LC_ALL="en_AU.UTF-8"
+
+finish=$(monotonic-clock)
+dt=$(($finish - $start))
+printf "=> Done in %.*fs \n" 2 $dt
