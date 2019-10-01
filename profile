@@ -137,3 +137,5 @@ if [ $DIRENV_INSTALLED ]; then
     eval "$(direnv hook zsh)"
   fi
 fi
+
+echo "-  $(ruby --version | cut -d " " -f 1,2)"
