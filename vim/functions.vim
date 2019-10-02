@@ -298,7 +298,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt time " . a:command)
+    call AsyncShell("tt \"cd " . getcwd() . " && " . a:command . "\"")
   else
     execute ":!clear && time " . a:command
   endif
