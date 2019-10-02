@@ -14,11 +14,11 @@ if [ -d $HOME/.rbenv ]; then
 fi
 
 if (which chruby-exec > /dev/null); then
-  # CHRUBY_INSTALLED=1
+  CHRUBY_INSTALLED=1
 fi
 
-if [ -f "/usr/local/share/gem_home/gem_home.sh" ]; then
-  # GEM_HOME_INSTALLED=1
+if [ -f /usr/local/share/gem_home/gem_home.sh ]; then
+  GEM_HOME_INSTALLED=1
 fi
 
 if [ -d /usr/local/Library/Homebrew ]; then
@@ -37,15 +37,17 @@ if [ -d "$HOME/Applications/Visual Studio Code.app" ]; then
   VSCODE_INSTALLED=1
 fi
 
+if [ -f ~/.dotfiles/lib/z/z.sh ]; then
+  Z_INSTALLED=1
+fi
+
 # vim temp files go in /tmp/ directories
 mkdir -p /tmp/vimtemp
 mkdir -p /tmp/vimswap
 mkdir -p /tmp/vimundo
 
 # Alias definitions
-if [ -f ~/.aliases ]; then
-  source ~/.aliases
-fi
+[ -f ~/.aliases ] && source ~/.aliases
 
 # Free up C-s for fwd-i-search
 stty -ixon
@@ -55,7 +57,7 @@ if [ -n "$ITERM_PROFILE" ]; then
 fi
 
 # Add private keys to the ssh agent, if there are none already added
-if ! (ssh-add -l > /dev/null); then
+if ! (ssh-add -l > /dev/null 2>&1); then
   find ~/.ssh -type f \
     -exec bash -c '[[ "$(file "$1")" == *"private key"* ]]' bash {} ';' \
     -print | xargs ssh-add -K
@@ -71,13 +73,9 @@ if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
   prepend_path "$HOME/.rbenv/shims"
 
-  if ! (echo $PATH | grep --fixed-strings "$HOME/.rbenv/shims" >/dev/null 2>&1); then
-    if [ $BASH_VERSION ]; then
-      eval "$(rbenv init - bash)"
-    fi
-    if [ $ZSH_VERSION ]; then
-      eval "$(rbenv init - zsh)"
-    fi
+  if ! (on_path "$HOME/.rbenv/shims"); then
+    [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
+    [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
   fi
 fi
 
@@ -91,7 +89,7 @@ fi
 if [ $GEM_HOME_INSTALLED ]; then
   source /usr/local/share/gem_home/gem_home.sh
 
-  function gem_home_auto() {
+  gem_home_auto() {
     if [ -f "Gemfile" ]; then
       gem_home -
       gem_home .
@@ -117,25 +115,11 @@ if [ $VSCODE_INSTALLED ]; then
   append_path "$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
-# z - a fuzzy finder for directory changing installed under Homebrew on MacOS,
-# otherwise available in dotfiles
-if [ $HOMEBREW_INSTALLED ]; then
-  if [ -f `brew --prefix`/etc/profile.d/z.sh ]; then
-    source `brew --prefix`/etc/profile.d/z.sh
-  fi
-else
-  if [ -f ~/.dotfiles/lib/z/z.sh ]; then
-    source ~/.dotfiles/lib/z/z.sh
-  fi
+if [ $Z_INSTALLED ]; then
+  source "$HOME/lib/z/z.sh"
 fi
 
 if [ $DIRENV_INSTALLED ]; then
-  if [ $BASH_VERSION ]; then
-    eval "$(direnv hook bash)"
-  fi
-  if [ $ZSH_VERSION ]; then
-    eval "$(direnv hook zsh)"
-  fi
+  [ $BASH_VERSION ] && eval "$(direnv hook bash)"
+  [ $ZSH_VERSION ] && eval "$(direnv hook zsh)"
 fi
-
-echo "-  $(ruby --version | cut -d " " -f 1,2)"
