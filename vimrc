@@ -36,6 +36,7 @@ set ruler
 set shell=bash
 set showcmd
 set showmatch
+set showtabline=2
 set smartcase
 set splitbelow
 set splitright
