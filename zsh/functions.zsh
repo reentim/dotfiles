@@ -15,7 +15,6 @@ prof() {
   set-profile $profile
 }
 
-
 proj() {
   cd "$(find-repos | selecta)"
 }
@@ -23,6 +22,10 @@ proj() {
 path_without() {
   arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
   echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
+}
+
+on_path() {
+  echo $PATH | grep --fixed-strings "$1" >/dev/null 2>&1
 }
 
 prepend_path() {
