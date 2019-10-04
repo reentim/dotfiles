@@ -14,7 +14,6 @@ main() {
       --format="\
  %(push:track)\
  #[fg=yellow]%(objectname:short=7)#[default]\
- #[fg=red]%(refname:short)#[default]\
  #[fg=blue]%(upstream:short)#[default]" \
     | sed -E "s/ahead ([0-9]+)/ahead #[fg=green]\1#[default]/" \
     | sed -E "s/behind ([0-9]+)/behind #[fg=red]\1#[default]/"
