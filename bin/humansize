@@ -2,7 +2,7 @@
 
 file=$1
 
-stat=$(stat -f "%z" $file)
+stat=$(/usr/bin/stat -f "%z" $file)
 echo "$stat bytes"
 echo $stat | numfmt --to=iec-i --suffix=B --format="%.2f"
 echo $stat | numfmt --to=si --suffix=B --format="%.2f"
