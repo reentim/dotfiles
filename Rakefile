@@ -52,6 +52,14 @@ task :link_icloud_drive do
   )
 end
 
+desc "Symlink lib"
+task :link_lib do
+  make_link(
+    File.join(Dir.home, '.dotfiles/lib'),
+    File.join(Dir.home, 'lib'),
+  )
+end
+
 desc "Symlink dev"
 task :link_dev do
   make_link(
