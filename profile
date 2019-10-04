@@ -66,7 +66,7 @@ fi
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
 export DEFAULT_BRANCH="master"
-
+export TIMEFMT=$'\ncpu\t%P\nmem\t%M KB\nelapsed\t%mE'
 export LESS=Ri
 
 if [ $RBENV_INSTALLED ]; then
