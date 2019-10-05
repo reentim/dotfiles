@@ -1,76 +1,103 @@
 #!/usr/bin/env ruby
-# watch.rb by Brett Terpstra, 2011 <http://brettterpstra.com>
+# Based on watch.rb by Brett Terpstra, 2011 <http://brettterpstra.com>
 # with credit to Carlo Zottmann <https://github.com/carlo/haml-sass-file-watcher>
 
-require "rake"
+require 'rake'
 
-trap("SIGINT") { exit }
-
-FILETYPES = ['css', 'html', 'rb', 'erb', 'js', 'scss']
-
-# recursive
-def files
-  @files ||= FILETYPES.map do |type|
-    FileList[File.join(".", "**", "*.#{type}")].exclude(/node_modules/)
-  end.flatten
+if ARGV[0]&.match?(/-?-h(elp)?/)
+  puts ['Usage: watch ',
+       '[path (.)] ',
+       '[refresh tabs with url (localhost)] ',
+       '[in browser name (default browser)]'].join
+  exit
 end
 
-abort "\nNo files found!" unless files.any?
-
-def refresh_browser
-  puts 'Refreshing...'
-  apple_script
-end
-
-def apple_script
-%x{osascript<<HEREDOC
-  tell application "Google Chrome"
-    set windowList to every window
-
-    repeat with aWindow in windowList
-      set tabList to every tab of aWindow
-
-      repeat with atab in tabList
-        tell atab to reload
-      end repeat
-
-    end repeat
-  end tell
-HEREDOC
-}
-end
-
-def report_changes(changed_file)
-  puts "Detected change in #{changed_file[0]}"
-end
-
-tick = 0
-while true do
-  tick += 1
-
-  new_hash = files.collect { |f|
-    [
-      f,
-      File.exists?(f) ? File.stat(f).mtime.to_i : nil
-    ]
+class WatchFiles
+  FILETYPES = ['css', 'html', 'rb', 'erb', 'js', 'scss']
+  REFRESH_ACTIONS = {
+           'Google Chrome' => 'tell atab to reload',
+    'Google Chrome Canary' => 'tell atab to reload',
+                  'Safari' => 'tell atab to do javascript "window.location.reload()"'
   }
-  hash ||= new_hash
-  diff_hash = new_hash - hash
 
-  unless diff_hash.empty?
-    hash = new_hash
+  def initialize
+    @dir = ARGV[0] || Dir.pwd
+    @url = ARGV[1] || 'localhost'
+    @browser = ARGV[2] || default_browser
+  end
 
-    diff_hash.each do |df|
-      report_changes(df)
+  def reload_browser!
+    script = <<~EOF
+      tell application "#{@browser}"
+        set windowList to every window
+        repeat with aWindow in windowList
+          set tabList to every tab of aWindow
+          repeat with atab in tabList
+            if (URL of atab contains "#{@url}") then
+              #{REFRESH_ACTIONS[@browser]}
+            end if
+          end repeat
+        end repeat
+      end tell
+    EOF
+
+    %x{echo '#{script}' | osascript}
+  end
+
+  def default_browser
+    if system("which defaultbrowser > /dev/null 2>&1")
+      %x{defaultbrowser}.lines.first.split(': ').last.chomp.capitalize
+    else
+      "Safari"
+    end
+  end
+
+  def files
+    @cache_until ||= Time.now + 5
+
+    if (Time.now - @cache_until) > 0
+      @files = nil
+      @cache_until = nil
     end
 
-    refresh_browser
+    @files ||= FILETYPES.map do |type|
+      FileList[File.join(@dir, "**", "*.#{type}")].exclude(/node_modules/)
+    end.flatten
   end
 
-  if tick >= 9
-    tick = 0
-    @files = nil
+  def watch
+    abort "No files found" unless files.any?
+
+    puts ["Watching #{files.count} files in #{@dir} for changes, ",
+          "with #{@browser} waiting to refresh tabs with URLs ",
+          "containing '#{@url}'..."].join
+
+    while true do
+      begin
+        file_modification_times = files.map do |f|
+          { name: f, mtime: File.stat(f).mtime.to_i }
+        end
+      rescue Errno::ENOENT
+      end
+
+      previous_file_modification_times ||= file_modification_times
+      modified_files = file_modification_times - previous_file_modification_times
+
+      if modified_files.any?
+        previous_file_modification_times = nil
+        modified_files.each { |file| report_changes(file) }
+        reload_browser!
+      end
+
+      sleep 0.1
+    end
+  rescue Interrupt
+    exit
   end
 
-  sleep 0.25
+  def report_changes(changed_file)
+    puts "Detected change in #{changed_file[:name].split(@dir).last} "
+  end
 end
+
+WatchFiles.new.watch
