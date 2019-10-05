@@ -1,20 +1,22 @@
 require 'rake'
+require 'pathname'
 
 task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
+ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile\ Documents/com~apple~CloudDocs")
 EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library]
 LINK_VISIBLY = %w[bin lib]
-LINKABLES = (Dir.glob('*') - EXCLUDE)
+LINKABLES = (Dir.glob('*') - EXCLUDE).sort
 
 desc "Install dotfiles"
 task :install do
-  each_linkable { |source, target| make_link(source, target) }
+  each_linkable { |source, link| make_link(source, link) }
 end
 
 desc "Remove dotfiles"
 task :remove do
-  each_link { |source, target| remove_link(source, target) }
+  each_link { |source, link| remove_link(source, link) }
 end
 
 desc "Keep SSH_AUTH_SOCK for screen / tmux sessions"
@@ -22,8 +24,8 @@ task :ssh do
   linkables = Dir.glob('ssh/*').map { |l| File.basename(l) }
   linkables.each do |file|
     source = File.join(DOTFILES_DIR, "ssh", file)
-    target = File.join(Dir.home, ".ssh", file)
-    make_link(source, target)
+    link = File.join(Dir.home, ".ssh", file)
+    make_link(source, link)
   end
 end
 
@@ -47,7 +49,7 @@ end
 desc "Symlink iCloud Drive"
 task :link_icloud_drive do
   make_link(
-    File.join(Dir.home, 'Library/Mobile\ Documents/com~apple~CloudDocs'),
+    File.join(Dir.home, ICLOUD_DRIVE),
     File.join(Dir.home, 'iCloud-Drive'),
   )
 end
@@ -55,7 +57,7 @@ end
 desc "Symlink lib"
 task :link_lib do
   make_link(
-    File.join(Dir.home, '.dotfiles/lib'),
+    File.join(DOTFILES_DIR, 'lib'),
     File.join(Dir.home, 'lib'),
   )
 end
@@ -63,8 +65,16 @@ end
 desc "Symlink dev"
 task :link_dev do
   make_link(
-    File.join(Dir.home, 'Library/Mobile\ Documents/com~apple~CloudDocs/dev'),
+    File.join(ICLOUD_DRIVE, 'dev'),
     File.join(Dir.home, 'dev'),
+  )
+end
+
+desc "Symlink journals"
+task :link_journals do
+  make_link(
+    File.join(ICLOUD_DRIVE, 'journals'),
+    File.join(Dir.home, 'journals'),
   )
 end
 
@@ -76,29 +86,34 @@ task :link_ia_writer do
   )
 end
 
-def make_link(source, target)
-  unless File.exist?(target)
-    system %[ln -vsf #{source} #{target}]
+def make_link(source, link)
+  unless File.exist?(link)
+    File.symlink(source, link)
+    puts [
+      Pathname.new(source).relative_path_from(Dir.home),
+      '->',
+      Pathname.new(link).relative_path_from(Dir.home),
+    ].join("\s")
   end
 end
 
-def linked?(source, target)
-  File.symlink?(target) && File.readlink(target) == source
+def linked?(source, link)
+  File.symlink?(link) && File.readlink(link) == source
 end
 
-def remove_link(source, target)
-  if linked?(source, target)
-    puts "rm #{target}"
-    File.delete(target)
+def remove_link(source, link)
+  if linked?(source, link)
+    puts "rm #{link}"
+    File.delete(link)
   end
 end
 
 def each_linkable(&block)
   LINKABLES.each do |file|
     source = File.join(DOTFILES_DIR, file)
-    target = File.join(Dir.home,
+    link = File.join(Dir.home,
                        LINK_VISIBLY.include?(file) ? file : ".#{file}")
-    yield(source, target)
+    yield(source, link)
   end
 end
 
