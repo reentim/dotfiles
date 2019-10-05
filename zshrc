@@ -41,5 +41,5 @@ bindkey "" kill-line
 export LC_ALL="en_AU.UTF-8"
 
 finish=$(monotonic-clock)
-dt=$(($finish - $start))
-printf "=> Done in %.*fs \n" 2 $dt
+let local "dt = ($finish - $start) * 1000"
+printf "⏱  %dms\n" $dt
