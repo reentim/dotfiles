@@ -38,6 +38,10 @@ bindkey "^[3;5~" delete-char
 bindkey "" backward-kill-line
 bindkey "" kill-line
 
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '' edit-command-line
+
 export LC_ALL="en_AU.UTF-8"
 
 finish=$(monotonic-clock)
