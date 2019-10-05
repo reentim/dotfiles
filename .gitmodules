@@ -38,7 +38,7 @@
 [submodule "vim/bundle/xterm-color-table.vim"]
 	path = vim/bundle/xterm-color-table.vim
 	url = https://github.com/vim-scripts/xterm-color-table.vim.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise
 	url = https://github.com/tpope/vim-endwise.git
@@ -75,11 +75,11 @@
 [submodule "vim/bundle/ultisnips"]
 	path = vim/bundle/ultisnips
 	url = git://github.com/SirVer/ultisnips.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-ragtag"]
 	path = vim/bundle/vim-ragtag
 	url = https://github.com/tpope/vim-ragtag.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-indent-object"]
 	path = vim/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
@@ -92,15 +92,15 @@
 [submodule "vim/bundle/vim-textobj-user"]
 	path = vim/bundle/vim-textobj-user
 	url = git@github.com:kana/vim-textobj-user.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-textobj-rubyblock"]
 	path = vim/bundle/vim-textobj-rubyblock
 	url = git@github.com:nelstrom/vim-textobj-rubyblock.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-change-hash-syntax"]
 	path = vim/bundle/vim-change-hash-syntax
 	url = git@github.com:ck3g/vim-change-hash-syntax.git
-  ignore = dirty
+	ignore = dirty
 [submodule "vim/bundle/vim-matchit"]
 	path = vim/bundle/vim-matchit
 	url = git@github.com:tmhedberg/matchit.git
@@ -122,8 +122,6 @@
 [submodule "vim/bundle/vim-one"]
 	path = vim/bundle/vim-one
 	url = git@github.com:rakr/vim-one.git
-
-# Lib
 [submodule "lib/z"]
 	path = lib/z
 	url = https://github.com/rupa/z.git
@@ -133,3 +131,10 @@
 [submodule "tmux/tmux-resurrect"]
 	path = tmux/tmux-resurrect
 	url = https://github.com/tmux-plugins/tmux-resurrect
+[submodule "vim/bundle/tsuquyomi"]
+	path = vim/bundle/tsuquyomi
+	url = git@github.com:Quramy/tsuquyomi.git
+	ignore = dirty
+[submodule "vim/bundle/typescript-vim"]
+	path = vim/bundle/typescript-vim
+	url = git@github.com:leafgarland/typescript-vim.git
