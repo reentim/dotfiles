@@ -89,6 +89,7 @@ augroup vimrc
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
+  autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
@@ -103,8 +104,7 @@ augroup vimrc
     autocmd BufNewFile,BufRead html            setlocal spell
   endif
 
-  autocmd InsertLeave * silent! update
-  autocmd CursorMoved * silent! update
+  autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
 
   " Tell vim-commentary about JSX

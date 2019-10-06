@@ -522,9 +522,15 @@ function! LongestLine()
 endfunction
 
 function! SetJournalOptions()
-  setlocal filetype=text wrap tw=0 spell nonu columns=80 colorcolumn=0
-  nnoremap <buffer> k gk
-  nnoremap <buffer> j gj
+  setlocal textwidth=72 colorcolumn=72 nonumber spell
+endfunction
+
+function! RewrapBuffer()
+  let lines = line('$')
+  let pos = getpos('.')
+  call cursor(1, 1)
+  keepjumps normal gqG
+  call cursor(pos[1] + line('$') - lines, pos[2])
 endfunction
 
 function! SetColorscheme()
