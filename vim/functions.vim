@@ -160,7 +160,7 @@ endfunction
 
 function! RunFile()
   if &ft == "bash" || &ft == "sh"
-    call Shell('bash ' . expand('%:p'))
+    call Shell('bash "' . expand('%:p') . '"')
   elseif &ft == "ruby"
     if expand('%:t') == "Gemfile"
       call Shell('bundle')
