@@ -71,11 +71,11 @@ class Todo
       due_date = due_mapping.fetch(due_at.downcase) do
         if due_at.match(/day/) || due_at.match(/mon|tue|wed|thu|fri|sat|sun/)
           next_day(due_at) + hours(9)
-        elsif date_at.match /\d{4}/
+        elsif date_at.match(/\d{4}/)
           Time.parse(due_at + "-01-01") + hours(9)
-        elsif date_at.match /\d{4}-\d{2}/
+        elsif date_at.match(/\d{4}-\d{2}/)
           Time.parse(due_at + "-01") + hours(9)
-        elsif date_at.match /\d{2}-\d{2}/
+        elsif date_at.match(/\d{2}-\d{2}/)
           year = Date.today.year
           time = Time.parse([year, due_at].join("-"))
           time < Time.now ? Time.parse([year + 1, due_at].join("-")) + hours(9): time + hours(9)
@@ -114,9 +114,10 @@ class Todo
 
   def saved_todos
     @_saved_todos ||= CSV.read(FILE)
-      .select { |todo| todo[HEADERS.index('COMPLETED AT')].nil? }
+      .reject { |todo| !todo[HEADERS.index('COMPLETED AT')].nil? }
       .map do |todo|
       [
+        todo[HEADERS.index('CREATED AT')],
         todo[HEADERS.index('TODO')],
         todo[HEADERS.index('DUE AT')],
       ]
@@ -127,16 +128,21 @@ class Todo
     return unless saved_todos.any?
 
     saved_todos.map do |todo|
-      puts %[- #{todo[0]} #{due_marker(todo[1])}]
+      puts %[[#{relative_date(todo[0]).rjust(rjust_amount)}] #{todo[1]} #{due_marker(todo[2])}]
     end
   end
 
   def rjust_amount
-    saved_todos.map(&:first).max_by(&:length).length
+    saved_todos
+      .map(&:first)
+      .map { |date| relative_date(date) }
+      .max_by(&:length)
+      .length
   end
 
   def relative_date(date)
     return unless date
+    date = Time.parse(date) if date.is_a? String
 
     times = [date, Time.now].sort
     [
