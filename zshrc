@@ -44,6 +44,6 @@ bindkey '' edit-command-line
 
 export LC_ALL="en_AU.UTF-8"
 
-finish=$(monotonic-clock)
+finish=$($HOME/bin/monotonic-clock)
 let local "dt = ($finish - $start) * 1000"
 printf "⏱  %dms\n" $dt
