@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+find $HOME /usr/local/Cellar \
+  -type d \
+  -name 'node_modules' \
+  -exec touch '{}/.metadata_never_index' \; \
+  -print >/dev/null 2>&1
