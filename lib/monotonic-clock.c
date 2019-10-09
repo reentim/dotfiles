@@ -7,4 +7,5 @@ int main() {
     clock_gettime(CLOCK_MONOTONIC, &time);
 	double now = time.tv_sec + time.tv_nsec*1e-9;
 	printf("%f\n", now);
+	return 0;
 }
