@@ -8,8 +8,12 @@ def main
   width_pc = (1 / (window_width / pane_width.to_f)).round(2)
   height_pc = (1 / (window_height / pane_height.to_f)).round(2)
 
-  if width_pc > height_pc
+  aspect_ratio = width_pc / height_pc
+
+  if aspect_ratio >= 1
     puts 'split-window -h'
+  elsif aspect_ratio > 0.5
+    puts 'split-window -v'
   else
     puts 'split-window -v'
   end
