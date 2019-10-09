@@ -4,7 +4,7 @@ require 'pathname'
 task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
-ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile\ Documents/com~apple~CloudDocs")
+ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
 EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library]
 LINK_VISIBLY = %w[bin lib]
 LINKABLES = (Dir.glob('*') - EXCLUDE).sort
@@ -81,7 +81,7 @@ end
 desc "Symlink iA Writer documents"
 task :link_ia_writer do
   make_link(
-    File.join(Dir.home, 'Library/Mobile\ Documents/27N4MQEA55~pro~writer/Documents'),
+    File.join(Dir.home, 'Library/Mobile Documents/27N4MQEA55~pro~writer/Documents'),
     File.join(Dir.home, 'writer'),
   )
 end
