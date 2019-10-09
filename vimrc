@@ -183,7 +183,7 @@ nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>ad :ALEDisable<CR>
@@ -198,6 +198,7 @@ nnoremap <leader>gs :call SelectaFile("spec")<CR>
 nnoremap <leader>gv :call SelectaFile("app/views")<CR>
 nnoremap <leader>h :split<CR><C-w>j
 nnoremap <leader>l :call Underline('-')<CR>
+nnoremap <leader>lp :call GitLogPatch()<CR>
 nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
 nnoremap <leader>n :call RenameFile()<CR>
 nnoremap <leader>o :!open %<CR><CR>

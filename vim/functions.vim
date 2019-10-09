@@ -557,3 +557,10 @@ endfunction
 function! AutocmdPullRequestMessage()
   let b:noResumeCursorPosition=1
 endfunction
+
+function! GitLogPatch()
+  let dir = expand('%:h')
+  let file = expand('%')
+  exec ":silent !cd " . dir . " && git lp " . file
+  redraw!
+endfunction
