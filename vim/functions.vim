@@ -239,11 +239,10 @@ function! RunCurrentTest(context)
 endfunction
 
 function! RunSavedTest()
+  silent! write
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
     call Shell(l:test_command)
-  else
-    echom 'No test to run'
   endif
 endfunction
 
