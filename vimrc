@@ -20,10 +20,7 @@ set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
-set listchars=tab:▸\ ,eol:↵
-set listchars+=extends:>
-set listchars+=precedes:<
-set listchars+=trail:.
+set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.
 set mouse=a
 set nocompatible
 set noequalalways
@@ -107,6 +104,7 @@ augroup vimrc
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
 
+
   " Tell vim-commentary about JSX
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
 
@@ -126,8 +124,14 @@ let g:ale_completion_delay = 50
 let g:ale_fix_on_save = 1
 let g:ale_enabled = 1
 let g:ale_sign_column_always = 0
+let g:ale_linters = {
+\ 'typescript': ['tsserver', 'tslint'],
+\}
 let g:ale_fixers = {
 \ 'javascript': ['prettier'],
+\ 'typescript': ['prettier'],
+\ 'html': ['prettier'],
+\ 'css': ['prettier'],
 \ 'ruby': ['rubocop'],
 \}
 let g:ale_pattern_options = {
@@ -142,6 +146,8 @@ let g:splitjoin_trailing_comma = 1
 " Delimitmate
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
+
+let g:tsuquyomi_disable_quickfix = 1
 
 " Indent Guides
 let g:indent_guides_enable_on_vim_startup = 1
