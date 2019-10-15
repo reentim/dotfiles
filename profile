@@ -103,6 +103,8 @@ if [ $GEM_HOME_INSTALLED ]; then
   fi
 fi
 
+prepend_path "./node_modules/.bin"
+
 if [ -d $HOME/bin ]; then
   prepend_path "$HOME/bin"
 fi

@@ -1,7 +1,7 @@
 server() {
   local port="${1:-8000}"
-  python -m SimpleHTTPServer "$port"
   open "http://localhost:${port}/"
+  python -m SimpleHTTPServer "$port"
 }
 
 prof() {
