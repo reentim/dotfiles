@@ -5,3 +5,4 @@ vim-matchit/doc/tags
 .idea
 tags
 .gem
+node_modules

@@ -308,7 +308,7 @@ function! AsyncShell(command)
 endfunction
 
 function! TestRunner()
-  if &filetype == "javascript" || &filetype == "javascript.jsx"
+  if &filetype == "javascript" || &filetype == "javascript.jsx" || &filetype == "typescript"
     return " yarn jest "
   else
     return " rspec --color --tty -f doc "
@@ -329,7 +329,7 @@ function! ShellOK(command)
 endfunction
 
 function! InTestFile()
-  let pattern = '\(.feature\|_spec.rb\|_test.rb\|test.js\)$'
+  let pattern = '\(.feature\|_spec.rb\|_test.rb\|test.js\|test.ts\)$'
   return match(expand("%"), pattern) != -1
 endfunction
 

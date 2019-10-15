@@ -29,3 +29,21 @@ endsnippet
 snippet => "anonymous function" w
 (${1}) => { ${0:${VISUAL}} }
 endsnippet
+
+snippet t "test"
+test('${1}', (${2}) => {
+  ${3}
+})
+endsnippet
+
+snippet desc "describe"
+describe('${1}', (${2}) => {
+  ${3}
+})
+endsnippet
+
+snippet it "it"
+it('${1}', (${2}) => {
+  ${3}
+})
+endsnippet
