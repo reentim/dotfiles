@@ -128,7 +128,7 @@ class Todo
     return unless saved_todos.any?
 
     saved_todos.map do |todo|
-      puts %[[#{relative_date(todo[0]).rjust(rjust_amount)}] #{todo[1]} #{due_marker(todo[2])}]
+      puts %[(#{relative_date(todo[0]).rjust(rjust_amount)}) #{todo[1]} #{due_marker(todo[2])}]
     end
   end
 
@@ -146,8 +146,7 @@ class Todo
 
     times = [date, Time.now].sort
     [
-      interval(times.last - times.first),
-      date < Time.now ? 'ago' : 'from now'
+      interval(times.last - times.first, short: true),
     ].join("\s")
   end
 
@@ -158,7 +157,7 @@ class Todo
     dt = [Time.now, date].sort.reverse.inject(&:-)
 
     color(
-      "(due #{'in ' if date > Time.now}#{interval(dt)}#{' ago' if date < Time.now})",
+      "(due #{'in ' if date > Time.now}#{interval(dt, short: true)}#{' ago' if date < Time.now})",
       due_color(date)
     )
   end
