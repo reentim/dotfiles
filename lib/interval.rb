@@ -3,27 +3,44 @@ require_relative 'pluralise'
 module Interval
   include Pluralise
 
-  def interval(seconds, format: nil)
-    seconds = seconds.to_i
-    case seconds
+  def interval(s, format: nil, short: false)
+    s = s.to_i
+    case s
     when 0..90
-      "#{pluralise(seconds, 'second')}"
+      "#{short ? format("%ds", s) : pluralise(s, 'second')}"
     when 90..minutes(90)
-      ["#{pluralise(seconds / minutes(1), 'minute')}",  "#{interval(seconds % minutes(1), format: next_format(format)) if format}"].join(",\s")
+      v = s/minutes(1)
+      ["#{short ? format("%dm", v) : pluralise(v, 'minute')}",
+       "#{interval(s % minutes(1), format: next_format(format)) if format}"].join(",\s")
     when minutes(90)..hours(36)
-      ["#{pluralise(seconds / hours(1), 'hour')}", "#{interval(seconds % hours(1), format: next_format(format)) if format}"].join(",\s")
+      v = s/hours(1)
+      ["#{short ? format("%dh", v) : pluralise(v, 'hour')}",
+       "#{interval(s % hours(1), format: next_format(format)) if format}"].join(",\s")
     when hours(36)..weeks(2)
-      ["#{pluralise(seconds / days(1), 'day')}", "#{interval(seconds % days(1), format: next_format(format)) if format}"].join(",\s")
-    when weeks(2)..weeks(12)
-      ["#{pluralise(seconds / weeks(1), 'week')}", "#{interval(seconds % weeks(1), format: next_format(format)) if format}"].join(",\s")
+      v = s/days(1)
+      ["#{short ? format("%dd", v) : pluralise(v, 'day')}",
+       "#{interval(s % days(1), format: next_format(format)) if format}"].join(",\s")
+    when weeks(2)..months(3)
+      v = s/weeks(1)
+      ["#{short ? format("%dw", v) : pluralise(v, 'week')}",
+       "#{interval(s % weeks(1), format: next_format(format)) if format}"].join(",\s")
     when weeks(12)..months(24)
-      ["#{pluralise(seconds / months(1), 'month')}", "#{interval(seconds % months(1), format: next_format(format)) if format}"].join(",\s")
+      v = s/months(1)
+      ["#{short ? format("%dm", v) : pluralise(v, 'month')}",
+       "#{interval(s % months(1), format: next_format(format)) if format}"].join(",\s")
     else
-      ["#{pluralise(seconds / years(1), 'year')}", "#{interval(seconds % years(1), format: next_format(format)) if format}"].join(",\s")
+      ["#{pluralise(s / years(1), 'year')}",
+       "#{interval(s % years(1), format: next_format(format)) if format}"].join(",\s")
     end.chomp(",\s")
   end
 
   private
+
+  def significant?(part, whole)
+    # todo maybe ideas of, when the integer division of the decided unit would
+    # discard over some threshold, the unit is lowered
+    whole % part > whole/10
+  end
 
   def next_format(format)
     nil if format == :long
@@ -43,14 +60,14 @@ module Interval
   end
 
   def weeks(n)
-    n * days(7)
+    n * 604_800
   end
 
   def months(n)
-    (n * years(1) / 12).to_i
+    n * 2_629_746
   end
 
   def years(n)
-    (n * days(365.2425)).to_i
+    n * 31_556_952
   end
 end
