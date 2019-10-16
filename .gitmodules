@@ -138,3 +138,6 @@
 [submodule "vim/bundle/typescript-vim"]
 	path = vim/bundle/typescript-vim
 	url = git@github.com:leafgarland/typescript-vim.git
+[submodule "vim/bundle/iceberg"]
+	path = vim/bundle/iceberg
+	url = https://github.com/cocopon/iceberg.vim.git
