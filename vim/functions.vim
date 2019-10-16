@@ -563,3 +563,13 @@ function! GitLogPatch()
   exec ":silent !cd " . dir . " && git lp " . file
   redraw!
 endfunction
+
+function! BashIfToShortCircuit()
+  normal vipJD
+  :s/^.*\((\|\[\)/\1/g
+  normal f;ce &&
+endfunction
+
+function! EnsureTempDirs()
+  call system("mkdir -p ~/.tmp/vimtemp ~/.tmp/vimswap ~/.tmp/vimundo")
+endfunction

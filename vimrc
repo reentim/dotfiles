@@ -3,10 +3,10 @@ let mapleader = ','
 set autoread
 set backspace=indent,eol,start
 set backup
-set backupdir=/tmp/vimtemp//
+set backupdir=~/.tmp/vimtemp//
 set colorcolumn=80
 set cursorline
-set dir=/tmp/vimswap//
+set dir=~/.tmp/vimswap//
 set encoding=utf-8
 set fileencoding=utf-8
 set fillchars+=vert:\ " Hide pipe character in window separators
@@ -43,7 +43,7 @@ set ttimeout
 set ttimeoutlen=10
 set ttyfast
 set ttymouse=sgr " 'The mouse works even in columns beyond 223'
-set undodir=/tmp/vimundo//
+set undodir=~/.tmp/vimundo//
 set undofile
 set wildmenu
 set winheight=16
@@ -83,6 +83,7 @@ set expandtab tabstop=4 softtabstop=2 shiftwidth=2
 augroup vimrc
   autocmd!
 
+  autocmd VimEnter * call EnsureTempDirs()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
@@ -103,7 +104,6 @@ augroup vimrc
 
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
-
 
   " Tell vim-commentary about JSX
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
@@ -181,6 +181,7 @@ cnoreabbrev alefix ALEFix
 " leader mappings
 nnoremap <leader>, <C-^>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
+nnoremap <leader>gj :call BashIfToShortCircuit()<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
 nnoremap <leader>8u :call FullUnderline('=')<CR>
 nnoremap <leader>b :call SelectaBuffer()<CR>
