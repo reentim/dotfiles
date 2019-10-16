@@ -19,21 +19,16 @@ proj() {
   cd "$(find-repos | selecta)"
 }
 
-path_without() {
-  arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
-  echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
-}
-
 on_path() {
   echo $PATH | grep --fixed-strings "$1" >/dev/null 2>&1
 }
 
 prepend_path() {
-  export PATH="$1:$(path_without $1)"
+  export PATH="$1:$(_path_without $1)"
 }
 
 append_path() {
-  export PATH="$(path_without $1):$1"
+  export PATH="$(_path_without $1):$1"
 }
 
 delete-local-merged-branches() {
@@ -118,4 +113,9 @@ fresh-internet() {
   fi
   heroku pg:backups:download -a $(basename $(pwd))
   pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
+}
+
+_path_without() {
+  arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
+  echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
 }

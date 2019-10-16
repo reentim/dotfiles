@@ -9,52 +9,17 @@
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
 
-if [ -d $HOME/.rbenv ]; then
-  RBENV_INSTALLED=1
-fi
+(which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
+(which direnv > /dev/null) && DIRENV_INSTALLED=1
+(which yarn > /dev/null) && YARN_INSTALLED=1
+[ -d "$HOME/Applications/Visual Studio Code.app" ] && VSCODE_INSTALLED=1
+[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
+[ -d /usr/local/Library/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
+[ -f ~/.dotfiles/lib/z/z.sh ] && Z_INSTALLED=1
 
-if (which chruby-exec > /dev/null); then
-  CHRUBY_INSTALLED=1
-fi
-
-if [ -f /usr/local/share/gem_home/gem_home.sh ]; then
-  GEM_HOME_INSTALLED=1
-fi
-
-if [ -d /usr/local/Library/Homebrew ]; then
-  HOMEBREW_INSTALLED=1
-fi
-
-if (which yarn > /dev/null); then
-  YARN_INSTALLED=1
-fi
-
-if (which direnv > /dev/null); then
-  DIRENV_INSTALLED=1
-fi
-
-if [ -d "$HOME/Applications/Visual Studio Code.app" ]; then
-  VSCODE_INSTALLED=1
-fi
-
-if [ -f ~/.dotfiles/lib/z/z.sh ]; then
-  Z_INSTALLED=1
-fi
-
-# vim temp files go in /tmp/ directories
-mkdir -p /tmp/vimtemp
-mkdir -p /tmp/vimswap
-mkdir -p /tmp/vimundo
-
-# Alias definitions
 [ -f ~/.aliases ] && source ~/.aliases
-
-# Free up C-s for fwd-i-search
-stty -ixon
-
-if [ -n "$ITERM_PROFILE" ]; then
-  echo $ITERM_PROFILE > /tmp/$ITERM_SESSION_ID-iterm_profile
-fi
+[ -n "$ITERM_PROFILE" ] && echo $ITERM_PROFILE > "/tmp/$ITERM_SESSION_ID-iterm_profile"
 
 # Add private keys to the ssh agent, if there are none already added
 if ! (ssh-add -l > /dev/null 2>&1); then
@@ -66,8 +31,9 @@ fi
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
 export DEFAULT_BRANCH="master"
-export TIMEFMT=$'=> ⏱  %mE, %P CPU, %M KB occupied'
+export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
+export TIMEFMT=$'=> ⏱  %mE, %P CPU, %M KB occupied'
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
@@ -103,23 +69,15 @@ if [ $GEM_HOME_INSTALLED ]; then
   fi
 fi
 
+[ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
+prepend_path "/usr/local/opt/coreutils/libexec/gnubin"
 prepend_path "./node_modules/.bin"
 
-if [ -d $HOME/bin ]; then
-  prepend_path "$HOME/bin"
-fi
+[ -d $HOME/bin ] && prepend_path "$HOME/bin"
 
-if ! (echo $PATH | grep ^\./bin > /dev/null); then
-  export PATH="./bin:$PATH"
-fi
+prepend_path "./bin"
 
-if [ $VSCODE_INSTALLED ]; then
-  append_path "$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-fi
-
-if [ $Z_INSTALLED ]; then
-  source "$HOME/lib/z/z.sh"
-fi
+[ $VSCODE_INSTALLED ] && append_path "$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 if [ $DIRENV_INSTALLED ]; then
   [ $BASH_VERSION ] && eval "$(direnv hook bash)"
