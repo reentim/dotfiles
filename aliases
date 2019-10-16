@@ -23,5 +23,6 @@ alias ta='tmux attach'
 alias tree='tree -FC --dirsfirst'
 alias vi='vim'
 alias mytop='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`'
+alias brewlist='brew list | less'
 
 (which hub > /dev/null 2>&1) && alias git='hub'
