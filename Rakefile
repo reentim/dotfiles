@@ -3,6 +3,10 @@ require 'pathname'
 
 task default: :install
 
+# TODO Much of this would be more concisely expressed in babushka. Maybe this
+# is just for bare essentials.
+#
+
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
 EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library]
@@ -85,6 +89,8 @@ task :link_ia_writer do
     File.join(Dir.home, 'writer'),
   )
 end
+
+
 
 def make_link(source, link)
   unless File.exist?(link)
