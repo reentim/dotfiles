@@ -83,16 +83,17 @@ set expandtab tabstop=4 softtabstop=2 shiftwidth=2
 augroup vimrc
   autocmd!
 
-  autocmd VimEnter * call EnsureTempDirs()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
+  autocmd FileType crontab setlocal bkc=yes
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
-  autocmd FileType ruby call CdToProjectRoot()
+  autocmd FileType * call CdToProjectRoot()
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
+  autocmd VimEnter * call EnsureTempDirs()
 
   if has('spell')
     autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal spell

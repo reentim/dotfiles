@@ -7,14 +7,17 @@ if [[ $(uname) == "Darwin" ]]; then
   (which gstat > /dev/null) && alias numfmt="gnumfmt"
 fi
 
+alias bab='babushka'
+alias brewlist='brew list | less'
 alias bx='bundle exec'
 alias cdr='cd $(git rev-parse --show-cdup 2>/dev/null)'
 alias diff='colordiff -u'
 alias duh='du -csh'
 alias grep='grep --color=auto'
 alias l='ls -1tr'
-alias ll='ls -ltr'
 alias la='ls -latr'
+alias ll='ls -ltr'
+alias mytop='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`'
 alias rspec='rspec --color --tty --format documentation'
 alias sr='screen -r'
 alias sshu='ssh -A -l ubuntu '
@@ -22,7 +25,5 @@ alias t='tmux'
 alias ta='tmux attach'
 alias tree='tree -FC --dirsfirst'
 alias vi='vim'
-alias mytop='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`'
-alias brewlist='brew list | less'
 
 (which hub > /dev/null 2>&1) && alias git='hub'
