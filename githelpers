@@ -90,3 +90,28 @@ pretty_shortdate_log() {
     | sed -E "s/\|([0-9]+) ([a-z]).*\|/\1\2/" \
     | less
 }
+
+new() {
+  if [ -z $1 ]; then
+    >&2 echo "fatal: new directory path required"
+    exit 1
+  fi
+  git_dir="./$1/.git"
+  git init $1 \
+    && git --git-dir=$git_dir commit --allow-empty -m "Initial commit" \
+    && git --git-dir=$git_dir tag root
+  [ $TMUX ] && tmux send-keys "cd $1" C-m
+}
+
+blame_files() {
+  arg_files="$*"
+  stdin_files=$(cat <&0)  # stdin is file descriptor zero
+  for file in $(echo $arg_files $stdin_files); do
+    blame_file $file
+  done
+}
+
+blame_file() {
+  file=$1
+  git --no-pager log --color=always --date=short --format="%ad•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
+}

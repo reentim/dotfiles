@@ -15,6 +15,7 @@
 [alias]
   aa      = add -A
   amend   = commit --amend
+  blamef  = "!. ~/.githelpers && blame_files | column -t -s "•" | sort | less"
   ci      = commit --verbose
   cim     = commit -m
   co      = checkout
@@ -26,17 +27,19 @@
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
   fixup   = commit --fixup
   from    = "!f() { git fetch && git rebase origin/master; }; f"
-  ll      = "!. ~/.githelpers && pretty_shortdate_log"
-  lg      = "log --graph --format='%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n'"
   l       = log --oneline --decorate --graph
   la      = log --oneline --decorate --graph --all
+  lg      = "log --graph --format='%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n'"
+  ll      = "!. ~/.githelpers && pretty_shortdate_log"
+  logtail = "!. ~/.githelpers && tail_origin_log"
   lp      = "!. ~/.githelpers && log_patch"
   lpr     = "!. ~/.githelpers && log_patch --reverse"
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
-  pretty  = "!. ~/.githelpers && pretty_log"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
+  new     = "!. ~/.githelpers && new"
   noff    = merge --no-ff
   pf      = pull --ff-only
+  pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
   rom     = rebase origin/master
   s       = "!. ~/.githelpers && selecta_branch"
@@ -44,7 +47,6 @@
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
   wip     = "!. ~/.githelpers && wip"
-  logtail = "!. ~/.githelpers && tail_origin_log"
 [merge]
   tool = vimdiff
   defaultToUpstream = true
