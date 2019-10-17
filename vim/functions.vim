@@ -231,10 +231,6 @@ function! RailsMigrationStatus(version)
   throw "Can't determine migration status"
 endfunction
 
-function! Foo()
-  return "asdf"
-endfunction
-
 function! RailsMigrationCmd(version)
   let migration_status = RailsMigrationStatus(a:version)
 
@@ -313,7 +309,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \' clear && cd \"" . getcwd() . "\" && time " . a:command . "'")
+    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear && time " . a:command
   endif
