@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+main() {
+  script="$1"
+  shift
+  arg="$*"
+  [ -z $script ] && exit 1
+
+  ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/*/bin/python3 $HOME/Library/ApplicationSupport/iTerm2/Scripts/"${script}.py" "${arg}"
+}
+
+main $*
