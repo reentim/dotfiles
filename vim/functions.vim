@@ -367,7 +367,7 @@ function! CopyToHost()
 endfunction
 
 function! ItermProfile()
-  return system("iterm_session_profile")
+  return system("iterm current_profile")
 endfunction
 
 function! DeleteInactiveBufs()
@@ -588,4 +588,8 @@ endfunction
 
 function! EnsureTempDirs()
   call system("mkdir -p ~/.tmp/vimtemp ~/.tmp/vimswap ~/.tmp/vimundo")
+endfunction
+
+function! ReevaluateColorscheme()
+  " TODO call from on job refocus or similar event
 endfunction
