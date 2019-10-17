@@ -18,15 +18,6 @@ class Profile
   def inform_iterm
     system %Q{echo "\033]50;SetProfile=#{@name}\a"}
   end
-
-  def write_session
-    path = Pathname.new('/tmp').join(
-      [ENV['ITERM_SESSION_ID'], 'iterm_profile'].join('-')
-    )
-    file = File.open(path, 'w')
-    file.write(@name)
-    file.close
-  end
 end
 
 Profile.new(ARGV.first).set

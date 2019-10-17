@@ -19,7 +19,6 @@
 [ -f ~/.dotfiles/lib/z/z.sh ] && Z_INSTALLED=1
 
 [ -f ~/.aliases ] && source ~/.aliases
-[ -n "$ITERM_PROFILE" ] && echo $ITERM_PROFILE > "/tmp/$ITERM_SESSION_ID-iterm_profile"
 
 # Add private keys to the ssh agent, if there are none already added
 if ! (ssh-add -l > /dev/null 2>&1); then
