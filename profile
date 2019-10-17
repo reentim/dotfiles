@@ -70,7 +70,6 @@ if [ $GEM_HOME_INSTALLED ]; then
 fi
 
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
-prepend_path "/usr/local/opt/coreutils/libexec/gnubin"
 prepend_path "./node_modules/.bin"
 
 [ -d $HOME/bin ] && prepend_path "$HOME/bin"
