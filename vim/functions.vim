@@ -158,36 +158,48 @@ function! CloseBuffer()
     " bnext
 endfunction
 
-function! RunFile()
-  if &ft == "bash" || &ft == "sh"
-    call Shell('bash "' . expand('%:p') . '"')
-  elseif &ft == "ruby"
-    if expand('%:t') == "Gemfile"
-      call Shell('bundle')
-    elseif expand('%:h') == "db/migrate"
-      call RunRailsMigration(RailsMigrationVersion(expand('%:t')))
-    elseif expand('%:t') == 'routes.rb'
-      call Shell('rails routes')
+function! _Executor(ft, filepath)
+  " TODO can't I use expand on a string?
+  let filename = ChomppedSystem("basename " . a:filepath)
+  let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
+  let root = substitute(a:filepath, "\\..*$", "", "")
+  let quoted_filepath = '"' . a:filepath . '"'
+
+  if a:ft == "bash" || a:ft == "sh"
+    return "bash " . l:quoted_filepath
+  elseif a:ft == "ruby"
+    if l:filename == "Gemfile"
+      return "bundle install"
+    elseif l:host_dir == "db/migrate"
+      return RailsMigrationCmd(split(a:filename, "_")[0])
+    elseif l:filename == "routes.rb"
+      return "routes routes"
     else
-      call Shell('ruby ' . expand('%'))
+      return "ruby " . l:quoted_filepath
     endif
-  elseif &ft == "python"
-    call Shell('python ' . expand('%:p'))
-  elseif &ft == "javascript"
-    call Shell('node ' . expand('%:p'))
-  elseif &ft == "vim"
-    source %:p
-  elseif &ft == "c"
-    call Shell('gcc ' . expand('%') . ' -o ' . expand('%:r') . ' && clear && ./' . expand('%:r'))
-  elseif &ft
-    execute "echo \"Don't know how to run" . &ft . " files.\""
-  else
-    echo "Don't know what sort of file this is."
+  elseif a:ft == "python"
+    return "python " . l:quoted_filepath
+  elseif a:ft == "javascript"
+    return "node " . l:quoted_filepath
+  elseif a:ft == "vim"
+    if l:filename == "functions.vim"
+      call CallFunctionUnderCursor()
+    endif
+  elseif a:ft == "c"
+    return "gcc " . l:quoted_filepath . " -o " . l:root . " && clear && ./" . l:root
   endif
+  return 1
 endfunction
 
-function! RailsMigrationVersion(filename)
-  return split(a:filename, "_")[0]
+function! CallFunctionUnderCursor()
+  " TODO prompt for arguments
+endfunction
+
+function! RunFile()
+  let executor = _Executor(&ft, expand("%:p"))
+  if executor != 1
+    call Shell(executor)
+  endif
 endfunction
 
 function! ShouldSendOutputToTmux()
@@ -219,13 +231,17 @@ function! RailsMigrationStatus(version)
   throw "Can't determine migration status"
 endfunction
 
-function! RunRailsMigration(version)
+function! Foo()
+  return "asdf"
+endfunction
+
+function! RailsMigrationCmd(version)
   let migration_status = RailsMigrationStatus(a:version)
 
   if l:migration_status == 'up'
-    call Shell("rake db:migrate:down VERSION=" . a:version)
+    return "rake db:migrate:down VERSION=" . a:version
   elseif l:migration_status == 'down'
-    call Shell("rake db:migrate:up VERSION=" . a:version)
+    return "rake db:migrate:up VERSION=" . a:version
   endif
 endfunction
 
@@ -297,7 +313,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \" clear && cd " . getcwd() . " && time " . a:command . "\"")
+    call AsyncShell("tt \' clear && cd \"" . getcwd() . "\" && time " . a:command . "'")
   else
     execute ":!clear && time " . a:command
   endif
