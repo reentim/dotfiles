@@ -174,6 +174,8 @@ function! _Executor(ft, filepath)
       return RailsMigrationCmd(split(a:filename, "_")[0])
     elseif l:filename == "routes.rb"
       return "routes routes"
+    elseif a:filepath =~ "babushka"
+      return "babushka " . DepUnderCursor()
     else
       return "ruby " . l:quoted_filepath
     endif
@@ -584,6 +586,16 @@ endfunction
 
 function! EnsureTempDirs()
   call system("mkdir -p ~/.tmp/vimtemp ~/.tmp/vimswap ~/.tmp/vimundo")
+endfunction
+
+function! DepUnderCursor()
+  let line_no = line(".")
+  let line = getline(".")
+  while line !~ "^dep"
+    let line = getline(line_no)
+    let line_no -= 1
+  endwhile
+  return trim(substitute(substitute(line, "^dep ", "", ""), " do$", "", ""), "'\"")
 endfunction
 
 function! ReevaluateColorscheme()

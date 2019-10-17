@@ -9,7 +9,7 @@ task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
-EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm]
+EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
 LINK_VISIBLY = %w[bin lib]
 LINKABLES = (Dir.glob('*') - EXCLUDE).sort
 
