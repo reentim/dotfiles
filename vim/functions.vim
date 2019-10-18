@@ -174,6 +174,8 @@ function! _Executor(ft, filepath)
       return RailsMigrationCmd(split(a:filename, "_")[0])
     elseif l:filename == "routes.rb"
       return "routes routes"
+    elseif a:filepath =~ "babushka"
+      return "babushka " . DepUnderCursor()
     else
       return "ruby " . l:quoted_filepath
     endif
@@ -229,10 +231,6 @@ function! RailsMigrationStatus(version)
     endif
   endif
   throw "Can't determine migration status"
-endfunction
-
-function! Foo()
-  return "asdf"
 endfunction
 
 function! RailsMigrationCmd(version)
@@ -313,7 +311,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \' clear && cd \"" . getcwd() . "\" && time " . a:command . "'")
+    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear && time " . a:command
   endif
@@ -367,7 +365,7 @@ function! CopyToHost()
 endfunction
 
 function! ItermProfile()
-  return system("iterm_session_profile")
+  return system("iterm current_profile")
 endfunction
 
 function! DeleteInactiveBufs()
@@ -588,4 +586,18 @@ endfunction
 
 function! EnsureTempDirs()
   call system("mkdir -p ~/.tmp/vimtemp ~/.tmp/vimswap ~/.tmp/vimundo")
+endfunction
+
+function! DepUnderCursor()
+  let line_no = line(".")
+  let line = getline(".")
+  while line !~ "^dep"
+    let line = getline(line_no)
+    let line_no -= 1
+  endwhile
+  return trim(substitute(substitute(line, "^dep ", "", ""), " do$", "", ""), "'\"")
+endfunction
+
+function! ReevaluateColorscheme()
+  " TODO call from on job refocus or similar event
 endfunction

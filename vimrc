@@ -61,12 +61,12 @@ if filereadable(expand("~/.vim/functions.vim"))
   source ~/.vim/functions.vim
 endif
 
-" Netw directory listing
+call EnsureTempDirs()
+call SetColorscheme()
+
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 20
-
-call SetColorscheme()
 
 " Italic comments. This requires a terminal emulator that supports italic
 " text. If "echo `tput sitm`italics`tput ritm`" produces italic text, then
@@ -93,7 +93,6 @@ augroup vimrc
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
   autocmd FileType * call CdToProjectRoot()
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
-  autocmd VimEnter * call EnsureTempDirs()
 
   if has('spell')
     autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal spell
@@ -125,7 +124,7 @@ let g:ale_completion_delay = 50
 let g:ale_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_fix_on_save_ignore = {'ruby': ['rubocop']}
-let g:ale_sign_column_always = 1
+let g:ale_sign_column_always = 0
 let g:ale_linters = {
 \ 'typescript': ['tsserver', 'tslint'],
 \ 'javascript': ['eslint']
@@ -180,12 +179,12 @@ let g:ackhighlight = 1
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
 
-" leader mappings
 nnoremap <leader>, <C-^>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
-nnoremap <leader>gj :call BashIfToShortCircuit()<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
 nnoremap <leader>8u :call FullUnderline('=')<CR>
+nnoremap <leader>ad :ALEDisable<CR>
+nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>b :call SelectaBuffer()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
@@ -196,10 +195,9 @@ nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
-nnoremap <leader>ad :ALEDisable<CR>
-nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
 nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<CR>
+nnoremap <leader>gj :call BashIfToShortCircuit()<CR>
 nnoremap <leader>gl :call SelectaFile("lib")<CR>
 nnoremap <leader>gm :call SelectaFile("app/models")<CR>
 nnoremap <leader>gp :call SelectaFile("app/javascript/packs")<CR>
@@ -219,17 +217,14 @@ nnoremap <leader>t  :call SelectaFile(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-vnoremap <silent> * :<C-U>
-  \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \ gvy/<C-R><C-R>=substitute(
-  \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \ gV:call setreg('"', old_reg, old_regtype)<CR>
 
-" other mappings
 cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
+cnoremap rr nnoremap <leader>r :w\\|:!clear;
+
 inoremap <C-J> ->
 inoremap <C-L> =><space>
 inoremap jk <ESC>
+
 nnoremap / /\v
 nnoremap ; :
 nnoremap <C-G> :call SelectaIdentifier()<CR>
@@ -247,7 +242,13 @@ onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
 onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
 onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+
 vnoremap / /\v
+vnoremap <silent> * :<C-U>
+  \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \ gvy/<C-R><C-R>=substitute(
+  \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \ gV:call setreg('"', old_reg, old_regtype)<CR>
 vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
 vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
 vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''

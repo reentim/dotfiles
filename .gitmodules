@@ -141,3 +141,6 @@
 [submodule "vim/bundle/iceberg"]
 	path = vim/bundle/iceberg
 	url = https://github.com/cocopon/iceberg.vim.git
+[submodule "babushka-deps"]
+	path = babushka-deps
+	url = git@github.com:reentim/babushka-deps
