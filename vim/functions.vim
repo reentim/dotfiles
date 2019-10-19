@@ -547,11 +547,12 @@ function! RewrapBuffer()
 endfunction
 
 function! SetColorscheme()
+  let profile = ItermProfile()
   if $TERM_PROGRAM =~ 'Apple_Terminal'
     colorscheme Tomorrow-Night-Bright
-  elseif ItermProfile() =~ 'Solarized'
+  elseif profile =~ 'Solarized'
     colorscheme solarized
-    if ItermProfile() =~ 'Light'
+    if profile =~ 'Light'
       set background=light
     else
       set background=dark
