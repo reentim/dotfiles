@@ -602,3 +602,11 @@ endfunction
 function! ReevaluateColorscheme()
   " TODO call from on job refocus or similar event
 endfunction
+
+function! MakeExec()
+  if ShellOK("chmod +x " . expand("%:p"))
+    echom "Executable!"
+  else
+    echom "Error"
+  endif
+endfunction
