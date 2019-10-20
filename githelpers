@@ -98,15 +98,15 @@ pretty_shortdate_log() {
 }
 
 new() {
-  if [ -z $1 ]; then
-    >&2 echo "fatal: new directory path required"
-    exit 1
-  fi
-  git_dir="./$1/.git"
-  git init $1 \
+  [ -z $1 ] && >&2 echo "fatal: new directory path required" && exit 1
+
+  mkdir -p "$1"
+  git_dir="./${1}/.git"
+  git init "$1" \
     && git --git-dir=$git_dir commit --allow-empty -m "Initial commit" \
     && git --git-dir=$git_dir tag root
-  [ $TMUX ] && tmux send-keys "cd $1" C-m
+
+  [ $TMUX ] && tmux send-keys "cd ${1}" C-m
 }
 
 blame_files() {
