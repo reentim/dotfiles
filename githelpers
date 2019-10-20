@@ -120,3 +120,13 @@ jcoglan_graph() {
   options="$*"
   git log $options --graph --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n"
 }
+
+rebase_upstream() {
+  options="$*"
+  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
+  git rebase $options $upstream
+}
+
+upstream() {
+  git rev-parse --abbrev-ref --symbolic-full-name @{u}
+}

@@ -41,9 +41,11 @@
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
-  rom     = rebase origin/master
+  rom     = "!f() { git rebase $1 origin/master; }; f"
+  ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
   st      = status -sb
+  u       = "!. ~/.githelpers && upstream" # TODO this should compose with git l
   uncommit = reset --soft HEAD~
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
