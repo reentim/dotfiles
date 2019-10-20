@@ -625,3 +625,7 @@ function! MakeExec()
     echom "Error"
   endif
 endfunction
+
+function! AbbrevTabHelp()
+  return getcmdtype() == ":" && getcmdline() == "h" ? "tab help" : "h"
+endfunction
