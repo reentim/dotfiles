@@ -29,7 +29,7 @@
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   l       = log --oneline --decorate --graph
   la      = log --oneline --decorate --graph --all
-  lg      = "log --graph --format='%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n'"
+  lg      = "!. ~/.githelpers && jcoglan_graph"
   ll      = "!. ~/.githelpers && pretty_shortdate_log"
   logtail = "!. ~/.githelpers && tail_origin_log"
   lp      = "!. ~/.githelpers && log_patch"
