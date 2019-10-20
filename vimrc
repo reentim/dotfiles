@@ -172,6 +172,7 @@ let g:ackhighlight = 1
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
 
+cnoreabbrev <expr> h AbbrevTabHelp()
 cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
 cnoremap rr nnoremap <leader>r :w\\|:!clear;
 inoremap <C-J> ->
