@@ -46,7 +46,7 @@
   s       = "!. ~/.githelpers && selecta_branch"
   st      = status -sb
   u       = "!. ~/.githelpers && upstream" # TODO this should compose with git l
-  uncommit = reset --soft HEAD~
+  unci    = "!. ~/.githelpers && uncommit"
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
   wip     = "!. ~/.githelpers && wip"
