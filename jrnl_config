@@ -9,6 +9,7 @@
   "highlight": true,
   "journals": {
     "default": "/Users/tim/journals/journal.txt",
-    "dev": "/Users/tim/journals/dev-journal.txt"
+    "dev": "/Users/tim/journals/dev-journal.txt",
+    "work": "/Users/tim/journals/work.txt"
   }
 }
