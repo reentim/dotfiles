@@ -14,7 +14,7 @@
   diff = auto
 [alias]
   aa      = add -A
-  amend   = commit --amend
+  amend   = commit --amend --verbose
   blamef  = "!. ~/.githelpers && blame_files | column -t -s "•" | sort | less"
   ci      = commit --verbose
   cim     = commit -m
