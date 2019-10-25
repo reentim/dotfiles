@@ -136,3 +136,7 @@ rebase_upstream() {
 upstream() {
   git rev-parse --abbrev-ref --symbolic-full-name @{u}
 }
+
+log_all() {
+  git log --oneline --graph --decorate --all $(git reflog show --format="%h" stash)
+}

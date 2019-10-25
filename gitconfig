@@ -28,7 +28,7 @@
   fixup   = commit --fixup
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   l       = log --oneline --decorate --graph
-  la      = log --oneline --decorate --graph --all
+  la      = "!. ~/.githelpers && log_all"
   lg      = "!. ~/.githelpers && jcoglan_graph"
   ll      = "!. ~/.githelpers && pretty_shortdate_log"
   logtail = "!. ~/.githelpers && tail_origin_log"
