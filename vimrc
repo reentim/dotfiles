@@ -89,7 +89,7 @@ augroup vimrc
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd FileType * call CdToProjectRoot()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-  autocmd FileType crontab setlocal bkc=yes
+  autocmd FileType crontab setlocal backupcopy=yes
   autocmd FileType eruby,markdown,html setlocal spell
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
