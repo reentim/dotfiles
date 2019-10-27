@@ -203,7 +203,7 @@ function! RunFile()
 endfunction
 
 function! ShouldSendOutputToTmux()
-  return ShellOK('tmux-recipient') && $TMUX != ''
+  return $TMUX != '' && ShellOK('tmux-recipient')
 endfunction
 
 function! RailsMigrationStatus(version)
@@ -518,6 +518,7 @@ function! RenameFile()
 endfunction
 
 function! SortIndentLevel()
+  " Comments should be fixed to the line they follow
 	normal mz
 	call SelectIndent()
   execute "normal! :sort\<CR>"
@@ -572,6 +573,8 @@ function! SetColorscheme()
     else
       set background=dark
     endif
+  elseif profile =~ 'iceberg'
+    colorscheme iceberg
   else
     colorscheme Tomorrow-Night-Bright
   endif
