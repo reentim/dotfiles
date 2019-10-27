@@ -169,10 +169,18 @@ let g:jsx_ext_required = 0
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ackhighlight = 1
 
-" abbreviations
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
 
+cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
+cnoremap rr nnoremap <leader>r :w\\|:!clear;
+inoremap <C-J> ->
+inoremap <C-L> =><space>
+inoremap jk <ESC>
+nnoremap / /\v
+nnoremap ; :
+nnoremap <C-G> :call SelectaIdentifier()<CR>
+nnoremap <F5> :set invlist<CR>
 nnoremap <leader>, <C-^>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
@@ -211,18 +219,6 @@ nnoremap <leader>t  :call SelectaFile(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-
-cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
-cnoremap rr nnoremap <leader>r :w\\|:!clear;
-
-inoremap <C-J> ->
-inoremap <C-L> =><space>
-inoremap jk <ESC>
-
-nnoremap / /\v
-nnoremap ; :
-nnoremap <C-G> :call SelectaIdentifier()<CR>
-nnoremap <F5> :set invlist<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
 nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
@@ -236,14 +232,14 @@ onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
 onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
 onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
-
 vnoremap / /\v
+vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
+vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
+vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
+vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+
 vnoremap <silent> * :<C-U>
   \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
   \ gvy/<C-R><C-R>=substitute(
   \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \ gV:call setreg('"', old_reg, old_regtype)<CR>
-vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
-vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
-vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
-vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
