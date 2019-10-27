@@ -94,6 +94,7 @@ augroup vimrc
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
+  autocmd Filetype make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
