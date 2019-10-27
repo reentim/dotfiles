@@ -3,7 +3,7 @@
 alias ls='ls -CFGtr'
 
 if [[ $(uname) == "Darwin" ]]; then
-  (which gls > /dev/null) && alias ls="gls -tr --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
+  (which gls > /dev/null) && alias ls="gls --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
   (which gstat > /dev/null) && alias numfmt="gnumfmt"
 fi
 
