@@ -2,6 +2,8 @@
 
 file=$1
 
+[ -f $file ] || exit 1
+
 stat=$(/usr/bin/stat -f "%z" $file)
 echo "$stat bytes"
 echo $stat | numfmt --to=iec-i --suffix=B --format="%.2f"
