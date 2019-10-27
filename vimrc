@@ -176,7 +176,6 @@ cnoreabbrev alefix ALEFix
 cnoreabbrev <expr> h AbbrevTabHelp()
 cnoreabbrev <expr> rr AbbrevRemapRun()
 cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
-cnoremap rr nnoremap <leader>r :w\\|:!clear;
 inoremap <C-J> ->
 inoremap <C-L> =><space>
 inoremap jk <ESC>
