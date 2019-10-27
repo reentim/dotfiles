@@ -171,7 +171,7 @@ function! _Executor(ft, filepath)
     if l:filename == "Gemfile"
       return "bundle install"
     elseif l:host_dir == "db/migrate"
-      return RailsMigrationCmd(split(a:filename, "_")[0])
+      return RailsMigrationCmd(split(l:filename, "_")[0])
     elseif l:filename == "routes.rb"
       return "routes routes"
     elseif a:filepath =~ "babushka"
