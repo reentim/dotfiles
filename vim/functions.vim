@@ -413,7 +413,7 @@ function! InteractiveRuby()
   else
     let l:irb = 'irb'
   endif
-  call Shell(l:irb . ' -r ' . expand('%:p'))
+  call Shell(l:irb . ' -r "' . expand('%:p') . '"')
 endfunction
 
 " Creates a find command ignoring paths and files set in wildignore
