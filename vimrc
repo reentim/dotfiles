@@ -87,20 +87,13 @@ augroup vimrc
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
+  autocmd FileType * call CdToProjectRoot()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType crontab setlocal bkc=yes
+  autocmd FileType eruby,markdown,html setlocal spell
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
-  autocmd FileType * call CdToProjectRoot()
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
-
-  if has('spell')
-    autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal spell
-    autocmd BufNewFile,BufRead COMMIT_EDITMSG  setlocal spell
-    autocmd FileType eruby                     setlocal spell
-    autocmd FileType markdown                  setlocal spell
-    autocmd BufNewFile,BufRead html            setlocal spell
-  endif
 
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
