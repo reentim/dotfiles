@@ -160,7 +160,7 @@ endfunction
 
 function! _Executor(ft, filepath)
   " TODO can't I use expand on a string?
-  let filename = ChomppedSystem("basename " . a:filepath)
+  let filename = ChomppedSystem("basename \"" . a:filepath . "\"")
   let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
   let root = substitute(a:filepath, "\\..*$", "", "")
   let quoted_filepath = '"' . a:filepath . '"'
