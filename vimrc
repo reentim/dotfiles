@@ -1,5 +1,6 @@
 let mapleader = ','
 
+set notermguicolors
 set autoread
 set backspace=indent,eol,start
 set backup
