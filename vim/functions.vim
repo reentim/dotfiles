@@ -311,7 +311,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
+    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear && time " . a:command
   endif
