@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby #--disable-gems
+
+require 'time'
+require_relative '../lib/interval'
+
+include Interval
+
+def main
+  # Takes a log of dates taken at a mostly uniform period, as might be produced by
+  #
+  # * * * * * date >> dates.log
+  #
+  # and produces a list of start times and stop times.
+
+  log = ARGV[1] if %w[-f --file].include? ARGV[0]
+  log_interval = 60 || ARGV[3] if %w[-i --interval]
+
+  abort unless log
+
+  entries = File.readlines(log).map.with_index {|entry, i|
+    Time.parse(entry)
+  }
+
+  attendances = []
+  start, stop = nil, nil
+  entries.each_with_index {|entry, i|
+    if start.nil?
+      start = entry
+      attendances << format("%s,start,after %s off", start, stop ? interval(start - stop) : 'infinity')
+      stop = nil
+      next
+    end
+
+    if entries[i + 1].nil? || (entries[i + 1] - entry) > log_interval
+      stop = entry
+      attendances << format("%s,stop,after %s on", stop, interval(stop - start))
+      start = nil
+      next
+    end
+  }
+
+  File.open(
+    File.join(File.dirname(log), File.basename(log, ".*") + "_attendances.csv"),
+    'w',
+  ) do |file|
+    file << attendances.join("\n")
+  end
+end
+
+main
