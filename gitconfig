@@ -14,7 +14,7 @@
   diff = auto
 [alias]
   aa      = add -A
-  amend   = commit --amend
+  amend   = commit --amend --verbose
   blamef  = "!. ~/.githelpers && blame_files | column -t -s "•" | sort | less"
   ci      = commit --verbose
   cim     = commit -m
@@ -28,8 +28,8 @@
   fixup   = commit --fixup
   from    = "!f() { git fetch && git rebase origin/master; }; f"
   l       = log --oneline --decorate --graph
-  la      = log --oneline --decorate --graph --all
-  lg      = "log --graph --format='%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n'"
+  la      = "!. ~/.githelpers && log_all"
+  lg      = "!. ~/.githelpers && jcoglan_graph"
   ll      = "!. ~/.githelpers && pretty_shortdate_log"
   logtail = "!. ~/.githelpers && tail_origin_log"
   lp      = "!. ~/.githelpers && log_patch"
@@ -41,10 +41,12 @@
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
-  rom     = rebase origin/master
+  rom     = "!f() { git rebase $1 origin/master; }; f"
+  ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
   st      = status -sb
-  uncommit = reset --soft HEAD~
+  u       = "!. ~/.githelpers && upstream" # TODO this should compose with git l
+  unci    = "!. ~/.githelpers && uncommit"
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
   wip     = "!. ~/.githelpers && wip"
@@ -59,3 +61,5 @@
   enabled = true
 [remote "origin"]
   prune = true
+
+# vim: ft=gitconfig

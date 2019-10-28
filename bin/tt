@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-# TODO: consider making this a time tracking script
-
 function main() {
-  if (tmux-recipient > /dev/null 2>&1); then
-    tmux send-keys -t $(tmux-recipient) "clear && time $*" C-m
+  local recipient=$(tmux-recipient)
+  if [ $recipient ]; then
+    tmux send-keys -t $recipient "clear && $*" C-m
     exit 0
   fi
   exit 1

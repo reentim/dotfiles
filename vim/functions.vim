@@ -160,7 +160,7 @@ endfunction
 
 function! _Executor(ft, filepath)
   " TODO can't I use expand on a string?
-  let filename = ChomppedSystem("basename " . a:filepath)
+  let filename = ChomppedSystem("basename \"" . a:filepath . "\"")
   let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
   let root = substitute(a:filepath, "\\..*$", "", "")
   let quoted_filepath = '"' . a:filepath . '"'
@@ -185,7 +185,8 @@ function! _Executor(ft, filepath)
     return "node " . l:quoted_filepath
   elseif a:ft == "vim"
     if l:filename == "functions.vim"
-      call CallFunctionUnderCursor()
+      echom "functions.vim doesn't know how to run itself"
+      return 1
     endif
   elseif a:ft == "c"
     return "gcc " . l:quoted_filepath . " -o " . l:root . " && clear && ./" . l:root
@@ -193,14 +194,11 @@ function! _Executor(ft, filepath)
   return 1
 endfunction
 
-function! CallFunctionUnderCursor()
-  " TODO prompt for arguments
-endfunction
-
 function! RunFile()
   let executor = _Executor(&ft, expand("%:p"))
-  if executor != 1
-    call Shell(executor)
+  if l:executor != 1
+    call Shell(l:executor)
+    let g:saved_run_command = l:executor
   endif
 endfunction
 
@@ -252,11 +250,28 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
+function! RunSavedCommand()
+  let l:run_command = SavedRunCommand()
+  if type(l:run_command) == 1
+    call Shell(l:run_command)
+    return 0
+  endif
+  echoerr "No saved command"
+  return 1
+endfunction
+
 function! RunSavedTest()
-  silent! write
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
     call Shell(l:test_command)
+    return 0
+  endif
+  return 1
+endfunction
+
+function! SavedRunCommand()
+  if exists("g:saved_run_command")
+    return g:saved_run_command
   endif
 endfunction
 
@@ -311,7 +326,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
+    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear && time " . a:command
   endif
@@ -398,7 +413,7 @@ function! InteractiveRuby()
   else
     let l:irb = 'irb'
   endif
-  call Shell(l:irb . ' -r ' . expand('%:p'))
+  call Shell(l:irb . ' -r "' . expand('%:p') . '"')
 endfunction
 
 " Creates a find command ignoring paths and files set in wildignore
@@ -547,11 +562,12 @@ function! RewrapBuffer()
 endfunction
 
 function! SetColorscheme()
+  let profile = ItermProfile()
   if $TERM_PROGRAM =~ 'Apple_Terminal'
     colorscheme Tomorrow-Night-Bright
-  elseif ItermProfile() =~ 'Solarized'
+  elseif profile =~ 'Solarized'
     colorscheme solarized
-    if ItermProfile() =~ 'Light'
+    if profile =~ 'Light'
       set background=light
     else
       set background=dark
@@ -600,4 +616,12 @@ endfunction
 
 function! ReevaluateColorscheme()
   " TODO call from on job refocus or similar event
+endfunction
+
+function! MakeExec()
+  if ShellOK("chmod +x " . expand("%:p"))
+    echom "Executable!"
+  else
+    echom "Error"
+  endif
 endfunction

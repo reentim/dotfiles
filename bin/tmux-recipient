@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 main() {
-  local pane_in_dedicated_window=$(tmux-find-recipient-pane-in-window tmux:tmux 2>/dev/null)
   local pane_in_current_window=$(tmux-find-recipient-pane 2>/dev/null)
 
-  if [ $pane_in_dedicated_window ]; then
-    echo $pane_in_dedicated_window
+  if (tmux list-windows -F "#W" -t tmux | grep -q ^tmux$); then
+    echo "tmux:tmux"
   elif [ $pane_in_current_window ]; then
     echo $pane_in_current_window
   else

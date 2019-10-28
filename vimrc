@@ -87,20 +87,14 @@ augroup vimrc
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
+  autocmd FileType * call CdToProjectRoot()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
-  autocmd FileType crontab setlocal bkc=yes
+  autocmd FileType crontab setlocal backupcopy=yes
+  autocmd FileType eruby,markdown,html setlocal spell
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
-  autocmd FileType * call CdToProjectRoot()
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
-
-  if has('spell')
-    autocmd BufNewFile,BufRead PULLREQ_EDITMSG setlocal spell
-    autocmd BufNewFile,BufRead COMMIT_EDITMSG  setlocal spell
-    autocmd FileType eruby                     setlocal spell
-    autocmd FileType markdown                  setlocal spell
-    autocmd BufNewFile,BufRead html            setlocal spell
-  endif
+  autocmd Filetype make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
 
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
@@ -175,10 +169,18 @@ let g:jsx_ext_required = 0
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ackhighlight = 1
 
-" abbreviations
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
 
+cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
+cnoremap rr nnoremap <leader>r :w\\|:!clear;
+inoremap <C-J> ->
+inoremap <C-L> =><space>
+inoremap jk <ESC>
+nnoremap / /\v
+nnoremap ; :
+nnoremap <C-G> :call SelectaIdentifier()<CR>
+nnoremap <F5> :set invlist<CR>
 nnoremap <leader>, <C-^>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
@@ -207,7 +209,7 @@ nnoremap <leader>gv :call SelectaFile("app/views")<CR>
 nnoremap <leader>h :split<CR><C-w>j
 nnoremap <leader>l :call Underline('-')<CR>
 nnoremap <leader>lp :call GitLogPatch()<CR>
-nnoremap <leader>m /\v^(\<\<\<\<\<\<\<(.*)\|\=\=\=\=\=\=\=\|\>\>\>\>\>\>\>(.*))<CR>
+nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
 nnoremap <leader>n :call RenameFile()<CR>
 nnoremap <leader>o :!open %<CR><CR>
 nnoremap <leader>p :set invpaste<CR>
@@ -217,18 +219,6 @@ nnoremap <leader>t  :call SelectaFile(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
-
-cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
-cnoremap rr nnoremap <leader>r :w\\|:!clear;
-
-inoremap <C-J> ->
-inoremap <C-L> =><space>
-inoremap jk <ESC>
-
-nnoremap / /\v
-nnoremap ; :
-nnoremap <C-G> :call SelectaIdentifier()<CR>
-nnoremap <F5> :set invlist<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
 nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
@@ -236,20 +226,20 @@ nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
 nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
 nnoremap Y y$
 nnoremap [a :ALEPrevious<CR>
-nnoremap \ :call RunSavedTest()<CR>
+nnoremap \ :call RunSavedCommand()<CR>
 nnoremap ]a :ALENext<CR>
 onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
 onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
 onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
-
 vnoremap / /\v
+vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
+vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
+vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
+vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+
 vnoremap <silent> * :<C-U>
   \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
   \ gvy/<C-R><C-R>=substitute(
   \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \ gV:call setreg('"', old_reg, old_regtype)<CR>
-vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
-vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
-vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
-vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''

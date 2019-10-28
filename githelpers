@@ -14,6 +14,12 @@ unwip() {
   fi;
 }
 
+uncommit() {
+  id=$(git rev-parse --short HEAD)
+  title=$(git log --format="%s" -1)
+  git reset --soft HEAD~ && echo "Reset commit ${title} (was ${id})."
+}
+
 diff_branch() {
   if [[ $1 == *"--"* ]]; then
     branch=$(git rev-parse --abbrev-ref HEAD)
@@ -92,15 +98,15 @@ pretty_shortdate_log() {
 }
 
 new() {
-  if [ -z $1 ]; then
-    >&2 echo "fatal: new directory path required"
-    exit 1
-  fi
-  git_dir="./$1/.git"
-  git init $1 \
+  [ -z $1 ] && >&2 echo "fatal: new directory path required" && exit 1
+
+  mkdir -p "$1"
+  git_dir="./${1}/.git"
+  git init "$1" \
     && git --git-dir=$git_dir commit --allow-empty -m "Initial commit" \
     && git --git-dir=$git_dir tag root
-  [ $TMUX ] && tmux send-keys "cd $1" C-m
+
+  [ $TMUX ] && tmux send-keys "cd ${1}" C-m
 }
 
 blame_files() {
@@ -114,4 +120,23 @@ blame_files() {
 blame_file() {
   file=$1
   git --no-pager log --color=always --date=short --format="%ad•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
+}
+
+jcoglan_graph() {
+  options="$*"
+  git log $options --graph --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n"
+}
+
+rebase_upstream() {
+  options="$*"
+  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u})
+  git rebase $options $upstream
+}
+
+upstream() {
+  git rev-parse --abbrev-ref --symbolic-full-name @{u}
+}
+
+log_all() {
+  git log --oneline --graph --decorate --all $(git reflog show --format="%h" stash)
 }
