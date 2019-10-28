@@ -171,7 +171,7 @@ function! _Executor(ft, filepath)
     if l:filename == "Gemfile"
       return "bundle install"
     elseif l:host_dir == "db/migrate"
-      return RailsMigrationCmd(split(a:filename, "_")[0])
+      return RailsMigrationCmd(split(l:filename, "_")[0])
     elseif l:filename == "routes.rb"
       return "routes routes"
     elseif a:filepath =~ "babushka"
@@ -326,7 +326,7 @@ endfunction
 
 function! Shell(command)
   if ShouldSendOutputToTmux()
-    call AsyncShell("tt \'clear; pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
+    call AsyncShell("tt \'pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear && time " . a:command
   endif
@@ -624,4 +624,14 @@ function! MakeExec()
   else
     echom "Error"
   endif
+endfunction
+
+function! AbbrevTabHelp()
+  return getcmdtype() == ":" && getcmdline() == "h" ? "tab help" : "h"
+endfunction
+
+function! AbbrevRemapRun()
+  return getcmdtype() == ":" && getcmdline() == "rr"
+  \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"
+  \ : "rr"
 endfunction

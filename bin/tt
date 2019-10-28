@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 function main() {
-  local recipient=$(tmux-recipient)
-  if [ $recipient ]; then
-    tmux send-keys -t $recipient "clear && $*" C-m
+  local target=$(tmux-recipient)
+  if [ $target ]; then
+    # TODO backgrounding won't help if the running process is a test run, pry,
+    # etc.
+    # consider splitting and zooming
+    tmux send-keys -t $target C-z
+    tmux send-keys -t $target C-c "clear; time $*; jobs | tail -1" C-m
     exit 0
   fi
   exit 1

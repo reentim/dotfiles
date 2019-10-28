@@ -3,7 +3,7 @@
 alias ls='ls -CFGtr'
 
 if [[ $(uname) == "Darwin" ]]; then
-  (which gls > /dev/null) && alias ls="gls -tr --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
+  (which gls > /dev/null) && alias ls="gls --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
   (which gstat > /dev/null) && alias numfmt="gnumfmt"
 fi
 
@@ -17,7 +17,9 @@ alias grep='grep --color=auto'
 alias l='ls -ltrG'
 alias la='ls -latr'
 alias ll='ls -la'
-alias mytop='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`'
+alias topboth='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`'
+alias topmem='top -s 10 -o MEM -stats pid,command,mem -user `whoami`'
+alias topcpu='top -s 10 -o CPU -stats pid,command,cpu -user `whoami`'
 alias rspec='rspec --color --tty --format documentation'
 alias sr='screen -r'
 alias sshu='ssh -A -l ubuntu '
