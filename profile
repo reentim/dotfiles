@@ -9,6 +9,8 @@
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
 
+source ~/.zsh/functions.zsh
+
 (which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
 (which direnv > /dev/null) && DIRENV_INSTALLED=1
 (which yarn > /dev/null) && YARN_INSTALLED=1
