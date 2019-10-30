@@ -1,11 +1,5 @@
 start=$($HOME/bin/monotonic-clock)
 
-auto_sources=(`for f in ~/.zsh/*.zsh; do basename $f .zsh; done`)
-
-for source in $auto_sources; do
-  source ~/.zsh/$source.zsh
-done
-
 source ~/.profile
 
 setopt PROMPT_SUBST
