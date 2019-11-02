@@ -185,7 +185,7 @@ function! _Executor(ft, filepath)
     return "node " . l:quoted_filepath
   elseif a:ft == "vim"
     if l:filename == "functions.vim"
-      echom "functions.vim doesn't know how to run itself"
+      execute ":echom " . VimFunctionUnderCursor()
       return 1
     endif
   elseif a:ft == "c"
@@ -250,14 +250,32 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
+function RunSavedThing()
+  let l:test_command = SavedTestCommand()
+  if type(l:test_command) == 1
+    call Shell(l:test_command)
+    echom l:test_command
+    return 1
+  else
+    let l:run_command = SavedRunCommand()
+    if type(l:run_command) == 1
+      call Shell(l:run_command)
+      echom l:run_command
+      return 1
+    endif
+  endif
+  echom "No saved commands"
+  return 0
+endfunction
+
 function! RunSavedCommand()
   let l:run_command = SavedRunCommand()
   if type(l:run_command) == 1
     call Shell(l:run_command)
-    return 0
+    return 1
   endif
   echoerr "No saved command"
-  return 1
+  return 0
 endfunction
 
 function! RunSavedTest()
@@ -289,7 +307,7 @@ function! SetTestCommand(context)
   else
     let line_options = ""
   endif
-  let g:saved_test_command = TestRunner() . TestFile() . l:line_options
+  let g:saved_test_command = join([TestRunner(), TestFile(), l:line_options])
 endfunction
 
 function! TestCommand(context)
@@ -328,7 +346,7 @@ function! Shell(command)
   if ShouldSendOutputToTmux()
     call AsyncShell("tt \'pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
-    execute ":!clear && time " . a:command
+    execute ":!clear; time " . a:command
   endif
 endfunction
 
@@ -338,9 +356,9 @@ endfunction
 
 function! TestRunner()
   if &filetype == "javascript" || &filetype == "javascript.jsx" || &filetype == "typescript"
-    return " yarn jest "
+    return "yarn jest "
   else
-    return " rspec --color --tty -f doc "
+    return "rspec --color --tty -f doc"
   endif
 endfunction
 
@@ -615,6 +633,14 @@ function! DepUnderCursor()
     let line_no -= 1
   endwhile
   return trim(substitute(substitute(line, "^dep ", "", ""), " do$", "", ""), "'\"")
+endfunction
+
+function! VimFunctionUnderCursor()
+  let line_no = line(".")
+  while getline(l:line_no) !~ "^function!"
+    let line_no -= 1
+  endwhile
+  return substitute(getline(l:line_no), "function! ", "", "")
 endfunction
 
 function! ReevaluateColorscheme()

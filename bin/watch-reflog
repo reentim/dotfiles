@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby --disable-gems
+
+require 'io/console'
+
+class WatchReflog
+  def initialize
+    abort "fatal: can't find .git/HEAD" unless File.exists?(".git/HEAD")
+
+    main
+  end
+
+  def main
+    while true do
+      draw_reflog if changes?
+      sleep 0.1
+    end
+  rescue Interrupt
+    exit
+  end
+
+  def draw_reflog
+    puts %x[git reflog --color=always --decorate | head -#{win_height}]
+  end
+
+  def win_height
+    @win_height = IO.console.winsize.first
+  end
+
+  def changes?
+    [
+      @prev_mtimes != mtimes,
+      @win_height != win_height
+    ].any?
+  end
+
+  def mtimes
+    @prev_mtimes = %w[HEAD ORIG_HEAD MERGE_RR].map do |name|
+      file = File.join(".git", name)
+      File.exists?(file) && File.mtime(file)
+    end
+  end
+end
+
+WatchReflog.new
