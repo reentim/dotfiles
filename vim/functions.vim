@@ -185,7 +185,7 @@ function! _Executor(ft, filepath)
     return "node " . l:quoted_filepath
   elseif a:ft == "vim"
     if l:filename == "functions.vim"
-      echom "functions.vim doesn't know how to run itself"
+      execute ":echom " . VimFunctionUnderCursor()
       return 1
     endif
   elseif a:ft == "c"
@@ -633,6 +633,14 @@ function! DepUnderCursor()
     let line_no -= 1
   endwhile
   return trim(substitute(substitute(line, "^dep ", "", ""), " do$", "", ""), "'\"")
+endfunction
+
+function! VimFunctionUnderCursor()
+  let line_no = line(".")
+  while getline(l:line_no) !~ "^function!"
+    let line_no -= 1
+  endwhile
+  return substitute(getline(l:line_no), "function! ", "", "")
 endfunction
 
 function! ReevaluateColorscheme()
