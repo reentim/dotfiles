@@ -8,6 +8,8 @@ prof() {
   iterm list_profiles \
     | selecta \
     | xargs -L 1 iterm change_profile $1
+
+  [ $TMUX ] && tmux source-file ~/.tmux.conf
 }
 
 proj() {
