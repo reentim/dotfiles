@@ -195,10 +195,20 @@ nnoremap <leader>ef :tabnew\|:lcd ~/.dotfiles\|:e vim/functions.vim<CR>
 nnoremap <leader>ep :tabnew\|:lcd ~/.dotfiles\|:e profile<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
+nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>et :tabnew\|:lcd ~/.dotfiles\|:e tmux.conf<CR>
+nnoremap <leader>etf :tabe ~/.dotfiles/vim/functions.vim<CR>
+nnoremap <leader>etp :tabe ~/.dotfiles/profile<CR>
+nnoremap <leader>ett :tabe ~/.dotfiles/tmux.conf<CR>
+nnoremap <leader>etv :tabe ~/.dotfiles/vimrc<CR>
+nnoremap <leader>etzf :tabe ~/.dotfiles/zsh/functions.zsh<CR>
+nnoremap <leader>etzz:tabe ~/.dotfiles/zshrc<CR>
+nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>ev :tabnew\|:lcd ~/.dotfiles\|:e vimrc<CR>
 nnoremap <leader>ez :tabnew\|:lcd ~/.dotfiles\|:e zshrc<CR>
+nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>ezf :tabnew\|:lcd ~/.dotfiles\|:e zsh/functions.zsh<CR>
+nnoremap <leader>ezz :e ~/.dotfiles/zshrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
@@ -211,7 +221,7 @@ nnoremap <leader>gq :call SelectaFile("app/graphql")<CR>
 nnoremap <leader>gs :call SelectaFile("spec")<CR>
 nnoremap <leader>gv :call SelectaFile("app/views")<CR>
 nnoremap <leader>h :split<CR><C-w>j
-nnoremap <leader>l :call Underline('-')<CR>
+nnoremap <leader>ll :call Underline('-')<CR>
 nnoremap <leader>lp :call GitLogPatch()<CR>
 nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
 nnoremap <leader>n :call RenameFile()<CR>
