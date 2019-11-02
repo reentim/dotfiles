@@ -6,5 +6,8 @@ set -e
 mkdir .git/tags_lock 2>/dev/null || exit 0
 trap "rmdir .git/tags_lock; rm .git/tags.$$" EXIT
 
-git ls-files -co --exclude-standard | ctags --tag-relative -L - -f .git/tags.$$ --languages=-sql,-css
+git ls-files -co --exclude-standard \
+  | grep -v "^vendor/assets" \
+  | ctags --tag-relative -L - -f .git/tags.$$ --languages=-sql,-css
+
 mv .git/tags.$$ .git/tags
