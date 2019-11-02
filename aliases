@@ -26,6 +26,7 @@ alias sshu='ssh -A -l ubuntu '
 alias t='tmux'
 alias ta='tmux attach'
 alias tree='tree -FC --dirsfirst'
-alias vi='vim'
+alias vi='vim --startuptime ~/cloud/log/vim-startup-$(hostname -s)-$(git --git-dir=/Users/tim/.dotfiles/.git rev-parse --short HEAD).log'
+alias vim='vi'
 
 (which hub > /dev/null 2>&1) && alias git='hub'
