@@ -462,10 +462,14 @@ endfunction
 
 function! SelectaFile(path)
   if InGitDir()
-    call SelectaGitFile(a:path)
+    call SelectaGitMRUFile(a:path)
   else
-    call SelectaFoundFile(a:path)
+    call SelectaMRUFoundFile(a:path)
   endif
+endfunction
+
+function! SelectaMRUFoundFile(path)
+  call SelectaCommand("ls -dt $(" . FindWithWildignore(a:path) . ")", "", ":e")
 endfunction
 
 function! SelectaFoundFile(path)
@@ -474,6 +478,10 @@ endfunction
 
 function! SelectaGitFile(path)
   call SelectaCommand("git ls-files --cached --others --exclude-standard " . a:path . " | uniq", "", ":e")
+endfunction
+
+function! SelectaGitMRUFile(path)
+  call SelectaCommand("ls -dt $(git ls-files --cached --others --exclude-standard " . a:path . " | uniq)", "", ":e")
 endfunction
 
 function! SelectaGitCurrentBranchFile()
