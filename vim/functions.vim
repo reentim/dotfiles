@@ -1,3 +1,6 @@
+" TODO:
+" move side-effecting functions to commands?
+
 function! IsCommentLine()
   let wordline = split(getline('.'))
   if len(wordline) == 0
@@ -248,6 +251,19 @@ function! RunCurrentTest(context)
   else
     echom 'No test to run'
   endif
+endfunction
+
+function ClearSavedCommands()
+  let cleared = 0
+  if exists("g:saved_run_command")
+    unlet g:saved_run_command
+    let cleared = 1
+  end
+  if exists("g:saved_test_command")
+    unlet g:saved_test_command
+    let cleared = 1
+  endif
+  return l:cleared
 endfunction
 
 function RunSavedThing()
