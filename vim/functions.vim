@@ -1,3 +1,6 @@
+" TODO:
+" move side-effecting functions to commands?
+
 function! IsCommentLine()
   let wordline = split(getline('.'))
   if len(wordline) == 0
@@ -160,7 +163,7 @@ endfunction
 
 function! _Executor(ft, filepath)
   " TODO can't I use expand on a string?
-  let filename = ChomppedSystem("basename \"" . a:filepath . "\"")
+  let filename = System("basename \"" . a:filepath . "\"")
   let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
   let root = substitute(a:filepath, "\\..*$", "", "")
   let quoted_filepath = '"' . a:filepath . '"'
@@ -224,7 +227,7 @@ function! RailsMigrationStatus(version)
 
       " or...
       " determine true status of migration
-      let migration_status = split(ChomppedSystem("rails db:migrate:status | grep " . a:version))[0]
+      let migration_status = split(System("rails db:migrate:status | grep " . a:version))[0]
       return l:migration_status
     endif
   endif
@@ -250,6 +253,19 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
+function ClearSavedCommands()
+  let cleared = 0
+  if exists("g:saved_run_command")
+    unlet g:saved_run_command
+    let cleared = 1
+  end
+  if exists("g:saved_test_command")
+    unlet g:saved_test_command
+    let cleared = 1
+  endif
+  return l:cleared
+endfunction
+
 function RunSavedThing()
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
@@ -262,10 +278,27 @@ function RunSavedThing()
       call Shell(l:run_command)
       echom l:run_command
       return 1
+    elseif &ft == 'vim'
+      call RepeatVimCmd()
+      return 1
     endif
   endif
   echom "No saved commands"
   return 0
+endfunction
+
+function! RepeatVimCmd()
+  let hist_index = -1
+  while !IsRepeatableHistory(l:hist_index) && l:hist_index > -100
+    let l:hist_index -= 1
+  endwhile
+  execute ":" . histget(":", l:hist_index)
+endfunction
+
+function! IsRepeatableHistory(hist_index)
+  let cmd = histget(":", a:hist_index)
+  return match(l:cmd, '^\(echom\|call\)') != -1
+        \ && match(l:cmd, 'RepeatVimCmd') == -1
 endfunction
 
 function! RunSavedCommand()
@@ -337,7 +370,7 @@ function! TestFileLine()
   return g:test_file_line
 endfunction
 
-function! ChomppedSystem(command)
+function! System(command)
   " strip away the last byte of output
   return system(a:command)[:-2]
 endfunction
@@ -364,15 +397,7 @@ endfunction
 
 function! ShellOK(command)
   call system(a:command)
-
-  let return_code = v:shell_error
-
-  " 0 is falsy in VimScript
-  if return_code == 0
-    return 1
-  else
-    return 0
-  endif
+  return v:shell_error == 0 ? 0 : 1
 endfunction
 
 function! InTestFile()
@@ -462,10 +487,14 @@ endfunction
 
 function! SelectaFile(path)
   if InGitDir()
-    call SelectaGitFile(a:path)
+    call SelectaGitMRUFile(a:path)
   else
-    call SelectaFoundFile(a:path)
+    call SelectaMRUFoundFile(a:path)
   endif
+endfunction
+
+function! SelectaMRUFoundFile(path)
+  call SelectaCommand("ls -dt $(" . FindWithWildignore(a:path) . ")", "", ":e")
 endfunction
 
 function! SelectaFoundFile(path)
@@ -474,6 +503,10 @@ endfunction
 
 function! SelectaGitFile(path)
   call SelectaCommand("git ls-files --cached --others --exclude-standard " . a:path . " | uniq", "", ":e")
+endfunction
+
+function! SelectaGitMRUFile(path)
+  call SelectaCommand("ls -dt $(git ls-files --cached --others --exclude-standard " . a:path . " | uniq)", "", ":e")
 endfunction
 
 function! SelectaGitCurrentBranchFile()
@@ -508,15 +541,25 @@ function! OpenAlternateFile(path)
   endif
 endfunction
 
-function! InGitDir()
-  call system("git rev-parse --git-dir")
-  return v:shell_error == 0
+function! InGitDir(...)
+  " InGitDir([directory=current working directory])
+  let dir = get(a:000, 0, getcwd())
+  call ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
+endfunction
+
+function! GitDir(...)
+  let dir = get(a:000, 0, getcwd())
+  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
+  return l:git_dir != "" ? l:git_dir : 0
 endfunction
 
 function! CdToProjectRoot()
-  if InGitDir()
-    exec 'cd ' . system("git rev-parse --show-toplevel")
+  let file_git_dir = GitDir(expand("%:h"))
+  if type(l:file_git_dir) == 1 && l:file_git_dir != getcwd()
+    exec "lcd " . l:file_git_dir
+    return 1
   endif
+  return 0
 endfunction
 
 function! LetToInstanceMethod()
@@ -526,13 +569,13 @@ function! LetToInstanceMethod()
 endfunction
 
 function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
 endfunction
 
 function! SortIndentLevel()

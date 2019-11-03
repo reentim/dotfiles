@@ -34,7 +34,7 @@ fi
 export DEFAULT_BRANCH="master"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
-export TIMEFMT="=> [%*E at %P cpu]"
+export TIMEFMT="=> [%*E seconds at %P cpu]"
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"

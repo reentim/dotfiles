@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-mv ~/Desktop/Screen\ Shot*.png ~/cloud/Screenshots &>/dev/null
-mv ~/Desktop/Screen\ Recording*.mov ~/cloud/Screenshots/recordings &>/dev/null

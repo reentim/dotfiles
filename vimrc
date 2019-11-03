@@ -6,6 +6,7 @@ set backspace=indent,eol,start
 set backup
 set backupdir=~/.tmp/vimtemp//
 set colorcolumn=80
+set modelines=5
 set cursorline
 set dir=~/.tmp/vimswap//
 set encoding=utf-8
@@ -100,6 +101,8 @@ augroup vimrc
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
 
+  autocmd BufWritePost functions.vim source ~/.vim/functions.vim
+
   " Tell vim-commentary about JSX
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
 
@@ -191,23 +194,14 @@ nnoremap <leader>ad :ALEDisable<CR>
 nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>b :call SelectaBuffer()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
-nnoremap <leader>ef :tabnew\|:lcd ~/.dotfiles\|:e vim/functions.vim<CR>
-nnoremap <leader>ep :tabnew\|:lcd ~/.dotfiles\|:e profile<CR>
+nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
+nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
+nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>et :tabnew\|:lcd ~/.dotfiles\|:e tmux.conf<CR>
-nnoremap <leader>etf :tabe ~/.dotfiles/vim/functions.vim<CR>
-nnoremap <leader>etp :tabe ~/.dotfiles/profile<CR>
-nnoremap <leader>ett :tabe ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>etv :tabe ~/.dotfiles/vimrc<CR>
-nnoremap <leader>etzf :tabe ~/.dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>etzz:tabe ~/.dotfiles/zshrc<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
-nnoremap <leader>ev :tabnew\|:lcd ~/.dotfiles\|:e vimrc<CR>
-nnoremap <leader>ez :tabnew\|:lcd ~/.dotfiles\|:e zshrc<CR>
 nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>ezf :tabnew\|:lcd ~/.dotfiles\|:e zsh/functions.zsh<CR>
 nnoremap <leader>ezz :e ~/.dotfiles/zshrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>

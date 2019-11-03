@@ -15,7 +15,7 @@
 [alias]
   aa      = add -A
   amend   = commit --amend --verbose
-  blamef  = "!. ~/.githelpers && blame_files | column -t -s "•" | sort | less"
+  blamef  = "!. ~/.githelpers && blame_files"
   ci      = commit --verbose
   cim     = commit -m
   co      = checkout
@@ -30,7 +30,8 @@
   l       = log --oneline --decorate --graph
   la      = "!. ~/.githelpers && log_all"
   lg      = "!. ~/.githelpers && jcoglan_graph"
-  ll      = "!. ~/.githelpers && pretty_shortdate_log"
+  ll      = "!. ~/.githelpers && pretty_log"
+  log     = "!. ~/.githelpers && log"
   logtail = "!. ~/.githelpers && tail_origin_log"
   lp      = "!. ~/.githelpers && log_patch"
   lpr     = "!. ~/.githelpers && log_patch --reverse"

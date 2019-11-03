@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+
 main() {
-  dir=$1
+  dir="${1:-$(pwd)}"
   gitroot_path=$(cd $dir && git rev-parse --show-toplevel >/dev/null 2>&1)
   if [ $gitroot_path ]; then
     proj=$(basename $gitroot_path)

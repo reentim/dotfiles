@@ -6,7 +6,6 @@ function main() {
     # TODO backgrounding won't help if the running process is a test run, pry,
     # etc.
     # consider splitting and zooming
-    tmux send-keys -t $target C-z
     tmux send-keys -t $target C-c "clear; time $*; jobs | tail -1" C-m
     exit 0
   fi

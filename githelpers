@@ -17,7 +17,7 @@ unwip() {
 uncommit() {
   id=$(git rev-parse --short HEAD)
   title=$(git log --format="%s" -1)
-  git reset --soft HEAD~ && echo "Reset commit ${title} (was ${id})."
+  git reset --soft HEAD~ && echo "Reset commit \"${title}\" (was ${id})."
 }
 
 diff_branch() {
@@ -29,6 +29,11 @@ diff_branch() {
     options=${@:2}
   fi
   git diff $options $(git merge-base --fork-point origin/$DEFAULT_BRANCH $branch)..$branch
+}
+
+log() {
+  options=$*
+  git --no-pager log --color $options --decorate | less --pattern '^commit'
 }
 
 log_patch() {
@@ -88,13 +93,7 @@ tail_origin_log() {
 }
 
 pretty_log() {
-  git log --graph --pretty=format:"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s"
-}
-
-pretty_shortdate_log() {
-  git --no-pager log --graph --color --pretty=format:"%C(yellow)%h %C(green)|%ar|%C(red)%d%C(reset) %s" \
-    | sed -E "s/\|([0-9]+) ([a-z]).*\|/\1\2/" \
-    | less
+  git log --graph --pretty=format:"%C(yellow)%h%C(red)%d%C(reset) %s (%C(green)%an%C(reset), %C(blue)%ar%C(reset))"
 }
 
 new() {
@@ -111,20 +110,21 @@ new() {
 
 blame_files() {
   arg_files="$*"
-  stdin_files=$(cat <&0)  # stdin is file descriptor zero
-  for file in $(echo $arg_files $stdin_files); do
+  for file in $(echo $arg_files); do
     blame_file $file
-  done
+  done | column -t -s "•" | less
 }
 
 blame_file() {
   file=$1
-  git --no-pager log --color=always --date=short --format="%ad•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
+  git --no-pager log --color=always --format="%ai•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
 }
 
 jcoglan_graph() {
   options="$*"
-  git log $options --graph --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n"
+  git --no-pager log --color=always $options --graph \
+    --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n" \
+    | less --pattern "([0-9]|[a-f]){7,}"
 }
 
 rebase_upstream() {
