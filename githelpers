@@ -111,15 +111,14 @@ new() {
 
 blame_files() {
   arg_files="$*"
-  stdin_files=$(cat <&0)  # stdin is file descriptor zero
-  for file in $(echo $arg_files $stdin_files); do
+  for file in $(echo $arg_files); do
     blame_file $file
-  done
+  done | column -t -s "•" | less
 }
 
 blame_file() {
   file=$1
-  git --no-pager log --color=always --date=short --format="%ad•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
+  git --no-pager log --color=always --format="%ai•${file}•%C(blue)%an%C(reset)•%C(yellow)%h%C(reset)  %s" -1 $file
 }
 
 jcoglan_graph() {

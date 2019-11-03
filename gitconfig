@@ -15,7 +15,7 @@
 [alias]
   aa      = add -A
   amend   = commit --amend --verbose
-  blamef  = "!. ~/.githelpers && blame_files | column -t -s "•" | sort | less"
+  blamef  = "!. ~/.githelpers && blame_files"
   ci      = commit --verbose
   cim     = commit -m
   co      = checkout
