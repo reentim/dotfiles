@@ -340,7 +340,7 @@ function! SetTestCommand(context)
   else
     let line_options = ""
   endif
-  let g:saved_test_command = join([TestRunner(), TestFile(), l:line_options])
+  let g:saved_test_command = join([TestRunner(), join([TestFile(), l:line_options], "")])
 endfunction
 
 function! TestCommand(context)
