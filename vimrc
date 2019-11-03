@@ -198,13 +198,6 @@ nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>et :tabnew\|:lcd ~/.dotfiles\|:e tmux.conf<CR>
-nnoremap <leader>etf :tabe ~/.dotfiles/vim/functions.vim<CR>
-nnoremap <leader>etp :tabe ~/.dotfiles/profile<CR>
-nnoremap <leader>ett :tabe ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>etv :tabe ~/.dotfiles/vimrc<CR>
-nnoremap <leader>etzf :tabe ~/.dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>etzz:tabe ~/.dotfiles/zshrc<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>ezz :e ~/.dotfiles/zshrc<CR>
