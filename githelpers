@@ -31,6 +31,11 @@ diff_branch() {
   git diff $options $(git merge-base --fork-point origin/$DEFAULT_BRANCH $branch)..$branch
 }
 
+log() {
+  options=$*
+  git --no-pager log --color $options --decorate | less --pattern '^commit'
+}
+
 log_patch() {
   options=$*
   git --no-pager log --color --patch $options --decorate | less --pattern '^commit'
@@ -88,13 +93,7 @@ tail_origin_log() {
 }
 
 pretty_log() {
-  git log --graph --pretty=format:"%C(yellow)%h%C(green) %ar%C(blue) %an%C(red)%d%C(reset) %s"
-}
-
-pretty_shortdate_log() {
-  git --no-pager log --graph --color --pretty=format:"%C(yellow)%h %C(green)|%ar|%C(red)%d%C(reset) %s" \
-    | sed -E "s/\|([0-9]+) ([a-z]).*\|/\1\2/" \
-    | less
+  git log --graph --pretty=format:"%C(yellow)%h%C(red)%d%C(reset) %s (%C(green)%an%C(reset), %C(blue)%ar%C(reset))"
 }
 
 new() {
@@ -123,7 +122,9 @@ blame_file() {
 
 jcoglan_graph() {
   options="$*"
-  git log $options --graph --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n"
+  git --no-pager log --color=always $options --graph \
+    --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n" \
+    | less --pattern "([0-9]|[a-f]){7,}"
 }
 
 rebase_upstream() {
