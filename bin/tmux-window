@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+main() {
+  tmux attach -t tmux && return
+  tmux new -s tmux -n tmux
+}
+
+main
