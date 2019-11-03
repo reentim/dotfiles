@@ -163,7 +163,7 @@ endfunction
 
 function! _Executor(ft, filepath)
   " TODO can't I use expand on a string?
-  let filename = ChomppedSystem("basename \"" . a:filepath . "\"")
+  let filename = System("basename \"" . a:filepath . "\"")
   let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
   let root = substitute(a:filepath, "\\..*$", "", "")
   let quoted_filepath = '"' . a:filepath . '"'
@@ -227,7 +227,7 @@ function! RailsMigrationStatus(version)
 
       " or...
       " determine true status of migration
-      let migration_status = split(ChomppedSystem("rails db:migrate:status | grep " . a:version))[0]
+      let migration_status = split(System("rails db:migrate:status | grep " . a:version))[0]
       return l:migration_status
     endif
   endif
@@ -370,7 +370,7 @@ function! TestFileLine()
   return g:test_file_line
 endfunction
 
-function! ChomppedSystem(command)
+function! System(command)
   " strip away the last byte of output
   return system(a:command)[:-2]
 endfunction
@@ -567,13 +567,13 @@ function! LetToInstanceMethod()
 endfunction
 
 function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
 endfunction
 
 function! SortIndentLevel()
