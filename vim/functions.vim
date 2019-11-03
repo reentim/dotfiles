@@ -397,7 +397,7 @@ endfunction
 
 function! ShellOK(command)
   call system(a:command)
-  return v:shell_error == 0 ? 0 : 1
+  return v:shell_error == 0 ? 1 : 0
 endfunction
 
 function! InTestFile()
@@ -544,7 +544,7 @@ endfunction
 function! InGitDir(...)
   " InGitDir([directory=current working directory])
   let dir = get(a:000, 0, getcwd())
-  call ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
+  return ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
 endfunction
 
 function! GitDir(...)
