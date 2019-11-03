@@ -17,7 +17,7 @@ main() {
 is_rails() {
   railsdir=$(cd ${dir} && git rev-parse --show-toplevel)
   if ! [[ -f "$railsdir/bin/rails" ]]; then
-    echo 1
+    return 1
   fi
 }
 
