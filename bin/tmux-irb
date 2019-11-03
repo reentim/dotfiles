@@ -11,7 +11,7 @@ main() {
     cmd='irb'
   fi
 
-  tmux $(autosplit) "cd $dir && $cmd"
+  tmux $(autosplit) -c "$dir" "cd $dir && $cmd"
 }
 
 is_rails() {
