@@ -397,15 +397,7 @@ endfunction
 
 function! ShellOK(command)
   call system(a:command)
-
-  let return_code = v:shell_error
-
-  " 0 is falsy in VimScript
-  if return_code == 0
-    return 1
-  else
-    return 0
-  endif
+  return v:shell_error == 0 ? 0 : 1
 endfunction
 
 function! InTestFile()
@@ -549,15 +541,25 @@ function! OpenAlternateFile(path)
   endif
 endfunction
 
-function! InGitDir()
-  call system("git rev-parse --git-dir")
-  return v:shell_error == 0
+function! InGitDir(...)
+  " InGitDir([directory=current working directory])
+  let dir = get(a:000, 0, getcwd())
+  call ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
+endfunction
+
+function! GitDir(...)
+  let dir = get(a:000, 0, getcwd())
+  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
+  return l:git_dir != "" ? l:git_dir : 0
 endfunction
 
 function! CdToProjectRoot()
-  if InGitDir()
-    exec 'cd ' . system("git rev-parse --show-toplevel")
+  let file_git_dir = GitDir(expand("%:h"))
+  if type(l:file_git_dir) == 1 && l:file_git_dir != getcwd()
+    exec "lcd " . l:file_git_dir
+    return 1
   endif
+  return 0
 endfunction
 
 function! LetToInstanceMethod()
