@@ -101,6 +101,8 @@ augroup vimrc
   autocmd InsertLeave,CursorMoved * silent! update
   autocmd BufLeave,FocusLost * silent! wall
 
+  autocmd BufWritePost functions.vim source ~/.vim/functions.vim
+
   " Tell vim-commentary about JSX
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
 
