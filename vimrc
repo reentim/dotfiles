@@ -6,6 +6,7 @@ set backspace=indent,eol,start
 set backup
 set backupdir=~/.tmp/vimtemp//
 set colorcolumn=80
+set modelines=5
 set cursorline
 set dir=~/.tmp/vimswap//
 set encoding=utf-8
