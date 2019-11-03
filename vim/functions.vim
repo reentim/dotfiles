@@ -262,10 +262,27 @@ function RunSavedThing()
       call Shell(l:run_command)
       echom l:run_command
       return 1
+    elseif &ft == 'vim'
+      call RepeatVimCmd()
+      return 1
     endif
   endif
   echom "No saved commands"
   return 0
+endfunction
+
+function! RepeatVimCmd()
+  let hist_index = -1
+  while !IsRepeatableHistory(l:hist_index) && l:hist_index > -100
+    let l:hist_index -= 1
+  endwhile
+  execute ":" . histget(":", l:hist_index)
+endfunction
+
+function! IsRepeatableHistory(hist_index)
+  let cmd = histget(":", a:hist_index)
+  return match(l:cmd, '^\(echom\|call\)') != -1
+        \ && match(l:cmd, 'RepeatVimCmd') == -1
 endfunction
 
 function! RunSavedCommand()
