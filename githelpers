@@ -17,7 +17,7 @@ unwip() {
 uncommit() {
   id=$(git rev-parse --short HEAD)
   title=$(git log --format="%s" -1)
-  git reset --soft HEAD~ && echo "Reset commit ${title} (was ${id})."
+  git reset --soft HEAD~ && echo "Reset commit \"${title}\" (was ${id})."
 }
 
 diff_branch() {
