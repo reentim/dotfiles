@@ -91,7 +91,7 @@ augroup vimrc
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
-  autocmd FileType * call CdToProjectRoot()
+  autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType crontab setlocal backupcopy=yes
   autocmd FileType eruby,markdown,html setlocal spell
