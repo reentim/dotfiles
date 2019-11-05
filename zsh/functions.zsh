@@ -13,7 +13,19 @@ prof() {
 }
 
 proj() {
-  cd "$(find-repos | selecta)"
+  local cache="$HOME/.tmp/proj_list"
+  if ! [ -f "$cache" ]; then
+    >&2 echo "Building cache..."
+    _proj_build_cache
+    cd $(cat $cache | selecta)
+  else
+    $(_proj_build_cache &>/dev/null &)
+    pushd $(cat $cache | selecta)
+  fi
+}
+
+_proj_build_cache() {
+  ls -dt $(find ~/dev/ ~/proj/ -depth 1 -type d) > "$HOME/.tmp/proj_list"
 }
 
 on_path() {
