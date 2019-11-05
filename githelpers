@@ -15,8 +15,12 @@ unwip() {
 }
 
 uncommit() {
-  id=$(git rev-parse --short HEAD)
-  title=$(git log --format="%s" -1)
+  local id=$(git rev-parse --short HEAD)
+  local title=$(git log --format="%s" -1)
+  if (which pbcopy &>/dev/null); then
+    local message=$(git log --format="%B" -1)
+    echo "${message}" | pbcopy
+  fi
   git reset --soft HEAD~ && echo "Reset commit \"${title}\" (was ${id})."
 }
 
