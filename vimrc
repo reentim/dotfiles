@@ -64,8 +64,6 @@ if filereadable(expand("~/.vim/functions.vim"))
   source ~/.vim/functions.vim
 endif
 
-let g:command_t_enabled=1
-
 call EnsureTempDirs()
 
 let g:netrw_liststyle = 3
@@ -118,6 +116,10 @@ augroup vimrc
   " run this last, to allow opting out
   autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
+
+if filereadable(expand("~/.vim/bundle/command-t/ruby/command-t/ext/command-t/ext.o"))
+  let g:command_t_enabled=1
+endif
 
 let g:lightline = {
       \ 'active': {
