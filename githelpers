@@ -15,8 +15,12 @@ unwip() {
 }
 
 uncommit() {
-  id=$(git rev-parse --short HEAD)
-  title=$(git log --format="%s" -1)
+  local id=$(git rev-parse --short HEAD)
+  local title=$(git log --format="%s" -1)
+  if (which pbcopy &>/dev/null); then
+    local message=$(git log --format="%B" -1)
+    echo "${message}" | pbcopy
+  fi
   git reset --soft HEAD~ && echo "Reset commit \"${title}\" (was ${id})."
 }
 
@@ -45,6 +49,11 @@ log_patch_reverse_branch() {
   options=$*
   start=$(git merge-base --fork-point origin/$DEFAULT_BRANCH)
   git --no-pager log $start..HEAD --patch --reverse --color $options | less --pattern '^commit'
+}
+
+search() {
+  query=$*
+  git --no-pager log --color=always -S "${query}" --patch | less --pattern "${query}"
 }
 
 merge_branch_origin_to_master() {

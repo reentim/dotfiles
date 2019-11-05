@@ -205,8 +205,8 @@ function! RunFile()
   endif
 endfunction
 
-function! ShouldSendOutputToTmux()
-  return $TMUX != '' && ShellOK('tmux-recipient')
+function! Tmux()
+  return $TMUX != ''
 endfunction
 
 function! RailsMigrationStatus(version)
@@ -253,7 +253,7 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
-function ClearSavedCommands()
+function! ClearSavedCommands()
   let cleared = 0
   if exists("g:saved_run_command")
     unlet g:saved_run_command
@@ -266,7 +266,7 @@ function ClearSavedCommands()
   return l:cleared
 endfunction
 
-function RunSavedThing()
+function! RunSavedThing()
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
     call Shell(l:test_command)
@@ -376,7 +376,7 @@ function! System(command)
 endfunction
 
 function! Shell(command)
-  if ShouldSendOutputToTmux()
+  if Tmux()
     call AsyncShell("tt \'pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear; time " . a:command
@@ -472,6 +472,22 @@ function! FindWithWildignore(path)
   end
 endfunction
 
+function! FuzzyFind(path)
+  if exists('g:command_t_enabled')
+    execute ":CommandT " . a:path
+  else
+    call SelectaFile(a:path)
+  endif
+endfunction
+
+function! FuzzyFindBuffer()
+  if exists('g:command_t_enabled')
+    :CommandTBuffer
+  else
+    call SelectaBuffer()
+  endif
+endfunction
+
 function! SelectaCommand(choice_command, selecta_args, vim_command)
   try
     let selection = system(a:choice_command . " | selecta " . a:selecta_args)
@@ -487,9 +503,9 @@ endfunction
 
 function! SelectaFile(path)
   if InGitDir()
-    call SelectaGitMRUFile(a:path)
+    call SelectaGitFile(a:path)
   else
-    call SelectaMRUFoundFile(a:path)
+    call SelectaFoundFile(a:path)
   endif
 endfunction
 

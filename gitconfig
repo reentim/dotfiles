@@ -14,7 +14,7 @@
   diff = auto
 [alias]
   aa      = add -A
-  amend   = commit --amend --verbose
+  amend   = commit --amend --no-edit
   blamef  = "!. ~/.githelpers && blame_files"
   ci      = commit --verbose
   cim     = commit -m
@@ -38,10 +38,12 @@
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   new     = "!. ~/.githelpers && new"
+  search  = "!. ~/.githelpers && search"
   noff    = merge --no-ff
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
+  reword  = commit --amend --verbose
   rom     = "!f() { git rebase $1 origin/master; }; f"
   ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
@@ -50,6 +52,7 @@
   unci    = "!. ~/.githelpers && uncommit"
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
+  ap      = add -A --patch
   wip     = "!. ~/.githelpers && wip"
 [merge]
   tool = vimdiff

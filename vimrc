@@ -29,7 +29,7 @@ set noequalalways
 set nofoldenable
 set nojoinspaces
 set nowrap
-set nu
+set nonu
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
@@ -62,6 +62,8 @@ call pathogen#helptags()
 if filereadable(expand("~/.vim/functions.vim"))
   source ~/.vim/functions.vim
 endif
+
+let g:command_t_enabled=1
 
 call EnsureTempDirs()
 call SetColorscheme()
@@ -192,7 +194,7 @@ nnoremap <leader>8l :call FullUnderline('-')<CR>
 nnoremap <leader>8u :call FullUnderline('=')<CR>
 nnoremap <leader>ad :ALEDisable<CR>
 nnoremap <leader>ae :ALEEnable<CR>
-nnoremap <leader>b :call SelectaBuffer()<CR>
+nnoremap <leader>b :call FuzzyFindBuffer()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
@@ -202,7 +204,7 @@ nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>ezz :e ~/.dotfiles/zshrc<CR>
+nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
@@ -223,7 +225,7 @@ nnoremap <leader>o :!open %<CR><CR>
 nnoremap <leader>p :set invpaste<CR>
 nnoremap <leader>r :call RunFile()<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
-nnoremap <leader>t  :call SelectaFile(".")<CR>
+nnoremap <leader>t  :call FuzzyFind(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
