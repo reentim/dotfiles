@@ -253,7 +253,7 @@ function! RunCurrentTest(context)
   endif
 endfunction
 
-function ClearSavedCommands()
+function! ClearSavedCommands()
   let cleared = 0
   if exists("g:saved_run_command")
     unlet g:saved_run_command
@@ -266,7 +266,7 @@ function ClearSavedCommands()
   return l:cleared
 endfunction
 
-function RunSavedThing()
+function! RunSavedThing()
   let l:test_command = SavedTestCommand()
   if type(l:test_command) == 1
     call Shell(l:test_command)
