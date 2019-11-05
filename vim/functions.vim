@@ -487,9 +487,9 @@ endfunction
 
 function! SelectaFile(path)
   if InGitDir()
-    call SelectaGitMRUFile(a:path)
+    call SelectaGitFile(a:path)
   else
-    call SelectaMRUFoundFile(a:path)
+    call SelectaFoundFile(a:path)
   endif
 endfunction
 
