@@ -1,12 +1,10 @@
 let mapleader = ','
 
-set notermguicolors
 set autoread
 set backspace=indent,eol,start
 set backup
 set backupdir=~/.tmp/vimtemp//
 set colorcolumn=80
-set modelines=5
 set cursorline
 set dir=~/.tmp/vimswap//
 set encoding=utf-8
@@ -23,13 +21,14 @@ set ignorecase
 set incsearch
 set laststatus=2
 set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.
+set modelines=5
 set mouse=a
 set nocompatible
 set noequalalways
 set nofoldenable
 set nojoinspaces
-set nowrap
 set nonu
+set nowrap
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
