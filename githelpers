@@ -51,6 +51,11 @@ log_patch_reverse_branch() {
   git --no-pager log $start..HEAD --patch --reverse --color $options | less --pattern '^commit'
 }
 
+search() {
+  query=$*
+  git --no-pager log --color=always -S "${query}" --patch | less --pattern "${query}"
+}
+
 merge_branch_origin_to_master() {
   branch=$(git rev-parse --abbrev-ref HEAD)
   git checkout master

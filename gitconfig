@@ -38,6 +38,7 @@
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   new     = "!. ~/.githelpers && new"
+  search  = "!. ~/.githelpers && search"
   noff    = merge --no-ff
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
