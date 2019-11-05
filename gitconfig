@@ -14,7 +14,7 @@
   diff = auto
 [alias]
   aa      = add -A
-  amend   = commit --amend --verbose
+  amend   = commit --amend --no-edit
   blamef  = "!. ~/.githelpers && blame_files"
   ci      = commit --verbose
   cim     = commit -m
@@ -42,6 +42,7 @@
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
+  reword  = commit --amend --verbose
   rom     = "!f() { git rebase $1 origin/master; }; f"
   ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
