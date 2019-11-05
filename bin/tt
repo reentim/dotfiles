@@ -3,11 +3,10 @@
 function main() {
   local target=$(tmux-recipient)
   if [ $target ]; then
-    # TODO backgrounding won't help if the running process is a test run, pry,
-    # etc.
-    # consider splitting and zooming
     tmux send-keys -t $target C-c "clear; time $*; jobs | tail -1" C-m
     exit 0
+  else
+    tmux $(autosplit) "$*; read"
   fi
   exit 1
 }
