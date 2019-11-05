@@ -1,5 +1,7 @@
 let mapleader = ','
 
+set nocompatible
+
 set autoread
 set backspace=indent,eol,start
 set backup
@@ -23,11 +25,11 @@ set laststatus=2
 set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.
 set modelines=5
 set mouse=a
-set nocompatible
 set noequalalways
 set nofoldenable
 set nojoinspaces
 set nonu
+set noshowmode
 set nowrap
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
@@ -65,7 +67,6 @@ endif
 let g:command_t_enabled=1
 
 call EnsureTempDirs()
-call SetColorscheme()
 
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
@@ -117,6 +118,24 @@ augroup vimrc
   " run this last, to allow opting out
   autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
+
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'lineinfo': ' %3l:%-2v',
+      \ },
+      \ 'component_function': {
+      \   'readonly': 'LightlineReadonly',
+      \   'fugitive': 'LightlineFugitive'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+
+call SetColorscheme()
 
 " ALE - Asynchronous Lint Engine
 let g:ale_completion_delay = 50
