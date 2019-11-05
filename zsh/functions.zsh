@@ -17,7 +17,7 @@ proj() {
 }
 
 on_path() {
-  echo $PATH | grep --fixed-strings "$1" >/dev/null 2>&1
+  echo $PATH | grep --fixed-strings "$1" &>/dev/null
 }
 
 prepend_path() {
