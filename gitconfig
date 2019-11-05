@@ -52,6 +52,7 @@
   unci    = "!. ~/.githelpers && uncommit"
   unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
+  ap      = add -A --patch
   wip     = "!. ~/.githelpers && wip"
 [merge]
   tool = vimdiff
