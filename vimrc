@@ -29,7 +29,7 @@ set noequalalways
 set nofoldenable
 set nojoinspaces
 set nowrap
-set nu
+set nonu
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
