@@ -216,7 +216,7 @@ nnoremap <leader>gp :call SelectaFile("app/javascript/packs")<CR>
 nnoremap <leader>gq :call SelectaFile("app/graphql")<CR>
 nnoremap <leader>gs :call SelectaFile("spec")<CR>
 nnoremap <leader>gv :call SelectaFile("app/views")<CR>
-nnoremap <leader>h :split<CR><C-w>j
+nnoremap <leader>h :split<CR>
 nnoremap <leader>ll :call Underline('-')<CR>
 nnoremap <leader>lp :call GitLogPatch()<CR>
 nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
@@ -227,7 +227,7 @@ nnoremap <leader>r :call RunFile()<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
 nnoremap <leader>t  :call FuzzyFind(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
-nnoremap <leader>w <C-w>v<C-w>l
+nnoremap <leader>w :vsplit<CR>
 nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
