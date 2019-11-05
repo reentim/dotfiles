@@ -472,6 +472,22 @@ function! FindWithWildignore(path)
   end
 endfunction
 
+function! FuzzyFind(path)
+  if exists('g:command_t_enabled')
+    execute ":CommandT " . a:path
+  else
+    call SelectaFile(a:path)
+  endif
+endfunction
+
+function! FuzzyFindBuffer()
+  if exists('g:command_t_enabled')
+    :CommandTBuffer
+  else
+    call SelectaBuffer()
+  endif
+endfunction
+
 function! SelectaCommand(choice_command, selecta_args, vim_command)
   try
     let selection = system(a:choice_command . " | selecta " . a:selecta_args)
