@@ -570,8 +570,11 @@ function! GitDir(...)
 endfunction
 
 function! CdToProjectRoot()
+  if &ft == "fugitiveblame" || &ft == "git"
+    return 1
+  endif
   let file_git_dir = GitDir(expand("%:h"))
-  if type(l:file_git_dir) == 1 && l:file_git_dir != getcwd()
+  if type(l:file_git_dir) == 1
     exec "lcd " . l:file_git_dir
     return 1
   endif
