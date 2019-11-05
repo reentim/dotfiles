@@ -23,7 +23,7 @@ source ~/.zsh/functions.zsh
 [ -f ~/.aliases ] && source ~/.aliases
 
 # Add private keys to the ssh agent, if there are none already added
-if ! (ssh-add -l > /dev/null 2>&1); then
+if ! (ssh-add -l &> /dev/null); then
   find ~/.ssh -type f \
     -exec bash -c '[[ "$(file "$1")" == *"private key"* ]]' bash {} ';' \
     -print | xargs ssh-add -K
