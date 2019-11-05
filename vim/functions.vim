@@ -599,10 +599,10 @@ endfunction
 
 function! SortIndentLevel()
   " Comments should be fixed to the line they follow
-	normal mz
-	call SelectIndent()
+  normal mz
+  call SelectIndent()
   execute "normal! :sort\<CR>"
-	normal `z
+  normal `z
 endfunction
 
 " Visually select contiguous block of text sharing the same indent level
