@@ -648,6 +648,7 @@ function! SetColorscheme()
     colorscheme Tomorrow-Night-Bright
   elseif profile =~ 'Solarized'
     colorscheme solarized
+    let g:lightline.colorscheme = 'solarized'
     if profile =~ 'Light'
       set background=light
     else
@@ -725,4 +726,16 @@ function! AbbrevRemapRun()
   return getcmdtype() == ":" && getcmdline() == "rr"
   \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"
   \ : "rr"
+endfunction
+
+function! LightlineReadonly()
+  return &readonly ? '' : ''
+endfunction
+
+function! LightlineFugitive()
+  if exists('*fugitive#head')
+    let branch = fugitive#head()
+    return branch !=# '' ? ''.branch : ''
+  endif
+  return ''
 endfunction

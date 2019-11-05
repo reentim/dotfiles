@@ -144,3 +144,6 @@
 [submodule "babushka-deps"]
 	path = babushka-deps
 	url = git@github.com:reentim/babushka-deps
+[submodule "vim/bundle/lightline.vim"]
+	path = vim/bundle/lightline.vim
+	url = git@github.com:itchyny/lightline.vim.git
