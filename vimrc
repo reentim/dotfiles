@@ -202,7 +202,7 @@ nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>ezz :e ~/.dotfiles/zshrc<CR>
+nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
 nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
