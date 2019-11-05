@@ -205,8 +205,8 @@ function! RunFile()
   endif
 endfunction
 
-function! ShouldSendOutputToTmux()
-  return $TMUX != '' && ShellOK('tmux-recipient')
+function! Tmux()
+  return $TMUX != ''
 endfunction
 
 function! RailsMigrationStatus(version)
@@ -376,7 +376,7 @@ function! System(command)
 endfunction
 
 function! Shell(command)
-  if ShouldSendOutputToTmux()
+  if Tmux()
     call AsyncShell("tt \'pushd \"" . getcwd() . "\">/dev/null; time " . a:command . "; popd>/dev/null'")
   else
     execute ":!clear; time " . a:command
