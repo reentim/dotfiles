@@ -121,6 +121,8 @@ if filereadable(expand("~/.vim/bundle/command-t/ruby/command-t/ext/command-t/ext
   let g:command_t_enabled=1
 endif
 
+let g:CommandTFileScanner='git'
+
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
