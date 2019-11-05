@@ -17,7 +17,7 @@ proj() {
   if ! [ -f "$cache" ]; then
     >&2 echo "Building cache..."
     _proj_build_cache
-    cd $(cat $cache | selecta)
+    pushd $(cat $cache | selecta)
   else
     $(_proj_build_cache &>/dev/null &)
     pushd $(cat $cache | selecta)
