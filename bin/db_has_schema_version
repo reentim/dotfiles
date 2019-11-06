@@ -10,8 +10,9 @@ main() {
 
   result=$(psql -d $db -c "copy (select version from schema_migrations where version = '${version}') to stdout")
 
-  [ "$result" ] && return 0
-  return 1
+  [ "$result" ] && echo "true" && exit 0
+  echo "false"
+  exit 1
 }
 
 main $*

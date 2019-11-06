@@ -161,6 +161,30 @@ function! CloseBuffer()
     " bnext
 endfunction
 
+function! RailsMigrationStatus(version)
+  let db_has_version = System(
+        \"db_has_schema_version -d $(finddb) -v "
+        \ . a:version
+        \)
+  if l:db_has_schema_version == "true"
+    return "up"
+  elseif l:db_has_schema_version == "false"
+    return "down"
+  else
+    echoerr "Can't determine migration status"
+  endif
+endfunction
+
+function! RailsMigrationCmd(version)
+  let migration_status = RailsMigrationStatus(a:version)
+
+  if l:migration_status == 'up'
+    return "rake db:migrate:down VERSION=" . a:version
+  elseif l:migration_status == 'down'
+    return "rake db:migrate:up VERSION=" . a:version
+  endif
+endfunction
+
 function! _Executor(ft, filepath)
   " TODO can't I use expand on a string?
   let filename = System("basename \"" . a:filepath . "\"")
@@ -207,41 +231,6 @@ endfunction
 
 function! Tmux()
   return $TMUX != ''
-endfunction
-
-function! RailsMigrationStatus(version)
-  if ShellOK('test -f db/structure.sql')
-    " structure.sql contains a list of migrated versions
-    if ShellOK("grep " . a:version . " db/structure.sql")
-      return 'up'
-    else
-      return 'down'
-    endif
-  elseif ShellOK('test -f db/schema.rb')
-    " schema.rb only contains latest migration version
-    if ShellOK("grep " . a:version . " db/schema.rb")
-      return 'up'
-    else
-      " just assume the status is down
-      return 'down'
-
-      " or...
-      " determine true status of migration
-      let migration_status = split(System("rails db:migrate:status | grep " . a:version))[0]
-      return l:migration_status
-    endif
-  endif
-  throw "Can't determine migration status"
-endfunction
-
-function! RailsMigrationCmd(version)
-  let migration_status = RailsMigrationStatus(a:version)
-
-  if l:migration_status == 'up'
-    return "rake db:migrate:down VERSION=" . a:version
-  elseif l:migration_status == 'down'
-    return "rake db:migrate:up VERSION=" . a:version
-  endif
 endfunction
 
 function! RunCurrentTest(context)
