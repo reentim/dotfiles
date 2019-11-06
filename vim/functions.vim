@@ -185,17 +185,21 @@ function! RailsMigrationCmd(version)
   endif
 endfunction
 
-function! _Executor(ft, filepath)
-  " TODO can't I use expand on a string?
+function! _Executor(ft, filepath, ...)
+  let opts = get(a:000, 0, {})
+
+  " TODO: is there a way to create a path type useable in expand()?
   let filename = System("basename \"" . a:filepath . "\"")
   let host_dir = substitute(a:filepath, "/" . l:filename . "$", "", "")
   let root = substitute(a:filepath, "\\..*$", "", "")
-  let quoted_filepath = '"' . a:filepath . '"'
+  let path = '"' . a:filepath . '"'
 
-  if a:ft == "bash" || a:ft == "sh"
-    return "bash " . l:quoted_filepath
+  if a:ft =~ '\(bash\|sh\)'
+    return "bash " . l:path
   elseif a:ft == "ruby"
-    if l:filename == "Gemfile"
+    if l:filename =~ '\(_spec\|test\).rb$'
+      return "rspec --color --tty -f doc " . l:path . get(l:opts, 'postfix', '')
+    elseif l:filename == "Gemfile"
       return "bundle install"
     elseif l:host_dir == "db/migrate"
       return RailsMigrationCmd(split(l:filename, "_")[0])
@@ -204,76 +208,42 @@ function! _Executor(ft, filepath)
     elseif a:filepath =~ "babushka"
       return "babushka " . DepUnderCursor()
     else
-      return "ruby " . l:quoted_filepath
+      return "ruby " . l:path
     endif
   elseif a:ft == "python"
-    return "python " . l:quoted_filepath
+    return "python " . l:path
+  elseif l:filename =~ 'test.js$'
+    return "yarn jest "
   elseif a:ft == "javascript"
-    return "node " . l:quoted_filepath
+    return "node " . l:path
   elseif a:ft == "vim"
     if l:filename == "functions.vim"
       execute ":echom " . VimFunctionUnderCursor()
-      return 1
+      return 0
     endif
   elseif a:ft == "c"
-    return "gcc " . l:quoted_filepath . " -o " . l:root . " && clear && ./" . l:root
+    return "gcc " . l:path . " -o " . l:root . " && clear && ./" . l:root
   endif
-  return 1
-endfunction
-
-function! RunFile()
-  let executor = _Executor(&ft, expand("%:p"))
-  if l:executor != 1
-    call Shell(l:executor)
-    let g:saved_run_command = l:executor
-  endif
-endfunction
-
-function! Tmux()
-  return $TMUX != ''
-endfunction
-
-function! RunCurrentTest(context)
-  let l:test_command = TestCommand(a:context)
-  if type(l:test_command) == 1
-    call Shell(l:test_command)
-  else
-    echom 'No test to run'
-  endif
-endfunction
-
-function! ClearSavedCommands()
-  let cleared = 0
-  if exists("g:saved_run_command")
-    unlet g:saved_run_command
-    let cleared = 1
-  end
-  if exists("g:saved_test_command")
-    unlet g:saved_test_command
-    let cleared = 1
-  endif
-  return l:cleared
-endfunction
-
-function! RunSavedThing()
-  let l:test_command = SavedTestCommand()
-  if type(l:test_command) == 1
-    call Shell(l:test_command)
-    echom l:test_command
-    return 1
-  else
-    let l:run_command = SavedRunCommand()
-    if type(l:run_command) == 1
-      call Shell(l:run_command)
-      echom l:run_command
-      return 1
-    elseif &ft == 'vim'
-      call RepeatVimCmd()
-      return 1
-    endif
-  endif
-  echom "No saved commands"
   return 0
+endfunction
+
+function! RunFile(...)
+  let opts = get(a:000, 0, {})
+  let executor = _Executor(&ft, expand("%:p"), l:opts)
+  if l:executor != 1
+    echom l:executor
+    call Shell(l:executor)
+    let g:saved_command = l:executor
+  endif
+endfunction
+
+function! RunSavedCommand()
+  if exists("g:saved_command")
+    echom g:saved_command
+    call Shell(g:saved_command)
+  else
+    echom "No saved command."
+  endif
 endfunction
 
 function! RepeatVimCmd()
@@ -290,78 +260,13 @@ function! IsRepeatableHistory(hist_index)
         \ && match(l:cmd, 'RepeatVimCmd') == -1
 endfunction
 
-function! RunSavedCommand()
-  let l:run_command = SavedRunCommand()
-  if type(l:run_command) == 1
-    call Shell(l:run_command)
-    return 1
-  endif
-  echoerr "No saved command"
-  return 0
-endfunction
-
-function! RunSavedTest()
-  let l:test_command = SavedTestCommand()
-  if type(l:test_command) == 1
-    call Shell(l:test_command)
-    return 0
-  endif
-  return 1
-endfunction
-
-function! SavedRunCommand()
-  if exists("g:saved_run_command")
-    return g:saved_run_command
-  endif
-endfunction
-
-function! SavedTestCommand()
-  if exists("g:saved_test_command")
-    return g:saved_test_command
-  endif
-endfunction
-
-function! SetTestCommand(context)
-  call SetTestFile()
-  if a:context == 'at_line'
-    call SetTestFileLine()
-    let line_options = ":" . TestFileLine()
-  else
-    let line_options = ""
-  endif
-  let g:saved_test_command = join([TestRunner(), join([TestFile(), l:line_options], "")])
-endfunction
-
-function! TestCommand(context)
-  if InTestFile()
-    call SetTestCommand(a:context)
-  end
-  return SavedTestCommand()
-endfunction
-
-function! SetTestFile()
-  let g:test_file=@%
-endfunction
-
-function! SetTestFileLine()
-  let g:test_file_line = line(".")
-endfunction
-
-function! TestFile()
-  if exists("g:test_file")
-    return g:test_file
-  else
-    return expand('%')
-  endif
-endfunction
-
-function! TestFileLine()
-  return g:test_file_line
-endfunction
-
 function! System(command)
   " strip away the last byte of output
   return system(a:command)[:-2]
+endfunction
+
+function! Tmux()
+  return $TMUX != ''
 endfunction
 
 function! Shell(command)
@@ -376,22 +281,9 @@ function! AsyncShell(command)
   let job = job_start(['sh', '-c', a:command])
 endfunction
 
-function! TestRunner()
-  if &filetype == "javascript" || &filetype == "javascript.jsx" || &filetype == "typescript"
-    return "yarn jest "
-  else
-    return "rspec --color --tty -f doc"
-  endif
-endfunction
-
 function! ShellOK(command)
   call system(a:command)
   return v:shell_error == 0 ? 1 : 0
-endfunction
-
-function! InTestFile()
-  let pattern = '\(.feature\|_spec.rb\|_test.rb\|test.js\|test.ts\)$'
-  return match(expand("%"), pattern) != -1
 endfunction
 
 function! GetVisualSelection()
