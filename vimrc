@@ -227,7 +227,7 @@ nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
 nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
-nnoremap <leader>f :call RunCurrentTest('full_test')<CR>
+nnoremap <leader>f :call RunFile()<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
 nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<CR>
@@ -250,7 +250,7 @@ nnoremap <leader>s :call SortIndentLevel()<CR>
 nnoremap <leader>t  :call FuzzyFind(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w :vsplit<CR>
-nnoremap <leader>z :call RunCurrentTest('at_line')<CR>
+nnoremap <leader>z :call RunFile({"postfix": ":" . line(".")})<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
 nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
@@ -258,7 +258,7 @@ nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
 nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
 nnoremap Y y$
 nnoremap [a :ALEPrevious<CR>
-nnoremap \ :call RunSavedThing()<CR>
+nnoremap \ :call RunSavedCommand()<CR>
 nnoremap ]a :ALENext<CR>
 onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
 onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
