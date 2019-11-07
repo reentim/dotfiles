@@ -361,6 +361,32 @@ function! FuzzyFind(path)
   endif
 endfunction
 
+function! IndentGuideColors(...)
+  let colorscheme = get(a:000, 0, g:colors_name)
+  if l:colorscheme =~ 'solarized'
+    if &background == 'dark'
+      return [0, 8]
+    else
+      return [7, 15]
+    endif
+  elseif l:colorscheme =~ 'Tomorrow-Night$'
+      return [236, 237]
+  elseif l:colorscheme =~ 'Tomorrow-Night-Bright'
+      return [236, 237]
+  elseif l:colorscheme =~ 'Tomorrow-Night-Eighties'
+      return [236, 238]
+    elseif l:colorscheme =~ 'dracula'
+      return [237, 236]
+  endif
+endfunction
+
+function! IndentGuideColors_set(...)
+  let colors = get(a:000, 0, IndentGuideColors())
+  let g:indent_guides_auto_colors = 0
+  execute "hi IndentGuidesOdd  ctermbg=" . l:colors[0]
+  execute "hi IndentGuidesEven ctermbg=" . l:colors[1]
+endfunction
+
 function! FuzzyFindBuffer()
   if exists('g:command_t_enabled')
     :CommandTBuffer
