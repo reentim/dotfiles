@@ -602,7 +602,7 @@ endfunction
 
 function! MakeExec()
   if ShellOK("chmod +x " . expand("%:p"))
-    echom "Executable!"
+    echom System("/usr/bin/stat -f %A " . expand("%:p"))
   else
     echom "Error"
   endif
