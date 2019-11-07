@@ -340,6 +340,15 @@ function! InteractiveRuby()
   call Shell(l:irb . ' -r "' . expand('%:p') . '"')
 endfunction
 
+function! ItalicComments_enable()
+  " Italic comments. This requires a terminal emulator that supports italic
+  " text. If "echo `tput sitm`italics`tput ritm`" produces italic text, then
+  " this should work
+  if &term =~ "italic" || &term =~ "tmux"
+    highlight Comment cterm=italic
+  endif
+endfunction
+
 " Creates a find command ignoring paths and files set in wildignore
 function! FindWithWildignore(path)
   let excluding=""
@@ -361,8 +370,16 @@ function! FuzzyFind(path)
   endif
 endfunction
 
+function! FuzzyFinder_configure()
+  if exists("g:command_t_enabled")
+    nnoremap <C-P> :call SelectaFile(".")<CR>
+  elseif filereadable(expand("~/.vim/bundle/command-t/ruby/command-t/ext/command-t/ext.o"))
+    nnoremap <C-P> :CommandT<CR>
+  endif
+endfunction
+
 function! IndentGuideColors(...)
-  let colorscheme = get(a:000, 0, g:colors_name)
+  let colorscheme = get(a:000, 0, Colorscheme_get())
   if l:colorscheme =~ 'solarized'
     if &background == 'dark'
       return [0, 8]
@@ -486,7 +503,7 @@ function! GitTopLevelDir(...)
 endfunction
 
 function! CdToProjectRoot()
-  if &ft == "fugitiveblame" || &ft == "git"
+  if &ft =~ '\(fugitiveblame\|git\|help\)'
     return 1
   endif
   let file_git_dir = GitTopLevelDir(expand("%:h"))
@@ -558,7 +575,16 @@ function! RewrapBuffer()
   call cursor(pos[1] + line('$') - lines, pos[2])
 endfunction
 
-function! SetColorscheme()
+function Colorscheme_get()
+  if exists("g:colors_name")
+    return g:colors_name
+  else
+    echom "No colorscheme found. Falling back to `default`."
+    return "default"
+  endif
+endfunction
+
+function! Colorscheme_set()
   let profile = ItermProfile()
   if $TERM_PROGRAM =~ 'Apple_Terminal'
     colorscheme Tomorrow-Night-Bright
