@@ -15,6 +15,7 @@
 [alias]
   aa      = add -A
   amend   = commit --amend --no-edit
+  ap      = add -A --patch
   blamef  = "!. ~/.githelpers && blame_files"
   ci      = commit --verbose
   cim     = commit -m
@@ -22,6 +23,7 @@
   ctags   = "!.git/hooks/ctags"
   db      = "!. ~/.githelpers && diff_branch"
   di      = diff
+  dp      = checkout --patch -- .
   ds      = diff --staged
   ff      = merge --ff-only
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
@@ -38,21 +40,23 @@
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   new     = "!. ~/.githelpers && new"
-  search  = "!. ~/.githelpers && search"
   noff    = merge --no-ff
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
   r       = "!. ~/.githelpers && selecta_recent_branch"
+  rc      = rebase --continue
   reword  = commit --amend --verbose
+  ri      = rebase --interactive
   rom     = "!f() { git rebase $1 origin/master; }; f"
   ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
+  search  = "!. ~/.githelpers && search"
   st      = status -sb
-  u       = "!. ~/.githelpers && upstream" # TODO this should compose with git l
+  u       = "!. ~/.githelpers && upstream" # TODO this should compose with git l. Or just be @{u}
   unci    = "!. ~/.githelpers && uncommit"
-  unstage = reset HEAD
   unwip   = "!. ~/.githelpers && unwip"
-  ap      = add -A --patch
+  up      = reset --patch HEAD
+  us      = reset HEAD
   wip     = "!. ~/.githelpers && wip"
 [merge]
   tool = vimdiff
