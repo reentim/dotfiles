@@ -11,10 +11,6 @@
 " @author Éverton Ribeiro <nuxlli@gmail.com>
 " @author Zeno Rocha <hi@zenorocha.com>
 
-" Colorscheme-appropriate indent-guide colours
-let g:colorscheme_indent_guide_odd  = 237
-let g:colorscheme_indent_guide_even = 236
-
 set background=dark
 highlight clear
 

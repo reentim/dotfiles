@@ -3,10 +3,6 @@
 "
 " Hex colour conversion functions borrowed from the theme "Desert256""
 
-" Colorscheme-appropriate indent-guide colours
-let g:colorscheme_indent_guide_odd  = 236
-let g:colorscheme_indent_guide_even = 238
-
 " Default GUI Colours
 let s:foreground = "cccccc"
 let s:background = "2d2d2d"
