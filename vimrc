@@ -228,6 +228,8 @@ nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
 nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
 nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+nnoremap <silent> zJ :call NextClosedFold('j')<cr>
+nnoremap <silent> zK :call NextClosedFold('k')<cr>
 nnoremap Y y$
 nnoremap [a :ALEPrevious<CR>
 nnoremap \ :call RunSavedCommand()<CR>
