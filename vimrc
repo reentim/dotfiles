@@ -7,7 +7,6 @@ set backspace=indent,eol,start
 set backup
 set backupdir=~/.tmp/vimtemp//
 set colorcolumn=80
-set cursorline
 set dir=~/.tmp/vimswap//
 set encoding=utf-8
 set fileencoding=utf-8
@@ -25,12 +24,13 @@ set laststatus=2
 set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.
 set modelines=5
 set mouse=a
+set nocursorline
 set noequalalways
 set nofoldenable
 set nojoinspaces
-set nonu
 set noshowmode
 set nowrap
+set nu
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
