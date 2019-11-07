@@ -383,7 +383,7 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
 endfunction
 
 function! SelectaFile(path)
-  if InGitDir()
+  if InGitTopLevelDir()
     call SelectaGitFile(a:path)
   else
     call SelectaFoundFile(a:path)
@@ -438,14 +438,23 @@ function! OpenAlternateFile(path)
   endif
 endfunction
 
-function! InGitDir(...)
-  " InGitDir([directory=current working directory])
+function! InGitTopLevelDir(...)
   let dir = get(a:000, 0, getcwd())
+
+  if &runtimepath =~ 'vim-fugitive'
+    return substitute(fugitive#is_git_dir(l:dir), "/.git", "", "")
+  endif
+
   return ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
 endfunction
 
-function! GitDir(...)
+function! GitTopLevelDir(...)
   let dir = get(a:000, 0, getcwd())
+
+  if &runtimepath =~ 'vim-fugitive'
+    return substitute(fugitive#extract_git_dir(l:dir), "/.git", "", "")
+  endif
+
   let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
   return l:git_dir != "" ? l:git_dir : 0
 endfunction
@@ -454,7 +463,7 @@ function! CdToProjectRoot()
   if &ft == "fugitiveblame" || &ft == "git"
     return 1
   endif
-  let file_git_dir = GitDir(expand("%:h"))
+  let file_git_dir = GitTopLevelDir(expand("%:h"))
   if type(l:file_git_dir) == 1
     exec "lcd " . l:file_git_dir
     return 1
