@@ -12,9 +12,13 @@ set dir=~/.tmp/vimswap//
 set encoding=utf-8
 set expandtab
 set fileencoding=utf-8
+set fillchars+=fold:\ "
 set fillchars+=vert:\ " Hide pipe character in window separators
+set foldcolumn=1
+set foldenable
+set foldlevel=0
 set foldmethod=indent
-set foldminlines=0
+set foldminlines=1
 set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
 set hidden
@@ -29,7 +33,6 @@ set modelines=5
 set mouse=a
 set nocursorline
 set noequalalways
-set nofoldenable
 set nojoinspaces
 set noshowmode
 set nowrap
