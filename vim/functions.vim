@@ -136,6 +136,12 @@ function! ResumeCursorPosition()
   endif
 endfunction
 
+function! Lightline_update()
+  call lightline#init()
+  call lightline#colorscheme()
+  call lightline#update()
+endfunction
+
 function! VisibleBuffers()
   return tabpagebuflist(tabpagenr())
 endfunction
