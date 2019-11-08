@@ -71,6 +71,8 @@ syntax on
 augroup vimrc
   autocmd!
 
+  autocmd VimEnter * call Folds_enable()
+
   autocmd BufLeave,FocusLost * silent! wall
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
@@ -231,8 +233,10 @@ nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
 nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
 nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
-nnoremap <silent> zJ :call NextClosedFold('j')<cr>
-nnoremap <silent> zK :call NextClosedFold('k')<cr>
+nnoremap <silent> zJ :call Folds_closed_jump('j')<CR>
+nnoremap <silent> zK :call Folds_closed_jump('k')<CR>
+nnoremap <silent> zj :call Folds_open_jump('j')<CR>
+nnoremap <silent> zk :call Folds_open_jump('k')<CR>
 nnoremap Y y$
 nnoremap [a :ALEPrevious<CR>
 nnoremap \ :call RunSavedCommand()<CR>
