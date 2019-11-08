@@ -69,5 +69,7 @@
   enabled = true
 [remote "origin"]
   prune = true
+[rebase]
+  autosquash = true
 
 # vim: ft=gitconfig
