@@ -3,8 +3,9 @@
 set -e
 
 wip() {
+  options=$*
   git add -A
-  git commit --no-verify -m 'wip'
+  git commit --no-verify -m "wip $options"
 }
 
 unwip() {
