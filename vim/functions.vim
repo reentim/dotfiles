@@ -13,6 +13,7 @@ endfunction
 
 function! Underline(linechar)
   if g:loaded_commentary == 0
+    echoerr "Underline() requires vim-commentary plugin."
     return
   endif
   if IsCommentLine()
