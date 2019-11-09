@@ -78,14 +78,12 @@ augroup vimrc
   autocmd BufWritePost functions.vim source ~/.vim/functions.vim
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd Colorscheme * call Colorscheme_set_after()
-  autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType crontab setlocal backupcopy=yes
   autocmd FileType eruby,markdown,html setlocal spell
   autocmd FileType gitrebase let b:noResumeCursorPosition=1
   autocmd FileType javascript.jsx :UltiSnipsAddFiletypes html
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
-  autocmd Filetype make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd InsertLeave,TextChanged * silent! update
   autocmd VimEnter * call Colorscheme_detect()
   autocmd VimEnter * call EnsureTempDirs()
