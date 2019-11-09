@@ -171,8 +171,10 @@ prompt_grb_setup() {
   p_return="[$pc[rc]%?$pc[reset]]"
 
   precmd() {
-    ret="$?"
-    [ $ret != "0" ] && print "=> ${ret}"
+    local ret="$?"
+    local red="\033[0;31m"
+    local reset="\033[0m"
+    [ $ret != "0" ] && print "=> ${red}${ret}${reset}"
   }
 
   PROMPT=""
