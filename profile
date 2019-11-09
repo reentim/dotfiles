@@ -35,6 +35,7 @@ export DEFAULT_BRANCH="master"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
 export TIMEFMT="=> [%*E seconds at %P cpu]"
+[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"

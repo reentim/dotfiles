@@ -178,7 +178,9 @@ prompt_grb_setup() {
   PROMPT=""
   PROMPT+="%B$pc[shortpath]%1~%b$pc[reset]"
   PROMPT+="\$(prompt_grb_formatted_scm_info)"
-  PROMPT+="$pc[#]%b[$p_time]$pc[reset]%% "
+  PROMPT+="$pc[#]%b"
+  [ $PROMPT_TIME ] && PROMPT+="[$p_time]"
+  PROMPT+="$pc[reset]%% "
 
   export PROMPT RPROMPT
   precmd_functions+='prompt_wunjo_precmd'
