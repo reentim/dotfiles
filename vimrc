@@ -13,12 +13,7 @@ set encoding=utf-8
 set expandtab
 set fileencoding=utf-8
 set fillchars+=fold:\ "
-set fillchars+=vert:\ " Hide pipe character in window separators
-set foldcolumn=1
-set foldenable
-set foldlevel=0
-set foldmethod=indent
-set foldminlines=1
+set fillchars+=vert:\ "
 set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
 set hidden

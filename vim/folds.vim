@@ -8,11 +8,18 @@ endfunction
 
 function! Folds_enable()
   let g:Folds_enabled = 1
+
+  set foldcolumn=1
+  set foldenable
+  set foldlevel=0
+  set foldmethod=syntax
+  set foldminlines=0
+
   call Folds_autocmd_set()
 endfunction
 
 function! Folds_disable()
-  let g:Folds_eanbled = 0
+  let g:Folds_enabled = 0
   autocmd! Folds
 endfunction
 
