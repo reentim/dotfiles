@@ -201,7 +201,7 @@ nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
 nnoremap <leader>f :call RunFile()<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
-nnoremap <leader>gc :call SelectaFile("app/controllers")<CR>
+nnoremap <leader>gc :call SelectaGitCommitFile("HEAD")<CR>
 nnoremap <leader>gd :call SelectaGitFile(expand('%:p:h'))<CR>
 nnoremap <leader>gj :call BashIfToShortCircuit()<CR>
 nnoremap <leader>gl :call SelectaFile("lib")<CR>

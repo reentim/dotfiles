@@ -460,6 +460,10 @@ function! SelectaGitCurrentBranchFile()
   call SelectaCommand("git diff --name-only $(git merge-base --fork-point " . $DEFAULT_BRANCH . ")", "", ":e")
 endfunction
 
+function! SelectaGitCommitFile(revision)
+  call SelectaCommand("git diff --name-only " . a:revision . "~", "", ":e")
+endfunction
+
 " Fuzzy select
 function! SelectaIdentifier()
   " Yank the word under the cursor into the z register
