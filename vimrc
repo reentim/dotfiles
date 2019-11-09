@@ -59,9 +59,6 @@ set wildmenu
 set winheight=16
 set winwidth=72
 
-call pathogen#infect()
-call pathogen#helptags()
-
 filetype plugin indent on
 syntax on
 

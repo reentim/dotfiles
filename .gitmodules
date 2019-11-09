@@ -1,126 +1,126 @@
 # Vim bundles
 [submodule "vim/bundle/html5-syntax.vim"]
-	path = vim/bundle/html5-syntax.vim
+	path = vim/pack/bundle/start/html5-syntax.vim
 	url = git://github.com/othree/html5-syntax.vim.git
 [submodule "vim/bundle/tlib_vim"]
-	path = vim/bundle/tlib_vim
+	path = vim/pack/bundle/start/tlib_vim
 	url = git://github.com/tomtom/tlib_vim.git
 [submodule "vim/bundle/vim-addon-mw-utils"]
-	path = vim/bundle/vim-addon-mw-utils
+	path = vim/pack/bundle/start/vim-addon-mw-utils
 	url = git://github.com/MarcWeber/vim-addon-mw-utils.git
 [submodule "vim/bundle/vim-commentary"]
-	path = vim/bundle/vim-commentary
+	path = vim/pack/bundle/start/vim-commentary
 	url = git://github.com/tpope/vim-commentary.git
 [submodule "vim/bundle/vim-css3-syntax"]
-	path = vim/bundle/vim-css3-syntax
+	path = vim/pack/bundle/start/vim-css3-syntax
 	url = git://github.com/hail2u/vim-css3-syntax.git
 [submodule "vim/bundle/vim-indent-guides"]
-	path = vim/bundle/vim-indent-guides
+	path = vim/pack/bundle/start/vim-indent-guides
 	url = git://github.com/nathanaelkane/vim-indent-guides.git
 [submodule "vim/bundle/vim-repeat"]
-	path = vim/bundle/vim-repeat
+	path = vim/pack/bundle/start/vim-repeat
 	url = git://github.com/tpope/vim-repeat.git
 [submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/vim-surround
+	path = vim/pack/bundle/start/vim-surround
 	url = git://github.com/tpope/vim-surround.git
 [submodule "vim/bundle/scss-syntax.vim"]
-	path = vim/bundle/scss-syntax.vim
+	path = vim/pack/bundle/start/scss-syntax.vim
 	url = git://github.com/cakebaker/scss-syntax.vim.git
 [submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
+	path = vim/pack/bundle/start/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
 [submodule "vim/bundle/delimitMate"]
-	path = vim/bundle/delimitMate
+	path = vim/pack/bundle/start/delimitMate
 	url = git://github.com/Raimondi/delimitMate.git
 [submodule "vim/bundle/tabular"]
-	path = vim/bundle/tabular
+	path = vim/pack/bundle/start/tabular
 	url = git://github.com/godlygeek/tabular.git
 [submodule "vim/bundle/xterm-color-table.vim"]
-	path = vim/bundle/xterm-color-table.vim
+	path = vim/pack/bundle/start/xterm-color-table.vim
 	url = https://github.com/vim-scripts/xterm-color-table.vim.git
 	ignore = dirty
 [submodule "vim/bundle/vim-endwise"]
-	path = vim/bundle/vim-endwise
+	path = vim/pack/bundle/start/vim-endwise
 	url = https://github.com/tpope/vim-endwise.git
 [submodule "vim/bundle/indenthtml.vim"]
-	path = vim/bundle/indenthtml.vim
+	path = vim/pack/bundle/start/indenthtml.vim
 	url = https://github.com/vim-scripts/indenthtml.vim.git
 [submodule "vim/bundle/vim-javascript"]
-	path = vim/bundle/vim-javascript
+	path = vim/pack/bundle/start/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
 [submodule "vim/bundle/vim-rails"]
-	path = vim/bundle/vim-rails
+	path = vim/pack/bundle/start/vim-rails
 	url = https://github.com/tpope/vim-rails.git
 [submodule "vim/bundle/vim-coffee-script"]
-	path = vim/bundle/vim-coffee-script
+	path = vim/pack/bundle/start/vim-coffee-script
 	url = git@github.com:kchmck/vim-coffee-script.git
 [submodule "vim/bundle/vim-haml"]
-	path = vim/bundle/vim-haml
+	path = vim/pack/bundle/start/vim-haml
 	url = git@github.com:tpope/vim-haml.git
 [submodule "vim/bundle/vim-rabl"]
-	path = vim/bundle/vim-rabl
+	path = vim/pack/bundle/start/vim-rabl
 	url = git://github.com/yaymukund/vim-rabl.git
 [submodule "vim/bundle/vim-less"]
-	path = vim/bundle/vim-less
+	path = vim/pack/bundle/start/vim-less
 	url = git://github.com/groenewege/vim-less.git
 [submodule "vim/bundle/splitjoin"]
-	path = vim/bundle/splitjoin
+	path = vim/pack/bundle/start/splitjoin
 	url = git://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "vim/bundle/vim-ruby"]
-	path = vim/bundle/vim-ruby
+	path = vim/pack/bundle/start/vim-ruby
 	url = git://github.com/vim-ruby/vim-ruby.git
 [submodule "vim/bundle/vim-markdown"]
-	path = vim/bundle/vim-markdown
+	path = vim/pack/bundle/start/vim-markdown
 	url = git://github.com/tpope/vim-markdown.git
 [submodule "vim/bundle/ultisnips"]
-	path = vim/bundle/ultisnips
+	path = vim/pack/bundle/start/ultisnips
 	url = git://github.com/SirVer/ultisnips.git
 	ignore = dirty
 [submodule "vim/bundle/vim-ragtag"]
-	path = vim/bundle/vim-ragtag
+	path = vim/pack/bundle/start/vim-ragtag
 	url = https://github.com/tpope/vim-ragtag.git
 	ignore = dirty
 [submodule "vim/bundle/vim-indent-object"]
-	path = vim/bundle/vim-indent-object
+	path = vim/pack/bundle/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object.git
 [submodule "vim/bundle/vim-tmux-navigator"]
-	path = vim/bundle/vim-tmux-navigator
+	path = vim/pack/bundle/start/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "vim/bundle/vim-ack"]
-	path = vim/bundle/vim-ack
+	path = vim/pack/bundle/start/vim-ack
 	url = https://github.com/mileszs/ack.vim.git
 [submodule "vim/bundle/vim-textobj-user"]
-	path = vim/bundle/vim-textobj-user
+	path = vim/pack/bundle/start/vim-textobj-user
 	url = git@github.com:kana/vim-textobj-user.git
 	ignore = dirty
 [submodule "vim/bundle/vim-textobj-rubyblock"]
-	path = vim/bundle/vim-textobj-rubyblock
+	path = vim/pack/bundle/start/vim-textobj-rubyblock
 	url = git@github.com:nelstrom/vim-textobj-rubyblock.git
 	ignore = dirty
 [submodule "vim/bundle/vim-change-hash-syntax"]
-	path = vim/bundle/vim-change-hash-syntax
+	path = vim/pack/bundle/start/vim-change-hash-syntax
 	url = git@github.com:ck3g/vim-change-hash-syntax.git
 	ignore = dirty
 [submodule "vim/bundle/vim-matchit"]
-	path = vim/bundle/vim-matchit
+	path = vim/pack/bundle/start/vim-matchit
 	url = git@github.com:tmhedberg/matchit.git
 [submodule "vim/bundle/vim-snippets"]
-	path = vim/bundle/vim-snippets
+	path = vim/pack/bundle/start/vim-snippets
 	url = git@github.com:honza/vim-snippets.git
 [submodule "vim/bundle/vim-ember"]
-	path = vim/bundle/vim-ember
+	path = vim/pack/bundle/start/vim-ember
 	url = git@github.com:joukevandermaas/vim-ember-hbs.git
 [submodule "vim/bundle/vim-jsx"]
-	path = vim/bundle/vim-jsx
+	path = vim/pack/bundle/start/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
 [submodule "vim/bundle/ale"]
-	path = vim/bundle/ale
+	path = vim/pack/bundle/start/ale
 	url = https://github.com/w0rp/ale.git
 [submodule "vim/bundle/command-t"]
-	path = vim/bundle/command-t
+	path = vim/pack/bundle/start/command-t
 	url = https://github.com/wincent/command-t.git
 [submodule "vim/bundle/vim-one"]
-	path = vim/bundle/vim-one
+	path = vim/pack/bundle/start/vim-one
 	url = git@github.com:rakr/vim-one.git
 [submodule "lib/z"]
 	path = lib/z
@@ -132,18 +132,18 @@
 	path = tmux/tmux-resurrect
 	url = https://github.com/tmux-plugins/tmux-resurrect
 [submodule "vim/bundle/tsuquyomi"]
-	path = vim/bundle/tsuquyomi
+	path = vim/pack/bundle/start/tsuquyomi
 	url = git@github.com:Quramy/tsuquyomi.git
 	ignore = dirty
 [submodule "vim/bundle/typescript-vim"]
-	path = vim/bundle/typescript-vim
+	path = vim/pack/bundle/start/typescript-vim
 	url = git@github.com:leafgarland/typescript-vim.git
 [submodule "vim/bundle/iceberg"]
-	path = vim/bundle/iceberg
+	path = vim/pack/bundle/start/iceberg
 	url = https://github.com/cocopon/iceberg.vim.git
 [submodule "babushka-deps"]
 	path = babushka-deps
 	url = git@github.com:reentim/babushka-deps
 [submodule "vim/bundle/lightline.vim"]
-	path = vim/bundle/lightline.vim
+	path = vim/pack/bundle/start/lightline.vim
 	url = git@github.com:itchyny/lightline.vim.git
