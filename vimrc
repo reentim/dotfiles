@@ -77,7 +77,7 @@ augroup vimrc
   autocmd BufRead * execute ":nohlsearch"
   autocmd BufWritePost functions.vim source ~/.vim/functions.vim
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
-  autocmd Colorscheme * call IndentGuideColors_set()
+  autocmd Colorscheme * call Colorscheme_set_after()
   autocmd FileType c setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd FileType crontab setlocal backupcopy=yes
   autocmd FileType eruby,markdown,html setlocal spell
@@ -87,12 +87,10 @@ augroup vimrc
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
   autocmd Filetype make setlocal tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab
   autocmd InsertLeave,TextChanged * silent! update
-  autocmd VimEnter * call Colorscheme_set()
+  autocmd VimEnter * call Colorscheme_detect()
   autocmd VimEnter * call EnsureTempDirs()
   autocmd VimEnter * call FuzzyFinder_configure()
-  autocmd VimEnter * call IndentGuideColors_set()
   autocmd VimEnter * call ItalicComments_enable()
-  autocmd VimEnter * call Lightline_update()
 
   " doesn't work:
   autocmd BufRead help nnoremap <silent> <CR> :nohl<CR>
