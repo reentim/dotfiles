@@ -512,10 +512,6 @@ endfunction
 function! GitTopLevelDir(...)
   let dir = get(a:000, 0, getcwd())
 
-  if &runtimepath =~ 'vim-fugitive'
-    return substitute(fugitive#extract_git_dir(l:dir), "/.git", "", "")
-  endif
-
   let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
   return l:git_dir != "" ? l:git_dir : 0
 endfunction
