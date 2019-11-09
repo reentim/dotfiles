@@ -34,9 +34,24 @@ bindkey "" kill-line
 
 stty -ixon # Free up C-s for fwd-i-search
 
+toggle-prompt-time() {
+  if [ $PROMPT_TIME ]; then
+    unset PROMPT_TIME
+    rm -f /tmp/PROMPT_TIME
+  else
+    export PROMPT_TIME="1"
+    touch /tmp/PROMPT_TIME
+  fi
+  promptinit
+  prompt grb
+}
+
+zle -N toggle-prompt-time toggle-prompt-time
+
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '' edit-command-line
+bindkey '' toggle-prompt-time
 
 export LC_ALL="en_AU.UTF-8"
 
