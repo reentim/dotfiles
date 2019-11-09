@@ -394,13 +394,15 @@ function! IndentGuideColors(...)
       return [7, 15]
     endif
   elseif l:colorscheme =~ 'Tomorrow-Night$'
-      return [236, 237]
+    return [236, 237]
   elseif l:colorscheme =~ 'Tomorrow-Night-Bright'
-      return [236, 237]
+    return [236, 237]
+  elseif l:colorscheme =~ 'Tomorrow-Night-Blue'
+    return [18, 19]
   elseif l:colorscheme =~ 'Tomorrow-Night-Eighties'
-      return [236, 238]
-    elseif l:colorscheme =~ 'dracula'
-      return [237, 236]
+    return [236, 238]
+  elseif l:colorscheme =~ 'dracula'
+    return [237, 236]
   endif
 endfunction
 
