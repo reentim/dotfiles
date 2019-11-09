@@ -1,26 +1,20 @@
-nnoremap <buffer> <CR> <C-]>
-nnoremap <buffer> <BS> <C-T>
-nnoremap <buffer> o /'\l\{2,\}'<CR>
-nnoremap <buffer> O ?'\l\{2,\}'<CR>
-nnoremap <buffer> s :call JumpToNextSubject()<CR>
-nnoremap <buffer> S :call JumpToPreviousSubject()<CR>
+nnoremap <buffer> O :call Option_prev_jump<CR>
+nnoremap <buffer> S :call Subject_prev_jump()<CR>
+nnoremap <buffer> o :call Option_next_jump()<CR>
+nnoremap <buffer> s :call Subject_next_jump()<CR>
 
-function! JumpToNextOption()
+function! Option_next_jump()
+  execute "normal! /'\l\{2,\}'"
 endfunction
 
-function! JumpToPreviousOption()
+function! Option_prev_jump()
+  execute "normal! ?'\l\{2,\}'"
 endfunction
 
-function! Open()
+function! Subject_next_jump()
+  execute "normal! /|.\\{-}|"
 endfunction
 
-function! GoBack()
-endfunction
-
-function! JumpToNextSubject()
-  exe "normal! /|.\\{-}|"
-endfunction
-
-function! JumpToPreviousSubject()
-  exe "normal! ?|.\\{-}|"
+function! Subject_prev_jump()
+  execute "normal! ?|.\\{-}|"
 endfunction
