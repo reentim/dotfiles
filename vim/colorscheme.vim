@@ -7,26 +7,36 @@ function! Colorscheme_get()
   endif
 endfunction
 
-function! Colorscheme_detect()
+function! Colorscheme_set(...)
+  let options = get(a:000, 0, {})
+  let profile = get(l:options, 'profile')
+  let scheme = get(l:options, 'scheme', Colorscheme_for_profile(l:profile))
+  execute "colorscheme " . l:scheme
+  call Colorscheme_set_after(l:scheme)
+endfunction
+
+function! Colorscheme_for_profile(...)
   if $TERM_PROGRAM =~ 'Apple_Terminal'
-    let scheme = 'Tomorrow-Night-Bright'
+    return 'Tomorrow-Night-Bright'
   else
-    let profile = ItermProfile()
+    let profile = get(a:000, 0, ItermProfile())
+    if l:profile == 0
+      let profile = ItermProfile()
+    endif
+
     if profile =~ 'Solarized'
       if profile =~ 'Light'
         set background=light
-      else
+      elseif profile =~ 'Dark'
         set background=dark
       endif
-      let scheme = 'solarized'
+      return 'solarized'
     elseif profile =~ 'iceberg'
-      let scheme = 'iceberg'
+      return 'iceberg'
     else
-      let scheme = 'Tomorrow-Night-Bright'
+      return 'Tomorrow-Night-Bright'
     endif
   endif
-  execute "colorscheme " . l:scheme
-  call Colorscheme_set_after(l:scheme)
 endfunction
 
 function! Colorscheme_set_after(...)
@@ -34,4 +44,8 @@ function! Colorscheme_set_after(...)
   call Lightline_determine_colorscheme(l:scheme)
   call Lightline_update()
   call IndentGuideColors_set()
+endfunction
+
+function! Profile_fuzzy_find()
+  call Profile_change(SelectaCommand("iterm list_profiles"))
 endfunction
