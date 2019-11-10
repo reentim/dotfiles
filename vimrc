@@ -82,7 +82,7 @@ augroup vimrc
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
   autocmd InsertLeave,TextChanged * silent! update
-  autocmd VimEnter * call Colorscheme_detect()
+  autocmd VimEnter * call Colorscheme_set()
   autocmd VimEnter * call EnsureTempDirs()
   autocmd VimEnter * call FuzzyFinder_configure()
   autocmd VimEnter * call ItalicComments_enable()
@@ -182,6 +182,7 @@ nnoremap <leader><leader> <C-^>
 nnoremap <leader>ad :ALEDisable<CR>
 nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>b :call FuzzyFindBuffer()<CR>
+nnoremap <leader>c :call Profile_fuzzy_find()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>

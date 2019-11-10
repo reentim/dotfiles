@@ -642,10 +642,6 @@ function! VimFunctionUnderCursor()
   return substitute(getline(l:line_no), "function! ", "", "")
 endfunction
 
-function! ReevaluateColorscheme()
-  " TODO call from on job refocus or similar event
-endfunction
-
 function! MakeExec()
   if ShellOK("chmod +x " . expand("%:p"))
     echom System("/usr/bin/stat -f %A " . expand("%:p"))
@@ -662,4 +658,9 @@ function! AbbrevRemapRun()
   return getcmdtype() == ":" && getcmdline() == "rr"
   \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"
   \ : "rr"
+endfunction
+
+function! Profile_change(profile)
+  call AsyncShell("prof " . a:profile)
+  call Colorscheme_set({"profile": a:profile})
 endfunction
