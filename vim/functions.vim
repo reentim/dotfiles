@@ -499,12 +499,16 @@ function! ShouldToExpect()
 endfunction
 
 function! OpenAlternateFile(path)
-  let l:alternate = system("alt " . a:path)
-  if empty(l:alternate)
-    echom "No alternate file for " . a:path
-  else
-    exec ':e ' . l:alternate
-  endif
+  try
+    execute ":A"
+  catch /E464/
+    if !empty(l:alternate)
+      let alternate = system("alt " . a:path)
+      execute ":e " . l:alternate
+    else
+      echom "No alternate file for " . a:path
+    endif
+  endtry
 endfunction
 
 function! InGitDir(...)
