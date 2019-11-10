@@ -71,7 +71,6 @@ augroup vimrc
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd BufNewFile,BufRead * call CdToProjectRoot()
-  autocmd BufRead * execute ":nohlsearch"
   autocmd BufWritePost functions.vim source ~/.vim/functions.vim
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd Colorscheme * call Colorscheme_set_after()
@@ -82,10 +81,7 @@ augroup vimrc
   autocmd FileType javascript.jsx setlocal commentstring={/*\ %s\ */}
   autocmd FileType ruby nnoremap <buffer> <leader>a :call InteractiveRuby()<CR>
   autocmd InsertLeave,TextChanged * silent! update
-  autocmd VimEnter * call Colorscheme_set()
-  autocmd VimEnter * call EnsureTempDirs()
-  autocmd VimEnter * call FuzzyFinder_configure()
-  autocmd VimEnter * call ItalicComments_enable()
+  autocmd VimEnter * call VimEnter_after()
 
   " doesn't work:
   autocmd BufRead help nnoremap <silent> <CR> :nohl<CR>
@@ -187,7 +183,7 @@ nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
 nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
-nnoremap <leader>er :source $MYVIMRC<CR>
+nnoremap <leader>er :source $MYVIMRC\|:call VimEnter_after()<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>

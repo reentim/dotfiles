@@ -664,3 +664,11 @@ function! Profile_change(profile)
   call AsyncShell("prof " . a:profile)
   call Colorscheme_set({"profile": a:profile})
 endfunction
+
+function! VimEnter_after()
+  call Colorscheme_set()
+  call EnsureTempDirs()
+  call FuzzyFinder_configure()
+  call ItalicComments_enable()
+  execute ":nohlsearch"
+endfunction
