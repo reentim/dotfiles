@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+main() {
+  local profile="$1"
+  if [ "$profile" ]; then
+    iterm change_profile $profile
+  else
+    local selection=$(iterm list_profiles | selecta)
+    [ "$selection" != "" ] && iterm change_profile $selection
+  fi
+
+  # Skip these if no change was made, due to e.g. ^C during selection
+  if [ "$profile" ] || [ "$selection" ]; then
+    [ $TMUX ] && tmux source-file ~/.tmux.conf
+  fi
+
+}
+
+main "$*"
