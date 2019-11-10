@@ -138,7 +138,7 @@ prompt_grb_setup() {
   else
     pc[host]='green'
   fi
-  pc[user]='cyan'
+  pc[user]='green'
   pc[punc]='yellow'
   pc[line]='magenta'
   pc[hist]='green'
@@ -178,6 +178,7 @@ prompt_grb_setup() {
   }
 
   PROMPT=""
+  [ $SSH_CONNECTION ] && PROMPT+="%B$pc[host]%m$pc[reset]%B|"
   PROMPT+="%B$pc[shortpath]%1~%b$pc[reset]"
   PROMPT+="\$(prompt_grb_formatted_scm_info)"
   PROMPT+="$pc[#]%b"
