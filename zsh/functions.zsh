@@ -4,14 +4,6 @@ server() {
   python -m SimpleHTTPServer "$port"
 }
 
-prof() {
-  iterm list_profiles \
-    | selecta \
-    | xargs -L 1 iterm change_profile $1
-
-  [ $TMUX ] && tmux source-file ~/.tmux.conf
-}
-
 proj() {
   local cache="$HOME/.tmp/proj_list"
   if ! [ -f "$cache" ]; then
