@@ -424,9 +424,11 @@ function! FuzzyFindBuffer()
   endif
 endfunction
 
-function! SelectaCommand(choice_command, selecta_args, vim_command)
+function! SelectaCommand(choice_command, ...)
+  let selecta_args = get(get(a:000, 0, {}), "selecta", "")
+  let vim_command = get(get(a:000, 0, {}), "vim")
   try
-    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+    let selection = system(a:choice_command . " | selecta " . l:selecta_args)
   catch /Vim:Interrupt/
     " Swallow the ^C so that the redraw below happens; otherwise there will be
     " leftovers from selecta on the screen
@@ -434,7 +436,11 @@ function! SelectaCommand(choice_command, selecta_args, vim_command)
     return
   endtry
   redraw!
-  exec a:vim_command . " " . selection
+  if !empty(l:vim_command)
+    exec l:vim_command . " " . l:selection
+  else
+    return l:selection
+  endif
 endfunction
 
 function! SelectaFile(path)
@@ -446,27 +452,31 @@ function! SelectaFile(path)
 endfunction
 
 function! SelectaMRUFoundFile(path)
-  call SelectaCommand("ls -dt $(" . FindWithWildignore(a:path) . ")", "", ":e")
+  call SelectaCommand("ls -dt $(" . FindWithWildignore(a:path) . ")", {"vim": ":e"})
 endfunction
 
 function! SelectaFoundFile(path)
-  call SelectaCommand(FindWithWildignore(a:path), "", ":e")
+  call SelectaCommand(FindWithWildignore(a:path), {"vim": ":e"})
 endfunction
 
 function! SelectaGitFile(path)
-  call SelectaCommand("git ls-files --cached --others --exclude-standard " . a:path . " | uniq", "", ":e")
+  let choice = "git ls-files --cached --others --exclude-standard " . a:path . " | uniq"
+  call SelectaCommand(l:choice, {"vim": ":e"})
 endfunction
 
 function! SelectaGitMRUFile(path)
-  call SelectaCommand("ls -dt $(git ls-files --cached --others --exclude-standard " . a:path . " | uniq)", "", ":e")
+  let choice = "ls -dt $(git ls-files --cached --others --exclude-standard " . a:path . " | uniq)"
+  call SelectaCommand(l:choice, {"vim": ":e"})
 endfunction
 
 function! SelectaGitCurrentBranchFile()
-  call SelectaCommand("git diff --name-only $(git merge-base --fork-point " . $DEFAULT_BRANCH . ")", "", ":e")
+  let choice = "git diff --name-only $(git merge-base --fork-point " . $DEFAULT_BRANCH . ")"
+  call SelectaCommand(l:choice, {"vim": ":e"})
 endfunction
 
 function! SelectaGitCommitFile(revision)
-  call SelectaCommand("git diff --name-only " . a:revision . "~", "", ":e")
+  let choice = "git diff --name-only " . a:revision . "~"
+  call SelectaCommand(l:choice, {"vim": ":e"})
 endfunction
 
 " Fuzzy select
@@ -475,13 +485,13 @@ function! SelectaIdentifier()
   normal "zyiw
   " Fuzzy match files in the current directory, starting with the word under
   " the cursor
-  call SelectaCommand("find * -type f", "-s " . @z, ":e")
+  call SelectaCommand("find * -type f", {"selecta": "-s " . @z}, {"vim": ":e"})
 endfunction
 
 function! SelectaBuffer()
   let bufnrs = filter(range(1, bufnr("$")), 'buflisted(v:val)')
   let buffers = map(bufnrs, 'bufname(v:val)')
-  call SelectaCommand('echo "' . join(buffers, "\n") . '"', "", ":b")
+  call SelectaCommand('echo "' . join(buffers, "\n") . '"', {"vim": ":b"})
 endfunction
 
 function! ShouldToExpect()
