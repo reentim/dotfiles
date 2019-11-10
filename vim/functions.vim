@@ -444,7 +444,7 @@ function! SelectaCommand(choice_command, ...)
 endfunction
 
 function! SelectaFile(path)
-  if InGitTopLevelDir()
+  if InGitDir()
     call SelectaGitFile(a:path)
   else
     call SelectaFoundFile(a:path)
@@ -507,12 +507,8 @@ function! OpenAlternateFile(path)
   endif
 endfunction
 
-function! InGitTopLevelDir(...)
+function! InGitDir(...)
   let dir = get(a:000, 0, getcwd())
-
-  if &runtimepath =~ 'vim-fugitive'
-    return substitute(fugitive#is_git_dir(l:dir), "/.git", "", "")
-  endif
 
   return ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
 endfunction
