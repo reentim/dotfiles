@@ -1,3 +1,7 @@
+if filereadable(expand("~/.vim/lightline.vim"))
+  source ~/.vim/lightline.vim
+endif
+
 if filereadable(expand("~/.vim/colorscheme.vim"))
   source ~/.vim/colorscheme.vim
 endif
@@ -136,12 +140,6 @@ function! ResumeCursorPosition()
   if line("'\"") > 0 && line("'\"") <= line("$") |
     exe "normal g`\"" |
   endif
-endfunction
-
-function! Lightline_update()
-  call lightline#init()
-  call lightline#colorscheme()
-  call lightline#update()
 endfunction
 
 function! VisibleBuffers()
@@ -589,16 +587,6 @@ function! RewrapBuffer()
   call cursor(pos[1] + line('$') - lines, pos[2])
 endfunction
 
-function! Lightline_determine_colorscheme(name)
-  if a:name =~ 'solarized'
-    let g:lightline.colorscheme = 'solarized'
-  elseif a:name == 'Tomorrow'
-    let g:lightline.colorscheme = 'PaperColor'
-  elseif a:name == 'Tomorrow-Night-Blue'
-    let g:lightline.colorscheme = 'landscape'
-  endif
-endfunction
-
 function! AutocmdCommitMessage()
   let b:noResumeCursorPosition=1
   setlocal textwidth=72
@@ -664,16 +652,4 @@ function! AbbrevRemapRun()
   return getcmdtype() == ":" && getcmdline() == "rr"
   \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"
   \ : "rr"
-endfunction
-
-function! LightlineReadonly()
-  return &readonly ? '' : ''
-endfunction
-
-function! LightlineFugitive()
-  if exists('*fugitive#head')
-    let branch = fugitive#head()
-    return branch !=# '' ? ''.branch : ''
-  endif
-  return ''
 endfunction
