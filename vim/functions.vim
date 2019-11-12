@@ -211,7 +211,7 @@ function! _Executor(ft, filepath, ...)
     elseif l:filename == "routes.rb"
       return "routes routes"
     elseif a:filepath =~ "babushka"
-      return "babushka " . DepUnderCursor()
+      return "babushka \"" . DepUnderCursor() . "\""
     else
       return "ruby " . l:path
     endif
