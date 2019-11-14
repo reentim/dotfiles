@@ -84,18 +84,17 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 let g:CommandTFileScanner = 'git'
 let g:CommandTMatchWindowReverse = 0
-let g:CommandTMaxHeight = 18
 let g:CommandTMaxHeight = 20
-let g:CommandTMinHeight = 18
 let g:CommandTMinHeight = 20
 let g:CommandTRecursiveMatch = 0
 let g:UltiSnipsExpandTrigger = "<C-]>"
 let g:UltiSnipsJumpForwardTrigger = "<C-]>"
+let g:ackhighlight = 1
+let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ale_completion_delay = 50
 let g:ale_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_fix_on_save_ignore = {'ruby': ['rubocop']}
-let g:ale_sign_column_always = 0
 let g:ale_fixers = {
       \ 'javascript': ['eslint'],
       \ 'typescript': ['prettier'],
@@ -110,6 +109,7 @@ let g:ale_linters = {
 let g:ale_pattern_options = {
       \ '.*schema\.rb$': {'ale_enabled': 0},
       \}
+let g:ale_sign_column_always = 0
 let g:lightline = {
       \ 'active': {
       \   'left': [['mode', 'paste'],
@@ -139,8 +139,6 @@ let g:ultisnips_javascript = {
   \ 'space-before-function-paren': 'always',
 \ }
 let g:jsx_ext_required = 0
-let g:ackprg = 'ag --nogroup --nocolor --column'
-let g:ackhighlight = 1
 let mapleader = ','
 
 cnoreabbrev <expr> h AbbrevTabHelp()
@@ -153,7 +151,7 @@ inoremap <C-L> =><space>
 inoremap jk <ESC>
 nnoremap / /\v
 nnoremap ; :
-nnoremap <C-G> :call SelectaIdentifier()<CR>
+nnoremap <C-g> :call SelectaIdentifier()<CR>
 nnoremap <F5> :set invlist<CR>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
@@ -171,8 +169,8 @@ nnoremap <leader>er :source $MYVIMRC\|:call VimEnter_after()<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
 nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
-nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
+nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>f :call RunFile()<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaGitCommitFile("HEAD")<CR>
@@ -220,9 +218,3 @@ vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
 vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
 vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
 vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
-
-vnoremap <silent> * :<C-U>
-  \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \ gvy/<C-R><C-R>=substitute(
-  \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \ gV:call setreg('"', old_reg, old_regtype)<CR>
