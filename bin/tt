@@ -6,7 +6,7 @@ function main() {
     tmux send-keys -t $target C-c "clear; time $*; jobs | tail -1" C-m
     exit 0
   else
-    tmux $(autosplit) "$*; read"
+    tmux $(autosplit) "$*; read -k"
   fi
   exit 1
 }
