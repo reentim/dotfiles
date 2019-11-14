@@ -153,6 +153,8 @@ nnoremap / /\v
 nnoremap ; :
 nnoremap <C-g> :call SelectaIdentifier()<CR>
 nnoremap <F5> :set invlist<CR>
+" F6 could be the key to, maybe progressively, show / hide all the hidden stuff on the left, including ALE signcolumn
+nnoremap <F6> :call LineNumbers_toggle()<CR>
 nnoremap <leader>. :call OpenAlternateFile(expand('%'))<CR>
 nnoremap <leader>8l :call FullUnderline('-')<CR>
 nnoremap <leader>8u :call FullUnderline('=')<CR>

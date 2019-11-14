@@ -693,3 +693,11 @@ endfunction
 function! Matches(a, b)
   return match(a:a, a:b) != -1
 endfunction
+
+function! LineNumbers_toggle()
+  if &nu
+    windo set nonu
+  else
+    windo set nu
+  endif
+endfunction
