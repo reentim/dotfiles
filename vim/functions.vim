@@ -6,6 +6,10 @@ if filereadable(expand("~/.vim/colorscheme.vim"))
   source ~/.vim/colorscheme.vim
 endif
 
+if filereadable(expand("~/.vim/trailing_whitespace.vim"))
+  source ~/.vim/trailing_whitespace.vim
+endif
+
 function! IsCommentLine()
   let wordline = split(getline('.'))
   if len(wordline) == 0
@@ -80,11 +84,6 @@ function! SplitLine()
     :s/>/\r>/g
   endif
   normal $=`a
-endfunction
-
-function! TrimWhiteSpace()
-  %s/\s\+$//e
-  normal ``
 endfunction
 
 function! SetWatch()
