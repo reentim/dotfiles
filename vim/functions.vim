@@ -650,10 +650,6 @@ function! MakeExec()
   endif
 endfunction
 
-function! AbbrevTabHelp()
-  return getcmdtype() == ":" && getcmdline() == "h" ? "tab help" : "h"
-endfunction
-
 function! AbbrevRemapRun()
   return getcmdtype() == ":" && getcmdline() == "rr"
   \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"

@@ -141,7 +141,6 @@ let g:ultisnips_javascript = {
 let g:jsx_ext_required = 0
 let mapleader = ','
 
-cnoreabbrev <expr> h AbbrevTabHelp()
 cnoreabbrev <expr> rr AbbrevRemapRun()
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
