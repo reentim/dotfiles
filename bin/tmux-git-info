@@ -7,6 +7,9 @@ main() {
     exit 1
   fi
 
+  # TODO: this gets it wrong after `git reset --hard` to someplace with a
+  # branch pointing to it, this lists that branch, not the current, depending on
+  # sorting, presumably
   git --git-dir="$git_dir" --no-pager \
     for-each-ref refs/heads \
       --count=1 \
