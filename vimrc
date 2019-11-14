@@ -85,13 +85,6 @@ augroup vimrc
   " doesn't work:
   autocmd BufRead help nnoremap <silent> <CR> :nohl<CR>
 
-  " Highlight trailing whitespace, but not during insertion
-  highlight TrailingWhitespace ctermbg=red guibg=red
-  autocmd BufEnter    * match TrailingWhitespace /\s\+$/
-  autocmd InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
-  autocmd InsertLeave * match TrailingWhitespace /\s\+$/
-  autocmd BufWinLeave * call clearmatches()
-
   autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
 
