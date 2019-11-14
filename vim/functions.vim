@@ -309,10 +309,6 @@ function! CopyToHost()
   echom 'Copied to clipboard!'
 endfunction
 
-function! ItermProfile()
-  return system("iterm current_profile")
-endfunction
-
 function! DeleteInactiveBufs()
   "From tabpagebuflist() help, get a list of all buffers in all tabs
   let tablist = []
@@ -384,7 +380,7 @@ function! FuzzyFinder_configure()
   endif
 endfunction
 
-function! IndentGuideColors(...)
+function! IndentGuideColors_get(...)
   let colorscheme = get(a:000, 0, Colorscheme_get())
   if l:colorscheme =~ 'solarized'
     if &background == 'dark'
@@ -410,7 +406,7 @@ function! IndentGuideColors(...)
 endfunction
 
 function! IndentGuideColors_set(...)
-  let colors = get(a:000, 0, IndentGuideColors())
+  let colors = get(a:000, 0, IndentGuideColors_get())
   let g:indent_guides_auto_colors = 0
   execute "hi IndentGuidesOdd  ctermbg=" . l:colors[0]
   execute "hi IndentGuidesEven ctermbg=" . l:colors[1]
@@ -660,15 +656,32 @@ function! AbbrevRemapRun()
   \ : "rr"
 endfunction
 
-function! Profile_change(profile)
-  call AsyncShell("prof " . a:profile)
-  call Colorscheme_set({"profile": a:profile})
+function! Profile_get()
+  let g:Profile_cache = system("iterm current_profile")
+  return g:Profile_cache
+endfunction
+
+function! Profile_cache_get()
+  let default = "Solarized Light - Input Mono"
+  return get(g:, "Profile_cache", l:default)
+endfunction
+
+function! Profile_set(...)
+  let default = "Solarized Light - Input Mono"
+  let profile = get(a:000, 0, Profile_cache_get())
+  let g:Profile_cache = l:profile
+  call AsyncShell("prof " . l:profile)
+  call Colorscheme_set({"profile": l:profile})
+endfunction
+
+function! Profile_fuzzy_find()
+  call Profile_set(SelectaCommand("iterm list_profiles"))
 endfunction
 
 function! VimEnter_after()
+  call Profile_get()
   call Colorscheme_set()
   call EnsureTempDirs()
   call FuzzyFinder_configure()
   call ItalicComments_enable()
-  execute ":nohlsearch"
 endfunction
