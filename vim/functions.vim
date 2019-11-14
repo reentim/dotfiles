@@ -521,10 +521,15 @@ endfunction
 
 function! CdToProjectRoot()
   if &ft =~ '\(fugitiveblame\|git\|help\)'
-    return 1
+    return 0
   endif
+
   let file_git_dir = GitTopLevelDir(expand("%:h"))
   if type(l:file_git_dir) == 1
+    if Matches($PWD, l:file_git_dir)
+      return 0
+    endif
+
     exec "lcd " . l:file_git_dir
     return 1
   endif
@@ -683,4 +688,8 @@ function! VimEnter_after()
   call EnsureTempDirs()
   call FuzzyFinder_configure()
   call ItalicComments_enable()
+endfunction
+
+function! Matches(a, b)
+  return match(a:a, a:b) != -1
 endfunction
