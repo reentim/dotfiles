@@ -113,7 +113,7 @@ let g:ale_sign_column_always = 0
 let g:lightline = {
       \ 'active': {
       \   'left': [['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified']]
+      \             ['readonly', 'filename', 'modified']]
       \ },
       \ 'component': {
       \   'lineinfo': ' %3l:%-2v',
