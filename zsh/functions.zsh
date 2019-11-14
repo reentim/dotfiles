@@ -120,3 +120,7 @@ _path_without() {
   arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
   echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
 }
+
+uncd() {
+  cd $OLDPWD
+}
