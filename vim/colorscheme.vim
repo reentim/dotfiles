@@ -8,8 +8,14 @@ endfunction
 
 function! Colorscheme_set(...)
   let options = get(a:000, 0, {})
-  let profile = get(l:options, 'profile', Profile_cache_get())
-  let scheme = get(l:options, 'scheme', Colorscheme_for_profile(l:profile))
+  let profile = get(l:options, 'profile')
+  if type(l:profile) != 1
+    let profile = Profile_get()
+  endif
+  let scheme = get(l:options, 'scheme')
+  if type(l:scheme) != 1
+    let scheme = Colorscheme_for_profile(l:profile)
+  endif
   execute "colorscheme " . l:scheme
   call Colorscheme_set_after({"profile": l:profile, "scheme": l:scheme})
 endfunction
@@ -28,7 +34,10 @@ function! Colorscheme_for_profile(...)
   if $TERM_PROGRAM =~ 'Apple_Terminal'
     return 'Tomorrow-Night-Bright'
   else
-    let profile = get(a:000, 0, Profile_cache_get())
+    let profile = get(a:000, 0)
+    if type(l:profile) != 1
+      let profile = Profile_get()
+    endif
     if l:profile =~ 'Solarized'
       return 'solarized'
     elseif profile =~ 'iceberg'
@@ -40,8 +49,15 @@ function! Colorscheme_for_profile(...)
 endfunction
 
 function! Colorscheme_set_after(...)
-  let scheme = get(get(a:000, 0, {}), "scheme", Colorscheme_get())
-  let profile = get(get(a:000, 0, {}), "profile", Profile_cache_get())
+  let options = get(a:000, 0, {})
+  let scheme = get(l:options, "scheme")
+  if type(l:scheme) != 1
+    let scheme = Colorscheme_get()
+  endif
+  let profile = get(l:options, "profile")
+  if type(l:profile) != 1
+    let profile = Profile_get()
+  endif
   call Colorscheme_background_set(l:profile, l:scheme)
   call Lightline_determine_colorscheme(l:scheme)
   call Lightline_update()

@@ -160,7 +160,7 @@ nnoremap <leader><leader> <C-^>
 nnoremap <leader>ad :ALEDisable<CR>
 nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>b :call FuzzyFindBuffer()<CR>
-nnoremap <leader>c :call Profile_fuzzy_find()<CR>
+nnoremap <leader>c :call Profile_fuzzy_set()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
 nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>

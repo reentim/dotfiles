@@ -10,12 +10,12 @@ function! LightlineFugitive()
   return ''
 endfunction
 
-function! Lightline_determine_colorscheme(name)
-  if a:name =~ 'solarized'
+function! Lightline_determine_colorscheme(scheme)
+  if a:scheme =~ 'solarized'
     let g:lightline.colorscheme = 'solarized'
-  elseif a:name == 'Tomorrow'
+  elseif a:scheme == 'Tomorrow'
     let g:lightline.colorscheme = 'PaperColor'
-  elseif a:name == 'Tomorrow-Night-Blue'
+  elseif a:scheme == 'Tomorrow-Night-Blue'
     let g:lightline.colorscheme = 'landscape'
   else
     let g:lightline.colorscheme = 'powerline'
