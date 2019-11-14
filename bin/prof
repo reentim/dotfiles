@@ -2,18 +2,15 @@
 
 main() {
   local profile="$1"
-  if [ "$profile" ]; then
-    iterm change_profile $profile
-  else
-    local selection=$(iterm list_profiles | selecta)
-    [ "$selection" != "" ] && $(iterm change_profile $selection) &
+  if [ -z "$profile" ]; then
+    local profile="$(iterm list_profiles | selecta)"
   fi
 
-  # Skip these if no change was made, due to e.g. ^C during selection
-  if [ "$profile" ] || [ "$selection" ]; then
-    [ $TMUX ] && $(tmux source-file ~/.tmux.conf) &
-  fi
+  [ -z "$profile" ] && exit 1
 
+  iterm change_profile "$profile"
+  [ $TMUX ] && tmux-apply-colorscheme "$profile"
 }
+
 
 main "$*"
