@@ -1,12 +1,72 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby --disable-gems
 
-main() {
-  script="$1"
-  shift
-  arg="$*"
-  [ -z $script ] && exit 1
+require_relative "../lib/store"
 
-  ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/*/bin/python3 $HOME/Library/ApplicationSupport/iTerm2/Scripts/"${script}.py" "${arg}"
-}
+class Iterm
+  def initialize
+    @script = Script.new(ARGV[0], ARGV[1..-1])
+  end
 
-main $*
+  def main
+    store = Store.new('iterm-api-cache')
+    key = @script.cache_key
+
+    unless @script.cacheable?
+      puts @script.execute
+      @script.after_exe(store)
+      return
+    end
+
+    puts store.read(key) { @script.execute }
+    freshen_cache(store, key) { @script.execute }
+  end
+
+  def freshen_cache(store, key)
+    Process.daemon
+    Process.detach(fork { store.write(key, yield) })
+  end
+end
+
+class Script
+  PYTHON = File.join(Dir.home, "Library/ApplicationSupport/iTerm2/iterm2env/versions/*/bin/python3")
+  PATH = File.join(Dir.home, "Library/Application Support/iTerm2/Scripts")
+
+  CACHABLE = %w[
+    current_profile
+    list_profiles
+  ]
+
+  SESSION_SPECIFIC = %w[
+    current_profile
+  ]
+
+  def initialize(name, args)
+    @name, @args = name, args
+  end
+
+  def cache_key(name = @name, args = @args)
+    "#{name}_#{args.join("\s")}_#{ENV["ITERM_SESSION_ID"] if session_specific?(name)}"
+  end
+
+  def execute
+    %x[#{PYTHON} "#{File.join(PATH, @name + ".py")}" "#{@args.join("\s")}"]
+  end
+
+  def after_exe(store)
+    if @name == "change_profile" && @args.join("\s")
+      Process.daemon
+      pid = fork { store.write(cache_key("current_profile", []), @args.join("\s")) }
+      Process.detach(pid)
+    end
+  end
+
+  def cacheable?(name = @name)
+    CACHABLE.include?(name)
+  end
+
+  def session_specific?(name = @name)
+    SESSION_SPECIFIC.include?(name)
+  end
+end
+
+Iterm.new.main
