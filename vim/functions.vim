@@ -656,25 +656,25 @@ function! AbbrevRemapRun()
 endfunction
 
 function! Profile_get()
-  let g:Profile_cache = system("iterm current_profile")
-  return g:Profile_cache
+  return System("iterm current_profile")
 endfunction
 
-function! Profile_cache_get()
-  let default = "Solarized Light - Input Mono"
-  return get(g:, "Profile_cache", l:default)
-endfunction
-
-function! Profile_set(...)
-  let default = "Solarized Light - Input Mono"
-  let profile = get(a:000, 0, Profile_cache_get())
-  let g:Profile_cache = l:profile
+function! Profile_set(name)
+  if type(a:name) == 1
+    let profile = a:name
+  else
+    echoerr 'here'
+    let profile = Profile_get()
+  endif
   call AsyncShell("prof " . l:profile)
   call Colorscheme_set({"profile": l:profile})
 endfunction
 
-function! Profile_fuzzy_find()
-  call Profile_set(SelectaCommand("iterm list_profiles"))
+function! Profile_fuzzy_set()
+  let profile = SelectaCommand("iterm list_profiles")
+  if type(profile) == 1
+    call Profile_set(profile)
+  endif
 endfunction
 
 function! VimEnter_after()
