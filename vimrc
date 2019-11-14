@@ -19,7 +19,6 @@ set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
 set hidden
 set history=10000
-set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
