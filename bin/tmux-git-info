@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
 
 main() {
-  git_dir=$1/.git
+  git_dir="$1/.git"
 
-  if ! [ -d $1/.git ]; then
+  if ! [ -d "$git_dir" ]; then
     exit 1
   fi
 
-  git --git-dir=$git_dir --no-pager \
+  git --git-dir="$git_dir" --no-pager \
     for-each-ref refs/heads \
       --count=1 \
       --points-at=HEAD \
       --format="\
- %(push:track)\
  #[fg=yellow]%(objectname:short=7)#[default]\
- #[fg=blue]%(upstream:short)#[default]" \
-    | sed -E "s/ahead ([0-9]+)/ahead #[fg=green]\1#[default]/" \
-    | sed -E "s/behind ([0-9]+)/behind #[fg=red]\1#[default]/"
+ $(commit_date_color)%(committerdate:relative)#[default]\
+ %(push:track)\
+ #[fg=blue]%(upstream:short)#[default]\
+" | colorise_tracking_status
+}
+
+commit_date_color() {
+  # TODO: be red / green, based on dirty state
+  return
+}
+
+colorise_tracking_status() {
+  cat <&0 \
+    | sed -E 's/ahead ([0-9]+)/ahead #[fg=green]\1#[default]/' \
+    | sed -E 's/behind ([0-9]+)/behind #[fg=red]\1#[default]/'
 }
 
 main $1
