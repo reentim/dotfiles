@@ -19,6 +19,7 @@ set grepformat=%f:%l:%c:%m
 set grepprg=ag\ --vimgrep\ $*
 set hidden
 set history=10000
+set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
@@ -75,9 +76,6 @@ augroup vimrc
   autocmd Colorscheme * call Colorscheme_set_after()
   autocmd InsertLeave,TextChanged * silent! update
   autocmd VimEnter * call VimEnter_after()
-
-  " doesn't work:
-  autocmd BufRead help nnoremap <silent> <CR> :nohl<CR>
 
   autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
