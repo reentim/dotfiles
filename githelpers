@@ -150,3 +150,31 @@ upstream() {
 log_all() {
   git log --oneline --graph --decorate --all $(git reflog show --format="%h" stash)
 }
+
+delete_local_merged_branches() {
+  git branch --merged "${DEFAULT_BRANCH:-master}" |
+    grep -v "*" |
+    grep -v master |
+    grep -v staging |
+    xargs -n 1 git branch --delete
+}
+
+delete_remote_merged_branches() {
+  branches=$(
+    git branch -a --merged origin/"${DEFAULT_BRANCH:-master}" \
+      | grep --color=never remotes \
+      | grep -v HEAD \
+      | grep -v staging \
+      | grep -v developement \
+      | grep -v master \
+      | sed "s:remotes/origin/::g"
+  )
+  echo $branches
+  printf "Delete branches? (y/n) "
+  if (read -q); then
+    echo
+    echo $branches | xargs -L 1 git push origin --delete
+  else
+    exit 1
+  fi
+}

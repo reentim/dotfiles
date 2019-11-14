@@ -23,6 +23,8 @@
   co      = checkout
   ctags   = "!.git/hooks/ctags"
   db      = "!. ~/.githelpers && diff_branch"
+  delete-merged-branches = "!. ~/.githelpers && delete_local_merged_branches"
+  delete-merged-branches-remote = "!. ~/.githelpers && delete_remote_merged_branches"
   di      = diff
   dp      = checkout --patch -- .
   ds      = diff --staged

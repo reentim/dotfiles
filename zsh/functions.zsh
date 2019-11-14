@@ -32,34 +32,6 @@ append_path() {
   export PATH="$(_path_without $1):$1"
 }
 
-delete-local-merged-branches() {
-  git branch --merged "${DEFAULT_BRANCH:-master}" |
-    grep -v "*" |
-    grep -v master |
-    grep -v staging |
-    xargs -n 1 git branch --delete
-}
-
-delete-remote-merged-branches() {
-  branches=$(
-    git branch -a --merged origin/"${DEFAULT_BRANCH:-master}" \
-      | grep --color=never remotes \
-      | grep -v HEAD \
-      | grep -v staging \
-      | grep -v developement \
-      | grep -v master \
-      | sed "s:remotes/origin/::g"
-  )
-  echo $branches
-  printf "Delete branches? (y/n) "
-  if (read -q); then
-    echo
-    echo $branches | xargs -L 1 git push origin --delete
-  else
-    echo
-  fi
-}
-
 staging-deploy() {
   git push && git push staging staging:master
 }
