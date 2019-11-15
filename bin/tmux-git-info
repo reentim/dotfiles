@@ -15,22 +15,21 @@ main() {
       --count=1 \
       --points-at=HEAD \
       --format="\
- #[fg=yellow]%(objectname:short=7)#[default]\
- $(commit_date_color)%(committerdate:relative)#[default]\
- %(push:track)\
- #[fg=blue]%(upstream:short)#[default]\
-" | colorise_tracking_status
+#[fg=yellow]%(objectname:short=7)#[default] \
+$(commit_date)\
+%(if)%(upstream)%(then) #[fg=blue]%(upstream:short)#[default]%(end)\
+%(if)%(push:track)%(then) %(push:track)%(end)\
+" | transform
 }
 
-commit_date_color() {
-  # TODO: be red / green, based on dirty state
-  return
+commit_date() {
+  echo "%(committerdate:relative)"
 }
 
-colorise_tracking_status() {
+transform() {
   cat <&0 \
     | sed -E 's/ahead ([0-9]+)/ahead #[fg=green]\1#[default]/' \
     | sed -E 's/behind ([0-9]+)/behind #[fg=red]\1#[default]/'
 }
 
-main $1
+main "$1"
