@@ -41,6 +41,7 @@
   lp      = "!. ~/.githelpers && log_patch"
   lpr     = "!. ~/.githelpers && log_patch --reverse"
   lprb    = "!. ~/.githelpers && log_patch_reverse_branch"
+  lt      = "!. ~/.githelpers && truncating_log"
   mmnoff  = "!. ~/.githelpers && merge_branch_origin_to_master"
   new     = "!. ~/.githelpers && new"
   noff    = merge --no-ff
