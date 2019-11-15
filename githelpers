@@ -178,3 +178,17 @@ delete_remote_merged_branches() {
     exit 1
   fi
 }
+
+truncating_log() {
+  local options="$*"
+  local hash="%C(yellow)%h%C(reset)"
+  local author_date="%C(red)%ad%C(reset)"
+  local author_name="%<(7,trunc)%C(blue)%an%C(reset)"
+  local message="%<(50,mtrunc)%s"
+  local decorations="%C(green)%d%C(reset)"
+  git --no-pager log --color=always $options \
+    --graph \
+    --date=iso \
+    --pretty="$hash $author_date $author_name $message $decorations" \
+    | less
+}
