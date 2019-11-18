@@ -1,5 +1,7 @@
 source ~/.vim/functions.vim
 
+let g:autosave = 1
+
 set nocompatible
 
 set autoindent
@@ -74,10 +76,17 @@ augroup vimrc
   autocmd BufWritePost functions.vim source ~/.vim/functions.vim
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd Colorscheme * call Colorscheme_set_after()
-  autocmd InsertLeave,TextChanged * silent! update
   autocmd VimEnter * call VimEnter_after()
 
   autocmd BufReadPost * call ResumeCursorPosition()
+augroup END
+
+augroup vimrc_autosave
+  autocmd!
+
+  if exists("g:autosave")
+    autocmd InsertLeave,TextChanged * silent! update
+  endif
 augroup END
 
 let delimitMate_expand_cr = 1
