@@ -374,7 +374,7 @@ endfunction
 function! FuzzyFinder_configure()
   if exists("g:command_t_enabled")
     nnoremap <C-P> :call SelectaFile(".")<CR>
-  elseif filereadable(expand("~/.vim/bundle/command-t/ruby/command-t/ext/command-t/ext.o"))
+  elseif filereadable(expand("~/.vim/pack/bundle/start/command-t/ruby/command-t/ext/command-t/ext.o"))
     nnoremap <C-P> :CommandT<CR>
   endif
 endfunction
