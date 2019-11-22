@@ -25,7 +25,7 @@ set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
-set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.
+set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.,space:.
 set modeline
 set modelines=5
 set mouse=a
