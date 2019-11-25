@@ -509,7 +509,7 @@ endfunction
 function! InGitDir(...)
   let dir = get(a:000, 0, getcwd())
 
-  return ShellOK("cd " . l:dir . " && git rev-parse --git-dir")
+  return ShellOK("cd '" . l:dir . "' && git rev-parse --git-dir")
 endfunction
 
 function! GitTopLevelDir(...)
