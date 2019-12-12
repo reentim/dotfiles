@@ -65,7 +65,6 @@
 [merge]
   tool = vimdiff
   defaultToUpstream = true
-  conflictstyle = diff3
 [push]
   default = current
 [init]
@@ -76,5 +75,3 @@
   prune = true
 [rebase]
   autosquash = true
-[mergetool]
-  prompt = false
