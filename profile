@@ -16,7 +16,7 @@ source ~/.zsh/functions.zsh
 (which yarn > /dev/null) && YARN_INSTALLED=1
 [ -d "$HOME/Applications/Visual Studio Code.app" ] && VSCODE_INSTALLED=1
 [ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
-[ -d /usr/local/Library/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
 [ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
 [ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
 [ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
@@ -34,12 +34,16 @@ fi
 
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
-[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
 export DEFAULT_BRANCH="master"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
 export TIMEFMT="=> [%*E seconds at %P cpu]"
-export TMUX_POWERLINE=1
+
+[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
+
+if [ $ASDF_INSTALLED ]; then
+  source "$HOME/.asdf/asdf.sh"
+fi
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
@@ -76,6 +80,7 @@ if [ $GEM_HOME_INSTALLED ]; then
 fi
 
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
+
 prepend_path "./node_modules/.bin"
 
 [ -d $HOME/bin ] && prepend_path "$HOME/bin"
