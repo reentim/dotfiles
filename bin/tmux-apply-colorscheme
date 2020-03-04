@@ -2,6 +2,7 @@
 
 main() {
   profile="$*"
+  echo $profile >> ~/debug.fifo
   if [ -z "$profile" ]; then
     profile=$(iterm current_profile)
   fi

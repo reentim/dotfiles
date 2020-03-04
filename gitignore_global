@@ -6,3 +6,4 @@ vim-matchit/doc/tags
 tags
 .gem
 node_modules
+.tool-versions

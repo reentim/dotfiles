@@ -16,9 +16,12 @@ source ~/.zsh/functions.zsh
 (which yarn > /dev/null) && YARN_INSTALLED=1
 [ -d "$HOME/Applications/Visual Studio Code.app" ] && VSCODE_INSTALLED=1
 [ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
-[ -d /usr/local/Library/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
 [ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
 [ -f ~/.dotfiles/lib/z/z.sh ] && Z_INSTALLED=1
+[ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
+
+[ $HOMEBREW_INSTALLED=1 ] && prepend_path "/usr/local/bin"
 
 [ -f ~/.aliases ] && source ~/.aliases
 
@@ -38,15 +41,19 @@ export LESS=Ri
 export TIMEFMT="=> [%*E seconds at %P cpu]"
 export TMUX_POWERLINE=1
 
-if [ $RBENV_INSTALLED ]; then
-  prepend_path "$HOME/.rbenv/bin"
-  prepend_path "$HOME/.rbenv/shims"
-
-  if ! (on_path "$HOME/.rbenv/shims"); then
-    [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
-    [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
-  fi
+if [ $ASDF_INSTALLED ]; then
+  source "$HOME/.asdf/asdf.sh"
 fi
+
+# if [ $RBENV_INSTALLED ]; then
+#   prepend_path "$HOME/.rbenv/bin"
+#   prepend_path "$HOME/.rbenv/shims"
+
+#   if ! (on_path "$HOME/.rbenv/shims"); then
+#     [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
+#     [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
+#   fi
+# fi
 
 if [ $CHRUBY_INSTALLED ]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh

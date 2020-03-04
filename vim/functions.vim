@@ -218,8 +218,10 @@ function! _Executor(ft, filepath, ...)
   elseif a:ft == "python"
     return "python " . l:path
   elseif l:filename =~ 'test.js$'
-    return "yarn jest "
+    return "yarn jest " . l:path
   elseif a:ft == "javascript"
+    return "node " . l:path
+  elseif a:ft == "javascript.jsx"
     return "node " . l:path
   elseif a:ft == "vim"
     if l:filename == "functions.vim"
@@ -526,9 +528,10 @@ function! CdToProjectRoot()
 
   let file_git_dir = GitTopLevelDir(expand("%:h"))
   if type(l:file_git_dir) == 1
-    if Matches($PWD, l:file_git_dir)
-      return 0
-    endif
+
+    " if Matches($PWD, l:file_git_dir)
+    "   return 0
+    " endif
 
     exec "lcd " . l:file_git_dir
     return 1
@@ -657,6 +660,8 @@ function! AbbrevRemapRun()
 endfunction
 
 function! Profile_get()
+  return $ITERM_PROFILE
+
   return System("iterm current_profile")
 endfunction
 
@@ -686,9 +691,9 @@ function! VimEnter_after()
   call ItalicComments_enable()
 endfunction
 
-function! Matches(a, b)
-  return match(a:a, a:b) != -1
-endfunction
+" function! Matches(a, b)
+"   return a:a =~ a:b
+" endfunction
 
 function! LineNumbers_toggle()
   if &nu

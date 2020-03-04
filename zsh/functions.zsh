@@ -84,8 +84,11 @@ fresh-internet() {
   if [ -f latest.dump ]; then
     mv latest.dump* /tmp
   fi
-  heroku pg:backups:download -a $(basename $(pwd))
-  pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
+  git_db_remote="$(git remote -v | grep prod | head -1 | sed -E "s|prod.*https://git.heroku.com/||g" | sed -E "s|\.git.*||g")"
+  if [ "$git_db_remote" ]; then
+    heroku pg:backups:download -a "$git_db_remote"
+    pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
+  fi
 }
 
 _path_without() {

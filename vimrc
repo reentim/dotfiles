@@ -90,7 +90,6 @@ augroup vimrc_autosave
 augroup END
 
 let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
 let g:CommandTFileScanner = 'git'
 let g:CommandTMatchWindowReverse = 0
 let g:CommandTMaxHeight = 20
@@ -122,7 +121,7 @@ let g:ale_sign_column_always = 0
 let g:lightline = {
       \ 'active': {
       \   'left': [['mode', 'paste'],
-      \             ['readonly', 'filename', 'modified']]
+      \             ['readonly', 'relativepath', 'modified']]
       \ },
       \ 'component': {
       \   'lineinfo': ' %3l:%-2v',
