@@ -15,9 +15,9 @@ main() {
       --count=1 \
       --points-at=HEAD \
       --format="\
-#[fg=yellow]%(objectname:short=7)#[default] \
-$(commit_date)\
-%(if)%(upstream)%(then) #[fg=blue]%(upstream:short)#[default]%(end)\
+%(objectname:short=7) | \
+$(commit_date) |\
+%(if)%(upstream)%(then) %(upstream:short) |%(end)\
 %(if)%(push:track)%(then) %(push:track)%(end)\
 " | transform
 }

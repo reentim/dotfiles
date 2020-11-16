@@ -14,6 +14,7 @@
   interactive = auto
   diff = auto
 [alias]
+  unstage = reset HEAD
   aa      = add -A
   amend   = commit --amend --no-edit
   ap      = add -A --patch

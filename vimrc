@@ -2,7 +2,7 @@ source ~/.vim/functions.vim
 
 let g:autosave = 1
 
-colorscheme solarized
+colorscheme Tomorrow-Night
 
 set autoindent
 set autoread
