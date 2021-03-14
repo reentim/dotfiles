@@ -2,28 +2,15 @@
 
 main() {
   profile="$*"
-  echo $profile >> ~/debug.fifo
   if [ -z "$profile" ]; then
     profile=$(iterm current_profile)
   fi
   if [[ $profile =~ "Light" ]]; then
-    if [ $TMUX_POWERLINE ]; then
-      tmux source-file $HOME/.tmux/light-powerline.conf
-    else
-      tmux source-file $HOME/.tmux/light.conf
-    fi
+    tmux source-file $HOME/.tmux/light.conf
   elif [[ $profile =~ "Dark" ]]; then
-    if [ $TMUX_POWERLINE ]; then
-      tmux source-file $HOME/.tmux/dark-powerline.conf
-    else
-      tmux source-file $HOME/.tmux/dark.conf
-    fi
+    tmux source-file $HOME/.tmux/dark.conf
   elif [[ $profile =~ "Black" ]]; then
-    if [ $TMUX_POWERLINE ]; then
-      tmux source-file $HOME/.tmux/black-powerline.conf
-    else
-      tmux source-file $HOME/.tmux/black.conf
-    fi
+    tmux source-file $HOME/.tmux/black.conf
   fi
 }
 
