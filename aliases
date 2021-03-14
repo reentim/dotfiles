@@ -26,7 +26,5 @@ alias topboth='top -s 10 -o CPU -O mem -stats pid,command,cpu,mem -user `whoami`
 alias topcpu='top -s 10 -o CPU -stats pid,command,cpu -user `whoami`'
 alias topmem='top -s 10 -o MEM -stats pid,command,mem -user `whoami`'
 alias tree='tree -FC --dirsfirst'
-alias vi='vim --startuptime ~/cloud/log/vim-startup-$(hostname -s)-$(git --git-dir=/Users/tim/.dotfiles/.git rev-parse --short HEAD).log'
-alias vim='vim --startuptime ~/cloud/log/vim-startup-$(hostname -s)-$(git --git-dir=/Users/tim/.dotfiles/.git rev-parse --short HEAD).log'
 
 (which hub > /dev/null 2>&1) && alias git='hub'

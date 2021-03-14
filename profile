@@ -34,26 +34,26 @@ fi
 
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
-[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
 export DEFAULT_BRANCH="master"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
 export TIMEFMT="=> [%*E seconds at %P cpu]"
-export TMUX_POWERLINE=1
+
+[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
 
 if [ $ASDF_INSTALLED ]; then
   source "$HOME/.asdf/asdf.sh"
 fi
 
-# if [ $RBENV_INSTALLED ]; then
-#   prepend_path "$HOME/.rbenv/bin"
-#   prepend_path "$HOME/.rbenv/shims"
+if [ $RBENV_INSTALLED ]; then
+  prepend_path "$HOME/.rbenv/bin"
+  prepend_path "$HOME/.rbenv/shims"
 
-#   if ! (on_path "$HOME/.rbenv/shims"); then
-#     [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
-#     [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
-#   fi
-# fi
+  if ! (on_path "$HOME/.rbenv/shims"); then
+    [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
+    [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
+  fi
+fi
 
 if [ $CHRUBY_INSTALLED ]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh
@@ -80,6 +80,7 @@ if [ $GEM_HOME_INSTALLED ]; then
 fi
 
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
+
 prepend_path "./node_modules/.bin"
 
 [ -d $HOME/bin ] && prepend_path "$HOME/bin"
