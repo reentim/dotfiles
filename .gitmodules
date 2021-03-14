@@ -138,9 +138,6 @@
 [submodule "vim/bundle/iceberg"]
 	path = vim/pack/bundle/start/iceberg
 	url = https://github.com/cocopon/iceberg.vim.git
-[submodule "babushka-deps"]
-	path = babushka-deps
-	url = git@github.com:reentim/babushka-deps
 [submodule "vim/bundle/lightline.vim"]
 	path = vim/pack/bundle/start/lightline.vim
 	url = git@github.com:itchyny/lightline.vim.git
