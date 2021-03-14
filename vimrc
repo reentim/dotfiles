@@ -173,14 +173,14 @@ nnoremap <leader>c :call Profile_fuzzy_set()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
 nnoremap <silent><leader>dd :execute 'read !date "+\%F \%R"'<CR>
 nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
-nnoremap <leader>ef :e ~/.dotfiles/vim/functions.vim<CR>
-nnoremap <leader>ep :e ~/.dotfiles/profile<CR>
+nnoremap <leader>ef :e ~/dotfiles/vim/functions.vim<CR>
+nnoremap <leader>ep :e ~/dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC\|:call VimEnter_after()<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
-nnoremap <leader>et :e ~/.dotfiles/tmux.conf<CR>
-nnoremap <leader>ev :e ~/.dotfiles/vimrc<CR>
-nnoremap <leader>ez :e ~/.dotfiles/zshrc<CR>
-nnoremap <leader>ezf :e ~/.dotfiles/zsh/functions.zsh<CR>
+nnoremap <leader>et :e ~/dotfiles/tmux.conf<CR>
+nnoremap <leader>ev :e ~/dotfiles/vimrc<CR>
+nnoremap <leader>ez :e ~/dotfiles/zshrc<CR>
+nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>f :call RunFile()<CR>
 nnoremap <leader>gb :call SelectaGitCurrentBranchFile()<CR>
 nnoremap <leader>gc :call SelectaGitCommitFile("HEAD")<CR>
