@@ -138,6 +138,3 @@
 [submodule "vim/bundle/iceberg"]
 	path = vim/pack/bundle/start/iceberg
 	url = https://github.com/cocopon/iceberg.vim.git
-[submodule "vim/bundle/lightline.vim"]
-	path = vim/pack/bundle/start/lightline.vim
-	url = git@github.com:itchyny/lightline.vim.git

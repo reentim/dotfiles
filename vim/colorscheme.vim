@@ -59,8 +59,6 @@ function! Colorscheme_set_after(...)
     let profile = Profile_get()
   endif
   call Colorscheme_background_set(l:profile, l:scheme)
-  call Lightline_determine_colorscheme(l:scheme)
-  call Lightline_update()
   call IndentGuideColors_set(IndentGuideColors_get(l:scheme))
   call TrailingWhitespace_highlight()
 endfunction

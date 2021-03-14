@@ -118,21 +118,6 @@ let g:ale_pattern_options = {
       \ '.*schema\.rb$': {'ale_enabled': 0},
       \}
 let g:ale_sign_column_always = 0
-let g:lightline = {
-      \ 'active': {
-      \   'left': [['mode', 'paste'],
-      \             ['readonly', 'relativepath', 'modified']]
-      \ },
-      \ 'component': {
-      \   'lineinfo': ' %3l:%-2v',
-      \ },
-      \ 'component_function': {
-      \   'readonly': 'LightlineReadonly',
-      \   'fugitive': 'LightlineFugitive'
-      \ },
-      \ 'separator': {'left': '', 'right': ''},
-      \ 'subseparator': {'left': '', 'right': ''}
-      \ }
 let g:indent_guides_enable_on_vim_startup = 1
 let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
