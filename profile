@@ -18,7 +18,10 @@ source ~/.zsh/functions.zsh
 [ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
 [ -d /usr/local/Library/Homebrew ] && HOMEBREW_INSTALLED=1
 [ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
-[ -f ~/.dotfiles/lib/z/z.sh ] && Z_INSTALLED=1
+[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
+[ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
+
+[ $HOMEBREW_INSTALLED=1 ] && prepend_path "/usr/local/bin"
 
 [ -f ~/.aliases ] && source ~/.aliases
 
