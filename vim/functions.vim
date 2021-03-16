@@ -602,12 +602,12 @@ endfunction
 
 function! AutocmdCommitMessage()
   let b:noResumeCursorPosition=1
-  setlocal textwidth=72
-  setlocal colorcolumn=72
+  setlocal textwidth=72 colorcolumn=72 spell
 endfunction
 
 function! AutocmdPullRequestMessage()
   let b:noResumeCursorPosition=1
+  setlocal textwidth=72 colorcolumn=72 spell
 endfunction
 
 function! GitLogPatch()
