@@ -133,7 +133,7 @@ let g:lightline = {
       \ 'separator': {'left': '', 'right': ''},
       \ 'subseparator': {'left': '', 'right': ''}
       \ }
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 let g:netrw_browse_split = 4
 let g:netrw_liststyle = 3
 let g:netrw_winsize = 20

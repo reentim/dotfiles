@@ -29,3 +29,5 @@ alias tree='tree -FC --dirsfirst'
 alias open='explorer.exe'
 
 (which hub > /dev/null 2>&1) && alias git='hub'
+
+alias inflate='ruby -r zlib -e "STDOUT.write Zlib::Inflate.inflate(STDIN.read)"'
