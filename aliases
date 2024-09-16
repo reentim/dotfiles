@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-alias ls='ls -CFGtr'
+alias ls='ls -CFGtr --color=always --group-directories-first'
 
 if [[ $(uname) == "Darwin" ]]; then
   (which gls > /dev/null) && alias ls="gls --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
