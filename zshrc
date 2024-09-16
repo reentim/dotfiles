@@ -1,6 +1,86 @@
 start=$($HOME/bin/monotonic-clock)
 
-source ~/.profile
+source ~/.zsh/functions.zsh
+
+(which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
+(which direnv > /dev/null) && DIRENV_INSTALLED=1
+(which yarn > /dev/null) && YARN_INSTALLED=1
+[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
+[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
+[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
+[ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
+
+[ $HOMEBREW_INSTALLED ] && prepend_path "/usr/local/bin"
+
+[ -f ~/.aliases ] && source ~/.aliases
+
+# Add private keys to the ssh agent, if there are none already added
+if ! (ssh-add -l &> /dev/null); then
+  find ~/.ssh -type f \
+    -exec bash -c '[[ "$(file "$1")" == *"private key"* ]]' bash {} ';' \
+    -print | xargs ssh-add -K
+fi
+
+# Assumed branch fork point. Should be set appropriately in projects that
+# branch from e.g. development
+export DEFAULT_BRANCH="master"
+export HOMEBREW_AUTO_UPDATE_SECS=86400
+export LESS=Ri
+export TIMEFMT="=> [%*E seconds at %P cpu]"
+
+[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
+
+if [ $ASDF_INSTALLED ]; then
+  source "$HOME/.asdf/asdf.sh"
+fi
+
+if [ $RBENV_INSTALLED ]; then
+  prepend_path "$HOME/.rbenv/bin"
+  prepend_path "$HOME/.rbenv/shims"
+
+  if ! (on_path "$HOME/.rbenv/shims"); then
+    [ $BASH_VERSION ] && eval "$(rbenv init - bash)"
+    [ $ZSH_VERSION ] && eval "$(rbenv init - zsh)"
+  fi
+fi
+
+if [ $CHRUBY_INSTALLED ]; then
+  source /usr/local/share/chruby/chruby.sh
+  source /usr/local/share/chruby/auto.sh
+
+  chruby ruby
+fi
+
+if [ $GEM_HOME_INSTALLED ]; then
+  source /usr/local/share/gem_home/gem_home.sh
+
+  gem_home_auto() {
+    if [ -f "Gemfile" ]; then
+      gem_home -
+      gem_home .
+    fi
+  }
+
+  if [[ -n "$ZSH_VERSION"  ]]; then
+    if [[ ! "$preexec_functions" == *gem_home_auto*  ]]; then
+      preexec_functions+=("gem_home_auto")
+    fi
+  fi
+fi
+
+[ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
+
+prepend_path "./node_modules/.bin"
+
+[ -d $HOME/bin ] && prepend_path "$HOME/bin"
+
+prepend_path "./bin"
+
+if [ $DIRENV_INSTALLED ]; then
+  [ $BASH_VERSION ] && eval "$(direnv hook bash)"
+  [ $ZSH_VERSION ] && eval "$(direnv hook zsh)"
+fi
 
 setopt PROMPT_SUBST
 autoload -U promptinit
