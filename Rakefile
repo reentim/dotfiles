@@ -3,10 +3,6 @@ require 'pathname'
 
 task default: :install
 
-# TODO Much of this would be more concisely expressed in babushka. Maybe this
-# is just for bare essentials.
-#
-
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
 EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
@@ -16,6 +12,7 @@ LINKABLES = (Dir.glob('*') - EXCLUDE).sort
 desc "Install dotfiles"
 task :install do
   each_linkable { |source, link| make_link(source, link) }
+  %x[gcc #{File.join(DOTFILES_DIR, "lib", "monotonic-clock.c")} -o #{File.join(DOTFILES_DIR, "bin", "monotonic-clock")}]
 end
 
 desc "Remove dotfiles"

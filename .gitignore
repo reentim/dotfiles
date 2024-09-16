@@ -6,3 +6,4 @@ vim/whims.vim
 tags
 tmux/resurrect
 tags-*
+bin/monotonic-clock
