@@ -1,5 +1,7 @@
 start=$($HOME/bin/monotonic-clock)
 
+export ITERM_PROFILE="Solarized Dark"
+
 source ~/.zsh/functions.zsh
 
 (which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
