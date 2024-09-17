@@ -100,6 +100,7 @@ let g:UltiSnipsJumpForwardTrigger = "<C-]>"
 let g:ackhighlight = 1
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ale_completion_delay = 50
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_fix_on_save_ignore = {'ruby': ['rubocop']}
