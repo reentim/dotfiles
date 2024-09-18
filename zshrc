@@ -26,7 +26,7 @@ fi
 
 # Assumed branch fork point. Should be set appropriately in projects that
 # branch from e.g. development
-export DEFAULT_BRANCH="master"
+export DEFAULT_BRANCH="main"
 export HOMEBREW_AUTO_UPDATE_SECS=86400
 export LESS=Ri
 export TIMEFMT="=> [%*E seconds at %P cpu]"

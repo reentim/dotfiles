@@ -31,7 +31,7 @@
   ff      = merge --ff-only
   fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
   fixup   = commit --fixup
-  from    = "!f() { git fetch && git rebase origin/master; }; f"
+  from    = "!f() { git fetch && git rebase origin/main; }; f"
   l       = log --oneline --decorate --graph
   la      = "!. ~/.githelpers && log_all"
   lg      = "!. ~/.githelpers && jcoglan_graph"
@@ -51,7 +51,7 @@
   rc      = rebase --continue
   reword  = commit --amend --verbose
   ri      = rebase --interactive
-  rom     = "!f() { git rebase $1 origin/master; }; f"
+  rom     = "!f() { git rebase $1 origin/main; }; f"
   ru      = "!. ~/.githelpers && rebase_upstream"
   s       = "!. ~/.githelpers && selecta_branch"
   search  = "!. ~/.githelpers && search"
@@ -69,7 +69,7 @@
   default = current
 [init]
   templatedir = ~/.git_template
-  defaultBranch = master
+  defaultBranch = main
 [rerere]
   enabled = true
 [remote "origin"]
