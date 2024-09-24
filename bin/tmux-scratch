@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+dir=$1
+
+main() {
+  tmux $(autosplit) -c "$dir" "cd $dir && vim /tmp/$(date +%s).js"
+}
+
+main

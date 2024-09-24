@@ -33,9 +33,9 @@ set nocursorline
 set noequalalways
 set nofoldenable
 set nojoinspaces
-set noshowmode
+set showmode
 set nowrap
-set nu
+set nonu
 set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
@@ -214,3 +214,5 @@ vnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
 vnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
 vnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
 vnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+
+nnoremap <leader>f :!clear && time npm run test -- %<CR>

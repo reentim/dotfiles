@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable-gems
+#!/usr/bin/env -S ruby --disable-gems
 
 def main
   pane_width, pane_height, window_width, window_height = %x[
