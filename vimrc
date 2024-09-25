@@ -20,7 +20,6 @@ set dir=/tmp/vimswap//
 set encoding=utf-8
 set expandtab
 set fileencoding=utf-8
-set fillchars+=vert:\ " Hide pipe character in window separators
 set foldmethod=indent
 set foldminlines=0
 set grepformat=%f:%l:%c:%m
@@ -56,7 +55,6 @@ set splitright
 set t_Co=256
 set tabstop=4
 set tags+=.git/tags
-set termguicolors
 set ttimeout
 set ttimeoutlen=10
 set ttyfast

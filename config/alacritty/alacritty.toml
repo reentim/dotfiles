@@ -6,6 +6,7 @@ import = [
 
 [env]
 TERM_PROFILE = 'TokyoNight'
+TERM_PROGRAM = 'Alacritty'
 
 [window]
 padding = { x = 0, y = 0 }
