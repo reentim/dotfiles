@@ -3,13 +3,14 @@
 main() {
   local profile="$1"
   if [ -z "$profile" ]; then
-    local profile="$(iterm list_profiles | selecta)"
+    local profile="$(list-profiles | selecta)"
   fi
 
   [ -z "$profile" ] && exit 1
 
-  iterm change_profile "$profile"
+  change-profile "$profile"
   [ $TMUX ] && tmux-apply-colorscheme "$profile"
+  return 0
 }
 
 

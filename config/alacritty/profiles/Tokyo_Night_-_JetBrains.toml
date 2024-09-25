@@ -1,0 +1,12 @@
+import = [
+  "~/.config/alacritty/alacritty-theme/themes/tokyo-night.toml",
+]
+
+[env]
+TERM_PROFILE = 'TokyoNight'
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[font.normal]
+family = "JetBrainsMono NF"

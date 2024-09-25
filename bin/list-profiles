@@ -1,0 +1,7 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+case ENV['TERM_PROGRAM']
+when 'Alacritty'
+  puts Dir.glob(File.join(Dir.home, ".config/alacritty/profiles/*"))
+    .map { |name| File.basename(name).gsub("_", " ").split(".toml").first }
+end

@@ -1,6 +1,7 @@
 start=$($HOME/bin/monotonic-clock)
 
 export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
+[ $TMUX ] && export "$(tmux show-environment TERM_PROGRAM)"
 
 source ~/.zsh/functions.zsh
 

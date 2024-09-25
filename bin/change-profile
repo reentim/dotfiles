@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+profile_name = ARGV[0]
+
+abort unless profile_name
+
+case ENV['TERM_PROGRAM']
+when 'Alacritty'
+  file = File.join(Dir.home, ".config/alacritty/profiles", profile_name.gsub("\s", "_") + ".toml")
+  profile = File.join(Dir.home, ".config/alacritty/profile.toml")
+  system "ln -sf #{file} #{profile}"
+  system "touch #{profile}"
+end

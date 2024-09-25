@@ -1,0 +1,12 @@
+import = [
+  "~/.config/alacritty/alacritty-theme/themes/solarized_dark.toml",
+]
+
+[env]
+TERM_PROFILE = 'Solarized Dark'
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[font.normal]
+family = "JetBrainsMono NF"
