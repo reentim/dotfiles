@@ -5,20 +5,16 @@ task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
-LINK_WITHIN = %w[config]
-EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps].concat(LINK_WITHIN)
+EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
 LINK_VISIBLY = %w[bin lib]
-LINKABLES = (Dir.glob('*') - EXCLUDE).concat(
-  LINK_WITHIN.flat_map {|dir| Dir.glob(dir + '/*') }
+LINKABLES = (
+  Dir.glob('*').concat(%w[
+    config/alacritty
+  ]) - EXCLUDE
 ).sort
 
 desc "Install dotfiles"
 task :install do
-  LINK_WITHIN.each do |dir|
-    path = File.join(Dir.home, ".#{dir}")
-    system "mkdir -p #{path}" unless File.exist?(path)
-  end
-
   each_linkable { |source, link| make_link(source, link) }
 
   monotonic_clock = File.join(DOTFILES_DIR, "bin", "monotonic-clock")
@@ -146,9 +142,9 @@ def make_link(source, link)
   unless File.exist?(link)
     File.symlink(source, link)
     puts [
-      Pathname.new(source).relative_path_from(Dir.home),
-      '->',
       Pathname.new(link).relative_path_from(Dir.home),
+      '->',
+      Pathname.new(source).relative_path_from(Dir.home),
     ].join("\s")
   end
 end

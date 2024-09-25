@@ -1,8 +1,14 @@
-source ~/.vim/functions.vim
+set nocompatible
+
+if filereadable(expand("~/.vimrc.common"))
+  source ~/.vimrc.common
+endif
+
+if filereadable(expand("~/.vim/functions.vim"))
+  source ~/.vim/functions.vim
+endif
 
 let g:autosave = 1
-
-set nocompatible
 
 set autoindent
 set autoread
@@ -33,14 +39,14 @@ set nocursorline
 set noequalalways
 set nofoldenable
 set nojoinspaces
-set showmode
-set nowrap
 set nonu
+set nowrap
 set ruler
 set shell=bash
 set shiftwidth=2
 set showcmd
 set showmatch
+set showmode
 set showtabline=2
 set smartcase
 set smartindent
@@ -50,6 +56,7 @@ set splitright
 set t_Co=256
 set tabstop=4
 set tags+=.git/tags
+set termguicolors
 set ttimeout
 set ttimeoutlen=10
 set ttyfast
@@ -139,9 +146,7 @@ cnoreabbrev alefix ALEFix
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
 inoremap <C-J> ->
 inoremap <C-L> =><space>
-inoremap jk <ESC>
 nnoremap / /\v
-nnoremap ; :
 nnoremap <C-g> :call SelectaIdentifier()<CR>
 nnoremap <F5> :set invlist<CR>
 " F6 could be the key to, maybe progressively, show / hide all the hidden stuff on the left, including ALE signcolumn

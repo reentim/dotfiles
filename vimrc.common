@@ -1,0 +1,2 @@
+nnoremap ; :
+inoremap jk <ESC>
