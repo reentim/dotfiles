@@ -27,6 +27,49 @@ task :install do
   end
 end
 
+desc "Switch Neovim configs"
+task :nvim, [:new_namespace] do |task, args|
+  if system("ps aux | grep [n]vim  | grep -v rake > /dev/null")
+    abort "ABORT! nvim process detected"
+  end
+
+  [
+    {
+      link: File.join(Dir.home, '.config/nvim'),
+      source: File.join(DOTFILES_DIR, 'config', "nvim.#{args[:new_namespace]}"),
+    },
+    {
+      link: File.join(Dir.home, '.local/share/nvim'),
+      source: File.join(Dir.home, '.local/share', "nvim.#{args[:new_namespace]}"),
+    },
+    {
+      link: File.join(Dir.home, '.cache/nvim'),
+      source: File.join(Dir.home, '.cache', "nvim.#{args[:new_namespace]}"),
+    },
+  ].each do |h|
+    unless File.exist?(h[:source])
+      puts "Creating #{File.basename(h[:source])}"
+      system "mkdir -p #{h[:source]}"
+    end
+
+    if File.exist?(h[:link])
+      abort "ABORT! #{h[:link]} is not a symlink" unless File.symlink?(h[:link])
+    end
+
+    old_source = File.readlink(h[:link])
+    old_namespace = File.basename(old_source)
+
+    if h[:source] == old_source
+      abort "ABORT! #{h[:link]} already linked to #{h[:source]}"
+    end
+
+    File.delete(h[:link])
+    File.symlink(h[:source], h[:link])
+
+    puts "#{h[:link]} -> #{h[:source]} (was #{old_namespace})"
+  end
+end
+
 desc "Remove dotfiles"
 task :remove do
   each_linkable { |source, link| remove_link(source, link) }
