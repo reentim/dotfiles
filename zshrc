@@ -144,3 +144,6 @@ printf "=> [zshrc: %.3f seconds]\n" $dt
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+mkdir -p /tmp/vimtemp /tmp/vimswap /tmp/vimundo
+mkdir -p /tmp/nvim_temp /tmp/nvim_swap /tmp/nvim_undo

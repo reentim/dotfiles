@@ -8,9 +8,9 @@ set autoindent
 set autoread
 set backspace=indent,eol,start
 set backup
-set backupdir=~/.tmp/vimtemp//
+set backupdir=/tmp/vimtemp//
 set colorcolumn=80
-set dir=~/.tmp/vimswap//
+set dir=/tmp/vimswap//
 set encoding=utf-8
 set expandtab
 set fileencoding=utf-8
@@ -36,7 +36,6 @@ set nojoinspaces
 set showmode
 set nowrap
 set nonu
-set re=1 " Use the old vim regex engine for faster syntax highlighting
 set ruler
 set shell=bash
 set shiftwidth=2
@@ -54,8 +53,7 @@ set tags+=.git/tags
 set ttimeout
 set ttimeoutlen=10
 set ttyfast
-set ttymouse=sgr " 'The mouse works even in columns beyond 223'
-set undodir=~/.tmp/vimundo//
+set undodir=/tmp/vimundo//
 set undofile
 set wildmenu
 set winheight=16
@@ -187,7 +185,7 @@ nnoremap <leader>o :!open %<CR><CR>
 nnoremap <leader>p :set invpaste<CR>
 nnoremap <leader>r :call RunFile()<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
-nnoremap <leader>t  :call FuzzyFind(".")<CR>
+nnoremap <leader>t :call FuzzyFind(".")<CR>
 nnoremap <leader>u :call Underline('=')<CR>
 nnoremap <leader>w :vsplit<CR>
 nnoremap <leader>z :call RunFile({"postfix": ":" . line(".")})<CR>

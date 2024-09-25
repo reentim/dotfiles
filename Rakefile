@@ -5,19 +5,31 @@ task default: :install
 
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
-EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
+LINK_WITHIN = %w[config]
+EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps].concat(LINK_WITHIN)
 LINK_VISIBLY = %w[bin lib]
-LINKABLES = (Dir.glob('*') - EXCLUDE).sort
+LINKABLES = (Dir.glob('*') - EXCLUDE).concat(
+  LINK_WITHIN.flat_map {|dir| Dir.glob(dir + '/*') }
+).sort
 
 desc "Install dotfiles"
 task :install do
+  LINK_WITHIN.each do |dir|
+    path = File.join(Dir.home, ".#{dir}")
+    system "mkdir -p #{path}" unless File.exist?(path)
+  end
+
   each_linkable { |source, link| make_link(source, link) }
-  %x[gcc #{File.join(DOTFILES_DIR, "lib", "monotonic-clock.c")} -o #{File.join(DOTFILES_DIR, "bin", "monotonic-clock")}]
+
+  monotonic_clock = File.join(DOTFILES_DIR, "bin", "monotonic-clock")
+  unless File.exist?(monotonic_clock)
+    %x[gcc #{File.join(DOTFILES_DIR, "lib", "monotonic-clock.c")} -o #{monotonic_clock}]
+  end
 end
 
 desc "Remove dotfiles"
 task :remove do
-  each_link { |source, link| remove_link(source, link) }
+  each_linkable { |source, link| remove_link(source, link) }
 end
 
 desc "Keep SSH_AUTH_SOCK for screen / tmux sessions"
@@ -87,8 +99,6 @@ task :link_ia_writer do
   )
 end
 
-
-
 def make_link(source, link)
   unless File.exist?(link)
     File.symlink(source, link)
@@ -114,16 +124,7 @@ end
 def each_linkable(&block)
   LINKABLES.each do |file|
     source = File.join(DOTFILES_DIR, file)
-    link = File.join(Dir.home,
-                       LINK_VISIBLY.include?(file) ? file : ".#{file}")
+    link = File.join(Dir.home, LINK_VISIBLY.include?(file) ? file : ".#{file}")
     yield(source, link)
-  end
-end
-
-def each_link(&block)
-  Dir.chdir(Dir.home) do
-    Dir.children('.').select { |file|
-      File.symlink?(file) && File.dirname(File.readlink(file)) == DOTFILES_DIR
-    }.each { |link| yield(File.readlink(link), link) }
   end
 end

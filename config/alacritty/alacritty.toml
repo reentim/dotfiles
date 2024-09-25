@@ -1,0 +1,33 @@
+live_config_reload = true
+
+import = [
+  "~/.config/alacritty/tokyo-night-alacritty-theme/tokyo-night.toml",
+]
+
+[window]
+padding = { x = 0, y = 0 }
+dynamic_padding = true
+decorations = "None"
+
+[selection]
+save_to_clipboard = true
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[font]
+size = 13
+
+[font.normal]
+family = "JetBrainsMono NF"
+
+[keyboard]
+bindings = [
+  { key = "F11", action = "ToggleFullscreen" },
+  { key = "Insert", mods = "Shift", action = "Paste" },
+]
+
+[bell]
+  animation = "Ease"
+  duration = 100
+  color = "#1a1b26"

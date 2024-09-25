@@ -7,3 +7,4 @@ tags
 tmux/resurrect
 tags-*
 bin/monotonic-clock
+config/nvim/lazy-lock.json

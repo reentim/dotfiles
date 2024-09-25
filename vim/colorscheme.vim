@@ -7,17 +7,19 @@ function! Colorscheme_get()
 endfunction
 
 function! Colorscheme_set(...)
-  let options = get(a:000, 0, {})
-  let profile = get(l:options, 'profile')
-  if type(l:profile) != 1
-    let profile = Profile_get()
+  if has('nvim') == 0
+    let options = get(a:000, 0, {})
+    let profile = get(l:options, 'profile')
+    if type(l:profile) != 1
+      let profile = Profile_get()
+    endif
+    let scheme = get(l:options, 'scheme')
+    if type(l:scheme) != 1
+      let scheme = Colorscheme_for_profile(l:profile)
+    endif
+    execute "colorscheme " . l:scheme
+    call Colorscheme_set_after({"profile": l:profile, "scheme": l:scheme})
   endif
-  let scheme = get(l:options, 'scheme')
-  if type(l:scheme) != 1
-    let scheme = Colorscheme_for_profile(l:profile)
-  endif
-  execute "colorscheme " . l:scheme
-  call Colorscheme_set_after({"profile": l:profile, "scheme": l:scheme})
 endfunction
 
 function! Colorscheme_background_set(profile, scheme)
