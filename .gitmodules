@@ -128,3 +128,6 @@
 [submodule "config/alacritty/tokyo-night-alacritty-theme"]
 	path = config/alacritty/tokyo-night-alacritty-theme
 	url = git@github.com:zatchheems/tokyo-night-alacritty-theme.git
+[submodule "vim/pack/bundle/start/tokyonight-vim"]
+	path = vim/pack/bundle/start/tokyonight-vim
+	url = git@github.com:ghifarit53/tokyonight-vim.git

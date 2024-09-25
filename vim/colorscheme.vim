@@ -34,7 +34,7 @@ endfunction
 
 function! Colorscheme_for_profile(...)
   if $TERM_PROGRAM =~ 'Apple_Terminal'
-    return 'Tomorrow-Night-Bright'
+    return 'Tomorrow-Night-Eighties'
   else
     let profile = get(a:000, 0)
     if type(l:profile) != 1
@@ -44,8 +44,10 @@ function! Colorscheme_for_profile(...)
       return 'solarized'
     elseif profile =~ 'iceberg'
       return 'iceberg'
+    elseif profile =~ 'TokyoNight'
+      return 'tokyonight'
     else
-      return 'Tomorrow-Night-Bright'
+      return 'Tomorrow-Night-Eighties'
     endif
   endif
 endfunction

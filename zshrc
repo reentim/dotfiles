@@ -1,6 +1,6 @@
 start=$($HOME/bin/monotonic-clock)
 
-export ITERM_PROFILE="Solarized Dark"
+export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 
 source ~/.zsh/functions.zsh
 

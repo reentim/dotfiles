@@ -4,6 +4,9 @@ import = [
   "~/.config/alacritty/tokyo-night-alacritty-theme/tokyo-night.toml",
 ]
 
+[env]
+TERM_PROFILE = 'TokyoNight'
+
 [window]
 padding = { x = 0, y = 0 }
 dynamic_padding = true
