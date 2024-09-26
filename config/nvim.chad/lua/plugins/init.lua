@@ -10,7 +10,7 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
-      require("lspconfig").ts_ls.setup({})
+      -- require("lspconfig").ts_ls.setup({})
     end,
   },
 
@@ -35,9 +35,21 @@ return {
     end,
     config = function()
       require("wincent.commandt").setup({
-        height = 10,
+        height = 20,
         position = "bottom",
       })
     end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      mapping = {
+        -- this is what I want, but it isn't working:
+        -- ["<C-p>"] = require("cmp").mapping.confirm({ select = true }),
+        -- ["<C-j>"] = require("cmp").mapping.select_next_item(),
+        -- ["<C-k>"] = require("cmp").mapping.select_prev_item(),
+      },
+    },
   },
 }
