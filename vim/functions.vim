@@ -660,9 +660,7 @@ function! AbbrevRemapRun()
 endfunction
 
 function! Profile_get()
-  return $TERM_PROFILE
-
-  return System("iterm current_profile")
+  return System("current-profile")
 endfunction
 
 function! Profile_set(name)

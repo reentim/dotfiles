@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+main() {
+  local file="$HOME/.TERM_PROFILE"
+
+  [ -f $file ] && cat $file
+  return 0
+}
+
+main

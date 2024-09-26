@@ -44,7 +44,7 @@ function! Colorscheme_for_profile(...)
       return 'solarized'
     elseif profile =~ 'iceberg'
       return 'iceberg'
-    elseif profile =~ 'TokyoNight'
+    elseif profile =~ 'Tokyo Night'
       set termguicolors
       return 'tokyonight'
     else

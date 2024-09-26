@@ -9,5 +9,7 @@ when 'Alacritty'
   file = File.join(Dir.home, ".config/alacritty/profiles", profile_name.gsub("\s", "_") + ".toml")
   profile = File.join(Dir.home, ".config/alacritty/profile.toml")
   system "ln -sf #{file} #{profile}"
-  system "touch #{profile}"
+  system("touch ~/.config/alacritty/alacritty.toml")
 end
+
+system(%x[echo "#{profile_name}" > "$HOME/.TERM_PROFILE"])

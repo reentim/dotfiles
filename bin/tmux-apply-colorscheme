@@ -3,7 +3,7 @@
 main() {
   profile="$*"
   if [ -z "$profile" ]; then
-    profile=$(iterm current_profile)
+    profile=$(current-profile)
   fi
   if [[ $profile =~ "Light" ]]; then
     tmux source-file $HOME/.tmux/light.conf
@@ -11,6 +11,8 @@ main() {
     tmux source-file $HOME/.tmux/dark.conf
   elif [[ $profile =~ "Black" ]]; then
     tmux source-file $HOME/.tmux/black.conf
+  elif [[ $profile =~ "Tokyo" ]]; then
+    tmux setw -g window-status-current-style "fg=colour000 bg=magenta bright"
   fi
 }
 
