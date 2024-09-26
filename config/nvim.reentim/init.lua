@@ -2,7 +2,7 @@ vim.g.CommandTPreferredImplementation = 'lua'
 
 require('config.lazy')
 
-vim.cmd.source('~/.vimrc')
+vim.cmd.source('~/.vimrc.common')
 
 vim.opt.guicursor = 'n-v-c-i-:block'
 vim.opt.undodir = '/tmp/nvim_undo//'
