@@ -50,11 +50,17 @@ require("lazy").setup({
         vim.keymap.set('n', "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown)
         vim.keymap.set('n', "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp)
         vim.keymap.set('n', "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
-      end
+      end,
     },
     { 'vhyrro/luarocks.nvim',
       priority = 1000,
       config = true,
+    },
+    {
+      'williamboman/mason.nvim',
+      config = function()
+        require('mason').setup()
+      end,
     },
   },
   install = { colorscheme = { 'habamax' } },
