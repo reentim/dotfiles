@@ -10,16 +10,34 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
+      require("lspconfig").ts_ls.setup({})
     end,
   },
 
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim", "lua", "vimdoc", "html", "css"
+      },
+    },
+  },
+
+  {
+    "wincent/command-t",
+    lazy = false,
+    build = function()
+      local path = vim.fn.stdpath('data') .. "/lazy/command-t"
+      os.execute("cd " .. path .. "&& make >/dev/null 2>&1")
+    end,
+    init = function()
+      vim.g.CommandTPreferredImplementation = 'lua'
+    end,
+    config = function()
+      require("wincent.commandt").setup({
+        height = 10,
+        position = "bottom",
+      })
+    end,
+  },
 }
