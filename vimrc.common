@@ -151,11 +151,8 @@ nnoremap <leader><leader> <C-^>
 nnoremap <leader>ad :ALEDisable<CR>
 nnoremap <leader>ae :ALEEnable<CR>
 nnoremap <leader>b :call FuzzyFindBuffer()<CR>
-nnoremap <leader>c :call Profile_fuzzy_set()<CR>
 nnoremap <leader>d :call AsyncShell('open ' . expand('%:p:h'))<CR>
-nnoremap <leader>ed :lcd ~/deps\|:e common.rb<CR>
 nnoremap <leader>ef :e ~/dotfiles/vim/functions.vim<CR>
-nnoremap <leader>ep :e ~/dotfiles/profile<CR>
 nnoremap <leader>er :source $MYVIMRC\|:call VimEnter_after()<CR>
 nnoremap <leader>es :UltiSnipsEdit!<CR>
 nnoremap <leader>et :e ~/dotfiles/tmux.conf<CR>

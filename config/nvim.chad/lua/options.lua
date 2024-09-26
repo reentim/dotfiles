@@ -1,6 +1,7 @@
 require "nvchad.options"
 
--- add yours here!
-
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+vim.opt.guicursor = 'n-v-c-i-:block'
+vim.opt.undodir = '/tmp/nvim_undo//'
+vim.opt.dir = '/tmp/nvim_swap//'
+vim.opt.backupdir = '/tmp/nvim_temp//'
+vim.opt.wrap = false
