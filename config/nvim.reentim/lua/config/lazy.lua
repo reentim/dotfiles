@@ -23,7 +23,7 @@ require("lazy").setup({
   spec = {
     { 'folke/tokyonight.nvim',
       lazy = false,
-      priority = 1000,
+      priority = 500,
       opts = {},
       config = function()
         vim.cmd[[colorscheme tokyonight]]
@@ -51,8 +51,12 @@ require("lazy").setup({
         vim.keymap.set('n', "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp)
         vim.keymap.set('n', "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
       end
-    }
+    },
+    { 'vhyrro/luarocks.nvim',
+      priority = 1000,
+      config = true,
+    },
   },
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { 'habamax' } },
   checker = { enabled = true },
 })
