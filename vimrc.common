@@ -43,6 +43,7 @@ augroup vimrc_common
   autocmd BufLeave,FocusLost * silent! wall
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
+  autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
 
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
