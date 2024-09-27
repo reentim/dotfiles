@@ -1,11 +1,9 @@
 start=$($HOME/bin/monotonic-clock)
 
-export NVM_LAZY_LOAD=true
 export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 [ $TMUX ] && export "$(tmux show-environment TERM_PROGRAM)"
 
 source ~/.zsh/functions.zsh
-source ~/.zsh/func/zsh-nvm/zsh-nvm.plugin.zsh
 
 (which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
 (which direnv > /dev/null) && DIRENV_INSTALLED=1
@@ -56,6 +54,11 @@ mkdir -p /tmp/nvim_temp /tmp/nvim_swap /tmp/nvim_undo
 
 prepend_path "./node_modules/.bin"
 prepend_path "./bin"
+
+if [ $NVM_INSTALLED ]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
