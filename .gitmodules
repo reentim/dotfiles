@@ -132,3 +132,6 @@
 	path = config/alacritty/alacritty-theme
 	url = git@github.com:alacritty/alacritty-theme.git
 	ignore = dirty
+[submodule "lib/asdf"]
+	path = lib/asdf
+	url = https://github.com/asdf-vm/asdf.git

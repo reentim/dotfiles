@@ -8,12 +8,12 @@ source ~/.zsh/functions.zsh
 (which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
 (which direnv > /dev/null) && DIRENV_INSTALLED=1
 (which yarn > /dev/null) && YARN_INSTALLED=1
-[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
-[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
-[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
-[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
 [ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
 [ -d "$HOME/.nvm" ] && NVM_INSTALLED=1
+[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
+[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
+[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
 
 [ -f ~/.aliases ] && source ~/.aliases
 
