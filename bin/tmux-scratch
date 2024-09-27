@@ -3,7 +3,8 @@
 dir=$1
 
 main() {
-  tmux $(autosplit) -c "$dir" "cd $dir && vim /tmp/$(date +%s).js"
+  mkdir -p "$HOME/scratch"
+  tmux $(autosplit) -c "$dir" "cd $dir && vim ~/scratch/scratch.js"
 }
 
 main
