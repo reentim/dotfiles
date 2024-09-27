@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+main() {
+  local font="$1"
+  if [ -z "$font" ]; then
+    local font="$(list-fonts | selecta)"
+  fi
+
+  [ -z "$font" ] && exit 1
+
+  change-font "$font"
+  return 0
+}
+
+
+main "$*"

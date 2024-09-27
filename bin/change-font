@@ -1,0 +1,21 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+font_name = ARGV[0]
+
+abort unless font_name
+
+case ENV['TERM_PROGRAM']
+when 'Alacritty'
+  fonts_dir = File.join(Dir.home, ".config/alacritty/fonts")
+  files = Dir.glob(File.join(fonts_dir, "/*"))
+
+  file = files.find { |f|
+    font_name == File.basename(f)
+      .split(".toml").first
+      .gsub("_", " ")
+  }
+
+  font = File.join(Dir.home, ".config/alacritty/font.toml")
+  system "ln -sf #{file} #{font}"
+  system("touch ~/.config/alacritty/alacritty.toml")
+end

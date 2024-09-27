@@ -1,0 +1,13 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+case ENV['TERM_PROGRAM']
+when 'Alacritty'
+  puts Dir.glob(File.join(Dir.home, ".config/alacritty/fonts/*"))
+    .map { |name|
+      File.basename(name)
+        .split(".toml").first
+        .gsub("_", " ")
+    }.sort { |a, b|
+      a.downcase <=> b.downcase
+    }
+end

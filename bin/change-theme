@@ -1,0 +1,25 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+theme_name = ARGV[0]
+
+abort unless theme_name
+
+case ENV['TERM_PROGRAM']
+when 'Alacritty'
+  themes_dir = File.join(Dir.home, ".config/alacritty/alacritty-theme/themes")
+  files = Dir.glob(File.join(themes_dir, "/*"))
+
+  file = files.find { |f|
+    theme_name == File.basename(f)
+      .split(".toml").first
+      .gsub("_", " ")
+      .gsub("-", " ")
+      .gsub(/\w+/) { |word| word.capitalize }
+  }
+
+  theme = File.join(Dir.home, ".config/alacritty/theme.toml")
+  system "ln -sf #{file} #{theme}"
+  system("touch ~/.config/alacritty/alacritty.toml")
+end
+
+system(%x[echo "#{theme_name}" > "$HOME/.TERM_PROFILE"])

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+main() {
+  local theme="$1"
+  if [ -z "$theme" ]; then
+    local theme="$(list-themes | selecta)"
+  fi
+
+  [ -z "$theme" ] && exit 1
+
+  change-theme "$theme"
+  [ $TMUX ] && tmux-apply-colorscheme "$theme"
+  return 0
+}
+
+
+main "$*"

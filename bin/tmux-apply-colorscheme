@@ -1,19 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S ruby --disable-gems
 
-main() {
-  profile="$*"
-  if [ -z "$profile" ]; then
-    profile=$(current-profile)
-  fi
-  if [[ $profile =~ "Light" ]]; then
-    tmux source-file $HOME/.tmux/light.conf
-  elif [[ $profile =~ "Dark" ]]; then
-    tmux source-file $HOME/.tmux/dark.conf
-  elif [[ $profile =~ "Black" ]]; then
-    tmux source-file $HOME/.tmux/black.conf
-  elif [[ $profile =~ "Tokyo" ]]; then
-    tmux setw -g window-status-current-style "fg=colour000 bg=magenta bright"
-  fi
-}
+def main(name)
+  name = name || %x[current-profile]
+  dir = File.join(Dir.home, "/.tmux/colorschemes")
+  files = Dir.glob(File.join(dir, "/*"))
+  presumed_file = name.downcase
+      .gsub("\s", "_")
+      .gsub("-", "_")
+      .chomp + ".conf"
 
-main "$*"
+  found_file = files.find { |file|
+    File.basename(file) == presumed_file
+  }
+
+  if found_file
+    %x[tmux source-file #{found_file}]
+  end
+end
+
+main ARGV[0]

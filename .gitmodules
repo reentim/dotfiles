@@ -131,6 +131,7 @@
 [submodule "config/alacritty/alacritty-theme"]
 	path = config/alacritty/alacritty-theme
 	url = git@github.com:alacritty/alacritty-theme.git
+	ignore = dirty
 [submodule "zsh/func/zsh-nvm"]
 	path = zsh/func/zsh-nvm
 	url = https://github.com/lukechilds/zsh-nvm.git
