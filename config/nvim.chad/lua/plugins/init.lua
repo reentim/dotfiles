@@ -42,6 +42,11 @@ return {
   },
 
   {
+    "alexghergh/nvim-tmux-navigation",
+    lazy = false,
+  },
+
+  {
     "hrsh7th/nvim-cmp",
     opts = {
       mapping = {
