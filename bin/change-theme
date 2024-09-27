@@ -1,25 +1,52 @@
 #!/usr/bin/env -S ruby --disable-gems
 
-theme_name = ARGV[0]
+def main
+  theme_name = ARGV[0]
 
-abort unless theme_name
+  abort unless theme_name
 
-case ENV['TERM_PROGRAM']
-when 'Alacritty'
-  themes_dir = File.join(Dir.home, ".config/alacritty/alacritty-theme/themes")
-  files = Dir.glob(File.join(themes_dir, "/*"))
+  case ENV['TERM_PROGRAM']
+  when 'Alacritty'
+    apply_theme_from_name(
+      name: theme_name,
+      dir: ".config/alacritty/alacritty-theme/themes",
+      link: File.join(Dir.home, ".config/alacritty/theme.toml"),
+    ) do
+      system("touch ~/.config/alacritty/alacritty.toml")
+    end
+  end
 
-  file = files.find { |f|
-    theme_name == File.basename(f)
-      .split(".toml").first
+  tmux_link = File.join(Dir.home, ".tmux/colors/theme.conf")
+
+  apply_theme_from_name(
+    name: theme_name,
+    dir: ".tmux/colors/themes",
+    link: tmux_link,
+  ) do
+    if system("tmux ls >/dev/null 2>&1")
+      %x[tmux source-file ~/.tmux/colors/reset.conf]
+      %x[tmux source-file #{tmux_link}]
+    end
+  end
+
+  system(%x[echo "#{theme_name}" > "$HOME/.TERM_PROFILE"])
+end
+
+def apply_theme_from_name(name:, dir:, link:)
+  theme_dir = File.join(Dir.home, dir)
+  themes = Dir.glob(File.join(theme_dir, "/*"))
+
+  theme = themes.find { |f|
+    name == File.basename(f, ".*")
       .gsub("_", " ")
       .gsub("-", " ")
       .gsub(/\w+/) { |word| word.capitalize }
   }
 
-  theme = File.join(Dir.home, ".config/alacritty/theme.toml")
-  system "ln -sf #{file} #{theme}"
-  system("touch ~/.config/alacritty/alacritty.toml")
+  unless theme.nil?
+    system "ln -sf #{theme} #{link}" if theme
+    yield 
+  end
 end
 
-system(%x[echo "#{theme_name}" > "$HOME/.TERM_PROFILE"])
+main

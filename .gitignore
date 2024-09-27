@@ -5,4 +5,6 @@ tags-*
 bin/monotonic-clock
 config/nvim.reentim/lazy-lock.json
 config/nvim.chad/lazy-lock.json
-config/alacritty/profile.toml
+config/alacritty/theme.toml
+config/alacritty/font.toml
+tmux/colors/theme.conf
