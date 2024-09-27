@@ -8,6 +8,36 @@ if filereadable(expand("~/.vim/common_functions.vim"))
   source ~/.vim/common_functions.vim
 endif
 
+set backup
+set colorcolumn=80
+set expandtab
+set foldmethod=indent
+set foldminlines=0
+set grepformat=%f:%l:%c:%m
+set hidden
+set ignorecase
+set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.,space:.
+set modeline
+set noequalalways
+set nofoldenable
+set nowrap
+set ruler
+set shiftwidth=2
+set showmatch
+set showmode
+set showtabline=2
+set smartcase
+set smartindent
+set softtabstop=2
+set splitbelow
+set splitright
+set tabstop=4
+set tags+=.git/tags
+set ttimeoutlen=10
+set undofile
+set winheight=16
+set winwidth=72
+
 augroup vimrc_common
   autocmd!
   autocmd BufLeave,FocusLost * silent! wall
@@ -15,13 +45,28 @@ augroup vimrc_common
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
 augroup END
 
-set splitbelow
-set splitright
-
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
-nnoremap <leader>f :!clear && time npm run test -- %<CR>
 inoremap <C-J> ->
 inoremap <C-L> =><space>
+inoremap jk <ESC>
+nnoremap / /\v
+nnoremap ; :
+nnoremap <F5> :set invlist<CR>
+nnoremap <F6> :call LineNumbers_toggle()<CR>
+nnoremap <leader><leader> <C-^>
+nnoremap <leader>et :e ~/dotfiles/tmux.conf<CR>
+nnoremap <leader>ev :e ~/dotfiles/vimrc<CR>
+nnoremap <leader>evc :e ~/dotfiles/vimrc.common<CR>
+nnoremap <leader>evn :e ~/.config/nvim/init.lua<CR>
+nnoremap <leader>ez :e ~/dotfiles/zshrc<CR>
+nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
+nnoremap <leader>f :!clear && time npm run test -- %<CR>
+nnoremap <leader>h :split<CR>
+nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
 nnoremap <leader>p :set invpaste<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
+nnoremap <leader>w :vsplit<CR>
+nnoremap <silent> <CR> :nohl<CR>
+nnoremap <silent><leader>dd :execute 'read !date "+\%F \%R"'<CR>
 nnoremap Y y$
+vnoremap / /\v
