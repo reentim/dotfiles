@@ -1,27 +1,10 @@
 start=$($HOME/bin/monotonic-clock)
 
-export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
-[ $TMUX ] && export "$(tmux show-environment TERM_PROGRAM)"
-
-source ~/.zsh/functions.zsh
-
-(which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
-(which direnv > /dev/null) && DIRENV_INSTALLED=1
-(which yarn > /dev/null) && YARN_INSTALLED=1
-[ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
-[ -d "$HOME/.nvm" ] && NVM_INSTALLED=1
-[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
-[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
-[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
-[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
-
+[ -f ~/.zsh/functions.zsh ] && source ~/.zsh/functions.zsh
 [ -f ~/.aliases ] && source ~/.aliases
-
-# Add private keys to the ssh agent, if there are none already added
-if ! (ssh-add -l &> /dev/null); then
-  find ~/.ssh -type f \
-    -exec bash -c '[[ "$(file "$1")" == *"private key"* ]]' bash {} ';' \
-    -print | xargs ssh-add -K
+[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
+if [ $TMUX ]; then
+  [ $(tmux show-environment TERM_PROGRAM) != "-TERM_PROGRAM" ] && export "$(tmux show-environment TERM_PROGRAM)"
 fi
 
 setopt PROMPT_SUBST
@@ -39,21 +22,31 @@ export LC_ALL="en_AU.UTF-8"
 export LESS=Ri
 export NVM_DIR="$HOME/.nvm"
 export SAVEHIST=$HISTSIZE
+export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 export TIMEFMT="=> [%*E seconds at %P cpu]"
 export WORDCHARS='*?[]~&;!$%^<>-'
 
-[ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
+(which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
+(which direnv > /dev/null) && DIRENV_INSTALLED=1
+(which yarn > /dev/null) && YARN_INSTALLED=1
+[ -d "$HOME/.asdf" ] && ASDF_INSTALLED=1
+[ -d "$HOME/.nvm" ] && NVM_INSTALLED=1
+[ -d $HOME/.rbenv ] && RBENV_INSTALLED=1
+[ -d /usr/local/Homebrew ] && HOMEBREW_INSTALLED=1
+[ -f "$HOME/lib/z/z.sh" ] && Z_INSTALLED=1
+[ -f /usr/local/share/gem_home/gem_home.sh ] && GEM_HOME_INSTALLED=1
 
-mkdir -p /tmp/vimtemp /tmp/vimswap /tmp/vimundo
-mkdir -p /tmp/nvim_temp /tmp/nvim_swap /tmp/nvim_undo
+mkdir -p /tmp/vimtemp /tmp/vimswap /tmp/vimundo \
+  /tmp/nvim_temp /tmp/nvim_swap /tmp/nvim_undo
+
+prepend_path "./node_modules/.bin"
+prepend_path "./bin"
 
 [ $ASDF_INSTALLED ] && source "$HOME/.asdf/asdf.sh"
 [ $HOMEBREW_INSTALLED ] && prepend_path "/usr/local/bin"
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
 [ -d $HOME/bin ] && prepend_path "$HOME/bin"
-
-prepend_path "./node_modules/.bin"
-prepend_path "./bin"
+[ -d $HOME/.local/bin ] && prepend_path "$HOME/.local/bin"
 
 if [ $NVM_INSTALLED ]; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -99,20 +92,6 @@ if [ $DIRENV_INSTALLED ]; then
   [ $ZSH_VERSION ] && eval "$(direnv hook zsh)"
 fi
 
-stty -ixon # Free up C-s for fwd-i-search
-
-toggle-prompt-time() {
-  if [ $PROMPT_TIME ]; then
-    unset PROMPT_TIME
-    rm -f /tmp/PROMPT_TIME
-  else
-    export PROMPT_TIME="1"
-    touch /tmp/PROMPT_TIME
-  fi
-  promptinit
-  prompt grb
-}
-
 autoload -U promptinit
 promptinit
 prompt grb
@@ -130,6 +109,8 @@ bindkey "" backward-kill-line
 bindkey "" kill-line
 bindkey '' edit-command-line
 bindkey '' toggle-prompt-time
+
+stty -ixon # Free up C-s for fwd-i-search
 
 finish=$($HOME/bin/monotonic-clock)
 printf "=> [zshrc: %.3f seconds]\n" "($finish - $start)"

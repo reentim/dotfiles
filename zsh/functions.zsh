@@ -99,3 +99,15 @@ _path_without() {
 uncd() {
   cd $OLDPWD
 }
+
+toggle-prompt-time() {
+  if [ $PROMPT_TIME ]; then
+    unset PROMPT_TIME
+    rm -f /tmp/PROMPT_TIME
+  else
+    export PROMPT_TIME="1"
+    touch /tmp/PROMPT_TIME
+  fi
+  promptinit
+  prompt grb
+}
