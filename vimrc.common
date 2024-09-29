@@ -46,6 +46,9 @@ augroup vimrc_common
   autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
 
+command -nargs=? -complete=help Help help <args> | wincmd L | :vert resize 78
+
+cnoreabbrev h Help
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
 inoremap <C-J> ->
 inoremap <C-L> =><space>
