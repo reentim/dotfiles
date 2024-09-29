@@ -12,6 +12,7 @@ endif
 
 set autoindent
 set autoread
+set backspace=indent,eol,start
 set backupdir=/tmp/vimtemp//
 set dir=/tmp/vimswap//
 set encoding=utf-8
