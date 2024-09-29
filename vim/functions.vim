@@ -207,6 +207,8 @@ function! _Executor(ft, filepath, ...)
     return "python " . l:path
   elseif l:filename =~ 'test.js$'
     return "yarn jest " . l:path
+  elseif l:filename =~ 'test.ts$'
+    return "npm run test " . l:path
   elseif a:ft == "javascript"
     return "node " . l:path
   elseif a:ft == "javascript.jsx"
@@ -229,7 +231,11 @@ function! RunFile(...)
     echom l:executor
     call Shell(l:executor)
     let g:saved_command = l:executor
+  else
+    echoerr "Run file with what?"
+    return 1
   endif
+  return 0
 endfunction
 
 function! RunSavedCommand()
