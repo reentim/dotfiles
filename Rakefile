@@ -10,6 +10,7 @@ LINK_VISIBLY = %w[bin lib]
 LINKABLES = (
   Dir.glob('*').concat(%w[
     config/alacritty
+    config/kitty
   ]) - EXCLUDE
 ).sort
 

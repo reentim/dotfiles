@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
 main() {
+  if [ $TERM_PROGRAM = "Kitty" ]; then
+    if [ $TMUX ]; then
+      tmux display "Detach first!"
+      return 1
+    fi
+    kitty +kitten themes --config-file-name theme.conf
+    return 0
+  fi
+
   local theme="$1"
   if [ -z "$theme" ]; then
     local theme="$(list-themes | selecta)"
