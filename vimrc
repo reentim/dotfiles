@@ -60,6 +60,7 @@ augroup vimrc_autosave
 augroup END
 
 let delimitMate_expand_cr = 1
+let g:CommandTPreferredImplementation='ruby'
 let g:CommandTFileScanner = 'git'
 let g:CommandTMatchWindowReverse = 0
 let g:CommandTMaxHeight = 20
