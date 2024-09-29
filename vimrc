@@ -29,6 +29,7 @@ set showcmd
 set t_Co=256
 set ttimeout
 set ttyfast
+set ttymouse=sgr
 set undodir=/tmp/vimundo//
 set wildmenu
 
