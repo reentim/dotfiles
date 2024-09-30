@@ -16,7 +16,12 @@ return {
         end,
       },
       {
-        "hrsh7th/cmp-nvim-lua",
+        'dcampos/nvim-snippy',
+        'dcampos/cmp-snippy',
+        'honza/vim-snippets',
+      },
+      {
+        'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-path',
@@ -24,13 +29,14 @@ return {
     },
     opts = function()
       local cmp = require('cmp')
+      local snippy = require('snippy')
       return {
         completion = {
-          completeopt = "menu,menuone",
+          completeopt = 'menu,menuone',
         },
         snippet = {
           expand = function(args)
-            vim.snippet.expand(args.body)
+            require'snippy'.expand_snippet(args.body)
           end,
         },
         window = {
@@ -47,6 +53,20 @@ return {
               return cmp.complete()
             end
           end),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if snippy.can_expand_or_advance() then
+              snippy.expand_or_advance()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if snippy.can_jump(-1) then
+              snippy.previous()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
           ['<C-j>'] = cmp.mapping.select_next_item(),
           ['<C-k>'] = cmp.mapping.select_prev_item(),
           ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -56,6 +76,7 @@ return {
           { name = 'nvim_lsp' },
           { name = 'nvim_lua' },
           { name = 'path' },
+          { name = 'snippy' },
         },
       }
     end,

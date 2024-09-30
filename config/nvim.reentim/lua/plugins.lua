@@ -20,6 +20,7 @@ return {
     end,
   },
   { 'AndrewRadev/splitjoin.vim' },
+  { 'dcampos/nvim-snippy' },
   { 'michaeljsmith/vim-indent-object' },
   { 'tommcdo/vim-lion' },
   { 'tpope/vim-commentary' },
