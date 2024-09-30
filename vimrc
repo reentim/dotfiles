@@ -33,6 +33,7 @@ set ttyfast
 set ttymouse=sgr
 set undodir=/tmp/vimundo//
 set wildmenu
+set wildignore+=*node_modules*
 
 filetype plugin indent on
 syntax on
