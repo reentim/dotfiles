@@ -1,3 +1,7 @@
+if filereadable(expand("~/.vim/trailing_whitespace.vim"))
+  source ~/.vim/trailing_whitespace.vim
+endif
+
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
@@ -67,4 +71,45 @@ function! LineNumbers_toggle()
     windo set nu
   endif
   call win_gotoid(winid)
+endfunction
+
+function! SetJournalOptions()
+  setlocal textwidth=72 colorcolumn=72 nonumber spell
+endfunction
+
+function! RewrapBuffer()
+  let lines = line('$')
+  let pos = getpos('.')
+  call cursor(1, 1)
+  keepjumps normal gqG
+  call cursor(pos[1] + line('$') - lines, pos[2])
+endfunction
+
+function! GitTopLevelDir(...)
+  let dir = get(a:000, 0, getcwd())
+
+  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
+  return l:git_dir != "" ? l:git_dir : 0
+endfunction
+
+function! CdToProjectRoot()
+  if &ft =~ '\(fugitiveblame\|git\|help\)'
+    return 0
+  endif
+
+  let file_git_dir = GitTopLevelDir(expand("%:h"))
+  if type(l:file_git_dir) == 1
+    exec "lcd " . l:file_git_dir
+    return 1
+  endif
+  return 0
+endfunction
+
+function! System(command)
+  " strip away the last byte of output
+  return system(a:command)[:-2]
+endfunction
+
+function! Profile_get()
+  return System("current-profile")
 endfunction

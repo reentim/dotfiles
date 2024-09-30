@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
 main() {
+  local theme="$1"
+
   if [ $TERM_PROGRAM = "Kitty" ]; then
     if [ $TMUX ]; then
       tmux display "Detach first!"
       return 1
     fi
     kitty +kitten themes --config-file-name theme.conf
-    return 0
+    theme=$(sed "2q;d" "$HOME/.config/kitty/theme.conf" | sed "s/# //")
   fi
 
-  local theme="$1"
   if [ -z "$theme" ]; then
     local theme="$(list-themes | selecta)"
   fi
 
-  [ -z "$theme" ] && exit 1
+  [ -z "$theme" ] && echo "Error: couldn't determine theme" && exit 1
 
   change-theme "$theme"
-  [ $TMUX ] && tmux-apply-colorscheme "$theme"
   return 0
 }
 

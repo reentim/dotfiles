@@ -6,10 +6,6 @@ if filereadable(expand("~/.vim/colorscheme.vim"))
   source ~/.vim/colorscheme.vim
 endif
 
-if filereadable(expand("~/.vim/trailing_whitespace.vim"))
-  source ~/.vim/trailing_whitespace.vim
-endif
-
 function! IsCommentLine()
   let wordline = split(getline('.'))
   if len(wordline) == 0
@@ -261,11 +257,6 @@ function! IsRepeatableHistory(hist_index)
         \ && match(l:cmd, 'RepeatVimCmd') == -1
 endfunction
 
-function! System(command)
-  " strip away the last byte of output
-  return system(a:command)[:-2]
-endfunction
-
 function! Tmux()
   return $TMUX != ''
 endfunction
@@ -508,31 +499,6 @@ function! InGitDir(...)
   return ShellOK("cd '" . l:dir . "' && git rev-parse --git-dir")
 endfunction
 
-function! GitTopLevelDir(...)
-  let dir = get(a:000, 0, getcwd())
-
-  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
-  return l:git_dir != "" ? l:git_dir : 0
-endfunction
-
-function! CdToProjectRoot()
-  if &ft =~ '\(fugitiveblame\|git\|help\)'
-    return 0
-  endif
-
-  let file_git_dir = GitTopLevelDir(expand("%:h"))
-  if type(l:file_git_dir) == 1
-
-    " if Matches($PWD, l:file_git_dir)
-    "   return 0
-    " endif
-
-    exec "lcd " . l:file_git_dir
-    return 1
-  endif
-  return 0
-endfunction
-
 function! LetToInstanceMethod()
   :s/let../@/
   :s/) { / = /
@@ -541,18 +507,6 @@ endfunction
 
 function! LongestLine()
   return system("gwc -L " . bufname("%") . " | cut -d ' ' -f 1")
-endfunction
-
-function! SetJournalOptions()
-  setlocal textwidth=72 colorcolumn=72 nonumber spell
-endfunction
-
-function! RewrapBuffer()
-  let lines = line('$')
-  let pos = getpos('.')
-  call cursor(1, 1)
-  keepjumps normal gqG
-  call cursor(pos[1] + line('$') - lines, pos[2])
 endfunction
 
 function! GitLogPatch()
@@ -602,10 +556,6 @@ function! AbbrevRemapRun()
   return getcmdtype() == ":" && getcmdline() == "rr"
   \ ? "nnoremap <leader>r :w\\|:!clear;<CR>"
   \ : "rr"
-endfunction
-
-function! Profile_get()
-  return System("current-profile")
 endfunction
 
 function! Profile_set(name)

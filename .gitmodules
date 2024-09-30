@@ -135,3 +135,6 @@
 [submodule "lib/asdf"]
 	path = lib/asdf
 	url = https://github.com/asdf-vm/asdf.git
+[submodule "vim/pack/bundle/start/vim-catppuccin"]
+	path = vim/pack/bundle/start/vim-catppuccin
+	url = git@github.com:catppuccin/vim.git

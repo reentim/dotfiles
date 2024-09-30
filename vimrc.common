@@ -40,10 +40,14 @@ set winwidth=72
 
 augroup vimrc_common
   autocmd!
-  autocmd BufLeave,FocusLost * silent! wall
+
+  autocmd BufLeave,FocusLost * silent! update
+  autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
+  autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufReadPost * call ResumeCursorPosition()
+  autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
 augroup END
 
 command -nargs=? -complete=help Help help <args> | wincmd L | :vert resize 78
@@ -59,6 +63,7 @@ nnoremap <F5> :set invlist<CR>
 nnoremap <F6> :call LineNumbers_toggle()<CR>
 nnoremap <leader><leader> <C-^>
 nnoremap <leader>et :e ~/dotfiles/tmux.conf<CR>
+nnoremap <leader>ett :e ~/dotfiles/tmux/colors/theme.conf<CR>
 nnoremap <leader>ev :e ~/dotfiles/vimrc<CR>
 nnoremap <leader>evc :e ~/dotfiles/vimrc.common<CR>
 nnoremap <leader>evn :e ~/.config/nvim/init.lua<CR>

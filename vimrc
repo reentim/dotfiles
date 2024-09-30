@@ -41,20 +41,13 @@ syntax on
 augroup vimrc
   autocmd!
 
-  autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
-  autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
-  autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd BufWritePost functions.vim source ~/.vim/functions.vim
-  autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
   autocmd Colorscheme * call Colorscheme_set_after()
   autocmd VimEnter * call VimEnter_after()
-
-  autocmd BufReadPost * call ResumeCursorPosition()
 augroup END
 
 augroup vimrc_autosave
   autocmd!
-
   if exists("g:autosave")
     autocmd InsertLeave,TextChanged * silent! update
   endif

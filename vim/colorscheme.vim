@@ -33,9 +33,13 @@ function! Colorscheme_background_set(profile, scheme)
 endfunction
 
 function! Colorscheme_for_profile(...)
+  if $TERM_PROGRAM =~ 'Kitty'
+    set termguicolors
+  elseif $TERM_PROGRAM =~ 'Alacritty'
+    set termguicolors
+  endif
+
   if $TERM_PROGRAM =~ 'Apple_Terminal'
-    return 'Tomorrow-Night-Eighties'
-  elseif $TERM_PROGRAM =~ 'Kitty'
     return 'Tomorrow-Night-Eighties'
   else
     let profile = get(a:000, 0)
@@ -44,11 +48,13 @@ function! Colorscheme_for_profile(...)
     endif
     if l:profile =~ 'Solarized'
       return 'solarized'
+      set notermguicolors
     elseif profile =~ 'iceberg'
       return 'iceberg'
     elseif profile =~ 'Tokyo Night'
-      set termguicolors
       return 'tokyonight'
+    elseif profile =~ 'Catppuccin-Mocha'
+      return 'catppuccin_mocha'
     else
       return 'Tomorrow-Night-Eighties'
     endif
@@ -67,5 +73,4 @@ function! Colorscheme_set_after(...)
   endif
   call Colorscheme_background_set(l:profile, l:scheme)
   call IndentGuideColors_set(IndentGuideColors_get(l:scheme))
-  call TrailingWhitespace_highlight()
 endfunction

@@ -11,21 +11,30 @@ def main
       name: theme_name,
       dir: ".config/alacritty/alacritty-theme/themes",
       link: File.join(Dir.home, ".config/alacritty/theme.toml"),
-    ) do
-      system("touch ~/.config/alacritty/alacritty.toml")
+    ) do |did_succeed|
+      did_succeed && system("touch ~/.config/alacritty/alacritty.toml")
     end
+  when 'Kitty'
+    Process.kill("SIGUSR1", %x[pgrep kitty].to_i)
   end
 
   tmux_link = File.join(Dir.home, ".tmux/colors/theme.conf")
 
+  expected_theme_file_name = "#{to_filename(theme_name)}.conf"
+  unless File.exist?(File.join(Dir.home, ".tmux/colors/themes", expected_theme_file_name))
+    puts %[cp ~/.tmux/colors/default.conf ~/.tmux/colors/themes/#{expected_theme_file_name}]
+    %x[cp ~/.tmux/colors/default.conf ~/.tmux/colors/themes/#{expected_theme_file_name}]
+  end
   apply_theme_from_name(
     name: theme_name,
     dir: ".tmux/colors/themes",
     link: tmux_link,
-  ) do
-    if system("tmux ls >/dev/null 2>&1")
-      %x[tmux source-file ~/.tmux/colors/reset.conf]
-      %x[tmux source-file #{tmux_link}]
+  ) do |did_succeed|
+    if did_succeed
+      if system("tmux ls >/dev/null 2>&1")
+        %x[tmux source-file ~/.tmux/colors/colors.conf]
+      end
+    else
     end
   end
 
@@ -37,16 +46,26 @@ def apply_theme_from_name(name:, dir:, link:)
   themes = Dir.glob(File.join(theme_dir, "/*"))
 
   theme = themes.find { |f|
-    name == File.basename(f, ".*")
-      .gsub("_", " ")
-      .gsub("-", " ")
-      .gsub(/\w+/) { |word| word.capitalize }
+    to_filename(name) == to_filename(File.basename(f, ".*"))
   }
 
-  unless theme.nil?
-    system "ln -sf #{theme} #{link}" if theme
-    yield 
+  if theme.nil?
+    puts "Couldn't find file for #{name} in #{theme_dir}"
+    yield(false)
+  else
+    puts "ln -sf #{theme} #{link}"
+    system "ln -sf #{theme} #{link}"
+    yield(true)
   end
 end
 
+def to_filename(str)
+  str
+    .gsub(/\s/, '_')
+    .gsub(/-/, '_')
+    .downcase
+end
+
 main
+
+# vim:ft=ruby
