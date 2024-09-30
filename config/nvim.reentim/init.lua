@@ -1,5 +1,3 @@
-vim.g.CommandTPreferredImplementation = 'lua'
-
 require('config.lazy')
 
 vim.cmd.source('~/.vimrc.common')
@@ -11,4 +9,5 @@ vim.opt.backupdir = '/tmp/nvim_temp//'
 
 vim.keymap.set('n', '<Leader>b', '<Plug>(CommandTBuffer)')
 vim.keymap.set('n', '<Leader>j', '<Plug>(CommandTJump)')
-vim.keymap.set('n', '<Leader>t', '<Plug>(CommandT)')
+vim.keymap.set('n', '<Leader>t', '<Plug>(CommandTGit)')
+vim.keymap.set('n', '<C-p>', '<Plug>(CommandT)')
