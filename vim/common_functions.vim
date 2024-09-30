@@ -60,9 +60,11 @@ function! AutocmdPullRequestMessage()
 endfunction
 
 function! LineNumbers_toggle()
+  let winid = win_getid()
   if &nu
     windo set nonu
   else
     windo set nu
   endif
+  call win_gotoid(winid)
 endfunction
