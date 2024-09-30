@@ -19,4 +19,11 @@ return {
       require('mason').setup()
     end,
   },
+  { 'AndrewRadev/splitjoin.vim' },
+  { 'michaeljsmith/vim-indent-object' },
+  { 'tommcdo/vim-lion' },
+  { 'tpope/vim-commentary' },
+  { 'tpope/vim-endwise' },
+  { 'tpope/vim-repeat' },
+  { 'tpope/vim-surround' },
 }
