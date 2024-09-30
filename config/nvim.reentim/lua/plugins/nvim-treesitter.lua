@@ -33,6 +33,7 @@ return {
         use_languagetree = true,
       },
       indent = { enable = true },
+      endwise = { enable = false },
     },
     config = function(_, opts)
       require('nvim-treesitter.configs').setup(opts)

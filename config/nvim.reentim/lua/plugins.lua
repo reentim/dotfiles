@@ -19,12 +19,19 @@ return {
       require('mason').setup()
     end,
   },
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('colorizer').setup()
+    end,
+  },
   { 'AndrewRadev/splitjoin.vim' },
+  { 'RRethy/nvim-treesitter-endwise' },
   { 'dcampos/nvim-snippy' },
   { 'michaeljsmith/vim-indent-object' },
   { 'tommcdo/vim-lion' },
   { 'tpope/vim-commentary' },
-  { 'tpope/vim-endwise' },
   { 'tpope/vim-repeat' },
   { 'tpope/vim-surround' },
+  { 'vim-ruby/vim-ruby' },
 }
