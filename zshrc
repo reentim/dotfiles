@@ -47,6 +47,7 @@ prepend_path "./bin"
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
 [ -d $HOME/bin ] && prepend_path "$HOME/bin"
 [ -d $HOME/.local/bin ] && prepend_path "$HOME/.local/bin"
+[ -d $HOME/.cargo/bin ] && prepend_path "$HOME/.cargo/bin"
 
 if [ $NVM_INSTALLED ]; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
