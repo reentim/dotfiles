@@ -22,6 +22,11 @@ task :install do
   unless File.exist?(monotonic_clock)
     %x[gcc #{File.join(DOTFILES_DIR, "lib", "monotonic-clock.c")} -o #{monotonic_clock}]
   end
+
+  make_link(
+    File.join(DOTFILES_DIR, 'vim/ftplugin'),
+    File.join(DOTFILES_DIR, 'config/nvim.reentim/after/ftplugin'),
+  )
 end
 
 desc "Switch Neovim configs"
