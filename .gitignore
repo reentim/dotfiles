@@ -6,6 +6,7 @@ config/kitty/theme.conf*
 config/kitty/font.conf
 config/nvim.chad/lazy-lock.json
 config/nvim.reentim/lazy-lock.json
+config/nvim
 tags
 tags-*
 tmux/colors/theme.conf

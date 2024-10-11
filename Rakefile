@@ -53,14 +53,13 @@ task :nvim, [:new_namespace] do |task, args|
       abort "ABORT! #{h[:link]} is not a symlink" unless File.symlink?(h[:link])
     end
 
-    old_source = File.readlink(h[:link])
-    old_namespace = File.basename(old_source)
+    if File.exist?(h[:link])
+      old_source = File.readlink(h[:link])
+      old_namespace = File.basename(old_source)
 
-    if h[:source] == old_source
-      abort "ABORT! #{h[:link]} already linked to #{h[:source]}"
+      File.delete(h[:link])
     end
 
-    File.delete(h[:link])
     File.symlink(h[:source], h[:link])
 
     puts "#{h[:link]} -> #{h[:source]} (was #{old_namespace})"
