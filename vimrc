@@ -32,8 +32,8 @@ set ttimeout
 set ttyfast
 set ttymouse=sgr
 set undodir=/tmp/vimundo//
-set wildmenu
 set wildignore+=*node_modules*
+set wildmenu
 
 filetype plugin indent on
 syntax on
@@ -41,16 +41,8 @@ syntax on
 augroup vimrc
   autocmd!
 
-  autocmd BufWritePost functions.vim source ~/.vim/functions.vim
   autocmd Colorscheme * call Colorscheme_set_after()
   autocmd VimEnter * call VimEnter_after()
-augroup END
-
-augroup vimrc_autosave
-  autocmd!
-  if exists("g:autosave")
-    autocmd InsertLeave,TextChanged * silent! update
-  endif
 augroup END
 
 let delimitMate_expand_cr = 1
