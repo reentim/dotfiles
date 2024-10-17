@@ -21,6 +21,8 @@ set modeline
 set noequalalways
 set nofoldenable
 set nowrap
+set number
+set relativenumber
 set ruler
 set shiftwidth=2
 set showmatch

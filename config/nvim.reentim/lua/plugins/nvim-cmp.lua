@@ -53,6 +53,13 @@ return {
               return cmp.complete()
             end
           end),
+          ['<C-]>'] = cmp.mapping(function(fallback)
+            if snippy.can_expand_or_advance() then
+              snippy.expand_or_advance()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if snippy.can_expand_or_advance() then
               snippy.expand_or_advance()
@@ -72,7 +79,14 @@ return {
           ['<C-n>'] = cmp.mapping.select_next_item(),
         },
         sources = {
-          { name = 'buffer' },
+          {
+            name = 'buffer',
+            option = {
+              get_bufnrs = function()
+                return vim.api.nvim_list_bufs()
+              end
+            },
+          },
           { name = 'nvim_lsp' },
           { name = 'nvim_lua' },
           { name = 'path' },

@@ -24,7 +24,6 @@ set incsearch
 set laststatus=2
 set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.,space:.
 set mouse=a
-set nonu
 set shell=bash
 set showcmd
 set t_Co=256
