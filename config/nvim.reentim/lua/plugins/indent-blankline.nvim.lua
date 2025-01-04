@@ -1,6 +1,7 @@
 return {
   {
     'lukas-reineke/indent-blankline.nvim',
+    tag = 'v3.8.2',
     lazy = false,
     config = function()
       local hooks = require "ibl.hooks"
