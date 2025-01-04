@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+function main() {
+  notify-send -e "Volume: $(amixer get Master | grep -Eom 1 "[0-9]+\%")"
+}
+
+main
