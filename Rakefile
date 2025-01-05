@@ -11,6 +11,7 @@ LINKABLES = (
   Dir.glob('*').concat(%w[
     config/alacritty
     config/kitty
+    config/jrnl
   ]) - EXCLUDE
 ).sort
 
