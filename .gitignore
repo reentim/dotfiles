@@ -1,4 +1,5 @@
 bin/monotonic-clock
+bin/asdf
 config/kitty/current-theme.conf
 config/kitty/theme.conf*
 config/kitty/font.conf
