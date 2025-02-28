@@ -11,6 +11,7 @@ return {
         filetypes = {
           'javascript',
           'typescript',
+          'typescriptreact',
         },
         settings = {
           complete_function_calls = true,
