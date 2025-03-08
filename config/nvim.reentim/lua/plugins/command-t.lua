@@ -13,7 +13,7 @@ return {
       require('wincent.commandt').setup({
         height = 20,
         position = 'bottom',
-        smart_case = true,
+        ignore_case = true,
         match_listing = {
           border = 'rounded'
         },

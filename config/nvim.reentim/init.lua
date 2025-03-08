@@ -1,3 +1,5 @@
+vim.opt.smartcase = true
+
 require('config.lazy')
 
 vim.cmd.source('~/.vimrc.common')
@@ -13,3 +15,13 @@ vim.keymap.set('n', '<Leader>t', '<Plug>(CommandTGit)')
 vim.keymap.set('n', '<C-p>', '<Plug>(CommandT)')
 
 vim.cmd[[highlight SignColumn guibg=#272a3f]]
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = {"*.ts", "*.tsx"},
+  callback = function()
+    local bufname = vim.fn.expand('<afile>')
+    if vim.fn.filereadable(bufname) == 0 then  -- If the file was just created
+      vim.cmd("LspRestart")
+    end
+  end,
+})

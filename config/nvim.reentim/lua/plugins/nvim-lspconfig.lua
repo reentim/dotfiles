@@ -6,6 +6,12 @@ return {
       local lspconfig = require('lspconfig')
       local cmp_nvim_lsp = require('cmp_nvim_lsp')
       local capabilities = cmp_nvim_lsp.default_capabilities()
+      lspconfig.cssls.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.tailwindcss.setup({
+        capabilities = capabilities,
+      })
       lspconfig.ts_ls.setup({
         capabilities = capabilities,
         filetypes = {
@@ -40,13 +46,6 @@ return {
               variableTypes = { enabled = false },
             },
           },
-        },
-        keys = {
-          -- {
-          --   "<leader>co",
-          --   lspconfig.action["source.organizeImports"],
-          --   desc = "Organize Imports",
-          -- },
         },
         root_dir = lspconfig.util.root_pattern(
           '.git',
