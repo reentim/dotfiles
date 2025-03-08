@@ -44,6 +44,7 @@ augroup vimrc_common
   autocmd!
 
   autocmd BufLeave,FocusLost * silent! update
+  autocmd CursorHold * checktime
   autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
@@ -80,4 +81,5 @@ nnoremap <leader>w :vsplit<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap <silent><leader>dd :execute 'read !date "+\%F \%R"'<CR>
 nnoremap Y y$
+nnoremap \ :silent :!npm run format<CR>
 vnoremap / /\v
