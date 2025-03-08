@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable-gems
+#!/usr/bin/env -S ruby --disable-gems
 
 termcolors = [
   { id: 0, hex: "0x000000", hsl: [0,0,0] },
