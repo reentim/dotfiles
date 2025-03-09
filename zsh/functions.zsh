@@ -11,7 +11,7 @@ proj() {
     _proj_build_cache
     pushd $(cat $cache | selecta)
   else
-    $(_proj_build_cache &>/dev/null &)
+    $(_proj_build_cache > /dev/null 2>&1 &)
     pushd $(cat $cache | selecta)
   fi
 }
