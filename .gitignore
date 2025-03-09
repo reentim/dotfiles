@@ -1,6 +1,4 @@
 bin/monotonic-clock
-config/alacritty/font.toml
-config/alacritty/theme.toml
 config/kitty/current-theme.conf
 config/kitty/theme.conf*
 config/kitty/font.conf

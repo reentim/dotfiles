@@ -9,7 +9,6 @@ EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
 LINK_VISIBLY = %w[bin lib]
 LINKABLES = (
   Dir.glob('*').concat(%w[
-    config/alacritty
     config/kitty
     config/jrnl
   ]) - EXCLUDE
