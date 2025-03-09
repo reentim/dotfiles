@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable-gems
+#!/usr/bin/env -S ruby --disable-gems
 # encoding: utf-8
 
 def times_table_number

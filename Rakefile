@@ -3,24 +3,77 @@ require 'pathname'
 
 task default: :install
 
-# TODO Much of this would be more concisely expressed in babushka. Maybe this
-# is just for bare essentials.
-#
-
 DOTFILES_DIR = File.dirname(__FILE__)
 ICLOUD_DRIVE = File.join(Dir.home, "Library/Mobile Documents/com~apple~CloudDocs")
 EXCLUDE = %w[Rakefile README.md .gitmodules ssh Library iTerm babushka-deps]
 LINK_VISIBLY = %w[bin lib]
-LINKABLES = (Dir.glob('*') - EXCLUDE).sort
+LINKABLES = (
+  Dir.glob('*').concat(%w[
+    config/kitty
+    config/jrnl
+  ]) - EXCLUDE
+).sort
 
 desc "Install dotfiles"
 task :install do
   each_linkable { |source, link| make_link(source, link) }
+
+  monotonic_clock = File.join(DOTFILES_DIR, "bin", "monotonic-clock")
+  unless File.exist?(monotonic_clock)
+    %x[gcc #{File.join(DOTFILES_DIR, "lib", "monotonic-clock.c")} -o #{monotonic_clock}]
+  end
+
+  make_link(
+    File.join(DOTFILES_DIR, 'vim/ftplugin'),
+    File.join(DOTFILES_DIR, 'config/nvim.reentim/after/ftplugin'),
+  )
+end
+
+desc "Switch Neovim configs"
+task :nvim, [:new_namespace] do |task, args|
+  if system("ps aux | grep [n]vim  | grep -v rake > /dev/null")
+    abort "ABORT! nvim process detected"
+  end
+
+  [
+    {
+      link: File.join(Dir.home, '.config/nvim'),
+      source: File.join(DOTFILES_DIR, 'config', "nvim.#{args[:new_namespace]}"),
+    },
+    {
+      link: File.join(Dir.home, '.local/share/nvim'),
+      source: File.join(Dir.home, '.local/share', "nvim.#{args[:new_namespace]}"),
+    },
+    {
+      link: File.join(Dir.home, '.cache/nvim'),
+      source: File.join(Dir.home, '.cache', "nvim.#{args[:new_namespace]}"),
+    },
+  ].each do |h|
+    unless File.exist?(h[:source])
+      puts "Creating #{File.basename(h[:source])}"
+      system "mkdir -p #{h[:source]}"
+    end
+
+    if File.exist?(h[:link])
+      abort "ABORT! #{h[:link]} is not a symlink" unless File.symlink?(h[:link])
+    end
+
+    if File.exist?(h[:link])
+      old_source = File.readlink(h[:link])
+      old_namespace = File.basename(old_source)
+
+      File.delete(h[:link])
+    end
+
+    File.symlink(h[:source], h[:link])
+
+    puts "#{h[:link]} -> #{h[:source]} (was #{old_namespace})"
+  end
 end
 
 desc "Remove dotfiles"
 task :remove do
-  each_link { |source, link| remove_link(source, link) }
+  each_linkable { |source, link| remove_link(source, link) }
 end
 
 desc "Keep SSH_AUTH_SOCK for screen / tmux sessions"
@@ -90,15 +143,13 @@ task :link_ia_writer do
   )
 end
 
-
-
 def make_link(source, link)
   unless File.exist?(link)
     File.symlink(source, link)
     puts [
-      Pathname.new(source).relative_path_from(Dir.home),
-      '->',
       Pathname.new(link).relative_path_from(Dir.home),
+      '->',
+      Pathname.new(source).relative_path_from(Dir.home),
     ].join("\s")
   end
 end
@@ -117,16 +168,7 @@ end
 def each_linkable(&block)
   LINKABLES.each do |file|
     source = File.join(DOTFILES_DIR, file)
-    link = File.join(Dir.home,
-                       LINK_VISIBLY.include?(file) ? file : ".#{file}")
+    link = File.join(Dir.home, LINK_VISIBLY.include?(file) ? file : ".#{file}")
     yield(source, link)
-  end
-end
-
-def each_link(&block)
-  Dir.chdir(Dir.home) do
-    Dir.children('.').select { |file|
-      File.symlink?(file) && File.dirname(File.readlink(file)) == DOTFILES_DIR
-    }.each { |link| yield(File.readlink(link), link) }
   end
 end

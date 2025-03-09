@@ -1,13 +1,9 @@
-if filereadable(expand("~/.vim/lightline.vim"))
-  source ~/.vim/lightline.vim
+if filereadable(expand("~/.vim/common_functions.vim"))
+  source ~/.vim/common_functions.vim
 endif
 
 if filereadable(expand("~/.vim/colorscheme.vim"))
   source ~/.vim/colorscheme.vim
-endif
-
-if filereadable(expand("~/.vim/trailing_whitespace.vim"))
-  source ~/.vim/trailing_whitespace.vim
 endif
 
 function! IsCommentLine()
@@ -129,18 +125,6 @@ function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
   endwhile
 endfunction
 
-function! ResumeCursorPosition()
-  " Checks to make sure the last position is valid and not in an event handler.
-  " Can be disabled by setting b:noResumeCursorPosition
-  if exists('b:noResumeCursorPosition')
-    return
-  endif
-
-  if line("'\"") > 0 && line("'\"") <= line("$") |
-    exe "normal g`\"" |
-  endif
-endfunction
-
 function! VisibleBuffers()
   return tabpagebuflist(tabpagenr())
 endfunction
@@ -219,6 +203,8 @@ function! _Executor(ft, filepath, ...)
     return "python " . l:path
   elseif l:filename =~ 'test.js$'
     return "yarn jest " . l:path
+  elseif l:filename =~ 'test.ts$'
+    return "npm run test " . l:path
   elseif a:ft == "javascript"
     return "node " . l:path
   elseif a:ft == "javascript.jsx"
@@ -241,7 +227,11 @@ function! RunFile(...)
     echom l:executor
     call Shell(l:executor)
     let g:saved_command = l:executor
+  else
+    echoerr "Run file with what?"
+    return 1
   endif
+  return 0
 endfunction
 
 function! RunSavedCommand()
@@ -265,11 +255,6 @@ function! IsRepeatableHistory(hist_index)
   let cmd = histget(":", a:hist_index)
   return match(l:cmd, '^\(echom\|call\)') != -1
         \ && match(l:cmd, 'RepeatVimCmd') == -1
-endfunction
-
-function! System(command)
-  " strip away the last byte of output
-  return system(a:command)[:-2]
 endfunction
 
 function! Tmux()
@@ -514,100 +499,14 @@ function! InGitDir(...)
   return ShellOK("cd '" . l:dir . "' && git rev-parse --git-dir")
 endfunction
 
-function! GitTopLevelDir(...)
-  let dir = get(a:000, 0, getcwd())
-
-  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
-  return l:git_dir != "" ? l:git_dir : 0
-endfunction
-
-function! CdToProjectRoot()
-  if &ft =~ '\(fugitiveblame\|git\|help\)'
-    return 0
-  endif
-
-  let file_git_dir = GitTopLevelDir(expand("%:h"))
-  if type(l:file_git_dir) == 1
-
-    " if Matches($PWD, l:file_git_dir)
-    "   return 0
-    " endif
-
-    exec "lcd " . l:file_git_dir
-    return 1
-  endif
-  return 0
-endfunction
-
 function! LetToInstanceMethod()
   :s/let../@/
   :s/) { / = /
   :s/ }$//
 endfunction
 
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-
-function! SortIndentLevel()
-  " Comments should be fixed to the line they follow
-  normal mz
-  call SelectIndent()
-  execute "normal! :sort\<CR>"
-  normal `z
-endfunction
-
-" Visually select contiguous block of text sharing the same indent level
-function! SelectIndent()
-  let cur_line = line(".")
-  let cur_ind = indent(cur_line)
-  let line = cur_line
-
-  " Selection top
-  while indent(line - 1) == cur_ind && strwidth(getline(line - 1)) > 0
-    let line = line - 1
-  endw
-  exe "normal " . line . "G"
-  exe "normal V"
-
-  " Selection bottom
-  let line = cur_line
-  while indent(line + 1) == cur_ind && strwidth(getline(line + 1)) > 0
-    let line = line + 1
-  endw
-  exe "normal " . line . "G"
-endfunction
-
 function! LongestLine()
   return system("gwc -L " . bufname("%") . " | cut -d ' ' -f 1")
-endfunction
-
-function! SetJournalOptions()
-  setlocal textwidth=72 colorcolumn=72 nonumber spell
-endfunction
-
-function! RewrapBuffer()
-  let lines = line('$')
-  let pos = getpos('.')
-  call cursor(1, 1)
-  keepjumps normal gqG
-  call cursor(pos[1] + line('$') - lines, pos[2])
-endfunction
-
-function! AutocmdCommitMessage()
-  let b:noResumeCursorPosition=1
-  setlocal textwidth=72 colorcolumn=72 spell
-endfunction
-
-function! AutocmdPullRequestMessage()
-  let b:noResumeCursorPosition=1
-  setlocal textwidth=72 colorcolumn=72 spell
 endfunction
 
 function! GitLogPatch()
@@ -659,12 +558,6 @@ function! AbbrevRemapRun()
   \ : "rr"
 endfunction
 
-function! Profile_get()
-  return $ITERM_PROFILE
-
-  return System("iterm current_profile")
-endfunction
-
 function! Profile_set(name)
   if type(a:name) == 1
     let profile = a:name
@@ -689,16 +582,4 @@ function! VimEnter_after()
   call EnsureTempDirs()
   call FuzzyFinder_configure()
   call ItalicComments_enable()
-endfunction
-
-" function! Matches(a, b)
-"   return a:a =~ a:b
-" endfunction
-
-function! LineNumbers_toggle()
-  if &nu
-    windo set nonu
-  else
-    windo set nu
-  endif
 endfunction

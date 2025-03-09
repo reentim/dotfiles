@@ -7,17 +7,19 @@ function! Colorscheme_get()
 endfunction
 
 function! Colorscheme_set(...)
-  let options = get(a:000, 0, {})
-  let profile = get(l:options, 'profile')
-  if type(l:profile) != 1
-    let profile = Profile_get()
+  if has('nvim') == 0
+    let options = get(a:000, 0, {})
+    let profile = get(l:options, 'profile')
+    if type(l:profile) != 1
+      let profile = Profile_get()
+    endif
+    let scheme = get(l:options, 'scheme')
+    if type(l:scheme) != 1
+      let scheme = Colorscheme_for_profile(l:profile)
+    endif
+    execute "colorscheme " . l:scheme
+    call Colorscheme_set_after({"profile": l:profile, "scheme": l:scheme})
   endif
-  let scheme = get(l:options, 'scheme')
-  if type(l:scheme) != 1
-    let scheme = Colorscheme_for_profile(l:profile)
-  endif
-  execute "colorscheme " . l:scheme
-  call Colorscheme_set_after({"profile": l:profile, "scheme": l:scheme})
 endfunction
 
 function! Colorscheme_background_set(profile, scheme)
@@ -31,8 +33,14 @@ function! Colorscheme_background_set(profile, scheme)
 endfunction
 
 function! Colorscheme_for_profile(...)
+  if $TERM_PROGRAM =~ 'Kitty'
+    set termguicolors
+  elseif $TERM_PROGRAM =~ 'Alacritty'
+    set termguicolors
+  endif
+
   if $TERM_PROGRAM =~ 'Apple_Terminal'
-    return 'Tomorrow-Night-Bright'
+    return 'Tomorrow-Night-Eighties'
   else
     let profile = get(a:000, 0)
     if type(l:profile) != 1
@@ -40,10 +48,15 @@ function! Colorscheme_for_profile(...)
     endif
     if l:profile =~ 'Solarized'
       return 'solarized'
+      set notermguicolors
     elseif profile =~ 'iceberg'
       return 'iceberg'
+    elseif profile =~ 'Tokyo Night'
+      return 'tokyonight'
+    elseif profile =~ 'Catppuccin-Mocha'
+      return 'catppuccin_mocha'
     else
-      return 'Tomorrow-Night-Bright'
+      return 'Tomorrow-Night-Eighties'
     endif
   endif
 endfunction
@@ -60,5 +73,4 @@ function! Colorscheme_set_after(...)
   endif
   call Colorscheme_background_set(l:profile, l:scheme)
   call IndentGuideColors_set(IndentGuideColors_get(l:scheme))
-  call TrailingWhitespace_highlight()
 endfunction

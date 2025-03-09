@@ -1,7 +1,7 @@
 server() {
   local port="${1:-8000}"
   open "http://localhost:${port}/"
-  python -m SimpleHTTPServer "$port"
+  python3 -m http.server $port
 }
 
 proj() {
@@ -11,7 +11,7 @@ proj() {
     _proj_build_cache
     pushd $(cat $cache | selecta)
   else
-    $(_proj_build_cache &>/dev/null &)
+    $(_proj_build_cache > /dev/null &2>1 &)
     pushd $(cat $cache | selecta)
   fi
 }
@@ -98,4 +98,16 @@ _path_without() {
 
 uncd() {
   cd $OLDPWD
+}
+
+toggle-prompt-time() {
+  if [ $PROMPT_TIME ]; then
+    unset PROMPT_TIME
+    rm -f /tmp/PROMPT_TIME
+  else
+    export PROMPT_TIME="1"
+    touch /tmp/PROMPT_TIME
+  fi
+  promptinit
+  prompt grb
 }

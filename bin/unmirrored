@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable-gems
+#!/usr/bin/env -S ruby --disable-gems
 
 class Unmirrored
   attr_reader :args, :target, :postfix, :sources

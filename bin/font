@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+main() {
+  if [ $TERM_PROGRAM = "Kitty" ]; then
+    if [ $TMUX ]; then
+      tmux display "Detach first!"
+      return 1
+    fi
+    kitty +kitten choose-fonts > "$HOME/.config/kitty/font.conf"
+    kill -SIGUSR1 $(pgrep kitty)
+    return 0
+  fi
+
+  local font="$1"
+  if [ -z "$font" ]; then
+    local font="$(list-fonts | selecta)"
+  fi
+
+  [ -z "$font" ] && exit 1
+
+  change-font "$font"
+  return 0
+}
+
+
+main "$*"

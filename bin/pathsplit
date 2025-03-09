@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby --disable-gems
+#!/usr/bin/env -S ruby --disable-gems
 
 def main
   if ARGV[0] == '-s'
