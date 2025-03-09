@@ -1,4 +1,4 @@
-start=$($HOME/bin/monotonic-clock)
+[ -x $HOME/bin/monotonic-clock ] && start=$($HOME/bin/monotonic-clock)
 
 [ -f ~/.zsh/functions.zsh ] && source ~/.zsh/functions.zsh
 [ -f ~/.aliases ] && source ~/.aliases
@@ -112,5 +112,7 @@ bindkey '' toggle-prompt-time
 
 stty -ixon # Free up C-s for fwd-i-search
 
-finish=$($HOME/bin/monotonic-clock)
-printf "=> [zshrc: %.3f seconds]\n" "($finish - $start)"
+if [[ -x $HOME/bin/monotonic-clock ]]; then
+  finish=$($HOME/bin/monotonic-clock)
+  printf "=> [zshrc: %.3f seconds]\n" "($finish - $start)"
+fi
