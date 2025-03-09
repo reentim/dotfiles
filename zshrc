@@ -7,6 +7,10 @@ if [ $TMUX ]; then
   [ $(tmux show-environment TERM_PROGRAM) != "-TERM_PROGRAM" ] && export "$(tmux show-environment TERM_PROGRAM)"
 fi
 
+if [ "$TERM" = "xterm-kitty" ] && ! infocmp xterm-kitty >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+
 setopt PROMPT_SUBST
 setopt hist_ignore_all_dups
 setopt inc_append_history
