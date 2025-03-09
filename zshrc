@@ -14,6 +14,7 @@ setopt interactivecomments
 setopt rmstarsilent
 setopt share_history
 
+export BUN_INSTALL="$HOME/.bun"
 export DEFAULT_BRANCH="main"
 export HISTFILE="$HOME/.history"
 export HISTSIZE=100000
@@ -39,20 +40,18 @@ export WORDCHARS='*?[]~&;!$%^<>-'
 mkdir -p /tmp/vimtemp /tmp/vimswap /tmp/vimundo \
   /tmp/nvim_temp /tmp/nvim_swap /tmp/nvim_undo
 
-prepend_path "./node_modules/.bin"
+prepend_path "$BUN_INSTALL/bin"
+prepend_path "$HOME/.asdf/shims"
 prepend_path "./bin"
+prepend_path "./node_modules/.bin"
 
-[ $ASDF_INSTALLED ] && source "$HOME/.asdf/asdf.sh"
+[ $ASDF_INSTALLED ] && export ASDF_DATA_PATH="$HOME/.asdf"
 [ $HOMEBREW_INSTALLED ] && prepend_path "/usr/local/bin"
 [ $Z_INSTALLED ] && source "$HOME/lib/z/z.sh"
-[ -d $HOME/bin ] && prepend_path "$HOME/bin"
-[ -d $HOME/.local/bin ] && prepend_path "$HOME/.local/bin"
 [ -d $HOME/.cargo/bin ] && prepend_path "$HOME/.cargo/bin"
-
-if [ $NVM_INSTALLED ]; then
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-fi
+[ -d $HOME/.local/bin ] && prepend_path "$HOME/.local/bin"
+[ -d $HOME/bin ] && prepend_path "$HOME/bin"
+[ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
 
 if [ $RBENV_INSTALLED ]; then
   prepend_path "$HOME/.rbenv/bin"
