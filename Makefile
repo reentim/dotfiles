@@ -1,12 +1,16 @@
 MAKEFLAGS += --no-print-directory
 
-DOTFILES_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+DOTFILES_DIR := $(shell dirname $(realpath Makefile))
 ICLOUD_DRIVE := $(HOME)/Library/Mobile\ Documents/com~apple~CloudDocs
 ASDF_DIR := $(HOME)/.asdf
 
-EXCLUDE := Rakefile README.md config .gitmodules ssh Library iTerm babushka-deps
+EXCLUDE := Makefile make Rakefile README.md config .gitmodules ssh Library iTerm babushka-deps
 LINK_VISIBLY := bin lib
 LINKABLES := $(filter-out $(EXCLUDE), $(shell find * -maxdepth 0) $(shell find config/* -maxdepth 0 -type d))
+
+define indent_output
+	$(1) | sed 's/^/    /'
+endef
 
 .PHONY: default
 default: install
@@ -17,55 +21,9 @@ install: \
 	install-packages \
 	set-shell \
 	nodejs \
-	$(DOTFILES_DIR)/bin/monotonic-clock 
+	$(DOTFILES_DIR)/bin/monotonic-clock
 
-ifeq ($(shell uname),Darwin)
-  PKG_MANAGER := brew
-else
-  PKG_MANAGER := apt
-endif
-
-PACKAGES := zsh git curl
-UPDATE_STAMP := .packages-updated-stamp
-
-.PHONY: install-packages
-install-packages: packages-update $(PACKAGES)
-
-.PHONY: packages-update
-packages-update: $(UPDATE_STAMP)
-
-.PHONY: $(PACKAGES)
-$(PACKAGES):
-	@if [ "$(PKG_MANAGER)" = "apt" ]; then \
-		if ! dpkg -s $@ >/dev/null 2>&1; then \
-			echo "Installing $@..."; \
-			sudo apt install -y $@; \
-		fi; \
-	elif [ "$(PKG_MANAGER)" = "brew" ]; then \
-		if ! brew list --versions $@ >/dev/null 2>&1; then \
-			echo "Installing $@..."; \
-			brew install $@; \
-		fi; \
-	else \
-		echo "Unsupported package manager: $(PKG_MANAGER)"; \
-		exit 1; \
-	fi
-
-$(UPDATE_STAMP):
-	@echo "Checking if package index update is needed..."
-	@if [ ! -f $@ ] || [ "$$(find $@ -mmin +1440)" ]; then \
-		echo "Updating package index..."; \
-		if [ "$(PKG_MANAGER)" = "apt" ]; then \
-			sudo apt update; \
-		elif [ "$(PKG_MANAGER)" = "brew" ]; then \
-			brew update; \
-		else \
-			echo "Unsupported package manager: $(PKG_MANAGER)"; exit 1; \
-		fi; \
-		touch $@; \
-	else \
-		echo "Skipping update (recent enough)"; \
-	fi
+include make/packages.mk
 
 .PHONY: set-shell
 set-shell:
@@ -74,7 +32,10 @@ set-shell:
 		if grep -q "$(shell which zsh)" /etc/shells; then \
 			echo "Shell is valid, changing to zsh..."; \
 			sudo chsh -s "$(shell which zsh)" "$(shell whoami)"; \
-			echo "Shell successfully changed to zsh!"; \
+			if [ $? -ne 0 ]; then \
+    				echo "Error: something went wrong." >&2; \
+    				exit 1; \
+			fi; \
 		else \
 			echo "zsh is not listed in /etc/shells."; \
 			echo "Please run the following commands manually to add it:"; \
@@ -104,8 +65,8 @@ asdf_install_latest_nodejs:
 
 $(ASDF_DIR)/plugins/nodejs: $(DOTFILES_DIR)/bin/asdf
 	asdf plugin add nodejs
-	
-$(DOTFILES_DIR)/bin/asdf: 
+
+$(DOTFILES_DIR)/bin/asdf:
 	$(INSTALL_ASDF_CMD)
 
 .PHONY: install_asdf
@@ -155,6 +116,7 @@ switch-nvim:
 		$(MAKE) link-one SOURCE=$$source LINK=$$link; \
 	done
 
+.PHONY: link-all
 link-all:
 	@for file in $(LINKABLES); do \
 		source=$(DOTFILES_DIR)/$$file; \
@@ -164,7 +126,8 @@ link-all:
 			link=$(HOME)/.$$file; \
 		fi; \
 		$(MAKE) link-one SOURCE=$$source LINK=$$link; \
-	done
+	done; \
+	$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/tmux/colors/themes/tokyo_night.conf LINK=$(DOTFILES_DIR)/tmux/colors/theme.conf
 
 unlink:
 	@for file in $(LINKABLES); do \
@@ -180,12 +143,12 @@ unlink:
 ssh:
 	@mkdir -p $(HOME)/.ssh
 	@for file in $(shell ls ssh/); do \
-		$(MAKE) link_one SOURCE=$(DOTFILES_DIR)/ssh/$$file LINK=$(HOME)/.ssh/$$file; \
+		$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/ssh/$$file LINK=$(HOME)/.ssh/$$file; \
 	done
 
 keybindings:
 	@mkdir -p $(HOME)/Library/KeyBindings
-	@$(MAKE) link_one SOURCE=$(DOTFILES_DIR)/Library/KeyBindings/DefaultKeyBinding.dict LINK=$(HOME)/Library/KeyBindings/DefaultKeyBinding.dict
+	@$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/Library/KeyBindings/DefaultKeyBinding.dict LINK=$(HOME)/Library/KeyBindings/DefaultKeyBinding.dict
 
 terminals:
 	@for terminfo in $(shell ls terminals/); do \
@@ -193,17 +156,18 @@ terminals:
 	done
 
 link-icloud-drive:
-	@$(MAKE) link_one SOURCE=$(ICLOUD_DRIVE) LINK=$(HOME)/iCloud-Drive
+	@$(MAKE) link-one SOURCE=$(ICLOUD_DRIVE) LINK=$(HOME)/iCloud-Drive
 
 link-lib:
-	@$(MAKE) link_one SOURCE=$(DOTFILES_DIR)/lib LINK=$(HOME)/lib
+	@$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/lib LINK=$(HOME)/lib
 
 link-dev:
-	@$(MAKE) link_one SOURCE=$(ICLOUD_DRIVE)/dev LINK=$(HOME)/dev
+	@$(MAKE) link-one SOURCE=$(ICLOUD_DRIVE)/dev LINK=$(HOME)/dev
 
 link-journals:
-	@$(MAKE) link_one SOURCE=$(ICLOUD_DRIVE)/journals LINK=$(HOME)/journals
+	@$(MAKE) link-one SOURCE=$(ICLOUD_DRIVE)/journals LINK=$(HOME)/journals
 
+.PHONY: link-one
 link-one:
 	@if [ -L $(LINK) ]; then \
 	    existing_target=$$(readlink $(LINK)); \
