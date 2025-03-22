@@ -1,4 +1,5 @@
 .packages-updated-stamp
+.vagrant/
 bin/asdf
 bin/monotonic-clock
 config/kitty/current-theme.conf
@@ -12,4 +13,5 @@ tags
 tags-*
 tmux/colors/theme.conf
 tmux/resurrect
+vagrant/noble64/.vagrant
 vim/.netrwhist
