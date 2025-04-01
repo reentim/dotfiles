@@ -6,14 +6,6 @@ def main
   abort unless theme_name
 
   case ENV['TERM_PROGRAM']
-  when 'Alacritty'
-    apply_theme_from_name(
-      name: theme_name,
-      dir: ".config/alacritty/alacritty-theme/themes",
-      link: File.join(Dir.home, ".config/alacritty/theme.toml"),
-    ) do |did_succeed|
-      did_succeed && system("touch ~/.config/alacritty/alacritty.toml")
-    end
   when 'Kitty'
     Process.kill("SIGUSR1", %x[pgrep kitty].to_i)
   end
@@ -53,8 +45,8 @@ def apply_theme_from_name(name:, dir:, link:)
     puts "Couldn't find file for #{name} in #{theme_dir}"
     yield(false)
   else
-    puts "ln -sf #{theme} #{link}"
-    system "ln -sf #{theme} #{link}"
+    puts "cp #{theme} #{link}"
+    system "cp #{theme} #{link}"
     yield(true)
   end
 end

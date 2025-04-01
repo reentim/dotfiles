@@ -1,16 +1,12 @@
 .vagrant/
 bin/asdf
 bin/monotonic-clock
-config/kitty/current-theme.conf
-config/kitty/font.conf
-config/kitty/theme.conf*
 config/nvim
 config/nvim.chad/lazy-lock.json
 config/nvim.reentim/after/ftplugin
 config/nvim.reentim/lazy-lock.json
 tags
 tags-*
-tmux/colors/theme.conf
 tmux/resurrect
 vagrant/noble64/.vagrant
 vim/.netrwhist

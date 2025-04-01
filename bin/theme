@@ -9,7 +9,7 @@ main() {
       return 1
     fi
     kitty +kitten themes --config-file-name theme.conf
-    theme=$(sed "2q;d" "$HOME/.config/kitty/theme.conf" | sed "s/# //")
+    theme="$(sed -n "4p" "$HOME/.config/kitty/theme.conf" | sed "s/# //")"
   fi
 
   if [ -z "$theme" ]; then
@@ -19,6 +19,7 @@ main() {
   [ -z "$theme" ] && echo "Error: couldn't determine theme" && exit 1
 
   change-theme "$theme"
+
   return 0
 }
 
