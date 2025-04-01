@@ -22,7 +22,8 @@ install: \
 	set-shell \
 	nodejs \
 	neovim \
-	$(DOTFILES_DIR)/bin/monotonic-clock
+	ruby \
+	$(DOTFILES_DIR)/bin/monotonic-clock \
 
 include make/packages.mk
 include make/asdf.mk
