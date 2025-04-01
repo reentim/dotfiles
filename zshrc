@@ -113,6 +113,10 @@ bindkey "" backward-kill-line
 bindkey "" kill-line
 bindkey '' edit-command-line
 bindkey '' toggle-prompt-time
+bindkey "^[[4~" end-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^[[H" beginning-of-line
 
 stty -ixon # Free up C-s for fwd-i-search
 
