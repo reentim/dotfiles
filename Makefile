@@ -58,22 +58,24 @@ switch-nvim:
 	@if [ -z "$(NAMESPACE)" ]; then \
 		echo "ABORT: No namespace provided. Use \`make switch_nvim NAMESPACE=value\`."; exit 1; \
 	fi
-	@if pgrep -x nvim > /dev/null; then \
-		echo "ABORT! nvim process detected"; exit 1; \
+	@if ! basename $(shell readlink $(HOME)/.config/nvim) | grep "nvim.$(NAMESPACE)" > /dev/null; then \
+		if pgrep -x nvim > /dev/null; then \
+			echo "ABORT! nvim process detected"; exit 1; \
+		fi; \
+		for path in .config/nvim .local/share/nvim .cache/nvim; do \
+			link=$(HOME)/$$path; \
+			source=$(HOME)/$$path.$(NAMESPACE); \
+			[ -d $$source ] || mkdir -p $$source; \
+			if [ -L "$$link" ] && [ "$$(readlink "$$link")" != "$$source" ]; then \
+				rm "$$link"; \
+			fi; \
+			if [ -e $$link ] && [ ! -L $$link ]; then \
+				echo "Found non-symlink $$link, moving to $$link.default"; \
+				mv "$$link" "$$link".default; \
+			fi; \
+			[ -L $$link ] || $(MAKE) link-one SOURCE=$$source LINK=$$link; \
+		done; \
 	fi
-	@for path in .config/nvim .local/share/nvim .cache/nvim; do \
-		link=$(HOME)/$$path; \
-		source=$(HOME)/$$path.$(NAMESPACE); \
-		[ -d $$source ] || mkdir -p $$source; \
-		if [ -L "$$link" ] && [ "$$(readlink "$$link")" != "$$source" ]; then \
-			rm "$$link"; \
-		fi; \
-		if [ -e $$link ] && [ ! -L $$link ]; then \
-			echo "Found non-symlink $$link, moving to $$link.default"; \
-			mv "$$link" "$$link".default; \
-		fi; \
-		[ -L $$link ] || $(MAKE) link-one SOURCE=$$source LINK=$$link; \
-	done
 
 .PHONY: link-all
 link-all:
@@ -87,7 +89,6 @@ link-all:
 		fi; \
 		$(MAKE) link-one SOURCE=$$source LINK=$$link; \
 	done; \
-	$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/tmux/colors/themes/tokyo_night.conf LINK=$(DOTFILES_DIR)/tmux/colors/theme.conf
 
 unlink:
 	@for file in $(LINKABLES); do \
