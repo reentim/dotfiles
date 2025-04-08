@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+detached=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null | awk -F: '$2 == 0 {print $1}')
+
+if [[ -n "$detached" ]]; then
+	tmux attach-session -t "$(echo "$detached" | head -n 1)"
+else
+	tmux new-session
+fi
