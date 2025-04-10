@@ -74,8 +74,10 @@ nnoremap <leader>evn :e ~/.config/nvim/init.lua<CR>
 nnoremap <leader>ez :e ~/dotfiles/zshrc<CR>
 nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>f :!clear && time npm run test -- %<CR>
+nnoremap <leader>gf :e <cfile><CR>
 nnoremap <leader>h :split<CR>
 nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
+nnoremap <leader>n :call RenameFile()<CR>
 nnoremap <leader>p :set invpaste<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
 nnoremap <leader>w :vsplit<CR>

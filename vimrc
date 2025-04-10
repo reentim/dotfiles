@@ -117,7 +117,6 @@ nnoremap <leader>gq :call SelectaFile("app/graphql")<CR>
 nnoremap <leader>gs :call SelectaFile("spec")<CR>
 nnoremap <leader>gv :call SelectaFile("app/views")<CR>
 nnoremap <leader>lp :call GitLogPatch()<CR>
-nnoremap <leader>n :call RenameFile()<CR>
 nnoremap <leader>o :!open %<CR><CR>
 nnoremap <leader>r :call RunFile()<CR>
 nnoremap <leader>t :call FuzzyFind(".")<CR>
