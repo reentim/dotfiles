@@ -90,6 +90,7 @@ let g:ultisnips_javascript = {
 \ }
 let g:jsx_ext_required = 0
 
+" nnoremap \ :call RunSavedCommand()<CR>
 cnoreabbrev <expr> rr AbbrevRemapRun()
 cnoreabbrev Ag Ack
 cnoreabbrev alefix ALEFix
@@ -127,7 +128,6 @@ nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
 nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
 nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
 nnoremap [a :ALEPrevious<CR>
-" nnoremap \ :call RunSavedCommand()<CR>
 nnoremap ]a :ALENext<CR>
 onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
 onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>

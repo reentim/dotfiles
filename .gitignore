@@ -3,11 +3,12 @@ bin/asdf
 bin/monotonic-clock
 config/kitty/current-theme.conf
 config/kitty/font.conf
-config/kitty/theme.conf*
+config/kitty/theme.conf.bak
 config/nvim
 config/nvim.chad/lazy-lock.json
 config/nvim.reentim/after/ftplugin
 config/nvim.reentim/lazy-lock.json
+config/btop/*.log
 tags
 tags-*
 tmux/colors/theme.conf

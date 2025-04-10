@@ -5,10 +5,18 @@ return {
     config = true,
   },
   {
+    'catppuccin/nvim',
+    lazy = false,
+    name = 'catppuccin',
+    priority = 500,
+    config = function()
+      -- vim.cmd.colorscheme 'catppuccin-mocha'
+    end,
+  },
+  {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 500,
-    opts = {},
     config = function()
       vim.cmd[[colorscheme tokyonight]]
     end,
@@ -25,9 +33,8 @@ return {
       require('colorizer').setup()
     end,
   },
-  { 'AndrewRadev/splitjoin.vim' },
-  { 'RRethy/nvim-treesitter-endwise' },
-  { 'dcampos/nvim-snippy',
+  {
+    'dcampos/nvim-snippy',
     config = function()
       require('snippy').setup({
         scopes = {
@@ -36,6 +43,8 @@ return {
       })
     end
   },
+  { 'AndrewRadev/splitjoin.vim' },
+  { 'RRethy/nvim-treesitter-endwise' },
   { 'michaeljsmith/vim-indent-object' },
   { 'tommcdo/vim-lion' },
   { 'tpope/vim-commentary' },

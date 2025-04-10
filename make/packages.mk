@@ -4,6 +4,7 @@ PACKAGES := \
 	git \
 	tree \
 	zsh \
+	libyaml
 
 APT_PACKAGES := \
 	build-essential \
@@ -14,6 +15,8 @@ PAC_PACKAGES := \
 	dnsutils \
 	lsof \
 	the_silver_searcher \
+	github-cli \
+	podman \
 
 UPDATE_STAMP := ~/.packages-updated-stamp
 

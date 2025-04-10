@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 main() {
-  if [ $TERM_PROGRAM = "Kitty" ]; then
+  if [ "$TERM_PROGRAM" = "Kitty" ]; then
     if [ $TMUX ]; then
       tmux display "Detach first!"
       return 1

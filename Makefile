@@ -23,7 +23,9 @@ install: \
 	nodejs \
 	neovim \
 	ruby \
+	mail \
 	$(DOTFILES_DIR)/bin/monotonic-clock \
+	# end
 
 include make/packages.mk
 include make/asdf.mk
@@ -107,7 +109,7 @@ ssh:
 		$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/ssh/$$file LINK=$(HOME)/.ssh/$$file; \
 	done
 
-keybindings:
+macos-keybindings:
 	@mkdir -p $(HOME)/Library/KeyBindings
 	@$(MAKE) link-one SOURCE=$(DOTFILES_DIR)/Library/KeyBindings/DefaultKeyBinding.dict LINK=$(HOME)/Library/KeyBindings/DefaultKeyBinding.dict
 
@@ -155,3 +157,8 @@ unlink-one:
 	        exit 1; \
 	    fi; \
 	fi
+
+.PHONY: mail
+mail:
+	@mkdir -p ~/.mail
+	@touch ~/.mail/{inbox,sent}

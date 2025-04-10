@@ -1,0 +1,4 @@
+set emptystart
+set folder=~/.mail
+set record=+sent
+set mbox=+inbox

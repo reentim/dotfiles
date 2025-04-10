@@ -12,7 +12,7 @@ $(ASDF_DIR)/plugins/ruby: $(DOTFILES_DIR)/bin/asdf
 	asdf plugin add ruby
 
 .PHONY: asdf-install-latest-ruby
-asdf-install-latest-ruby:
+asdf-install-latest-ruby: libyaml
 	$(ASDF_INSTALL_LATEST_RUBY_CMD)
 
 ASDF_INSTALL_LATEST_RUBY_CMD = @{ \

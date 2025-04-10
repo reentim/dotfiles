@@ -59,6 +59,7 @@ cnoreabbrev h Help
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
 inoremap <C-J> ->
 inoremap <C-L> =><space>
+inoremap <F5> <C-o>:.-read !date<CR><C-o>j
 inoremap jk <ESC>
 nnoremap / /\v
 nnoremap ; :

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  echo "Usage:"
+  echo "  $0 -S [-p] pkg1 pkg2 ...     # install and log"
+  echo "  $0 -R [-p] <logfile>         # remove packages listed in logfile (if SHA matches)"
+  exit 1
+}
+
+args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -R) mode="remove"; logfile="$2"; shift 2 ;;
+    -S) mode="install"; shift ;;
+    -*) echo "Unknown flag: $1"; usage ;;
+    *) args+=("$1"); shift ;;
+  esac
+done
+
+if [[ "$mode" == "remove" ]]; then
+  [[ -z "${logfile:-}" || ! -f "$logfile" ]] && { echo "Error: Log file not found"; exit 1; }
+
+  cmd=$(head -n1 "$logfile")
+  expected_sha=$(sed -n 2p "$logfile")
+  mapfile -t pkgs < <(tail -n +4 "$logfile")
+
+  if [[ ${#pkgs[@]} -eq 0 ]]; then
+    echo "No packages to uninstall."
+    exit 1
+  fi
+
+  current_sha=$(pacman -Qq | sort | sha256sum | awk '{print $1}')
+  if [[ "$current_sha" != "$expected_sha" ]]; then
+    echo "Package list SHA mismatch!"
+    echo "Expected: $expected_sha"
+    echo "Current : $current_sha"
+    echo "Refusing to proceed; system state has changed."
+    exit 1
+  fi
+
+  echo
+  echo "Uninstalling packages from $logfile:"
+  echo "  ${pkgs[*]}"
+  sudo pacman -Rns "${pkgs[@]}"
+  exit 0
+fi
+
+if [[ "$mode" == "install" ]]; then
+  timestamp="$(date -Iseconds)"
+  logfile="pacman-install-${timestamp}.txt"
+
+  before=$(mktemp)
+  pacman -Qq | sort > "$before"
+
+  sudo pacman -S "${args[@]}"
+
+  after=$(mktemp)
+  pacman -Qq | sort > "$after"
+
+  new_packages=$(comm -13 "$before" "$after")
+  sha=$(sha256sum "$after" | awk '{print $1}')
+
+  {
+    echo "pacman -S ${args[*]}"
+    echo "$sha"
+    echo
+    echo "$new_packages"
+  } > "$logfile"
+
+  trap 'rm "$before" "$after"' EXIT
+
+  echo
+  echo "✅ Install logged to: $logfile"
+fi
+
+if [[ ${#args[@]} -eq 0 ]]; then
+  usage
+fi

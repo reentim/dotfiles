@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+main() {
+  dir="$1"
+
+  tmux $(autosplit) -c "$dir" "vim-todo"
+}
+
+main $*

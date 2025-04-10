@@ -1,11 +1,12 @@
-[ -x $HOME/bin/monotonic-clock ] && start=$($HOME/bin/monotonic-clock)
+[ -x "$HOME/bin/monotonic-clock" ] && start=$($HOME/bin/monotonic-clock)
 
-[ -f ~/.zsh/functions.zsh ] && source ~/.zsh/functions.zsh
-[ -f ~/.aliases ] && source ~/.aliases
+[ -f "$HOME/.zsh/functions.zsh" ] && source "$HOME/.zsh/functions.zsh"
+[ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 [ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1
-if [ $TMUX ]; then
-  [ $(tmux show-environment TERM_PROGRAM) != "-TERM_PROGRAM" ] && export "$(tmux show-environment TERM_PROGRAM)"
-fi
+
+# if [ $TMUX ]; then
+#   [ $(tmux show-environment TERM_PROGRAM) != "-TERM_PROGRAM" ] && export "$(tmux show-environment TERM_PROGRAM)"
+# fi
 
 if [ "$TERM" = "xterm-kitty" ] && ! infocmp xterm-kitty >/dev/null 2>&1; then
   export TERM=xterm-256color
@@ -30,6 +31,8 @@ export SAVEHIST=$HISTSIZE
 export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 export TIMEFMT="=> [%*E seconds at %P cpu]"
 export WORDCHARS='*?[]~&;!$%^<>-'
+export VISUAL="nvim"
+export EDITOR="$VISUAL"
 
 (which chruby-exec > /dev/null) && CHRUBY_INSTALLED=1
 (which direnv > /dev/null) && DIRENV_INSTALLED=1
@@ -106,7 +109,7 @@ autoload -U edit-command-line
 zle -N toggle-prompt-time toggle-prompt-time
 zle -N edit-command-line
 
-# Fixing delete key in OSX
+bindkey -e
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
 bindkey "" backward-kill-line
@@ -120,7 +123,7 @@ bindkey "^[[H" beginning-of-line
 
 stty -ixon # Free up C-s for fwd-i-search
 
-if [[ -x $HOME/bin/monotonic-clock ]]; then
+if [ -x $HOME/bin/monotonic-clock ]; then
   finish=$($HOME/bin/monotonic-clock)
   printf "=> [zshrc: %.3f seconds]\n" "($finish - $start)"
 fi

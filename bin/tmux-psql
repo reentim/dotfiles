@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 main() {
-  dir=$1
+  dir="$1"
 
   found_db="$(finddb ${dir})"
 

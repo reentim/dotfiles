@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+STATE="/tmp/hypr-last-ws"
+
+current=$(hyprctl activeworkspace | grep -oE "^workspace ID [0-9]+" | sed "s/workspace ID //")
+
+echo "$current" > "$STATE"

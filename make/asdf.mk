@@ -3,7 +3,7 @@ include make/asdf/neovim.mk
 include make/asdf/ruby.mk
 
 .PHONY: install-asdf
-install-asdf:
+install-asdf: install-packages
 	$(INSTALL_ASDF_CMD)
 
 $(DOTFILES_DIR)/bin/asdf:
