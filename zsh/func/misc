@@ -20,18 +20,6 @@ _proj_build_cache() {
   ls -dt $(find ~/dev/ ~/proj/ -depth 1 -type d) > "$HOME/.tmp/proj_list"
 }
 
-on_path() {
-  echo $PATH | grep --fixed-strings "$1" &>/dev/null
-}
-
-prepend_path() {
-  export PATH="$1:$(_path_without $1)"
-}
-
-append_path() {
-  export PATH="$(_path_without $1):$1"
-}
-
 staging-deploy() {
   git push && git push staging staging:master
 }
@@ -89,11 +77,6 @@ fresh-internet() {
     heroku pg:backups:download -a "$git_db_remote"
     pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $(finddb $(pwd)) latest.dump
   fi
-}
-
-_path_without() {
-  arg=$(echo $1 | sed -e 's/[]\/$*.^[]/\\&/g')
-  echo $PATH | sed "s|${arg}||g" | sed "s/::/:/g" | sed "s/:$//" | sed "s/^://g"
 }
 
 uncd() {

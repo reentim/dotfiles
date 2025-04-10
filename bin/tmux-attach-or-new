@@ -1,15 +1,17 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# must be zsh as zshenv uses zsh's built-in path array
 
 # Attach to an existing detached session.
 # If none exist, create a new session.
 
-main() {
-  if (tmux list-session >/dev/null 2>&1) &&
-     (tmux ls | grep -v "(attached)$" >/dev/null 2>&1); then
-    tmux attach
-  else
-    tmux new
-  fi
-}
+if [ -f "$HOME/.zshenv" ]; then
+  source "$HOME/.zshenv"
+fi
 
-main
+detached=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null | awk -F: '$2 == 0 {print $1}')
+
+if [[ -n "$detached" ]]; then
+	tmux attach-session -t "$(echo "$detached" | head -n 1)"
+else
+	tmux new-session
+fi
