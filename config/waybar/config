@@ -1,0 +1,69 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "custom/pluseaudio-icon",
+    "pulseaudio",
+    "custom/cpu-icon",
+    "cpu",
+    "custom/memory-icon",
+    "memory",
+    "custom/nvidia-icon",
+    "custom/nvidia-power"
+  ],
+
+  "clock": {
+    "format": "{:%H:%M}",
+    "tooltip-format": "{:%A, %d %B %Y}"
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "hyprctl dispatch workspace {id}"
+  },
+
+  "custom/cpu-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "custom/memory-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "custom/nvidia-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "cpu": {
+      "format": "{usage}%",
+      "tooltip": false
+  },
+
+  "memory": {
+      "format": "{used} GiB",
+      "tooltip": false
+  },
+
+  "custom/nvidia-power": {
+    "interval": 5,
+    "exec": "~/.config/waybar/scripts/nvidia-power.sh",
+    "tooltip": false
+  },
+
+  "custom/pluseaudio-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "pulseaudio": {
+    "format": "{volume}%",
+    "tooltip": false
+  }
+}
+
+// vim: ft=jsonc
