@@ -29,6 +29,7 @@ install: \
 
 include make/packages.mk
 include make/asdf.mk
+include make/yazi-installed.mk
 
 .PHONY: set-shell
 set-shell:
@@ -162,3 +163,9 @@ unlink-one:
 mail:
 	@mkdir -p ~/.mail
 	@touch ~/.mail/{inbox,sent}
+
+.PHONY: podman-installed
+podman-installed: podman /etc/containers/registries.conf
+
+/etc/containers/registries.conf: make/podman-installed/registries.conf
+	sudo cp $< $@

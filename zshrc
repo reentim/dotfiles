@@ -12,12 +12,16 @@ if [ "$TERM" = "xterm-kitty" ] && ! infocmp xterm-kitty >/dev/null 2>&1; then
   export TERM=xterm-256color
 fi
 
+# setopt vi
 setopt PROMPT_SUBST
 setopt hist_ignore_all_dups
 setopt inc_append_history
 setopt interactivecomments
 setopt rmstarsilent
 setopt share_history
+
+# unsetopt globcomplete
+# unsetopt nomatch
 
 (which direnv > /dev/null) && DIRENV_INSTALLED=1
 (which yarn > /dev/null) && YARN_INSTALLED=1
@@ -68,22 +72,35 @@ autoload -Uz compinit
 compinit
 autoload -U colors && colors
 autoload -U edit-command-line
-zle -N toggle-prompt-time toggle-prompt-time
+zle -N toggle-prompt-time
 zle -N edit-command-line
 
+# bindkey -M vicmd '^P' up-history
+# bindkey -M vicmd '^N' down-history
+# bindkey -M viins '^P' up-history
+# bindkey -M viins '^N' down-history
+
 bindkey -e
-bindkey "^[[3~" delete-char
-bindkey "^[3;5~" delete-char
+
 bindkey "" backward-kill-line
 bindkey "" kill-line
 bindkey '' edit-command-line
 bindkey '' toggle-prompt-time
+
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
 bindkey "^[[4~" end-of-line
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
 
 stty -ixon # Free up C-s for fwd-i-search
+
+source <(fzf --zsh)
+
+# fzf for backwards search, but run the command immediately
+# zle -N my-fzf-history-widget
+# bindkey "" my-fzf-history-widget
 
 if [ -x $HOME/bin/monotonic-clock ]; then
   finish=$($HOME/bin/monotonic-clock)

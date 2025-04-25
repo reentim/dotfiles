@@ -4,10 +4,6 @@ main() {
   local theme="$1"
 
   if [ $TERM_PROGRAM = "Kitty" ]; then
-    if [ $TMUX ]; then
-      tmux display "Detach first!"
-      return 1
-    fi
     kitty +kitten themes --config-file-name theme.conf
     theme="$(sed -n "4p" "$HOME/.config/kitty/theme.conf" | sed "s/# //")"
   fi

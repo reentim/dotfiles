@@ -94,3 +94,9 @@ toggle-prompt-time() {
   promptinit
   prompt grb
 }
+
+my-fzf-history-widget() {
+  BUFFER=$(fc -l 1 | fzf --tac | sed 's/^[ ]*[0-9]*[ ]*//')
+  CURSOR=${#BUFFER}
+  zle accept-line
+}

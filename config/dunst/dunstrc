@@ -1,0 +1,38 @@
+[global]
+font = IBM Plex Sans 11
+format = "%s\n%b"
+alignment = left
+vertical_alignment = center
+word_wrap = yes
+ignore_newline = no
+show_indicators = yes
+frame_width = 2
+separator_height = 1
+padding = 16
+horizontal_padding = 16
+corner_radius = 6
+transparency = 10
+gap_size = 4
+separator_color = auto
+frame_color = "#222222"
+timeout = 5
+background = "#333333"
+foreground = "#eeeeee"
+mouse_left_click = close_current
+mouse_right_click = close_all
+mouse_middle_click = do_action
+offset = 12
+origin = top-left
+
+
+[urgency_low]
+timeout = 3
+
+[urgency_normal]
+timeout = 5
+
+[urgency_critical]
+format = "<b>%s</b>\n%b"
+timeout = 0
+background = "#e86c4f"
+foreground = "#ffffff"

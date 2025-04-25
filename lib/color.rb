@@ -1,1 +1,0 @@
-/Users/tim/lib/color/color.rb

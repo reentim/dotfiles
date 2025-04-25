@@ -1,5 +1,5 @@
 {
-  "layer": "top",
+  "layer": "bottom",
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
@@ -15,8 +15,8 @@
   ],
 
   "clock": {
-    "format": "{:%H:%M}",
-    "tooltip-format": "{:%A, %d %B %Y}"
+    "format": "{:%a %d %b %H:%M}",
+    "tooltip": false
   },
 
   "hyprland/workspaces": {
@@ -29,24 +29,24 @@
     "tooltip": false
   },
 
-  "custom/memory-icon": {
-    "format": "",
-    "tooltip": false
-  },
-
-  "custom/nvidia-icon": {
-    "format": "",
-    "tooltip": false
-  },
-
   "cpu": {
       "format": "{usage}%",
       "tooltip": false
   },
 
+  "custom/memory-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
   "memory": {
       "format": "{used} GiB",
       "tooltip": false
+  },
+
+  "custom/nvidia-icon": {
+    "format": "",
+    "tooltip": false
   },
 
   "custom/nvidia-power": {

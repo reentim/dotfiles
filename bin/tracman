@@ -62,12 +62,13 @@ if [[ "$mode" == "install" ]]; then
   new_packages=$(comm -13 "$before" "$after")
   sha=$(sha256sum "$after" | awk '{print $1}')
 
+  mkdir -p "$HOME/.var/log"
   {
     echo "pacman -S ${args[*]}"
     echo "$sha"
     echo
     echo "$new_packages"
-  } > "$logfile"
+  } > "$HOME/.var/log/$logfile"
 
   trap 'rm "$before" "$after"' EXIT
 

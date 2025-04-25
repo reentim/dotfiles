@@ -1,1 +1,0 @@
-/Users/tim/lib/pluralise/pluralise.rb

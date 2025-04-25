@@ -112,7 +112,7 @@ new() {
   mkdir -p "$1"
   git_dir="./${1}/.git"
   git init "$1" \
-    && git --git-dir=$git_dir commit --allow-empty -m "Initial commit" \
+    && git --git-dir=$git_dir commit --allow-empty -m "Initial empty commit" \
     && git --git-dir=$git_dir tag root
 
   [ $TMUX ] && tmux send-keys "cd ${1}" C-m

@@ -9,6 +9,7 @@ config/nvim.chad/lazy-lock.json
 config/nvim.reentim/after/ftplugin
 config/nvim.reentim/lazy-lock.json
 config/btop/*.log
+config/hypr/hyprpaper.conf
 tags
 tags-*
 tmux/colors/theme.conf

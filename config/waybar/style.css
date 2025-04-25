@@ -1,40 +1,47 @@
 * {
-  font-family: "PragmataPro Mono Liga", monospace;
-  font-size: 16px;
+  font-family: "IBM Plex Sans Medm", monospace;
+  font-size: 13px;
 }
 
 window#waybar {
   color: rgba(255, 255, 255, 0.75);
-  background: #1e1e2e;
+  background: rgba(34, 36, 54, 0.9);
   border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+#clock {
+  margin: 0 12px 0 12px;
+}
+
+#custom-pluseaudio-icon {
+  margin-left: 12px;
 }
 
 #custom-cpu-icon,
 #custom-memory-icon,
 #custom-nvidia-icon,
 #custom-pluseaudio-icon {
-  font-size: 28px;
-  margin: 0 6px 0 24px;
+  margin: 0 12px 0 12px;
 }
 
 #custom-nvidia-power {
   margin-right: 12px;
 }
 
-#workspaces {
-}
-
 #workspaces button {
   padding: 0 6px;
   background: transparent;
-  border: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
 }
 
 #workspaces button.active,
 #workspaces button.focused {
   background: rgba(200, 200, 255, 0.25);
+  border-bottom: 2px solid rgba(50, 255, 255, 0.75);
 }
 
 button {
   border-radius: 0;
 }
+

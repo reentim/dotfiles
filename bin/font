@@ -2,10 +2,6 @@
 
 main() {
   if [ "$TERM_PROGRAM" = "Kitty" ]; then
-    if [ $TMUX ]; then
-      tmux display "Detach first!"
-      return 1
-    fi
     kitty +kitten choose-fonts > "$HOME/.config/kitty/font.conf"
     kill -SIGUSR1 $(pgrep kitty)
     return 0

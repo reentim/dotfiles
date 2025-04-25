@@ -165,7 +165,7 @@ prompt_grb_setup() {
   local p_date p_time p_line
 
   p_date="$pc[date]%D{%Y-%m-%d}"
-  p_time="$pc[time]%D{%R}$pc[reset]"
+  p_time="$pc[time]%D{%T}$pc[reset]"
 
   p_line="$pc[line]%y$pc[reset]"
   p_return="[$pc[rc]%?$pc[reset]]"

@@ -17,6 +17,8 @@ PAC_PACKAGES := \
 	the_silver_searcher \
 	github-cli \
 	podman \
+	tig \
+	direnv \
 
 UPDATE_STAMP := ~/.packages-updated-stamp
 
