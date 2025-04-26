@@ -88,12 +88,16 @@ endfunction
 function! GitTopLevelDir(...)
   let dir = get(a:000, 0, getcwd())
 
-  let git_dir = System("cd " . l:dir . " && git rev-parse --show-toplevel 2>/dev/null")
+  let git_dir = System("git -C " . l:dir . " rev-parse --show-toplevel 2>/dev/null")
   return l:git_dir != "" ? l:git_dir : 0
 endfunction
 
 function! CdToProjectRoot()
-  if &ft =~ '\(fugitiveblame\|git\|help\)'
+  if &ft =~ '\(fugitive\|fugitiveblame\|git\|help\)'
+    return 0
+  endif
+
+  if expand("%") =~ 'fugitive://'
     return 0
   endif
 
