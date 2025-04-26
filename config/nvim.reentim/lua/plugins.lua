@@ -48,6 +48,7 @@ return {
   { 'michaeljsmith/vim-indent-object' },
   { 'tommcdo/vim-lion' },
   { 'tpope/vim-commentary' },
+  { 'tpope/vim-fugitive' },
   { 'tpope/vim-repeat' },
   { 'tpope/vim-surround' },
   { 'vim-ruby/vim-ruby' },
