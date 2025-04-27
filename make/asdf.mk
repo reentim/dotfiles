@@ -1,6 +1,8 @@
 include make/asdf/nodejs.mk
 include make/asdf/neovim.mk
 include make/asdf/ruby.mk
+include make/asdf/pnpm.mk
+include make/asdf/bun.mk
 
 .PHONY: install-asdf
 install-asdf: install-packages
