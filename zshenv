@@ -14,7 +14,7 @@ export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 export TIMEFMT="=> [%*E seconds at %P cpu]"
 export VISUAL="nvim"
 export WORDCHARS='*?[]~&;!$%^<>-'
-export FZF_DEFAULT_OPTS="--height ~40%"
+export FZF_DEFAULT_OPTS="--style full --layout reverse"
 export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
 export FZF_CTRL_R_OPTS="--no-sort --exact"
 
