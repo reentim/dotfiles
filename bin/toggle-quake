@@ -5,19 +5,19 @@ kitty="kitty \
   --override shell=zsh \
   --config "$HOME"/.config/kitty/kitty.conf \
   --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+  --config "$HOME"/.config/kitty/quake.conf \
   --class quake \
   tmux new-session -As "$session_name""
 
-
 active_ws=$(hyprctl activeworkspace -j | jq '.id')
 
-active_ws_window_classes=$(
-  hyprctl clients -j | jq -r \
+quake_is_active=$(
+  hyprctl clients -j | jq -e \
     --argjson ws "$active_ws" \
-    '.[] | select(.workspace.id == $ws) | .class'
+    '.[] | select(.workspace.id == $ws) | select(.class == "quake")'
 )
 
-if echo $active_ws_window_classes | grep -qw "quake"; then
+if [[ $quake_is_active ]]; then
   tmux detach-client -s "$session_name"
 else
   $kitty
