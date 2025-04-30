@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-session_name="-"
 kitty="kitty \
   --override shell=zsh \
   --config "$HOME"/.config/kitty/kitty.conf \
   --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
   --config "$HOME"/.config/kitty/quake.conf \
   --class quake \
-  tmux new-session -As "$session_name""
+  tmux -L quake new-session -As \`"
 
 active_ws=$(hyprctl activeworkspace -j | jq '.id')
 
@@ -18,7 +17,7 @@ quake_is_active=$(
 )
 
 if [[ $quake_is_active ]]; then
-  tmux detach-client -s "$session_name"
+  tmux -L quake detach-client -s '\`'
 else
   $kitty
 fi
