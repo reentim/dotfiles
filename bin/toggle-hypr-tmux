@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# TODO:
+# - remember window position, store in /tmp
+# - should always be on top
+main() {
+  local program="$1"
+
+  active_ws=$(hyprctl activeworkspace -j | jq '.id')
+
+  float_is_active=$(
+    hyprctl clients -j | jq -e \
+      --argjson ws "$active_ws" \
+      '.[] | select(.workspace.id == $ws) | select(.class == "float:qalc")'
+  )
+
+  float_has_focus=$(
+    hyprctl activewindow -j | jq -e \
+      'select(.class == "float:qalc")'
+  )
+
+  if [[ $float_is_active ]]; then
+    echo "$(logdate) invoked, is active"
+    if [[ $float_has_focus ]]; then
+      echo "$(logdate) has focus, detaching"
+      tmux -L qalc detach-client -s "$program"
+    else
+      echo "$(logdate) no focus, focusing"
+      hyprctl dispatch focuswindow "class:float:$program"
+      hyprctl dispatch alterzorder top "class:float:$program"
+    fi
+  else
+    echo "$(logdate) invoked, not active, launching"
+    kitty \
+      --class "float:$program" \
+      --detach \
+      --config "$HOME"/.config/kitty/kitty.conf \
+      --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+      --config <(echo "font_size 12") \
+      zsh -c 'tmux \
+        -L "$1" \
+        -f "$2/.tmux/base.conf" \
+        -f <(echo "set -g mouse off") \
+        new-session -As "$1" "$1"' _ "$program" "$HOME"
+  fi
+}
+
+logdate() {
+  echo "[$(date --iso-8601=seconds)]"
+}
+
+echo
+main "$@"

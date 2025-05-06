@@ -1,6 +1,7 @@
 * {
   font-family: "IBM Plex Sans Medm", monospace;
-  font-size: 13px;
+  /* font-size: 13px; */
+  font-size: 12px;
 }
 
 window#waybar {
@@ -13,14 +14,13 @@ window#waybar {
   margin: 0 12px 0 12px;
 }
 
-#custom-pluseaudio-icon {
+#pulseaudio {
   margin-left: 12px;
 }
 
 #custom-cpu-icon,
 #custom-memory-icon,
-#custom-nvidia-icon,
-#custom-pluseaudio-icon {
+#custom-nvidia-icon {
   margin: 0 12px 0 12px;
 }
 

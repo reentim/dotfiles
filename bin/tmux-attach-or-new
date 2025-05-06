@@ -13,5 +13,5 @@ detached=$(tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/nu
 if [[ -n "$detached" ]]; then
 	tmux attach-session -t "$(echo "$detached" | head -n 1)"
 else
-	tmux new-session
+	tmux -l new-session
 fi

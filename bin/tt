@@ -2,13 +2,22 @@
 
 function main() {
   local target=$(tmux-recipient)
-  if [ $target ]; then
-    tmux send-keys -t $target C-c "clear; time $*; jobs | tail -1" C-m
+  local split_arguments=()
+
+  if [[ "$1" == "-d" ]]; then
+    split_arguments+=("-d")
+    shift
+  fi
+
+  if [[ $target ]]; then
+    # if there's a dedicated tmux:tmux running, send the keys there
+    tmux send-keys -t $target "clear; time $*" C-m
     exit 0
   else
-    tmux $(autosplit) "$*; read -k"
+    tmux $(autosplit) "${split_arguments[@]}" "$*; read -k"
+    exit 0
   fi
   exit 1
 }
 
-main $*
+main "$@"

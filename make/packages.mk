@@ -3,27 +3,37 @@ PACKAGES := \
 	curl \
 	git \
 	tree \
-	zsh \
 	libyaml
 
 APT_PACKAGES := \
 	build-essential \
 	silversearcher-ag \
 
-PAC_PACKAGES := \
-	colordiff \
-	dnsutils \
-	lsof \
-	the_silver_searcher \
-	github-cli \
-	podman \
-	tig \
+PACMAN_PACKAGES := \
+	bat \
 	direnv \
+	dnsutils \
+	github-cli \
+	libqalculate \
+	lsof \
+	perf \
+	podman \
+	the_silver_searcher \
+	tig \
+	zoxide \
+	zsh \
+
+HOMEBREW_PACKAGES := \
+	coreutils \
+	fzf \
+	the_silver_searcher \
+	zoxide \
 
 UPDATE_STAMP := ~/.packages-updated-stamp
 
 ifeq ($(shell uname),Darwin)
 	PKG_MANAGER := brew
+	PACKAGES := $(PACKAGES) $(HOMEBREW_PACKAGES)
 else ifeq ($(shell uname),Linux)
 	ifneq ($(wildcard /etc/os-release),)
 		OS_ID := $(shell source /etc/os-release && echo $$ID)
@@ -32,7 +42,7 @@ else ifeq ($(shell uname),Linux)
 			PACKAGES := $(PACKAGES) $(APT_PACKAGES)
 		else ifeq ($(OS_ID),arch)
 			PKG_MANAGER := pacman
-			PACKAGES := $(PACKAGES) $(PAC_PACKAGES)
+			PACKAGES := $(PACKAGES) $(PACMAN_PACKAGES)
 		endif
 	endif
 endif

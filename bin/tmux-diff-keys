@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+colordiff \
+  <(tmux -L tmux-$$ -f /dev/null list-keys) \
+  <(tmux list-keys) \
+  | less

@@ -13,7 +13,7 @@ function! RenameFile()
 endfunction
 
 function! SortIndentLevel()
-  " Comments should be fixed to the line they follow
+  " TODO: comments should be fixed to the line they follow
   normal mz
   call SelectIndent()
   execute "normal! :sort\<CR>"
@@ -93,17 +93,8 @@ function! GitTopLevelDir(...)
 endfunction
 
 function! CdToProjectRoot()
-  if &ft =~ '\(fugitive\|fugitiveblame\|git\|help\)'
-    return 0
-  endif
-
-  if expand("%") =~ 'fugitive://'
-    return 0
-  endif
-
-  let file_git_dir = GitTopLevelDir(expand("%:h"))
-  if type(l:file_git_dir) == 1
-    exec "lcd " . l:file_git_dir
+  if type(FugitiveWorkTree()) == 1
+    exec "lcd " . FugitiveWorkTree()
     return 1
   endif
   return 0

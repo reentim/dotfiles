@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+expr="$(fuzzel --dmenu --prompt "qalc > ")"
+[ -z "$expr" ] && exit 0
+
+# Calculate result
+result="$(qalc -t "$expr")"
+
+# Show result
+echo "$result" | fuzzel --dmenu --prompt "Result: "
+
+# Optionally copy to clipboard
+echo "$result" | wl-copy

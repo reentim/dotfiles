@@ -42,9 +42,22 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-config-file = ?theme
-config-file = ?font
+# font-family = "Fixedsys Excelsior"
+# font-family = "PxPlus ToshibaSat 9x16"
+# font-family = "CommitMono"
+font-size = 9
+adjust-cell-height = 10%
+
+theme = Tomorrow Night Eighties
+
+foreground = #ffffff
+background = #000000
 
 cursor-style = block
+shell-integration-features = no-cursor
+resize-overlay = never
 
-command = env TERM_PROGRAM=Kitty /usr/bin/zsh
+mouse-hide-while-typing = true
+
+window-padding-x = 6
+window-padding-y = 6

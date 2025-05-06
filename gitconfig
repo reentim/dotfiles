@@ -48,7 +48,7 @@
   noff    = merge --no-ff
   pf      = pull --ff-only
   pretty  = "!. ~/.githelpers && pretty_log"
-  r       = "!. ~/.githelpers && selecta_recent_branch"
+  r       = "!. ~/.githelpers && fuzzy_find_branches"
   rc      = rebase --continue
   reword  = commit --amend --verbose
   ri      = rebase --interactive

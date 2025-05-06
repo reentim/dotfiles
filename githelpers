@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 wip() {
   options=$*
@@ -73,15 +73,26 @@ selecta_branch() {
     xargs git checkout
 }
 
-selecta_recent_branch() {
-bash << EOS
-  cat <(git reflog -n 100 | grep -E 'checkout:|Branch: renamed' | grep -Eo "\S+$") \
-      <(git branch | cut -c 3-) \
-      | sed 's:refs/heads/::' \
-      | awk '!x[\$0]++' \
-      | grep -v $(git rev-parse --abbrev-ref HEAD) \
-      | selecta \
-      | xargs git checkout
+fuzzy_find_branches() {
+bash <<-EOS
+  # Uses the reflog to ensure the first result is the previously checked out
+  # branch, making this useful for jumping back and forth between branches.
+  #
+  # awk dedupes the lines without chaning the sort order.
+
+  cat <(\
+    git reflog -n 100 \
+    | grep -E 'checkout:|Branch: renamed' \
+    | grep -Eo "\S+$" \
+  ) <(\
+    git branch -a --format="%(refname:short)" \
+    | grep -v "^origin$" \
+    | sed 's:^origin/::' \
+  ) \
+    | awk '!x[\$0]++' \
+    | grep -v $(git rev-parse --abbrev-ref HEAD) \
+    | fzf \
+    | xargs git checkout
 EOS
 }
 
@@ -152,31 +163,46 @@ log_all() {
 }
 
 delete_local_merged_branches() {
-  git branch --merged "${DEFAULT_BRANCH:-master}" |
-    grep -v "*" |
-    grep -v master |
-    grep -v staging |
-    xargs -n 1 git branch --delete
+  local branches=$(_local_merged_branches)
+  echo $branches
+  printf "Delete branches? (y/n) "
+  if read -q; then
+    echo
+    echo $branches | xargs -n 1 git branch --delete
+  else
+    exit 1
+  fi
 }
 
 delete_remote_merged_branches() {
-  branches=$(
-    git branch -a --merged origin/"${DEFAULT_BRANCH:-master}" \
-      | grep --color=never remotes \
-      | grep -v HEAD \
-      | grep -v staging \
-      | grep -v developement \
-      | grep -v master \
-      | sed "s:remotes/origin/::g"
-  )
+  local branches=$(_remote_merged_branches)
   echo $branches
   printf "Delete branches? (y/n) "
-  if (read -q); then
+  if read -q; then
     echo
     echo $branches | xargs -L 1 git push origin --delete
   else
     exit 1
   fi
+}
+
+_local_merged_branches() {
+  git branch --merged "${DEFAULT_BRANCH:-master}" \
+    | grep -v "*" \
+    | grep -v master \
+    | grep -v main \
+    | grep -v staging
+}
+
+_remote_merged_branches() {
+  git branch -a --merged origin/"${DEFAULT_BRANCH:-master}" \
+    | grep --color=never remotes \
+    | grep -v HEAD \
+    | grep -v staging \
+    | grep -v developement \
+    | grep -v master \
+    | grep -v main \
+    | sed "s:remotes/origin/::g"
 }
 
 truncating_log() {

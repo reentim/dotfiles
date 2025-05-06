@@ -1,5 +1,0 @@
-*.log
-**.min.js
-vendor
-public
-node_modules

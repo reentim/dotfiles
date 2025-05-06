@@ -2,6 +2,30 @@ return {
   {
     'neovim/nvim-lspconfig',
     lazy = false,
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        config = function()
+          require('mason').setup()
+        end,
+      },
+      {
+        'williamboman/mason-lspconfig.nvim',
+        config = function()
+          require('mason-lspconfig').setup {
+            ensure_installed = {
+              'biome',
+              'cssls',
+              'lua_ls',
+              'ruby_lsp',
+              'tailwindcss',
+              'ts_ls',
+            },
+            automatic_installation = true,
+          }
+        end,
+      },
+    },
     config = function()
       local lspconfig = require('lspconfig')
       local cmp_nvim_lsp = require('cmp_nvim_lsp')
@@ -52,6 +76,15 @@ return {
           'package.json',
           'tsconfig.json'
         ),
+      })
+      lspconfig.ruby_lsp.setup({
+        capabilities = capabilities,
+        filetypes = {
+          'ruby',
+        }
+      })
+      lspconfig.biome.setup({
+
       })
     end,
   },

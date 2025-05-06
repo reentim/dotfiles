@@ -22,7 +22,7 @@ INSTALL_ASDF_CMD = @{ \
 	  "linux-x86_64")  PLATFORM="linux-amd64"  ;; \
 	  "linux-aarch64") PLATFORM="linux-arm64"  ;; \
 	esac; \
-	INSTALL_DIR=$(HOME)/bin; \
+	INSTALL_DIR=$(DOTFILES_DIR)/bin; \
 	TARBALL=asdf-v$$LATEST_RELEASE-$$PLATFORM.tar.gz; \
 	DOWNLOAD_URL=https://github.com/asdf-vm/asdf/releases/download/v$$LATEST_RELEASE/$$TARBALL; \
 	echo "	Detected latest version: v$$LATEST_RELEASE"; \

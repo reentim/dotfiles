@@ -1,30 +1,10 @@
 return {
   {
-    'vhyrro/luarocks.nvim',
-    priority = 1000,
-    config = true,
-  },
-  {
-    'catppuccin/nvim',
-    lazy = false,
-    name = 'catppuccin',
-    priority = 500,
-    config = function()
-      -- vim.cmd.colorscheme 'catppuccin-macchiato'
-    end,
-  },
-  {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 500,
     config = function()
       vim.cmd[[colorscheme tokyonight]]
-    end,
-  },
-  {
-    'williamboman/mason.nvim',
-    config = function()
-      require('mason').setup()
     end,
   },
   {
@@ -43,13 +23,35 @@ return {
       })
     end
   },
-  { 'AndrewRadev/splitjoin.vim' },
+  {
+    'Wansmer/treesj',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function()
+      local treesj = require('treesj')
+      treesj.setup({
+        max_join_length = 999,
+      })
+      vim.keymap.set('n', 'gS', function()
+        treesj.split({ split = { recursive = true } })
+      end)
+      vim.keymap.set('n', 'gJ', treesj.join)
+    end,
+  },
+  {
+    'junegunn/vim-easy-align',
+    config = function()
+      vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)', {})
+      vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)', {})
+    end,
+  },
   { 'RRethy/nvim-treesitter-endwise' },
   { 'michaeljsmith/vim-indent-object' },
-  { 'tommcdo/vim-lion' },
   { 'tpope/vim-commentary' },
   { 'tpope/vim-fugitive' },
   { 'tpope/vim-repeat' },
   { 'tpope/vim-surround' },
+  { 'tpope/vim-rails' },
   { 'vim-ruby/vim-ruby' },
 }

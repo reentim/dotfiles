@@ -44,8 +44,8 @@ augroup vimrc_common
   autocmd!
 
   autocmd BufLeave,FocusLost * silent! update
-  autocmd CursorHold * checktime
-  autocmd BufNewFile,BufRead * call CdToProjectRoot()
+  " autocmd CursorHold * checktime
+  " autocmd BufNewFile,BufRead,VimEnter * call CdToProjectRoot()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
@@ -53,7 +53,13 @@ augroup vimrc_common
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
 augroup END
 
-command -nargs=? -complete=help Help help <args> | wincmd L | :vert resize 78
+" TODO: CR is advancing the cursor column with this
+" augroup ClearSearchOnlyInNormalBuffers
+"   autocmd!
+"   autocmd FileType * if &buftype == '' | nnoremap <buffer> <silent> <CR> :nohl<CR> | endif
+" augroup END
+
+command! -nargs=? -complete=help Help help <args> | wincmd L | vert resize 80 | normal! 999zh
 
 cnoreabbrev h Help
 cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
@@ -62,27 +68,30 @@ inoremap <C-L> =><space>
 inoremap <F5> <C-o>:.-read !date<CR><C-o>j
 inoremap jk <ESC>
 nnoremap / /\v
-nnoremap ; :
 nnoremap <F5> :set invlist<CR>
 nnoremap <F6> :call LineNumbers_toggle()<CR>
 nnoremap <leader><leader> <C-^>
+nnoremap <leader>cx :silent !chmod +x %<CR>
+nnoremap <leader>eg :e ~/dotfiles/config/ghostty/config<CR>
+nnoremap <leader>eh :e ~/dotfiles/config/hypr/hyprland.conf<CR>
+nnoremap <leader>ek :e ~/dotfiles/config/kitty/kitty.conf<CR>
 nnoremap <leader>et :e ~/dotfiles/tmux.conf<CR>
-nnoremap <leader>ett :e ~/dotfiles/tmux/colors/theme.conf<CR>
 nnoremap <leader>ev :e ~/dotfiles/vimrc<CR>
 nnoremap <leader>evc :e ~/dotfiles/vimrc.common<CR>
-nnoremap <leader>evn :e ~/.config/nvim/init.lua<CR>
+nnoremap <leader>evi :e ~/.config/nvim/init.lua<CR>
+nnoremap <leader>evp :e ~/.config/nvim/lua/plugins.lua<CR>
 nnoremap <leader>ez :e ~/dotfiles/zshrc<CR>
 nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
 nnoremap <leader>f :!clear && time npm run test -- %<CR>
 nnoremap <leader>gf :e <cfile><CR>
 nnoremap <leader>h :split<CR>
+nnoremap <leader>id :.-read !date -I<CR>
 nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
 nnoremap <leader>n :call RenameFile()<CR>
 nnoremap <leader>p :set invpaste<CR>
 nnoremap <leader>s :call SortIndentLevel()<CR>
 nnoremap <leader>w :vsplit<CR>
 nnoremap <silent> <CR> :nohl<CR>
-nnoremap <silent><leader>dd :execute 'read !date "+\%F \%R"'<CR>
+
 nnoremap Y y$
-nnoremap \ :silent :!npm run format<CR>
 vnoremap / /\v

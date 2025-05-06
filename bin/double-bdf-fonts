@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+# USAGE
+# /double-bdf-fonts -i /path/to/originals -o /path/to/output
+
+import os
+import gzip
+import argparse
+from pathlib import Path
+
+def double_bitmap(lines):
+    new_lines = []
+    in_bitmap = False
+    bitmap = []
+    for line in lines:
+        if line.startswith("BBX "):
+            parts = line.strip().split()
+            w, h = int(parts[1]), int(parts[2])
+            xoff, yoff = parts[3], parts[4]
+            new_lines.append(f"BBX {w*2} {h*2} {xoff} {yoff}\n")
+        elif line.startswith("SIZE "):
+            parts = line.strip().split()
+            size = int(parts[1]) * 2
+            new_lines.append(f"SIZE {size} {parts[2]} {parts[3]}\n")
+        elif line.strip() == "BITMAP":
+            in_bitmap = True
+            bitmap = []
+            new_lines.append(line)
+        elif line.strip() == "ENDCHAR":
+            in_bitmap = False
+            doubled = []
+            for row in bitmap:
+                val = int(row, 16)
+                expanded = 0
+                for i in range(8):  # assuming 8-bit width max
+                    if val & (1 << i):
+                        expanded |= (0b11 << (i * 2))
+                new_hex = f"{expanded:04x}".upper()
+                doubled.append(new_hex)
+                doubled.append(new_hex)
+            for row in doubled:
+                new_lines.append(row + "\n")
+            new_lines.append("ENDCHAR\n")
+        elif in_bitmap:
+            bitmap.append(line.strip())
+        else:
+            new_lines.append(line)
+    return new_lines
+
+def process_bdf(bdf_path, out_dir):
+    name = bdf_path.stem
+    out_bdf = out_dir / f"{name}-dbl.bdf"
+    with open(bdf_path, 'r') as f:
+        lines = f.readlines()
+
+    doubled = double_bitmap(lines)
+
+    with open(out_bdf, 'w') as f:
+        f.writelines(doubled)
+
+    out_pcf = out_bdf.with_suffix('.pcf')
+    os.system(f"bdftopcf '{out_bdf}' > '{out_pcf}'")
+
+    with open(out_pcf, 'rb') as f_in:
+        with gzip.open(str(out_pcf) + ".gz", 'wb') as f_out:
+            f_out.writelines(f_in)
+    os.remove(out_pcf)
+    print(f"✔ Generated {out_pcf}.gz")
+
+def main():
+    parser = argparse.ArgumentParser(description="Double the pixel size of bitmap BDF fonts.")
+    parser.add_argument("-i", "--input", required=True, help="Input directory containing .bdf files")
+    parser.add_argument("-o", "--output", required=True, help="Output directory for doubled fonts")
+    args = parser.parse_args()
+
+    input_dir = Path(args.input).expanduser().resolve()
+    output_dir = Path(args.output).expanduser().resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for bdf_file in input_dir.glob("*.bdf"):
+        process_bdf(bdf_file, output_dir)
+
+if __name__ == "__main__":
+    main()

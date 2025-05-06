@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+session_name="qalc"
+kitty="kitty \
+  --class qalc \
+  --config "$HOME"/.config/kitty/kitty.conf \
+  --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+  --config "$HOME"/.config/kitty/qalc.conf \
+  tmux \
+    -L qalc \
+    -f "$HOME"/.tmux/base.conf \
+    new-session -As "$session_name" \
+    qalc"
+
+active_ws=$(hyprctl activeworkspace -j | jq '.id')
+
+qalc_is_active=$(
+  hyprctl clients -j | jq -e \
+    --argjson ws "$active_ws" \
+    '.[] | select(.workspace.id == $ws) | select(.class == "qalc")'
+)
+
+if [[ $qalc_is_active ]]; then
+  tmux -L qalc detach-client -s "$session_name"
+else
+  $kitty
+fi
