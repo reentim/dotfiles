@@ -1,20 +1,15 @@
-#!/usr/bin/env -S ruby --disable-gems
+#!/usr/bin/env bash
 
-def main
-  pane_width, pane_height, window_width, window_height = %x[
-    tmux display -p '\#{pane_width} \#{pane_height} \#{window_width} \#{window_height}'
-  ].split.map(&:to_i)
+main() {
+  read -r pane_w pane_h win_w win_h <<< \
+    $(tmux display -p '#{pane_width} #{pane_height} #{window_width} #{window_height}')
 
-  width_pc = (1 / (window_width / pane_width.to_f)).round(2)
-  height_pc = (1 / (window_height / pane_height.to_f)).round(2)
-
-  aspect_ratio = width_pc / height_pc
-
-  if aspect_ratio >= 1
-    puts 'split-window -h'
+  # Cross-multiply instead of dividing: (pane_w / win_w) >= (pane_h / win_h)
+  if (( pane_w * win_h >= pane_h * win_w )); then
+    echo "split-window -h"
   else
-    puts 'split-window -v'
-  end
-end
+    echo "split-window -v"
+  fi
+}
 
 main
