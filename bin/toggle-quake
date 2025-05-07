@@ -1,23 +1,39 @@
 #!/usr/bin/env bash
 
-kitty="kitty \
-  --override shell=zsh \
-  --config "$HOME"/.config/kitty/kitty.conf \
-  --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
-  --config "$HOME"/.config/kitty/quake.conf \
-  --class quake \
-  tmux -L quake new-session -As \`"
+set -euo pipefail
 
-active_ws=$(hyprctl activeworkspace -j | jq '.id')
+main() {
+  local kitty="kitty \
+    --detach
+    --config "$HOME"/.config/kitty/kitty.conf \
+    --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+    --config "$HOME"/.config/kitty/quake.conf \
+    --class quake \
+    tmux \
+      -L quake \
+      -f "$HOME"/.tmux/base.conf \
+      new-session -As quake"
 
-quake_is_active=$(
-  hyprctl clients -j | jq -e \
-    --argjson ws "$active_ws" \
+  if quake_is_active; then
+    quake_is_running_shell && tmux -L quake send-keys -t quake C-l
+    tmux -L quake detach-client -s quake
+  else
+    $kitty
+  fi
+}
+
+quake_is_active() {
+  hyprctl clients -j \
+    | jq -e --argjson ws "$(active_workspace)" \
     '.[] | select(.workspace.id == $ws) | select(.class == "quake")'
-)
+}
 
-if [[ $quake_is_active ]]; then
-  tmux -L quake detach-client -s '\`'
-else
-  $kitty
-fi
+quake_is_running_shell() {
+  [[ $(tmux -L quake display-message -p '#{pane_current_command}') =~ ^(bash|zsh|fish)$ ]]
+}
+
+active_workspace() {
+  hyprctl activeworkspace -j | jq '.id'
+}
+
+main

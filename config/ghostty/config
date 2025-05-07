@@ -42,9 +42,36 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-config-file = ?theme
-config-file = ?font
+# font-family = "Fixedsys Excelsior"
+# font-family = "PxPlus ToshibaSat 9x16"
+# font-family = "CommitMono"
+
+theme = "tokyonight_moon"
+
+# foreground = #ffffff
+# background = #000000
 
 cursor-style = block
+shell-integration-features = no-cursor
+resize-overlay = never
 
-command = env TERM_PROGRAM=Kitty /usr/bin/zsh
+mouse-hide-while-typing = true
+
+window-padding-x = 4
+window-padding-y = 4
+
+keybind = shift+delete=paste_from_selection
+
+command = "$HOME/bin/tmux-attach-or-new"
+
+# font-family = "PragmataPro"
+# font-size = 25.5
+# adjust-cell-height = 15%
+# window-padding-x = 6
+# window-padding-y = 6
+
+font-family = "JetBrainsMono Nerd Font"
+font-size = 24
+adjust-cell-height = 1%
+window-padding-x = 6
+window-padding-y = 6

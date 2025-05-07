@@ -6,13 +6,13 @@ vertical_alignment = center
 word_wrap = yes
 ignore_newline = no
 show_indicators = yes
-frame_width = 2
+frame_width = 0
 separator_height = 1
 padding = 16
 horizontal_padding = 16
-corner_radius = 6
+corner_radius = 0
 transparency = 10
-gap_size = 4
+gap_size = 8
 separator_color = auto
 frame_color = "#222222"
 timeout = 5
@@ -21,9 +21,8 @@ foreground = "#eeeeee"
 mouse_left_click = close_current
 mouse_right_click = close_all
 mouse_middle_click = do_action
-offset = 12
-origin = top-left
-
+offset = 0
+origin = top-right
 
 [urgency_low]
 timeout = 3

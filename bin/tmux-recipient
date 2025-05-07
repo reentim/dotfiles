@@ -3,7 +3,7 @@
 main() {
   local pane_in_current_window=$(tmux-find-recipient-pane 2>/dev/null)
 
-  if (tmux list-windows -F "#W" -t tmux 2>/dev/null | grep -q ^tmux$); then
+  if tmux list-windows -F "#W" -t tmux 2>/dev/null | grep -q "^tmux$"; then
     echo "tmux:tmux"
   elif [ $pane_in_current_window ]; then
     echo $pane_in_current_window

@@ -2,8 +2,8 @@
 #
 # find file
 
-pattern=$1
+pattern="$1"
 shift
 search_path=${*:-'.'}
 
-find $search_path -type f 2>/dev/null | ag -i $pattern
+find "$search_path" -type f 2>/dev/null | rg -i "$pattern"

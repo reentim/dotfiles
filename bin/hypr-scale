@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+	hyprctl keyword monitor ,highrr,auto,$(scale)
+}
+
+scale() {
+	cat <<-EOF | fzf
+		1.00
+		1.25
+		1.50
+		1.67
+		2.00
+	EOF
+}
+
+main
+
+# vim:shiftwidth=4:noexpandtab

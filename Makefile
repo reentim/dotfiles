@@ -4,7 +4,16 @@ DOTFILES_DIR := $(shell dirname $(realpath Makefile))
 ICLOUD_DRIVE := $(HOME)/Library/Mobile\ Documents/com~apple~CloudDocs
 ASDF_DIR := $(HOME)/.asdf
 
-EXCLUDE := Makefile make README.md config .gitmodules ssh Library
+EXCLUDE := \
+	.gitmodules \
+	Library \
+	Makefile \
+	README.md \
+	config \
+	make \
+	src \
+	ssh \
+
 LINK_VISIBLY := bin lib
 LINKABLES := $(filter-out $(EXCLUDE), $(shell find * -maxdepth 0) $(shell find config/* -maxdepth 0 -type d))
 
@@ -12,8 +21,7 @@ define indent_output
 	$(1) | sed 's/^/    /'
 endef
 
-.PHONY: default
-default: install
+all: install
 
 .PHONY: install
 install: \
@@ -21,15 +29,18 @@ install: \
 	install-packages \
 	set-shell \
 	nodejs \
+	pnpm \
+	bun \
 	neovim \
 	ruby \
 	mail \
-	$(DOTFILES_DIR)/bin/monotonic-clock \
+	src-compiled \
 	# end
 
 include make/packages.mk
 include make/asdf.mk
 include make/yazi-installed.mk
+include make/src-compiled.mk
 
 .PHONY: set-shell
 set-shell:
@@ -52,10 +63,6 @@ set-shell:
 			echo "  chsh -s $(shell which zsh)"; \
 		fi; \
 	fi
-
-$(DOTFILES_DIR)/bin/monotonic-clock: $(DOTFILES_DIR)/lib/monotonic-clock.c
-	@gcc $< -o $@
-	@echo "✅ Built monotonic-clock"
 
 switch-nvim:
 	@if [ -z "$(NAMESPACE)" ]; then \

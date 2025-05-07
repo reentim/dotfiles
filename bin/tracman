@@ -73,7 +73,7 @@ if [[ "$mode" == "install" ]]; then
   trap 'rm "$before" "$after"' EXIT
 
   echo
-  echo "✅ Install logged to: $logfile"
+  echo "✅ Install logged to: ~/.var/log/$logfile"
 fi
 
 if [[ ${#args[@]} -eq 0 ]]; then

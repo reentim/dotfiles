@@ -522,10 +522,6 @@ function! BashIfToShortCircuit()
   normal f;ce &&
 endfunction
 
-function! EnsureTempDirs()
-  call system("mkdir -p ~/.tmp/vimtemp ~/.tmp/vimswap ~/.tmp/vimundo")
-endfunction
-
 function! DepUnderCursor()
   let line_no = line(".")
   let line = getline(".")
@@ -579,7 +575,6 @@ endfunction
 function! VimEnter_after()
   call Profile_get()
   call Colorscheme_set()
-  call EnsureTempDirs()
   call FuzzyFinder_configure()
   call ItalicComments_enable()
 endfunction

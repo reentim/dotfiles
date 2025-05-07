@@ -4,7 +4,7 @@
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
-    "custom/pluseaudio-icon",
+    "mpris",
     "pulseaudio",
     "custom/cpu-icon",
     "cpu",
@@ -13,6 +13,11 @@
     "custom/nvidia-icon",
     "custom/nvidia-power"
   ],
+
+  "mpris": {
+    "interval": 1,
+    "show-progress": false
+  },
 
   "clock": {
     "format": "{:%a %d %b %H:%M}",
@@ -55,14 +60,17 @@
     "tooltip": false
   },
 
-  "custom/pluseaudio-icon": {
-    "format": "",
-    "tooltip": false
-  },
-
   "pulseaudio": {
-    "format": "{volume}%",
-    "tooltip": false
+    "format": "{icon}    {volume}%",
+    "tooltip": "{desc}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-muted": "   {volume}%",
+    "format-icons": {
+      "headphone": "",
+      "default": ["", ""]
+    },
+    "scroll-step": 1,
+    "on-click": "pavucontrol"
   }
 }
 

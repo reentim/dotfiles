@@ -31,6 +31,11 @@ return {
           },
         },
       })
+
+      vim.keymap.set('n', '<C-p>', '<Plug>(CommandT)')
+      vim.keymap.set('n', '<Leader>b', '<Plug>(CommandTBuffer)')
+      vim.keymap.set('n', '<Leader>j', '<Plug>(CommandTJump)')
+      vim.keymap.set('n', '<Leader>t', '<Plug>(CommandTGit)')
     end,
   },
 }

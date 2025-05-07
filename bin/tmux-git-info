@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 main() {
-  git_dir="$1/.git"
+  git_dir="$(git -C "$1" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
 
-  if ! [ -d "$git_dir" ]; then
+  if ! [[ -d "$git_dir" ]]; then
     exit 1
   fi
 

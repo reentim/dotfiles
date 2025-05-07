@@ -13,7 +13,7 @@ fi
 alias brewlist='brew list | less'
 alias bx='bundle exec'
 alias cdr='cd $(git rev-parse --show-cdup 2>/dev/null)'
-alias diff='colordiff -u'
+alias diff='diff -u --color=auto'
 alias duh='du -csh'
 alias grep='grep --color=auto'
 alias l='ls -1trG'
