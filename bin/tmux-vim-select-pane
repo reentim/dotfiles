@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Like `tmux select-pane`, but sends a `<C-h/j/k/l>` keystroke if Vim is
+# running in the current pane, or only one pane exists.
+
+set -e
+
+main() {
+  pane_count="$(printf %d $(tmux list-panes | wc -l))"
+  direction="$(echo "${1#-}" | tr 'lLDUR' '\\hjkl')"
+  zoom="$2"
+  active_pane="$(active_pane_id)"
+
+  if [[ "$(current_command)" =~ "vi" || ($pane_count = 1) ]]; then
+    # forward the keystroke to Vim
+    tmux send-keys "C-$direction"
+    if [ $zoom ]; then
+      sleep 0.05
+      if [ "$active_pane" != "$(active_pane_id)" ]; then
+        tmux resize-pane -Z
+      fi
+    fi
+  else
+    tmux select-pane "$1"
+    if [ "$zoom" ]; then
+      tmux resize-pane -Z
+    fi
+  fi
+}
+
+current_command() {
+  basename "$(tmux display -p '#{pane_current_command}')" | tr A-Z a-z
+}
+
+active_pane_id() {
+  tmux list-panes -F "#D #{pane_active}" \
+    | grep "\s1$" \
+    | cut -d " " -f 1
+}
+
+main $*

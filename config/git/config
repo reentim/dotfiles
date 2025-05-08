@@ -1,0 +1,76 @@
+[user]
+  name = Timothy Reen
+  email = reentim@gmail.com
+[github]
+  user = reentim
+[core]
+  editor = nvim
+  excludesfile = "~/.gitignore_global"
+[color]
+  ui = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  diff = auto
+[alias]
+  aa = add -A
+  amend = commit --amend --no-edit
+  ap = add -A --patch
+  b = "!. ~/.githelpers && fuzzy_find_branches"
+  blamef = "!. ~/.githelpers && blame_files"
+  ci = commit --verbose
+  cim = "!f() { git commit -m \"$*\"; }; f"
+  id = "!. ~/.githelpers && fuzzy_select_id_to_clipboard"
+  co = checkout
+  ctags = "!.git/hooks/ctags"
+  delete-local-merged-branches = "!. ~/.githelpers && delete_local_merged_branches"
+  delete-remote-merged-branches = "!. ~/.githelpers && delete_remote_merged_branches"
+  di = diff
+  ds = diff --staged
+  edit-conflicted = "!f() { git diff --name-only --diff-filter=U | xargs nvim; }; f"
+  ff = merge --ff-only
+  fix = "!f() { git rebase -i $1~ --autosquash; }; f"
+  fixup = commit --fixup
+  from = "!f() { git fetch && git rebase origin/main; }; f"
+  l = log --oneline --decorate --graph
+  la = "!. ~/.githelpers && log_all"
+  lg = "!. ~/.githelpers && jcoglan_graph"
+  ll = "!. ~/.githelpers && pretty_log"
+  log = "!. ~/.githelpers && log"
+  logtail = "!. ~/.githelpers && tail_origin_log"
+  lp = "!. ~/.githelpers && log_patch"
+  lpr = "!. ~/.githelpers && log_patch --reverse"
+  ls-conflicted = diff --name-only --diff-filter=U
+  lt = "!. ~/.githelpers && truncating_log"
+  new = "!. ~/.githelpers && new"
+  noff = merge --no-ff
+  pf = pull --ff-only
+  rc = rebase --continue
+  reword = commit --amend --verbose
+  ri = rebase --interactive
+  ru = "!. ~/.githelpers && rebase_upstream"
+  search = "!. ~/.githelpers && search"
+  show-stash = "!. ~/.githelps && show_stash"
+  st = status -sb
+  u = "!. ~/.githelpers && upstream"
+  unci = "!. ~/.githelpers && uncommit"
+  unstage = reset HEAD
+  unwip = "!. ~/.githelpers && unwip"
+  up = reset --patch HEAD
+  wip = "!. ~/.githelpers && wip"
+[merge]
+  tool = vimdiff
+  defaultToUpstream = true
+[push]
+  default = current
+[init]
+  templatedir = ~/.git_template
+  defaultBranch = main
+[rerere]
+  enabled = true
+[remote "origin"]
+  prune = true
+[rebase]
+  autosquash = true
+
+# vim:ft=gitconfig

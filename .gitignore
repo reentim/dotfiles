@@ -1,0 +1,8 @@
+**/.vagrant
+config/ghostty/fonts/current
+config/kitty/current-theme.conf
+config/kitty/fonts/current.conf
+config/kitty/untracked.conf
+config/nvim/spell/*.spl
+tags
+tags-*

@@ -1,0 +1,2 @@
+reload = , /home/tim/Pictures/wallpaper/pano/Pont_du_Gard_BLS.jpg
+reload = , /home/tim/Pictures/wallpaper/arch/San_Francisco–Oakland_Bay_Bridge-_New_and_Old_bridges.jpg

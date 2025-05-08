@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Finds the prefered pane to be the recipient of `tmux send-keys`.
+# Options are forwarded to tmux list-panes:
+#
+# $ tmux-find-recipient-pane [options for tmux list-panes]
+
+set -o pipefail
+
+function main {
+  local options="$*"
+  local list_format="#{pane_height},#{pane_current_command},#{pane_id},#{pane_active}"
+
+  # For now, tmux window gets a special case, despite being active
+  if tmux list-windows -F "#W" -t tmux 2>/dev/null | grep -q ^tmux$; then
+    echo "tmux:tmux"
+    exit 0
+  fi
+
+  # Finds the id of the tallest inactive pane running an open shell
+  tmux list-panes ${options} -F ${list_format} \
+    | grep ",0$" \
+    | grep "bash\|zsh\|fish" \
+    | sort -r \
+    | head -1 \
+    | cut -d , -f 3
+}
+
+main "$*"

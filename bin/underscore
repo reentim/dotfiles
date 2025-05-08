@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+console.log("Underscore.js preloaded as `_u`\n");
+
+var repl = require("repl");
+var context = repl.start({}).context;
+context._u = require('/usr/local/lib/node_modules/underscore');
