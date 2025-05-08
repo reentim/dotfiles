@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+main() {
+  [ "$1" = "-d" ] && db="$2"
+  shift
+  shift
+  [ "$1" = "-v" ] && version="$2"
+
+  [ -z $db ] || [ -z $version ] && >&2 echo "argument error" && exit 1
+
+  result=$(psql -d $db -c "copy (select version from schema_migrations where version = '${version}') to stdout")
+
+  [ "$result" ] && echo "true" && exit 0
+  echo "false"
+  exit 1
+}
+
+main $*

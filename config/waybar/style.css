@@ -1,0 +1,44 @@
+* {
+  font-family: "IBM Plex Sans Medm", monospace;
+  font-size: 12px;
+}
+
+window#waybar {
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(34, 36, 54, 0.9);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+#clock {
+  margin: 0 12px 0 12px;
+}
+
+#pulseaudio {
+  margin-left: 12px;
+}
+
+#custom-cpu-icon,
+#custom-memory-icon,
+#custom-nvidia-icon {
+  margin: 0 12px 0 12px;
+}
+
+#custom-nvidia-power {
+  margin-right: 12px;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  background: transparent;
+  border: 0;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+  background: rgba(200, 200, 255, 0.25);
+}
+
+button {
+  border-radius: 0;
+}
+

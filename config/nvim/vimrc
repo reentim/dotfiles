@@ -1,0 +1,94 @@
+let g:autosave = 1
+let g:netrw_browse_split = 4
+let g:netrw_liststyle = 3
+let g:netrw_winsize = 20
+
+if filereadable(expand("~/.vim/autosave.vim"))
+  source ~/.vim/autosave.vim
+endif
+
+if filereadable(expand("~/.vim/functions.vim"))
+  source ~/.vim/functions.vim
+endif
+
+set backup
+set backupdir=/tmp/vimtemp//
+set colorcolumn=80
+set dir=/tmp/vimswap//
+set expandtab
+set foldmethod=indent
+set foldminlines=0
+set grepformat=%f:%l:%c:%m
+set hidden
+set ignorecase
+set listchars=tab:▸\ ,eol:↵,extends:>,precedes:<,trail:.,space:.
+set modeline
+set noequalalways
+set nofoldenable
+set nowrap
+set number
+set relativenumber
+set ruler
+set shiftwidth=2
+set showmatch
+set showmode
+set showtabline=2
+set smartcase
+set smartindent
+set softtabstop=2
+set splitbelow
+set splitright
+set tabstop=4
+set tags+=.git/tags
+set ttimeoutlen=10
+set undodir=/tmp/vimundo//
+set undofile
+set winheight=16
+set winwidth=72
+
+augroup vimrc_common
+  autocmd!
+
+  autocmd BufLeave,FocusLost * silent! update
+  autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
+  autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
+  autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
+  autocmd BufNewFile,BufRead,VimEnter * call CdToProjectRoot()
+  autocmd BufReadPost * call ResumeCursorPosition()
+  autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
+augroup END
+
+command! -nargs=? -complete=help Help help <args> | wincmd L | vert resize 80 | normal! 999zh
+
+cnoreabbrev h Help
+cnoremap %% <C-r>=expand('%:.:h').'/'<CR>
+inoremap <C-J> ->
+inoremap <C-L> =><space>
+inoremap <F5> <C-o>:.-read !date<CR><C-o>j
+inoremap jk <ESC>
+nnoremap / /\v
+nnoremap <F5> :set invlist<CR>
+nnoremap <F6> :call LineNumbers_toggle()<CR>
+nnoremap <leader>cx :silent !chmod +x %<CR>
+nnoremap <leader>eg :e ~/dotfiles/config/ghostty/config<CR>
+nnoremap <leader>eh :e ~/dotfiles/config/hypr/hyprland.conf<CR>
+nnoremap <leader>ek :e ~/dotfiles/config/kitty/kitty.conf<CR>
+nnoremap <leader>etb :e ~/dotfiles/tmux/bindings.conf<CR>
+nnoremap <leader>ets :e ~/dotfiles/tmux/settings.conf<CR>
+nnoremap <leader>ett :e ~/dotfiles/tmux.conf<CR>
+nnoremap <leader>evi :e ~/dotfiles/config/nvim/init.lua<CR>
+nnoremap <leader>evp :e ~/dotfiles/config/nvim/lua/plugins.lua<CR>
+nnoremap <leader>evv :e ~/dotfiles/config/nvim/vimrc<CR>
+nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
+nnoremap <leader>ezz :e ~/dotfiles/zshrc<CR>
+nnoremap <leader>eze :e ~/dotfiles/zshenv<CR>
+nnoremap <leader>gf :e <cfile><CR>
+nnoremap <leader>h :split<CR>
+nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
+nnoremap <leader>n :call RenameFile()<CR>
+nnoremap <leader>s :call SortIndentLevel()<CR>
+nnoremap <leader>w :vsplit<CR>
+nnoremap <silent><ESC> :nohl<ESC>
+nnoremap <silent><CR> :nohl<CR><CR>
+nnoremap Y y$
+vnoremap / /\v

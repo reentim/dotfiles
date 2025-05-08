@@ -1,0 +1,1 @@
+reload = , /home/tim/Pictures/wallpaper/pano/Pont_du_Gard_BLS.jpg

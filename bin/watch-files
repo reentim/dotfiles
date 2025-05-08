@@ -1,0 +1,129 @@
+#!/usr/bin/env ruby
+# Based on watch.rb by Brett Terpstra, 2011 <http://brettterpstra.com>
+# with credit to Carlo Zottmann <https://github.com/carlo/haml-sass-file-watcher>
+
+require 'rake'
+
+if ARGV[0]&.match?(/-?-h(elp)?/)
+  puts ['Usage: watch ',
+       '[path (.)] ',
+       '[refresh tabs with url (localhost)] ',
+       '[in browser name (default browser)]'].join
+  exit
+end
+
+class WatchFiles
+  FILETYPES = ['css', 'html', 'rb', 'erb', 'js', 'scss']
+  REFRESH_ACTIONS = {
+           'Google Chrome' => 'tell atab to reload',
+    'Google Chrome Canary' => 'tell atab to reload',
+                  'Safari' => 'tell atab to do javascript "window.location.reload()"'
+  }
+
+  def initialize
+    options = parse_args
+
+    @dir = options.fetch('--dir', Dir.pwd)
+    @url = options.fetch('--url', 'localhost')
+    @browser = options.fetch('--browser', default_browser)
+    @rewrite_js = options.keys.include?('--rewrite-js')
+  end
+
+  def parse_args
+    options = {}
+    arg_val = []
+    while ARGV.any?
+      arg = ARGV.pop
+      if arg.match?(/^--/)
+        options[arg] = arg_val.pop
+      else
+        arg_val.push(arg)
+      end
+    end
+    options
+  end
+
+  def reload_browser!
+    script = <<~EOF
+      tell application "#{@browser}"
+        set windowList to every window
+        repeat with aWindow in windowList
+          set tabList to every tab of aWindow
+          repeat with atab in tabList
+            if (URL of atab contains "#{@url}") then
+              #{REFRESH_ACTIONS[@browser]}
+            end if
+          end repeat
+        end repeat
+      end tell
+    EOF
+
+    %x{echo '#{script}' | osascript}
+  end
+
+  def default_browser
+    if system("which defaultbrowser > /dev/null 2>&1")
+      %x{defaultbrowser}.lines.first.split(': ').last.chomp.capitalize
+    else
+      "Safari"
+    end
+  end
+
+  def files
+    @cache_until ||= Time.now + 5
+
+    if (Time.now - @cache_until) > 0
+      @files = nil
+      @cache_until = nil
+    end
+
+    @files ||= FILETYPES.map do |type|
+      FileList[File.join(@dir, "**", "*.#{type}")].exclude(/node_modules/)
+    end.flatten
+  end
+
+  def watch
+    abort "No files found" unless files.any?
+
+    puts ["Watching #{files.count} files in #{@dir} for changes, ",
+          "with #{@browser} waiting to refresh tabs with URLs ",
+          "containing '#{@url}'..."].join
+
+    while true do
+      begin
+        file_modification_times = files.map do |f|
+          { name: f, mtime: File.stat(f).mtime.to_i }
+        end
+      rescue Errno::ENOENT
+      end
+
+      previous_file_modification_times ||= file_modification_times
+      modified_files = file_modification_times - previous_file_modification_times
+
+      if modified_files.any?
+        previous_file_modification_times = nil
+        modified_files.each do |file|
+          report_changes(file)
+          rewrite_js(file[:name]) if @rewrite_js
+        end
+        reload_browser!
+      end
+
+      sleep 0.1
+    end
+  rescue Interrupt
+    exit
+  end
+
+  def rewrite_js(filepath)
+    puts "Rewriting JS to import from .js file extentions"
+    %x[sed -i '' "s/^\\(import.*\\)'\\(.*\\)';/\\1'\\2.js';/" "#{filepath}"]
+    puts %[sed -i '' "s/^\\(import.*\\)'\\(.*\\)';/\\1'\\2.js';/" "#{filepath}"]
+  end
+
+  def report_changes(changed_file)
+    puts "Detected change in #{changed_file[:name].split(@dir).last} "
+  end
+end
+
+WatchFiles.new.watch

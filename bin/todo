@@ -1,0 +1,170 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+require 'time'
+require 'csv'
+
+require_relative '../lib/interval'
+require_relative '../lib/pluralise'
+require_relative '../lib/color'
+
+# TODO
+# * terminal notifier
+# * done status
+# * completion & archival
+
+class Todo
+  include Interval
+  include Color
+
+  FILE = File.join(Dir.home, 'iCloud-Drive/todo.csv')
+  HEADERS = ["CREATED AT", "TODO", "DUE AT", "COMPLETED AT"]
+
+  def initialize(args)
+    @args = args
+    @todos = []
+
+    if args.any?
+      handle_args
+    else
+      listen
+    end
+  end
+
+  def handle_args
+    case @args.first
+    when 'ls'
+      list
+    when 'edit'
+      edit
+    else
+      save_todo_from_args
+    end
+  end
+
+  def save_todo_from_args
+    @todos << parse_todo(@args.join("\s"))
+    save
+  end
+
+  def listen
+    loop do
+      begin
+        input = gets
+        break if input.nil?
+
+        @todos << parse_todo(input.chomp)
+      rescue Interrupt
+        exit(1)
+      end
+    end
+    save
+  end
+
+  def parse_todo(todo)
+    due_at = todo.match(/^by (.*):/)&.captures&.first
+
+    if due_at
+      due_mapping = {
+        'eod' => Date.today.to_time + hours(17),
+        'tomorrow' => Date.today.to_time + hours(24) + hours(9)
+      }
+      due_date = due_mapping.fetch(due_at.downcase) do
+        if due_at.match(/day/) || due_at.match(/mon|tue|wed|thu|fri|sat|sun/)
+          next_day(due_at) + hours(9)
+        elsif date_at.match(/\d{4}/)
+          Time.parse(due_at + "-01-01") + hours(9)
+        elsif date_at.match(/\d{4}-\d{2}/)
+          Time.parse(due_at + "-01") + hours(9)
+        elsif date_at.match(/\d{2}-\d{2}/)
+          year = Date.today.year
+          time = Time.parse([year, due_at].join("-"))
+          time < Time.now ? Time.parse([year + 1, due_at].join("-")) + hours(9): time + hours(9)
+        end
+      end
+    end
+
+    { text: todo.sub(/^by .*:\s?/, ""), due_at: due_date }
+  end
+
+  def next_day(day)
+    date = Date.parse(day)
+    dt = date > Date.today ? 0 : 7
+    (date + dt).to_time
+  end
+
+  def hours(n)
+    3600 * n
+  end
+
+  def edit
+    system((ENV['EDITOR'] || 'vim'), FILE)
+  end
+
+  def save
+    return if @todos.empty?
+
+    CSV.open(FILE, 'a') do |file|
+      @todos.each do |todo|
+        file << [Time.now.iso8601, todo[:text], todo[:due_at]]
+      end
+    end
+
+    puts "Added #{pluralise(@todos.count, 'item')}"
+  end
+
+  def saved_todos
+    @_saved_todos ||= CSV.read(FILE)
+      .reject { |todo| !todo[HEADERS.index('COMPLETED AT')].nil? }
+      .map do |todo|
+      [
+        todo[HEADERS.index('CREATED AT')],
+        todo[HEADERS.index('TODO')],
+        todo[HEADERS.index('DUE AT')],
+      ]
+    end
+  end
+
+  def list
+    return unless saved_todos.any?
+
+    saved_todos.map do |todo|
+      puts %[(#{relative_date(todo[0]).rjust(rjust_amount)}) #{todo[1]} #{due_marker(todo[2])}]
+    end
+  end
+
+  def rjust_amount
+    saved_todos
+      .map(&:first)
+      .map { |date| relative_date(date) }
+      .max_by(&:length)
+      .length
+  end
+
+  def relative_date(date)
+    return unless date
+    date = Time.parse(date) if date.is_a? String
+
+    times = [date, Time.now].sort
+    [
+      interval(times.last - times.first, short: true),
+    ].join("\s")
+  end
+
+  def due_marker(date)
+    return unless date
+
+    date = Time.parse(date)
+    dt = [Time.now, date].sort.reverse.inject(&:-)
+
+    color(
+      "(due #{'in ' if date > Time.now}#{interval(dt, short: true)}#{' ago' if date < Time.now})",
+      due_color(date)
+    )
+  end
+
+  def due_color(date)
+    date < Time.now ? :red : :yellow
+  end
+end
+
+Todo.new(ARGV)

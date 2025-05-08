@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+
+path=${1-$HOME}
+cache="$HOME/.found_repos"
+
+main() {
+  ensure_fresh_cache
+  read_cache
+}
+
+ensure_fresh_cache() {
+  if [ -f ~/.found_repos ]; then
+    modified=$(/usr/bin/stat -f "%m" $cache)
+    now=$(date "+%s")
+    ttl_seconds=604800 # 1 week
+    expires_at=$(($modified + $ttl_seconds ))
+    if [ $expires_at -lt $now ]; then
+      rebuild_cache
+    fi
+  else
+    rebuild_cache
+  fi
+}
+
+read_cache() {
+  cat $cache
+}
+
+rebuild_cache () {
+  >&2 echo "Rebuilding cache..."
+  find $path -type d -name '.git' \
+    | sed -E "s:/.git$::" > $cache
+}
+
+main

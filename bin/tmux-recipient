@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euox pipefail
+
+main() {
+  local available_pane_in_current_window=$(tmux-find-recipient-pane 2>/dev/null)
+
+  if tmux list-windows -F "#{window_name}" -t tmux 2>/dev/null | grep -Fxq tmux; then
+    echo "tmux:tmux"
+  elif [[ $available_pane_in_current_window ]]; then
+    echo $available_pane_in_current_window
+  else
+    exit 1
+  fi
+}
+
+main

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# cat <<-EOF | tt
+# sh -c 'diff -u --color=always \
+#   <(tmux -L null -f /dev/null list-keys) \
+#   <(tmux list-keys) \
+#   | less'
+# EOF
+
+diff -u --color=auto \
+  <(tmux -L null -f /dev/null list-keys) \
+  <(tmux list-keys)

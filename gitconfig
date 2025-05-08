@@ -1,0 +1,73 @@
+# vim: ft=gitconfig
+[user]
+  name = Timothy Reen
+  email = reentim@gmail.com
+[github]
+  user = reentim
+[core]
+  editor = nvim
+  excludesfile = "~/.gitignore_global"
+[color]
+  ui = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  diff = auto
+[alias]
+  aa      = add -A
+  clip    = "!. ~/.githelpers && fuzzy_select_id_to_clipboard"
+  amend   = commit --amend --no-edit
+  ap      = add -A --patch
+  blamef  = "!. ~/.githelpers && blame_files"
+  ci      = commit --verbose
+  cim     = "!f() { git commit -m \"$*\"; }; f"
+  co      = checkout
+  ctags   = "!.git/hooks/ctags"
+  delete-local-merged-branches = "!. ~/.githelpers && delete_local_merged_branches"
+  delete-remote-merged-branches = "!. ~/.githelpers && delete_remote_merged_branches"
+  di      = diff
+  ds      = diff --staged
+  ff      = merge --ff-only
+  fix     = "!f() { git rebase -i $1~ --autosquash; }; f"
+  fixup   = commit --fixup
+  from    = "!f() { git fetch && git rebase origin/main; }; f"
+  l       = log --oneline --decorate --graph
+  la      = "!. ~/.githelpers && log_all"
+  lg      = "!. ~/.githelpers && jcoglan_graph"
+  ll      = "!. ~/.githelpers && pretty_log"
+  log     = "!. ~/.githelpers && log"
+  logtail = "!. ~/.githelpers && tail_origin_log"
+  lp      = "!. ~/.githelpers && log_patch"
+  lpr     = "!. ~/.githelpers && log_patch --reverse"
+  lt      = "!. ~/.githelpers && truncating_log"
+  new     = "!. ~/.githelpers && new"
+  show-stash = "!. ~/.githelps && show_stash"
+  noff    = merge --no-ff
+  pf      = pull --ff-only
+  r       = "!. ~/.githelpers && fuzzy_find_branches"
+  rc      = rebase --continue
+  reword  = commit --amend --verbose
+  ri      = rebase --interactive
+  ru      = "!. ~/.githelpers && rebase_upstream"
+  search  = "!. ~/.githelpers && search"
+  st      = status -sb
+  u       = "!. ~/.githelpers && upstream"
+  unci    = "!. ~/.githelpers && uncommit"
+  unwip   = "!. ~/.githelpers && unwip"
+  up      = reset --patch HEAD
+  unstage = reset HEAD
+  wip     = "!. ~/.githelpers && wip"
+[merge]
+  tool = vimdiff
+  defaultToUpstream = true
+[push]
+  default = current
+[init]
+  templatedir = ~/.git_template
+  defaultBranch = main
+[rerere]
+  enabled = true
+[remote "origin"]
+  prune = true
+[rebase]
+  autosquash = true

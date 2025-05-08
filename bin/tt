@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Run command in a new tmux split (or a )
+
+set -euo pipefail
+
+function main() {
+  local target=$(tmux-recipient)
+  local split_arguments=()
+
+  if [[ "$1" == "-d" ]]; then
+    # detach split (don't switch panes)
+    split_arguments+=("-d")
+    shift
+  fi
+
+  if [[ $target ]]; then
+    # if there's a dedicated tmux:tmux running, send the keys there
+    tmux send-keys -t $target "clear; time $*" C-m
+    exit 0
+  else
+    tmux $(autosplit) "${split_arguments[@]}" "$*; read -k"
+    exit 0
+  fi
+  exit 1
+}
+
+main "$@"

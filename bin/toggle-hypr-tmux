@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# TODO:
+# - remember window position, store in /tmp
+
+set -euo pipefail
+
+main() {
+  local program="$1"
+
+  if float_is_active; then
+    log "invoked, is active"
+    if float_has_focus; then
+      log "has focus, detaching"
+      tmux -L qalc detach-client -s "$program"
+    else
+      log "no focus, focusing"
+      hyprctl dispatch focuswindow "class:float:$program"
+      hyprctl dispatch alterzorder top "class:float:$program"
+    fi
+  else
+    log "invoked, not active, launching"
+    kitty \
+      --detach \
+      --config "$HOME"/.config/kitty/kitty.conf \
+      --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+      --config <(echo "font_size 12") \
+      --class "float:$program" \
+      zsh -c 'tmux \
+        -L "$1" \
+        -f "$2/.tmux/base.conf" \
+        -f <(echo "set -g mouse off") \
+        new-session -As "$1" "$1"' _ "$program" "$HOME"
+  fi
+}
+
+active_workspace() {
+  hyprctl activewindow -j | jq '.["workspace"]["id"]'
+}
+
+float_is_active() {
+  hyprctl clients -j \
+    | jq -e --argjson ws $(active_workspace) \
+      '.[] | select(.workspace.id == $ws) | select(.class == "float:qalc")'
+}
+
+float_has_focus() {
+  hyprctl activewindow -j \
+    | jq -e 'select(.class == "float:qalc")'
+}
+
+log() {
+  echo "[$(date --iso-8601=seconds)] $1" >&2
+}
+
+echo
+main "$@"

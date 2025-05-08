@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+function main {
+	# printf to work around `wc` on BSD aligning output into coluns even with `-l`
+	panes=$(printf %d $(tmux list-panes | wc -l))
+
+	if [[ ($panes > 1) ]]; then
+		switch
+	else
+		send-clear
+	fi
+}
+
+function send-clear {
+	tmux send-keys "C-l"
+}
+
+function switch {
+	tmux run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim$' && tmux send-keys C-l) || tmux select-pane -R"
+}
+
+main

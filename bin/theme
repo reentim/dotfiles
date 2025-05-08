@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+main() {
+  if [ $TERM_PROGRAM = "kitty" ]; then
+    kitty +kitten themes --config-file-name theme.conf
+    kill -SIGUSR1 $(pgrep kitty)
+  fi
+}
+
+
+main

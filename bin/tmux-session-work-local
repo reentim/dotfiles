@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function main {
+	tmux start-server
+
+  tmux new-session -d -s logs
+  tmux new-session -d -s spec -n spec
+  tmux new-session -d -s ed
+
+  tmux split-window -h -t logs
+  tmux split-window -v -t logs.right
+
+  tmux split-window -v -t spec:spec
+}
+
+
+cd ~/platform
+main
+tmux attach -t ed

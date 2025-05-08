@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+main() {
+  local entry=$(\
+    man -k . \
+    | fzf --prompt="man > " \
+  )
+  [[ -z $entry ]] && return
+
+  local section=$(\
+    echo "$entry" \
+    | sed -n 's/.*(\(.*\)).*/\1/p' \
+    | awk '{print $1}' \
+  )
+
+  local cmd=$(\
+    echo "$entry" \
+    | awk '{print $1}' \
+    | sed 's/(.*)//' \
+    | awk '{print $1}' \
+  )
+
+  [[ -z $section || -z $cmd ]] && return
+
+  man "$section" "$cmd"
+}
+
+main

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+# Script to convert kitty-style font config to alacritty-style font config
+# Usage: ./kitty-font-to-ghostty [input_file [output_file]]
+# If no arguments provided, reads from stdin and writes to stdout
+
+main() {
+  if [ "$#" -eq 0 ]; then
+    INPUT_SOURCE="/dev/stdin"
+    OUTPUT_DEST="/dev/stdout"
+  elif [ "$#" -eq 1 ]; then
+    # Input file specified, output to stdout
+    INPUT_SOURCE="$1"
+    OUTPUT_DEST="/dev/stdout"
+  elif [ "$#" -eq 2 ]; then
+    # Both input and output files specified
+    INPUT_SOURCE="$1"
+    OUTPUT_DEST="$2"
+    # Initialize output file
+    > "$OUTPUT_DEST"
+  else
+    echo "Usage: $0 [input_file [output_file]]" >&2
+    echo "  - No args: read from stdin, write to stdout" >&2
+    echo "  - One arg: read from file, write to stdout" >&2
+    echo "  - Two args: read from file, write to file" >&2
+    exit 1
+  fi
+
+  # Process the input line by line
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    # Skip empty lines
+    if [[ -z "$line" || "$line" =~ ^[[:space:]]*$ ]]; then
+      continue
+    fi
+
+      # Conversion logic based on the line content
+      if [[ "$line" =~ font_family ]]; then
+        # Extract font family information and features
+        if [[ "$line" =~ family=\'([^\']+)\' ]]; then
+          font_family="${BASH_REMATCH[1]}"
+          echo "font-family = \"$font_family\"" >> "$OUTPUT_DEST"
+        fi
+
+          # Extract and process features separately
+          if [[ "$line" =~ features=\'([^\']+)\' ]]; then
+            features="${BASH_REMATCH[1]}"
+            # Split by spaces and add each feature separately
+            for feature in $(echo "$features" | tr ' ' '\n'); do
+              echo "font-feature = \"$feature\"" >> "$OUTPUT_DEST"
+            done
+          fi
+        elif [[ "$line" =~ bold_font ]]; then
+          if [[ "$line" =~ style=([a-zA-Z]+) ]]; then
+            bold_style="${BASH_REMATCH[1]}"
+            echo "font-style-bold = $bold_style" >> "$OUTPUT_DEST"
+          fi
+        elif [[ "$line" =~ bold_italic_font ]]; then
+          if [[ "$line" =~ style=\'([^\']+)\' ]]; then
+            bold_italic_style="${BASH_REMATCH[1]}"
+            echo "font-style-bold-italic = \"$bold_italic_style\"" >> "$OUTPUT_DEST"
+          fi
+        elif [[ "$line" =~ ^font_size ]]; then
+          size=$(echo "$line" | awk '{print $2}')
+          echo "font-size = $size" >> "$OUTPUT_DEST"
+        elif [[ "$line" =~ modify_font[[:space:]]+cell_height ]]; then
+          # Format A uses 110% to mean 10% increase, Format B directly uses 10%
+          percentage=$(echo "$line" | grep -o '[0-9]\+%' | sed 's/%//')
+          adjusted=$((percentage - 100))
+          echo "adjust-cell-height = $adjusted%" >> "$OUTPUT_DEST"
+        elif [[ "$line" =~ modify_font[[:space:]]+cell_width ]]; then
+          # Format A uses 100% to mean 0% increase, Format B directly uses 0%
+          percentage=$(echo "$line" | grep -o '[0-9]\+%' | sed 's/%//')
+          adjusted=$((percentage - 100))
+          echo "adjust-cell-width = $adjusted%" >> "$OUTPUT_DEST"
+        elif [[ "$line" =~ window_padding_width ]]; then
+          padding=$(echo "$line" | awk '{print $2}')
+          echo "window-padding-x = $padding" >> "$OUTPUT_DEST"
+      fi
+    done < "$INPUT_SOURCE"
+
+  # Only show completion message if we're writing to a file
+  if [ "$OUTPUT_DEST" != "/dev/stdout" ]; then
+    echo "Conversion complete. Output saved to $OUTPUT_DEST" >&2
+  fi
+}
+
+main "$@"

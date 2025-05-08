@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import sys
+from PIL import Image
+
+sys.tracebacklimit = 0
+
+def main(colorname):
+  img = Image.new('RGB', (32,32), color=colorname)
+  img.save("{}.png".format(colorname))
+  quit()
+
+main(sys.argv[1])

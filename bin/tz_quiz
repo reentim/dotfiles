@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require 'time'
+require 'date'
+require 'tzinfo'
+
+class Quiz
+  def self.take
+    new.interact
+  end
+
+  def interact
+    puts "#{time} #{random_tz.canonical_identifier}"
+    puts
+    print "Press <enter> to show time in UTC"
+    gets
+    puts "\n#{time.utc}"
+    puts
+    print "Press <enter> to show time in Melbourne"
+    gets
+    puts "\n#{melb_tz.to_local(time)}"
+    puts
+  end
+
+  private
+
+  def time
+    @_time ||= random_tz.to_local(
+      Date.ordinal(
+        Date.today.year, rand(1..365)
+      ).to_time \
+      + rand(86400)
+    )
+  end
+
+  def random_tz
+    @_random_tz ||= TZInfo::Timezone.get(
+      TZInfo::Timezone.all_identifiers.sample,
+    )
+  end
+
+  def melb_tz
+    TZInfo::Timezone.get('Australia/Melbourne')
+  end
+end
+
+Quiz.take

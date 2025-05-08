@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+
+set -euox pipefail
+
+# Usage:
+#
+# font -f <file>
+#
+# font
+# font -e
+
+main() {
+  edit_mode=false
+  edit_current_mode=false
+  generate_mode=false
+  specified_file=''
+
+  check_environment
+  parse_options "$@"
+
+  declare -A config_path
+  declare -A current_untracked_font_config
+  declare -A config_filext
+
+  config_path[kitty]="$HOME/.config/kitty"
+  config_path[ghostty]="$HOME/.config/kitty"
+
+  active_font_config[kitty]="${config_path[kitty]}/font.conf"
+  active_font_config[ghostty]="$HOME/.config/ghostty/font"
+
+  if [[ $generate_mode == true ]]; then
+    if [[ -n $TMUX ]]; then
+      echo "Can't run kitty +kitten choose-fonts from TMUX" >&2
+      exit 1
+    fi
+    case "$TERM_APP" in
+      kitty)
+        kitty +kitten choose-fonts \
+          > "${current_untracked_font_config[kitty]}"
+        ;;
+      ghostty)
+        kitty +kitten choose-fonts \
+          | kitty-font-to-ghostty \
+          > "${current_untracked_font_config[ghostty]}"
+        ;;
+    esac
+    return 0
+  fi
+
+  if [[ -n "$specified_file" ]]; then
+    font_config="$specified_file"
+  elif [[ $edit_current_mode == true ]]; then
+    font_config="$(get_current_font_config)"
+  else
+    font_config="$(find "${config_path["$TERM_APP"]}/fonts" -type f | fzf)"
+  fi
+
+  [[ -z "$font_config" ]] && exit 1
+
+  if [[ $edit_mode == true ]]; then
+    "$EDITOR" "$font_config"
+  fi
+
+  echo "# from file: $(realpath "$font_config")" \
+    > "${current_untracked_font_config["$TERM_APP"]}"
+
+  case $TERM_APP in
+    kitty)
+      cat "$font_config" \
+        >> "${current_untracked_font_config["$TERM_APP"]}"
+      ;;
+    ghostty)
+      cat "$font_config" \
+        | kitty-font-to-ghostty \
+        >> "${current_untracked_font_config["$TERM_APP"]}"
+      ;;
+  esac
+
+  [[ "$TERM_APP" == kitty ]] && kill -SIGUSR1 $(pgrep kitty)
+
+  return 0
+}
+
+parse_options() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -f|--file)
+        if [[ $# -lt 2 || ${2:0:1} == '-' ]]; then
+          echo "Error: --file value not provided" >&2
+          exit 1
+        fi
+        specified_file="$2"
+        shift 2
+        ;;
+      -e|--edit)
+        edit_mode=true
+        shift
+        ;;
+      -c|--current|-ec)
+        edit_mode=true
+        edit_current_mode=true
+        shift
+        ;;
+      -g|--generate)
+        generate_mode=true
+        shift
+        ;;
+      --)  # end of options
+        shift
+        break
+        ;;
+      -*)
+        echo "Unknown option: $1" >&2
+        exit 1
+        ;;
+      *)  # stop parsing
+        break
+        ;;
+    esac
+  done
+
+  if [[ $generate_mode == true && ( $edit_mode == true || -n "$file" ) ]]; then
+    echo "Error: incompatible options" >&2
+  fi
+}
+
+check_environment() {
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "Error: fzf is required" >&2
+    exit 1
+  fi
+}
+
+get_current_font_config() {
+  local file="$(head -n 1 "${current_untracked_font_config[${TERM_APP}]}" | sed 's/# from file: //')"
+  if [[ ! -f "$file" ]]; then
+    echo "Error: "$file" does not exist" >&2
+  fi
+  echo "$file"
+}
+
+main "$@"

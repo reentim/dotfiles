@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+STATE="/tmp/hypr-last-ws"
+
+current=$(hyprctl activeworkspace | grep -oE "^workspace ID [0-9]+" | sed "s/workspace ID //")
+
+if [[ -f $STATE ]]; then
+    last=$(<"$STATE")
+    [[ "$last" != "$current" ]] && hyprctl dispatch workspace "$last"
+fi
+
+echo "$current" > "$STATE"
