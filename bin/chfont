@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+  declare -A font_config_paths
+  declare -A untracked_font_config
+
+  # configuration:
+  font_config_paths[ghostty]="$HOME/.config/ghostty/fonts"
+  font_config_paths[kitty]="$HOME/.config/kitty/fonts"
+  untracked_font_config[ghostty]="${font_config_paths[ghostty]}/_current"
+  untracked_font_config[kitty]="${font_config_paths[kitty]}/_current.conf"
+  master_terminal="kitty"
+
+  append_mode=false
+  edit_current_mode=false
+  edit_mode=false
+  generate_mode=false
+  selected_font_config=''
+  fzf_in="${font_config_paths[$master_terminal]:-${font_config_paths["$TERM_APP"]}}"
+
+  TERM_APP="${TERM_APP:-$TERM_PROGRAM}"
+
+  check_dependencies
+  check_environment
+  parse_options "$@"
+
+  if [[ $generate_mode == true ]]; then
+    temp_file="$(mktemp)"
+    case $TERM_PROGRAM in
+      kitty)
+        if [[ ${TMUX-} ]]; then
+          fail "can't run the choose-fonts kitten inside tmux"
+          exit 1
+        fi
+        kitty +kitten choose-fonts > "$temp_file"
+        read -p "Filename for new font config: " new_filename
+        selected_font_config="${font_config_paths[kitty]}/$new_filename"
+        mv "$temp_file" "$selected_font_config"
+        ;;
+      ghostty)
+        # TODO: ghostty +list-fonts | fzf...
+        fail "not implemented for ghostty"
+        ;;
+      *)
+        fail "unsupported terminal"
+        ;;
+    esac
+  fi
+
+  if [[ -z $selected_font_config ]]; then
+    if [[ $edit_current_mode == true ]]; then
+      selected_font_config="$(get_source_of_current_font_config)"
+    else
+      selected_font_config="$(find $fzf_in -type f | fzf)"
+    fi
+  fi
+
+  [[ -z $selected_font_config ]] && fail "couldn't find font config file"
+
+  if [[ $edit_mode == true ]]; then
+    "$EDITOR" "$selected_font_config"
+  fi
+
+  copy_font_config_in_place
+
+  return 0
+}
+
+check_dependencies() {
+  if ! command -v fzf >/dev/null 2>&1; then
+    fail "fzf is required"
+  fi
+}
+
+check_environment() {
+  if [[ $TERM_APP == tmux ]]; then
+    fail "terminal program can't be determined.
+       TERM_PROGRAM has been set to tmux (see: https://github.com/tmux/tmux/issues/3468)
+       as a workaround, set TERM_APP in your environment"
+  fi
+  if [[ ! $TERM_APP =~ ^(ghostty|kitty|alacritty|foot)$ ]]; then
+    fail "unknown terminal '$TERM_APP'
+       TERM_PROGRAM (or, inside tmux, TERM_APP) must be one of
+       ghostty|kitty|alacritty"
+  fi
+  if [[ ! -d ${font_config_paths[$TERM_APP]} ]]; then
+    fail "directory doesn't exist: ${font_config_paths["$TERM_APP"]}"
+  fi
+  if [[ ! -f ${untracked_font_config[$TERM_APP]} ]]; then
+    fail "file not found: ${untracked_font_config["$TERM_APP"]}"
+  fi
+  if [[ $master_terminal ]]; then
+    if [[ -z ${font_config_paths[$master_terminal]:-} ]]; then
+      fail "unset font config path for '$master_terminal'"
+    elif [[ ! -d ${font_config_paths[$master_terminal]} ]]; then
+      fail "directory doesn't exist: ${font_config_paths[$master_terminal]}"
+    fi
+    font_conf_supported_terminals=$(~/bin/font_conf_convert --supported)
+    # if command -v font_conf_convert >/dev/null 2>&1; then
+    #   # fail "asdf"
+    # else
+    #   fail ""
+    # fi
+  fi
+}
+
+copy_font_config_in_place() {
+  echo "# from file: $(realpath "$selected_font_config")" \
+    > "${untracked_font_config["$TERM_APP"]}"
+
+  if [[ "${TERM_APP}" == "${master_terminal}" ]]; then
+    cat "$selected_font_config" >> "${untracked_font_config["$TERM_APP"]}"
+  else
+    cat "$selected_font_config" \
+      font_conf_convert --from ${master_terminal} --to ${TERM_APP} \
+      >> "${untracked_font_config["$TERM_APP"]}"
+  fi
+
+  [[ "$TERM_APP" == kitty ]] && kill -SIGUSR1 $(pgrep kitty)
+}
+
+fail() {
+  echo "Error: $*" >&2
+  exit 1
+}
+
+get_source_of_current_font_config() {
+  local file="$(head -n 1 "${untracked_font_config[${TERM_APP}]}" | sed 's/# from file: //')"
+  if [[ ! -f "$file" ]]; then
+    fail ""$file" does not exist" >&2
+  fi
+  echo "$file"
+}
+
+parse_options() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        print_help
+        exit 0
+        ;;
+      -a|--append)
+        append_mode=true
+        shift
+        ;;
+      -e|--edit)
+        edit_mode=true
+        shift
+        ;;
+      -c|--current|-ec)
+        edit_mode=true
+        edit_current_mode=true
+        shift
+        ;;
+      -g|--generate)
+        generate_mode=true
+        shift
+        ;;
+      -ge|-eg)
+        edit_mode=true
+        generate_mode=true
+        shift
+        ;;
+      --)  # end of options
+        shift
+        break
+        ;;
+      -*)
+        fail "unknown option: $1"
+        ;;
+      *)  # stop parsing
+        break
+        ;;
+    esac
+  done
+
+  if [[
+    ($generate_mode == true && $edit_current_mode == true) \
+      || ($append_mode == true && ($generate_mode == true || $edit_mode == true)) \
+  ]]; then
+    fail "incompatible options"
+  fi
+}
+
+print_help() {
+  echo "help yoself"
+}
+
+main "$@"

@@ -1,0 +1,43 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+FILE = "#{ENV['HOME']}/iCloud-Drive/cubes.csv"
+
+def main
+  start = now
+  puts "Press <ENTER> to stop"
+  await_keypress
+
+  stop = now
+
+  date_and_time = %[#{Time.now}, #{(stop - start).round(3)}\n]
+
+  puts date_and_time
+  puts "\nPress <ENTER> to save"
+
+  await_keypress
+
+  File.open(FILE, 'a') do |file|
+    file.write(date_and_time)
+  end
+
+  puts "PB:", File.readlines(FILE).map { |line|
+    line.split(', ')
+      .reverse
+      .map { |column| column.include?("\n") ? column.chomp.to_f : column }
+  }.min
+end
+
+def await_keypress
+  begin
+    gets
+  rescue Interrupt
+    abort
+  end
+end
+
+def now
+  # https://blog.dnsimple.com/2018/03/elapsed-time-with-ruby-the-right-way/
+  Process.clock_gettime(Process::CLOCK_MONOTONIC)
+end
+
+main

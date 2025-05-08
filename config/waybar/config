@@ -2,21 +2,21 @@
   "layer": "bottom",
   "position": "top",
   "modules-left": [
-    "hyprland/workspaces",
     "custom/active-window-class"
   ],
   "modules-center": [
-    "clock"
+    "hyprland/workspaces"
   ],
   "modules-right": [
-    "mpris",
+    // "mpris",
     "pulseaudio",
     "custom/cpu-icon",
     "cpu",
     "custom/memory-icon",
     "memory",
     "custom/nvidia-icon",
-    "custom/nvidia-power"
+    "custom/nvidia-power",
+    "clock"
   ],
 
   "custom/active-window-class": {
@@ -39,32 +39,18 @@
     "on-click": "hyprctl dispatch workspace {id}"
   },
 
-  "custom/cpu-icon": {
-    "format": "",
-    "tooltip": false
-  },
-
   "cpu": {
-      "format": "{usage}%",
+      "format": "    {usage}%",
       "tooltip": false
-  },
-
-  "custom/memory-icon": {
-    "format": "",
-    "tooltip": false
   },
 
   "memory": {
-      "format": "{used} GiB",
+      "format": "    {used} GiB",
       "tooltip": false
   },
 
-  "custom/nvidia-icon": {
-    "format": "",
-    "tooltip": false
-  },
-
   "custom/nvidia-power": {
+    "format": "    {}",
     "interval": 5,
     "exec": "~/.config/waybar/scripts/nvidia-power.sh",
     "tooltip": false

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+names=("todo" "todo.txt" "todo.md" "TODO" "TODO.txt" "TODO.md")
+dir="$PWD"
+
+if which nvim > /dev/null 2>&1; then
+  vim="nvim"
+else
+  vim="vim"
+fi
+
+while [[ "$dir" != "/" ]]; do
+	for name in "${names[@]}"; do
+		if [[ -f "$dir/$name" ]]; then
+			exec "$vim" "$dir/$name"
+		fi
+	done
+	dir="$(dirname "$dir")"
+done
+
+[[ -f "$HOME/TODO" ]] && exec "$vim" "$HOME/TODO"
+
+echo "No TODO file found."
+exit 1

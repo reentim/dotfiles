@@ -22,8 +22,8 @@ all: link-all
 .PHONY: install
 install: \
 	link-all \
-	install-asdf \
 	install-packages \
+	install-asdf \
 	nodejs \
 	pnpm \
 	bun \

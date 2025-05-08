@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+for file in `find hooks/ -type f`; do
+  echo -e "\n# My hooks\n# --- \n" >> .git/$file
+  cat $file >> .git/$file
+done
