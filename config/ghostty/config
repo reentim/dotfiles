@@ -45,13 +45,10 @@
 # font-family = "Fixedsys Excelsior"
 # font-family = "PxPlus ToshibaSat 9x16"
 # font-family = "CommitMono"
-font-size = 9
+font-size = 15
 adjust-cell-height = 10%
 
-theme = Tomorrow Night Eighties
-
-foreground = #ffffff
-background = #000000
+theme = tokyonight_moon
 
 cursor-style = block
 shell-integration-features = no-cursor
@@ -61,3 +58,11 @@ mouse-hide-while-typing = true
 
 window-padding-x = 6
 window-padding-y = 6
+window-padding-balance = true
+window-padding-color = extend
+
+macos-non-native-fullscreen = true
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+macos-titlebar-style = hidden
+macos-option-as-alt = true
+copy-on-select = true
