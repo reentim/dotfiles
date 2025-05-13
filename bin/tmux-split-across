@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Log function to append messages with timestamps
+log() {
+  [[ -n ${logging_enabled-} ]] || return 0
+  local log_message="$1"
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $log_message" >> /tmp/tmux-split-across.log
+}
+
+usage() {
+  echo "Usage: $0 [-v | -h] [--log <logfile>]" >&2
+  exit 1
+}
+
+# Parse arguments
+split_flag=""
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -v) split_flag="-v" ;;
+    -h) split_flag="-h" ;;
+    --log) logging_enabled=true ;;
+    *) usage ;;
+  esac
+  shift
+done
+
+# If no split argument is provided, show usage
+if [[ -z "$split_flag" ]]; then
+  usage
+fi
+
+# Main function
+main() {
+  local current_session current_window current_window_id tmp_session tmp_window_id
+  local target_pane panes tmp_panes first
+
+  # Get identifiers
+  current_session=$(tmux display-message -p '#S')
+  current_window=$(tmux display-message -p '#I')
+  current_window_id=$(tmux display-message -p '#{window_id}')
+  log "Starting tmux-split-across on window ${current_window} in session ${current_session}"
+
+  # Collect all panes in this window
+  panes=()
+  while IFS= read -r line; do
+    panes+=("$line")
+  done < <(tmux list-panes -F '#{pane_id}' -t "$current_window_id")
+
+  # Sanity check: at least 2 panes required
+  if [[ ${#panes[@]} -lt 2 ]]; then
+    log "Error: must have at least two panes in the window"
+    echo "Error: must have at least two panes in the window" >&2
+    exit 1
+  fi
+  log "Found ${#panes[@]} panes to move"
+
+  # Create hidden temporary session to hold the old layout
+  tmp_session="tmux-split-across-tmp-$$"
+  tmux new-session -d -s "$tmp_session"
+  tmp_window_id=$(tmux list-windows -t "$tmp_session" -F '#{window_id}')
+  log "Created temporary session '$tmp_session' to hold old layout"
+
+  # Move all panes to temp session
+  for pane in "${panes[@]}"; do
+    tmux join-pane -s "$pane" -t "$tmp_window_id" -b
+    log "Moved pane $pane to temporary session"
+  done
+
+  # Clear original window and split it
+  tmux select-window -t "${current_session}:${current_window}"
+  tmux kill-pane -a
+  log "Cleared original window and preparing to split"
+
+  tmux split-window "$split_flag"
+  log "Created new ${split_flag//-} split"
+
+  # Select the side to host the old layout
+  tmux select-pane -L 2>/dev/null || tmux select-pane -U
+  target_pane=$(tmux display-message -p '#{pane_id}')
+  log "Selected target pane: $target_pane"
+
+  # Re-collect panes in temp window
+  tmp_panes=()
+  while IFS= read -r line; do
+    tmp_panes+=("$line")
+  done < <(tmux list-panes -F '#{pane_id}' -t "$tmp_window_id")
+
+  # Re-join panes into the target pane
+  first=1
+  for pane in "${tmp_panes[@]}"; do
+    if [[ $first -eq 1 ]]; then
+      tmux join-pane -s "$pane" -t "$target_pane" -b
+      first=0
+    else
+      tmux join-pane -s "$pane" -t "$target_pane"
+    fi
+    log "Joined pane $pane into target pane $target_pane"
+  done
+
+  # Clean up: kill temporary session
+  tmux kill-session -t "$tmp_session"
+  log "Cleaned up by killing temporary session '$tmp_session'"
+
+  echo "Split completed successfully."
+}
+
+# Execute main function
+main
