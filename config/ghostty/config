@@ -25,8 +25,8 @@ shell-integration-features = no-cursor
 window-padding-balance = true
 window-padding-color = extend
 window-padding-x = 4
-window-padding-y = 4
+window-padding-y = 8
 
 config-file = ?fonts/font
 
-theme = "tokyonight_moon"
+theme = "catppuccin-mocha"
