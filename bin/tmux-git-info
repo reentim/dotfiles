@@ -1,36 +1,36 @@
 #!/usr/bin/env bash
 
 main() {
+  declare -a git_fields
+
   git_dir="$(git -C "$1" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
 
   if ! [[ -d "$git_dir" ]]; then
     exit 1
   fi
 
-  # TODO: this gets it wrong after `git reset --hard` to someplace with a
-  # branch pointing to it, this lists that branch, not the current, depending on
-  # sorting, presumably
-  git --git-dir="$git_dir" --no-pager \
-    for-each-ref refs/heads \
-      --count=1 \
-      --points-at=HEAD \
-      --format="\
-#[fg=yellow,bg=default]#[fg=brown,bg=yellow,bold] %(objectname:short) #[fg=yellow,bg=black,nobold]\
-#[fg=default,bg=black] $(commit_date)\
-%(if)%(push:track)%(then)#[bold] %(push:track)#[nobold]%(end)\
-%(if)%(upstream)%(then)#[fg=brightblack]#[fg=blue,bg=brightblack,bold] %(upstream:short) #[fg=brightblack,bg=default]%(end)#[default]\
-" | transform
-}
+  mapfile -t git_fields < <(git \
+    --git-dir="$git_dir" \
+    --no-pager \
+    for-each-ref \
+    --count=1 \
+    --points-at=HEAD \
+    --format="\
+%(objectname:short)
+%(committerdate:relative)
+%(if)%(upstream)%(then)\
+%(push:track)
+%(upstream:short)
+%(end)
+    "
+  )
 
-commit_date() {
-  echo "%(committerdate:relative)"
-}
+  ahead="${git_fields[2]}"
 
-transform() {
-  cat <&0 \
-    | sed -E 's/\[ahead ([0-9]+), behind ([0-9]+)\]/#[fg=green,bg=black]#[fg=darkgreen,bg=green]+\1 #[bg=red]#[fg=darkred] -\2#[fg=red,bg=brightblack]/' \
-    | sed -E 's/\[ahead ([0-9]+)\]/#[fg=green,bg=black]#[fg=darkgreen,bg=green]+\1#[fg=green,bg=brightblack]/' \
-    | sed -E 's/\[behind ([0-9]+)\]/#[fg=red,bg=black]#[fg=darkred,bg=red]-\1#[fg=red,bg=brightblack]/'
+  for i in {0..3}; do
+    echo ${git_fields[$i]}
+  done
+
 }
 
 main "$1"

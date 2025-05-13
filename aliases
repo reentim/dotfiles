@@ -9,7 +9,7 @@ fi
 
 alias ag='rg'
 alias bx='bundle exec'
-alias cdr='cd "$(git rev-parse --show-cdup 2>/dev/null)"'
+alias cdr='cd $(git rev-parse --show-cdup 2>/dev/null)'
 alias diff='colordiff -u'
 alias docker='podman'
 alias grep='grep --color=auto'
