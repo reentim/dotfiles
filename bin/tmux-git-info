@@ -16,7 +16,7 @@ main() {
       --points-at=HEAD \
       --format="\
 #[fg=yellow,bg=default]#[fg=brown,bg=yellow,bold] %(objectname:short) #[fg=yellow,bg=black,nobold]\
-#[fg=black]#[fg=default,bg=black]$(commit_date) \
+#[fg=default,bg=black] $(commit_date)\
 %(if)%(push:track)%(then)#[bold] %(push:track)#[nobold]%(end)\
 %(if)%(upstream)%(then)#[fg=brightblack]#[fg=blue,bg=brightblack,bold] %(upstream:short) #[fg=brightblack,bg=default]%(end)#[default]\
 " | transform
