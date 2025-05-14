@@ -61,5 +61,5 @@ uz() {
   local dir="${1%.zip}"
   unzip -d "$dir" "$1" && cd "$dir" || return
   local subdirs=(*(/))
-  [[ ${#subdirs[@]} -eq 1 ]] && cd "$subdirs[1]" && echo "Navigated into $subdirs[1]"
+  [[ ${#subdirs[@]} -eq 1 ]] && cd "$subdirs[1]" && pwd
 }

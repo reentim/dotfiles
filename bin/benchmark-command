@@ -1,188 +1,315 @@
 #!/usr/bin/env bash
+# Modern benchmarking script using Bash 5.2+ features
+# Provides detailed timing statistics for any command
+
+# Enable strict mode with error handling
 set -euo pipefail
+shopt -s inherit_errexit
 
-# Usage information
+# Enable Bash 5+ features
+shopt -s globstar    # Enable ** for recursive globbing
+shopt -s nullglob    # Return empty list rather than literal pattern when no matches
+
+# Define color codes for better output formatting
+declare -r RED='\033[0;31m'
+declare -r GREEN='\033[0;32m'
+declare -r YELLOW='\033[0;33m'
+declare -r BLUE='\033[0;34m'
+declare -r MAGENTA='\033[0;35m'
+declare -r CYAN='\033[0;36m'
+declare -r RESET='\033[0m'
+
+# Track script execution time
+declare -r START_TIME=$(date +%s.%N)
+
+# Define usage information using a here-document
 usage() {
-	cat <<-EOF
-	Usage: $(basename "$0") [OPTIONS] -- COMMAND [ARGS...]
+  local script_name
+  script_name=$(basename "${BASH_SOURCE[0]}")
+  cat << EOF
+${script_name} - Modern command benchmarking tool
 
-	A simple benchmarking tool that runs a command multiple times and provides statistics.
+USAGE:
+${script_name} [OPTIONS] -- COMMAND [ARGS...]
 
-	Options:
-	-n, --runs NUM       Number of runs to perform (default: 10)
-	-w, --warmup NUM     Number of warmup runs to perform (default: 1)
-	-v, --verbose        Show output of each run
-	-h, --help           Show this help message
+OPTIONS:
+-n, --runs NUM       Number of runs to perform (default: 10)
+-w, --warmup NUM     Number of warmup runs to perform (default: 1)
+-v, --verbose        Show output of each run
+-p, --precision NUM  Number of decimal places in results (default: 3)
+-h, --help           Show this help message
 
-	Examples:
-	$(basename "$0") -n 5 -- ls -la
-	$(basename "$0") -n 20 -w 2 -- python script.py
-	$(basename "$0") -- "sleep 1"
+EXAMPLES:
+${script_name} -n 5 -- ls -la
+${script_name} -n 20 -w 2 -- python script.py
+${script_name} -p 5 -- "sleep 0.1"
 EOF
-	exit 0
+  exit 0
 }
 
-# Default values
-runs=10
-warmup=1
-verbose=0
+# Function to check required dependencies
+check_dependencies() {
+  local -r deps=("awk" "/usr/bin/time")
+  local missing=()
 
-# Parse command line arguments
-while [[ $# -gt 0 ]]; do
-	case $1 in
-		-n|--runs)
-			runs=$2
-			shift 2
-			;;
-		-w|--warmup)
-			warmup=$2
-			shift 2
-			;;
-		-v|--verbose)
-			verbose=1
-			shift
-			;;
-		-h|--help)
-			usage
-			;;
-		--)
-			shift
-			break
-			;;
-		*)
-			echo "Unknown option: $1"
-			usage
-			;;
-	esac
-done
+  for dep in "${deps[@]}"; do
+    if ! command -v "$dep" &> /dev/null; then
+      missing+=("$dep")
+    fi
+  done
 
-# Check if a command was provided
-if [[ $# -eq 0 ]]; then
-	echo "Error: No command specified"
-	usage
-fi
+  if (( ${#missing[@]} > 0 )); then
+    printf "${RED}Error: Required dependencies not found: %s${RESET}\n" "${missing[*]}"
+    exit 1
+  fi
+}
 
-# Create the command to be executed
-command_to_run=("$@")
-
-# Calculate statistics
+# Function to calculate statistics from an array of values
 calculate_stats() {
-	local -n arr=$1
-	local count=${#arr[@]}
+  local -n arr=$1           # Use nameref to reference the array passed in
+  local precision=$2
+  local count=${#arr[@]}
 
-		if [[ $count -eq 0 ]]; then
-			echo "No data to calculate statistics"
-			return 1
-		fi
+    if (( count == 0 )); then
+      printf "${RED}Error: No data to calculate statistics${RESET}\n"
+      return 1
+    fi
 
-		# Sort the array using a more modern approach without IFS
-		# Create a copy of the array for sorting
-		local -a sorted=("${arr[@]}")
-		# Use the new mapfile approach with process substitution
-		mapfile -t sorted < <(printf '%s\n' "${arr[@]}" | sort -n)
+    # Create a sorted copy of the array
+    local -a sorted=()
+    mapfile -t sorted < <(printf '%s\n' "${arr[@]}" | sort -n)
 
-		# Calculate min, max, mean
-		local min=${sorted[0]}
-		local max=${sorted[-1]}
-		local sum=0
+    # Calculate min, max, median
+    local -r min=${sorted[0]}
+    local -r max=${sorted[-1]}
 
-		for i in "${arr[@]}"; do
-			sum=$(bc <<< "$sum + $i")
-		done
+    # Calculate median using the right formula for odd and even counts
+    local median
+    if (( count % 2 == 1 )); then
+      # Odd number of elements
+      median=${sorted[count/2]}
+    else
+      # Even number of elements - use awk instead of bc
+      median=$(awk -v a="${sorted[count/2-1]}" -v b="${sorted[count/2]}" 'BEGIN {print (a+b)/2}')
+    fi
 
-		local mean=$(bc -l <<< "$sum / $count")
+    # Calculate mean and standard deviation using awk
+    local -r stats=$(awk '
+    BEGIN { sum=0; sumsq=0 }
+    {
+      sum += $1
+      sumsq += $1 * $1
+    }
+    END {
+      mean = sum/NR
+      variance = sumsq/NR - (mean * mean)
+      stddev = sqrt(variance)
+      printf "%f %f %f", mean, variance, stddev
+    }
+' <(printf '%s\n' "${arr[@]}"))
 
-		# Calculate median
-		local median
-		if (( count % 2 == 1 )); then
-			# Odd number of elements
-			median=${sorted[$(( count / 2 ))]}
-		else
-			# Even number of elements
-			median=$(bc -l <<< "(${sorted[$(( count / 2 - 1 ))]} + ${sorted[$(( count / 2 ))]}) / 2")
-		fi
+read -r mean variance stddev <<< "$stats"
 
-		# Calculate standard deviation
-		local variance=0
-		for i in "${arr[@]}"; do
-			variance=$(bc -l <<< "$variance + ($i - $mean)^2")
-		done
-		variance=$(bc -l <<< "$variance / $count")
-		local stddev=$(bc -l <<< "sqrt($variance)")
+# Format the statistics with the specified precision
+local -r format="%.${precision}f"
 
-		echo "Min: $(printf "%.3f" $min) seconds"
-		echo "Max: $(printf "%.3f" $max) seconds"
-		echo "Mean: $(printf "%.3f" $mean) seconds"
-		echo "Median: $(printf "%.3f" $median) seconds"
-		echo "StdDev: $(printf "%.3f" $stddev) seconds"
-	}
+printf "${BLUE}%-10s${RESET} ${format} seconds\n" "Min:" "$min"
+printf "${BLUE}%-10s${RESET} ${format} seconds\n" "Max:" "$max"
+printf "${BLUE}%-10s${RESET} ${format} seconds\n" "Mean:" "$mean"
+printf "${BLUE}%-10s${RESET} ${format} seconds\n" "Median:" "$median"
+printf "${BLUE}%-10s${RESET} ${format} seconds\n" "StdDev:" "$stddev"
 
-# Ensure we have the required commands
-for cmd in bc awk; do
-	if ! command -v "$cmd" &> /dev/null; then
-		echo "Error: Required command '$cmd' not found"
-		exit 1
-	fi
-done
+# Calculate percentiles (p90, p95, p99)
+local -r p90_idx=$(( (count * 90) / 100 ))
+local -r p95_idx=$(( (count * 95) / 100 ))
+local -r p99_idx=$(( (count * 99) / 100 ))
 
-# Perform warmup runs
-if [[ $warmup -gt 0 ]]; then
-	echo "Performing $warmup warmup run(s)..."
-	for ((i=1; i<=warmup; i++)); do
-		if [[ $verbose -eq 1 ]]; then
-			echo -e "\nWarmup run $i:"
-			"${command_to_run[@]}" 2>&1
-		else
-			"${command_to_run[@]}" >/dev/null 2>&1
-		fi
-	done
+if (( count >= 10 )); then
+  printf "${BLUE}%-10s${RESET} ${format} seconds\n" "p90:" "${sorted[$p90_idx]}"
 fi
 
-# Perform benchmark runs
-echo -e "\nPerforming $runs benchmark run(s)..."
-declare -a times_real times_user times_sys
+if (( count >= 20 )); then
+  printf "${BLUE}%-10s${RESET} ${format} seconds\n" "p95:" "${sorted[$p95_idx]}"
+fi
 
-for ((i=1; i<=runs; i++)); do
-	echo -n "Run $i/$runs: "
+if (( count >= 100 )); then
+  printf "${BLUE}%-10s${RESET} ${format} seconds\n" "p99:" "${sorted[$p99_idx]}"
+fi
+}
 
-	# Create temporary file for time output
-	time_output=$(mktemp)
+# Main function for logical grouping of script logic
+main() {
+  # Default values
+  local runs=10
+  local warmup=1
+  local verbose=0
+  local precision=3
 
-	# Use /usr/bin/time for more detailed timing information
-	if [[ $verbose -eq 1 ]]; then
-		echo -e "\nOutput:"
-		/usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" 2>&1
-	else
-		/usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" >/dev/null 2>&1
-	fi
+  # Parse command line arguments using a modern approach
+  while (( $# > 0 )); do
+    case $1 in
+      -n|--runs)
+        if [[ $2 =~ ^[0-9]+$ ]]; then
+          runs=$2
+          shift 2
+        else
+          printf "${RED}Error: Invalid number of runs: %s${RESET}\n" "$2"
+          exit 1
+        fi
+        ;;
+      -w|--warmup)
+        if [[ $2 =~ ^[0-9]+$ ]]; then
+          warmup=$2
+          shift 2
+        else
+          printf "${RED}Error: Invalid number of warmup runs: %s${RESET}\n" "$2"
+          exit 1
+        fi
+        ;;
+      -p|--precision)
+        if [[ $2 =~ ^[0-9]+$ ]]; then
+          precision=$2
+          shift 2
+        else
+          printf "${RED}Error: Invalid precision: %s${RESET}\n" "$2"
+          exit 1
+        fi
+        ;;
+      -v|--verbose)
+        verbose=1
+        shift
+        ;;
+      -h|--help)
+        usage
+        ;;
+      --)
+        shift
+        break
+        ;;
+      *)
+        printf "${RED}Unknown option: %s${RESET}\n" "$1"
+        usage
+        ;;
+    esac
+  done
 
-	# Read timing data
-	read real_time user_time sys_time < "$time_output"
-	rm "$time_output"
+  # Check if a command was provided
+  if (( $# == 0 )); then
+    printf "${RED}Error: No command specified${RESET}\n"
+    usage
+  fi
 
-	times_real+=("$real_time")
-	times_user+=("$user_time")
-	times_sys+=("$sys_time")
+  # Store the command to be executed - preserving exact arguments
+  local -a command_to_run=("$@")
 
-	echo "real=${real_time}s user=${user_time}s sys=${sys_time}s"
-done
+  # Display the command being benchmarked
+  printf "${YELLOW}Benchmarking command:${RESET} %s\n" "${command_to_run[*]}"
 
-# Output statistics
-echo -e "\nStatistics (over $runs runs):"
-echo -e "\nReal time (wall clock):"
-calculate_stats times_real
+  # Perform warmup runs
+  if (( warmup > 0 )); then
+    printf "\n${YELLOW}Performing %d warmup run(s)...${RESET}\n" "$warmup"
+    for ((i=1; i<=warmup; i++)); do
+      printf "Warmup run %d/%d: " "$i" "$warmup"
 
-echo -e "\nUser time (CPU time in user mode):"
-calculate_stats times_user
+      if (( verbose )); then
+        printf "\n"
+        "${command_to_run[@]}" 2>&1
+      else
+        # Run command silently and print a checkmark on success
+        if "${command_to_run[@]}" >/dev/null 2>&1; then
+          printf "${GREEN}✓${RESET}\n"
+        else
+          # If command fails during warmup, warn but continue
+          printf "${RED}✗${RESET} (command failed, but continuing)\n"
+        fi
+      fi
+    done
+  fi
 
-echo -e "\nSystem time (CPU time in kernel mode):"
-calculate_stats times_sys
+  # Declare arrays for storing timing data
+  declare -a times_real=()  # Wall clock time
+    declare -a times_user=()  # CPU time in user space
+      declare -a times_sys=()   # CPU time in kernel space
+        declare -a times_total=() # Total CPU time (user + sys)
 
-echo -e "\nTotal CPU time (user + system):"
-declare -a times_total
-for ((i=0; i<runs; i++)); do
-	times_total+=("$(bc -l <<< "${times_user[$i]} + ${times_sys[$i]}")")
-done
-calculate_stats times_total
+        # Perform benchmark runs
+        printf "\n${YELLOW}Performing %d benchmark run(s)...${RESET}\n" "$runs"
 
-# vim:sw=4:noet:
+        for ((i=1; i<=runs; i++)); do
+          printf "Run %d/%d: " "$i" "$runs"
+
+          # Create temporary file for time output using modern process substitution
+          local time_output
+          time_output=$(mktemp)
+
+          # Use /usr/bin/time for detailed timing
+          if (( verbose )); then
+            printf "\n${CYAN}Output:${RESET}\n"
+            /usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" 2>&1
+          else
+            if ! /usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" >/dev/null 2>&1; then
+              printf "${RED}✗${RESET} (command failed)\n"
+              # Continue with the benchmark
+            fi
+          fi
+
+          # Read timing data using read with array (-a) flag
+          local time_data
+          read -r real_time user_time sys_time < "$time_output"
+
+          # Add values to arrays
+          times_real+=("$real_time")
+          times_user+=("$user_time")
+          times_sys+=("$sys_time")
+          times_total+=("$(awk -v u="$user_time" -v s="$sys_time" 'BEGIN {print u+s}')")
+
+          printf "real=${MAGENTA}%.${precision}fs${RESET} user=${BLUE}%.${precision}fs${RESET} sys=${CYAN}%.${precision}fs${RESET}\n" \
+            "$real_time" "$user_time" "$sys_time"
+
+            # Clean up temporary file
+            rm "$time_output"
+          done
+
+          # Output statistics
+          printf "\n${GREEN}Statistics (over %d runs):${RESET}\n" "$runs"
+
+          printf "\n${YELLOW}Real time (wall clock):${RESET}\n"
+          calculate_stats times_real "$precision"
+
+          printf "\n${YELLOW}User time (CPU time in user mode):${RESET}\n"
+          calculate_stats times_user "$precision"
+
+          printf "\n${YELLOW}System time (CPU time in kernel mode):${RESET}\n"
+          calculate_stats times_sys "$precision"
+
+          printf "\n${YELLOW}Total CPU time (user + system):${RESET}\n"
+          calculate_stats times_total "$precision"
+
+          # Calculate CPU/real ratio (efficiency)
+          local total_cpu=0
+          local total_real=0
+
+          for ((i=0; i<runs; i++)); do
+            total_cpu=$(awk -v cpu="$total_cpu" -v val="${times_total[$i]}" 'BEGIN {print cpu+val}')
+            total_real=$(awk -v real="$total_real" -v val="${times_real[$i]}" 'BEGIN {print real+val}')
+          done
+
+          local cpu_real_ratio
+          if (( $(awk -v r="$total_real" 'BEGIN {print (r > 0) ? 1 : 0}') )); then
+            cpu_real_ratio=$(awk -v cpu="$total_cpu" -v real="$total_real" 'BEGIN {print cpu/real}')
+          else
+            cpu_real_ratio=0
+          fi
+
+          printf "\n${YELLOW}CPU/Real ratio:${RESET} %.${precision}f\n" "$cpu_real_ratio"
+
+          # Calculate script execution time
+          local -r end_time=$(date +%s.%N)
+          local script_duration
+          script_duration=$(awk -v start="$START_TIME" -v end="$end_time" 'BEGIN {print end-start}')
+          printf "\n${GREEN}Benchmark completed in %.${precision}f seconds${RESET}\n" "$script_duration"
+        }
+
+# Call the main function, passing all arguments
+check_dependencies
+main "$@"
