@@ -60,6 +60,7 @@ zoxide-scan() {
 uz() {
   local dir="${1%.zip}"
   unzip -d "$dir" "$1" && cd "$dir" || return
+  setopt localoptions nullglob
   local subdirs=(*(/))
   [[ ${#subdirs[@]} -eq 1 ]] && cd "$subdirs[1]" && pwd
 }

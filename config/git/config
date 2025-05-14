@@ -64,7 +64,7 @@
 [push]
   default = current
 [init]
-  templatedir = ~/.git_template
+  templatedir = ~/.config/git/template
   defaultBranch = main
 [rerere]
   enabled = true

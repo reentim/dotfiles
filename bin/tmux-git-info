@@ -17,7 +17,10 @@ upstream_fg="darkblue"
 
 ARROW_LEFT=""
 ARROW_RIGHT=""
-BRANCH_ICON=""
+LEFT_CIRCLE=""
+RIGHT_CIRCLE=""
+# UPSTREAM_ICON=""
+UPSTREAM_ICON=""
 COMMIT_AGE_ICON=""
 INVERSE_ARROW_LEFT=""
 INVERSE_ARROW_RIGHT=""
@@ -26,9 +29,6 @@ LOWER_RIGHT_TRIANGLE=""
 TERSE_COMMIT_AGE=true
 UPPER_LEFT_TRIANGLE=""
 UPPER_RIGHT_TRIANGLE=""
-
-COMMIT_ID_SEPERATOR_LEFT="${ARROW_LEFT}"
-COMMIT_ID_SEPERATOR_RIGHT="${ARROW_RIGHT}"
 
 main() {
   local dir="${1}"
@@ -58,7 +58,7 @@ main() {
   local upstream="${git_fields[3]}"
 
   time_ago=${git_fields[1]}
-  for unit in "second s" "minute m" "hour h" "day d" "year y"; do
+  for unit in "second sec" "minute min" "hour hr" "day days" "year yr"; do
     set -- $unit
     time_ago=${time_ago// $1 ago/ $2}
     time_ago=${time_ago// ${1}s ago/ $2}
@@ -89,24 +89,31 @@ generate_powerline() {
 
   local output=""
 
-  output+="#[fg=${commit_id_bg},bg=${default_bg}]${COMMIT_ID_SEPERATOR_LEFT}"
-  output+="#[fg=${commit_id_fg},bg=${commit_id_bg},bold] ${commit_id} "
-  output+="#[fg=${commit_id_bg},bg=${commit_age_bg},nobold]${COMMIT_ID_SEPERATOR_RIGHT}"
+  output+="#[fg=${commit_id_bg},bg=${default_bg}]${LEFT_CIRCLE}"
+  output+="#[fg=${commit_id_fg},bg=${commit_id_bg},bold]${commit_id}"
+  output+="#[fg=${commit_id_bg},bg=${commit_age_bg},nobold]${RIGHT_CIRCLE}"
 
   output+="#[fg=${commit_age_fg}]"
   output+="#[fg=${commit_age_fg},bg=${commit_age_bg}] ${COMMIT_AGE_ICON} ${commit_age} "
 
   if [[ $behind_count -gt 0 ]]; then
-    output+="#[fg=${behind_fg},bold]-${behind_count}"
+    output+="#[fg=${behind_bg},bg=default]${ARROW_LEFT}"
+    output+="#[fg=${behind_fg},bg=${behind_bg},bold]${behind_count} "
+    output+="#[fg=${upstream_bg},bg=${behind_bg}]${LEFT_CIRCLE}"
   fi
 
   if [[ -n "$upstream" ]]; then
-    output+="#[fg=${upstream_bg},bg=${commit_age_bg}]${ARROW_LEFT}"
+    if [[ ! $behind_count -gt 0 ]]; then
+      output+="#[fg=${upstream_bg},bg=${commit_age_bg}]${LEFT_CIRCLE}"
+    fi
     output+="#[fg=${upstream_bg},bg=${commit_age_bg}]"
-    output+="#[fg=${upstream_fg},bg=${upstream_bg},bold] ${BRANCH_ICON} ${upstream} "
+    output+="#[fg=${upstream_fg},bg=${upstream_bg},bold]${UPSTREAM_ICON}${upstream}"
+    if [[ ! $ahead_count -gt 0 ]]; then
+      output+="#[fg=${upstream_bg},bg=${commit_age_bg}]${RIGHT_CIRCLE}"
+    fi
 
     if [[ $ahead_count -gt 0 ]]; then
-      output+="#[fg=${upstream_bg},bg=${ahead_bg}]${ARROW_RIGHT}"
+      output+="#[fg=${upstream_bg},bg=${ahead_bg}]${RIGHT_CIRCLE}"
       output+="#[fg=${ahead_fg},bg=${ahead_bg},bold] ${ahead_count}"
       output+="#[fg=${ahead_bg},bg=default,nobold]${ARROW_RIGHT}"
     fi
