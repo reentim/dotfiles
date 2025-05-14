@@ -1,0 +1,186 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Usage information
+usage() {
+	cat <<-EOF
+	Usage: $(basename "$0") [OPTIONS] -- COMMAND [ARGS...]
+
+	A simple benchmarking tool that runs a command multiple times and provides statistics.
+
+	Options:
+	-n, --runs NUM       Number of runs to perform (default: 10)
+	-w, --warmup NUM     Number of warmup runs to perform (default: 1)
+	-v, --verbose        Show output of each run
+	-h, --help           Show this help message
+
+	Examples:
+	$(basename "$0") -n 5 -- ls -la
+	$(basename "$0") -n 20 -w 2 -- python script.py
+	$(basename "$0") -- "sleep 1"
+EOF
+exit 0
+}
+
+# Default values
+runs=10
+warmup=1
+verbose=0
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+	case $1 in
+		-n|--runs)
+			runs=$2
+			shift 2
+			;;
+		-w|--warmup)
+			warmup=$2
+			shift 2
+			;;
+		-v|--verbose)
+			verbose=1
+			shift
+			;;
+		-h|--help)
+			usage
+			;;
+		--)
+			shift
+			break
+			;;
+		*)
+			echo "Unknown option: $1"
+			usage
+			;;
+	esac
+done
+
+# Check if a command was provided
+if [[ $# -eq 0 ]]; then
+	echo "Error: No command specified"
+	usage
+fi
+
+# Create the command to be executed
+command_to_run=("$@")
+
+# Calculate statistics
+calculate_stats() {
+	local -n arr=$1
+	local count=${#arr[@]}
+
+		if [[ $count -eq 0 ]]; then
+			echo "No data to calculate statistics"
+			return 1
+		fi
+
+		# Sort the array
+		IFS=$'\n' sorted=($(sort -n <<<"${arr[*]}"))
+		unset IFS
+
+		# Calculate min, max, mean
+		local min=${sorted[0]}
+		local max=${sorted[-1]}
+		local sum=0
+
+		for i in "${arr[@]}"; do
+			sum=$(bc <<< "$sum + $i")
+		done
+
+		local mean=$(bc -l <<< "$sum / $count")
+
+		# Calculate median
+		local median
+		if (( count % 2 == 1 )); then
+			# Odd number of elements
+			median=${sorted[$(( count / 2 ))]}
+		else
+			# Even number of elements
+			median=$(bc -l <<< "(${sorted[$(( count / 2 - 1 ))]} + ${sorted[$(( count / 2 ))]}) / 2")
+		fi
+
+		# Calculate standard deviation
+		local variance=0
+		for i in "${arr[@]}"; do
+			variance=$(bc -l <<< "$variance + ($i - $mean)^2")
+		done
+		variance=$(bc -l <<< "$variance / $count")
+		local stddev=$(bc -l <<< "sqrt($variance)")
+
+		echo "Min: $(printf "%.3f" $min) seconds"
+		echo "Max: $(printf "%.3f" $max) seconds"
+		echo "Mean: $(printf "%.3f" $mean) seconds"
+		echo "Median: $(printf "%.3f" $median) seconds"
+		echo "StdDev: $(printf "%.3f" $stddev) seconds"
+	}
+
+# Ensure we have the required commands
+for cmd in bc awk; do
+	if ! command -v "$cmd" &> /dev/null; then
+		echo "Error: Required command '$cmd' not found"
+		exit 1
+	fi
+done
+
+# Perform warmup runs
+if [[ $warmup -gt 0 ]]; then
+	echo "Performing $warmup warmup run(s)..."
+	for ((i=1; i<=warmup; i++)); do
+		if [[ $verbose -eq 1 ]]; then
+			echo -e "\nWarmup run $i:"
+			"${command_to_run[@]}" 2>&1
+		else
+			"${command_to_run[@]}" >/dev/null 2>&1
+		fi
+	done
+fi
+
+# Perform benchmark runs
+echo -e "\nPerforming $runs benchmark run(s)..."
+declare -a times_real times_user times_sys
+
+for ((i=1; i<=runs; i++)); do
+	echo -n "Run $i/$runs: "
+
+	# Create temporary file for time output
+	time_output=$(mktemp)
+
+	# Use /usr/bin/time for more detailed timing information
+	if [[ $verbose -eq 1 ]]; then
+		echo -e "\nOutput:"
+		/usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" 2>&1
+	else
+		/usr/bin/time -f "%e %U %S" -o "$time_output" "${command_to_run[@]}" >/dev/null 2>&1
+	fi
+
+	# Read timing data
+	read real_time user_time sys_time < "$time_output"
+	rm "$time_output"
+
+	times_real+=("$real_time")
+	times_user+=("$user_time")
+	times_sys+=("$sys_time")
+
+	echo "real=${real_time}s user=${user_time}s sys=${sys_time}s"
+done
+
+# Output statistics
+echo -e "\nStatistics (over $runs runs):"
+echo -e "\nReal time (wall clock):"
+calculate_stats times_real
+
+echo -e "\nUser time (CPU time in user mode):"
+calculate_stats times_user
+
+echo -e "\nSystem time (CPU time in kernel mode):"
+calculate_stats times_sys
+
+echo -e "\nTotal CPU time (user + system):"
+declare -a times_total
+for ((i=0; i<runs; i++)); do
+	times_total+=("$(bc -l <<< "${times_user[$i]} + ${times_sys[$i]}")")
+done
+calculate_stats times_total
+
+# vim:sw=4:noexpandtab:

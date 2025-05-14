@@ -17,6 +17,6 @@ vim.diagnostic.config({
   virtual_lines = true
 })
 
-vim.cmd.source(vim.fn.stdpath("config") .. '/vimrc')
-
 require('config.lazy')
+
+vim.cmd.source(vim.fn.stdpath("config") .. '/vimrc')
