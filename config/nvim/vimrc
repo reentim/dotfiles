@@ -40,8 +40,8 @@ set tabstop=4
 set tags+=.git/tags
 set ttimeoutlen=10
 set undofile
-set winheight=16
-set winwidth=72
+set winheight=8
+set winwidth=32
 
 augroup vimrc_common
   autocmd!

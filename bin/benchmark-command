@@ -19,7 +19,7 @@ usage() {
 	$(basename "$0") -n 20 -w 2 -- python script.py
 	$(basename "$0") -- "sleep 1"
 EOF
-exit 0
+	exit 0
 }
 
 # Default values
@@ -75,9 +75,11 @@ calculate_stats() {
 			return 1
 		fi
 
-		# Sort the array
-		IFS=$'\n' sorted=($(sort -n <<<"${arr[*]}"))
-		unset IFS
+		# Sort the array using a more modern approach without IFS
+		# Create a copy of the array for sorting
+		local -a sorted=("${arr[@]}")
+		# Use the new mapfile approach with process substitution
+		mapfile -t sorted < <(printf '%s\n' "${arr[@]}" | sort -n)
 
 		# Calculate min, max, mean
 		local min=${sorted[0]}
@@ -183,4 +185,4 @@ for ((i=0; i<runs; i++)); do
 done
 calculate_stats times_total
 
-# vim:sw=4:noexpandtab:
+# vim:sw=4:noet:
