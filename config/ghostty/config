@@ -27,6 +27,5 @@ window-padding-color = extend
 window-padding-x = 4
 window-padding-y = 8
 
-config-file = ?fonts/font
-
-theme = "catppuccin-mocha"
+config-file = ?fonts/_current
+config-file = ?themes/_current

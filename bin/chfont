@@ -9,8 +9,8 @@ main() {
   # configuration:
   font_config_paths[ghostty]="$HOME/.config/ghostty/fonts"
   font_config_paths[kitty]="$HOME/.config/kitty/fonts"
-  untracked_font_config[ghostty]="${font_config_paths[ghostty]}/current"
-  untracked_font_config[kitty]="${font_config_paths[kitty]}/current.conf"
+  untracked_font_config[ghostty]="${font_config_paths[ghostty]}/_current"
+  untracked_font_config[kitty]="${font_config_paths[kitty]}/_current.conf"
   master_terminal="kitty"
 
   edit_current_mode=false

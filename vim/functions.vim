@@ -31,7 +31,7 @@ function! ResumeCursorPosition()
   endif
 endfunction
 
-" Visually select text sharing the same indent level
+" Visually select contiguous text sharing the same indent level
 function! SelectIndent()
   let current_line = line(".")
   let current_indent = indent(current_line)

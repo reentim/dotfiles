@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
 
-# Color definitions
-color_bg_commit="yellow"
-color_fg_commit="brown"
-color_bg_date="black" 
-color_fg_date="default"
-color_fg_ahead="green"
-color_fg_behind="red"
-color_bg_upstream="brightblack"
-color_fg_upstream="blue"
-color_bg_default="default"
-color_fg_default="default"
+ahead_fg="green"
+ahead_style="bold"
+behind_fg="red"
+behind_style="bold"
+commit_id_bg="yellow"
+commit_id_fg="brown"
+date_bg="black"
+date_fg="default"
+default_bg="default"
+default_fg="default"
+upstream_bg="brightblack"
+upstream_fg="blue"
 
-# Special characters
-ARROW_RIGHT="\xEE\x82\xB0" # <U+E0B0>
-ARROW_LEFT="\xEE\x82\xB2"  # <U+E0B2>
-BRANCH_ICON="\xEE\x83\x97" # <U+E0D7>
-DATE_ICON="\xEE\x82\xBA"   # <U+E0BA>
+ARROW_RIGHT=""
+ARROW_LEFT=""
+COMMIT_TIME_AGO_ICON=" "
 
 main() {
-  # Default to current directory if not provided
-  local dir="${1:-.}"
+  local dir="${1}"
 
-  # Get git directory
-  git_dir="$(git -C "$dir" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
-  if ! [[ -d "$git_dir" ]]; then
+  git_dir="$(git -C "${dir}" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
+  if ! [[ -d "${git_dir}" ]]; then
     exit 1
   fi
 
-  # Get basic git info
   mapfile -t git_fields < <(git \
     --git-dir="$git_dir" \
     --no-pager \
@@ -36,77 +32,71 @@ main() {
     --count=1 \
     --points-at=HEAD \
     --format="\
-    %(objectname:short)
-  %(committerdate:relative)
-  %(if)%(upstream)%(then)\
-    %(ahead-behind:@{push})
-  %(upstream:short)
-  %(end)
-  "
-)
+%(objectname:short)
+%(committerdate:relative)
+%(if)%(upstream)%(then)\
+%(ahead-behind:@{push})
+%(upstream:short)
+%(end)\
+")
 
-# Trim whitespace
-for i in "${!git_fields[@]}"; do
-  git_fields[$i]=$(echo "${git_fields[$i]}" | xargs)
-done
+  local commit_id="${git_fields[0]}"
+  local ahead_behind="${git_fields[2]}"
+  local upstream="${git_fields[3]}"
 
-# Extract data
-local commit_hash="${git_fields[0]}"
-local commit_date="${git_fields[1]}"
-local ahead_behind="${git_fields[2]}"
-local upstream="${git_fields[3]}"
+  time_val=${git_fields[1]}
+  time_val=${time_val//hours ago/h}
+  time_val=${time_val//minutes ago/m}
+  time_val=${time_val//seconds ago/s}
+  printf -v terse_commit_time_ago "%4s" "$time_val"
 
-# Parse ahead/behind numbers
-local ahead_count=0
-local behind_count=0
+  local ahead_count=0
+  local behind_count=0
 
-if [[ "$ahead_behind" =~ \[ahead\ ([0-9]+),\ behind\ ([0-9]+)\] ]]; then
-  ahead_count="${BASH_REMATCH[1]}"
-  behind_count="${BASH_REMATCH[2]}"
-elif [[ "$ahead_behind" =~ \[ahead\ ([0-9]+)\] ]]; then
-  ahead_count="${BASH_REMATCH[1]}"
-elif [[ "$ahead_behind" =~ \[behind\ ([0-9]+)\] ]]; then
-  behind_count="${BASH_REMATCH[1]}"
-fi
+  if [[ "$ahead_behind" =~ \[ahead\ ([0-9]+),\ behind\ ([0-9]+)\] ]]; then
+    ahead_count="${BASH_REMATCH[1]}"
+    behind_count="${BASH_REMATCH[2]}"
+  elif [[ "$ahead_behind" =~ \[ahead\ ([0-9]+)\] ]]; then
+    ahead_count="${BASH_REMATCH[1]}"
+  elif [[ "$ahead_behind" =~ \[behind\ ([0-9]+)\] ]]; then
+    behind_count="${BASH_REMATCH[1]}"
+  fi
 
-# Generate output
-generate_powerline "$commit_hash" "$commit_date" "$ahead_count" "$behind_count" "$upstream"
+  generate_powerline "$commit_id" "$terse_commit_time_ago" "$ahead_count" "$behind_count" "$upstream"
 }
 
 generate_powerline() {
-  local commit_hash="$1"
-  local commit_date="$2"
+  local commit_id="$1"
+  local commit_time="$2"
   local ahead_count="$3"
   local behind_count="$4"
   local upstream="$5"
 
   local output=""
 
-  # Commit hash segment
-  output+="#[fg=${color_bg_commit},bg=${color_bg_default}]${ARROW_LEFT}"
-  output+="#[fg=${color_fg_commit},bg=${color_bg_commit},bold] ${commit_hash} "
-  output+="#[fg=${color_bg_commit},bg=${color_bg_date},nobold]${ARROW_RIGHT}"
+  output+="#[fg=${commit_id_bg},bg=${default_bg}]${ARROW_LEFT}"
+  output+="#[fg=${commit_id_fg},bg=${commit_id_bg},bold] ${commit_id} "
+  output+="#[fg=${commit_id_bg},bg=${date_bg},nobold]${ARROW_RIGHT}"
 
-  # Date segment
-  output+="#[fg=${color_fg_date}]${DATE_ICON}"
-  output+="#[fg=${color_fg_date},bg=${color_bg_date}] ${commit_date} "
+  output+="#[fg=${date_fg}]"
+  output+="#[fg=${date_fg},bg=${date_bg}] ${COMMIT_TIME_AGO_ICON}${commit_time} "
 
-  # Behind count segment (if non-zero)
   if [[ $behind_count -gt 0 ]]; then
-    output+="#[fg=${color_fg_behind},bold]-${behind_count}"
+    output+="#[fg=${behind_fg},bold]-${behind_count}"
   fi
 
   # Upstream segment (if exists)
   if [[ -n "$upstream" ]]; then
-    output+="#[fg=${color_bg_upstream},bg=${color_bg_date}]${BRANCH_ICON}"
-    output+="#[fg=${color_fg_upstream},bg=${color_bg_upstream},bold] ${upstream} "
+    output+="#[fg=${upstream_bg},bg=${date_bg}]${ARROW_LEFT}"
+    output+="#[fg=${upstream_bg},bg=${date_bg}]"
+    output+="#[fg=${upstream_fg},bg=${upstream_bg},bold] ${upstream} "
 
     # Ahead count segment (if non-zero)
     if [[ $ahead_count -gt 0 ]]; then
-      output+="#[fg=${color_fg_ahead},bold]+${ahead_count} "
+      output+="#[fg=${ahead_fg},bold]+${ahead_count} "
     fi
 
-    output+="#[fg=${color_bg_upstream},bg=${color_bg_default}]${ARROW_RIGHT}"
+    output+="#[fg=${upstream_bg},bg=${default_bg}]${ARROW_RIGHT}"
   fi
 
   # Reset colors

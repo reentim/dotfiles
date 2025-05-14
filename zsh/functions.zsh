@@ -48,3 +48,11 @@ alias-ls-time() {
 alias-ls-name() {
   alias ls='ls -CF --color=always --group-directories-first'
 }
+
+zoxide-scan() {
+  find "$PWD" -type d \
+    -regex '.*/\(\..*\|node_modules\|cache\|tmp\|public\|vendor\)' \
+    -prune -o -type d \
+    -print \
+    | xargs -r zoxide add
+}

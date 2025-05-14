@@ -1,9 +1,12 @@
-vim.cmd[[highlight SignColumn guibg=#272a3f]]
+vim.cmd[[highlight SignColumn guibg=brightblack]]
 vim.opt.backupdir = '/tmp/nvim_temp//'
 vim.opt.dir = '/tmp/nvim_swap//'
 vim.opt.guicursor = 'n-v-c-i-:block'
 vim.opt.smartcase = true
 vim.opt.undodir = '/tmp/nvim_undo//'
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 vim.keymap.set('n', '<leader>r', function()
   dofile(vim.env.MYVIMRC)
