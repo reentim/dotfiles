@@ -43,22 +43,21 @@ set undofile
 set winheight=8
 set winwidth=32
 
-augroup vimrc_common
+augroup vimrc
   autocmd!
 
   autocmd BufLeave,FocusLost * silent! update
+  autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd BufNewFile,BufRead COMMIT_EDITMSG call AutocmdCommitMessage()
   autocmd BufNewFile,BufRead PULLREQ_EDITMSG call AutocmdPullRequestMessage()
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
-  autocmd BufNewFile,BufRead * call CdToProjectRoot()
   autocmd BufReadPost * call ResumeCursorPosition()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=500 }
 augroup END
 
-command! -nargs=? -complete=help Help help <args> | wincmd L | vert resize 80 | normal! 999zh
 
-" TODO does this work?
-match ErrorMsg /<\{7}.*\|=\{7}\|>\{7}.*/
+command! -nargs=? -complete=help Help help <args> | wincmd L | vert resize 80 | normal! 999zh
 
 cnoreabbrev h Help
 cnoremap %% <C-R>=expand('%:.:h').'/'<CR>
@@ -67,8 +66,6 @@ inoremap <C-L> =><space>
 inoremap <F5> <C-r>=system('date')[:-2]<CR>
 inoremap jk <ESC>
 nnoremap / /\v
-nnoremap <C-W>" :sp<CR>
-nnoremap <C-W>% :vs<CR>
 nnoremap <F5> :set invlist<CR>
 nnoremap <F6> :call LineNumbers_toggle()<CR>
 nnoremap <leader>cx :silent !chmod +x %<CR>

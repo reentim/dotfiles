@@ -62,14 +62,11 @@ inoremap <C-J> ->
 inoremap <C-L> =><space>
 inoremap jk <ESC>
 nnoremap / /\v
-nnoremap <F5> :set invlist<CR>
-nnoremap <leader>h :split<CR>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
-nnoremap <leader>w :vsplit<CR>
+nnoremap <F5> :set invlist<CR>
 nnoremap <silent> <CR> :nohl<CR>
 nnoremap Y y$
 vnoremap / /\v

@@ -1,49 +1,30 @@
 #!/usr/bin/env bash
 
-ahead_bg="green"
-ahead_fg="darkgreen"
-ahead_style="bold"
+# -------------
+# tmux-git-info
+# https://github.com/reentim/tmux-git-info
+#
+# Usage: tmux-git-info REPO_PATH
+# formats git repo information for display in tmux (powerline symbols optional)
+#
+# tmux configuration, e.g.
+#   set -g status-right "#(tmux-git-info '#{pane_current_path}') [...]"
+#
+# without powerline characters:
+#   set -g status-right "#(POWERLINE=false tmux-git-info '#{pane_current_path}') [...]"
+# -------------
 
-behind_bg="red"
-behind_fg="darkred"
-behind_style="bold"
-
-commit_age_bg="default"
-commit_age_fg="default"
-commit_age_style="nobold"
-
-commit_id_bg="yellow"
-commit_id_fg="brown"
-commit_id_style="bold"
-
-default_bg="default"
-default_fg="default"
-
-upstream_bg="blue"
-upstream_fg="darkblue"
-upstream_style="bold"
-
-arrow_left=""
-arrow_right=""
-circle_left=""
-circle_right=""
-icon_commit_age=""
-icon_upstream=""
+set -euo pipefail
 
 main() {
-  declare git_dir="$(git -C "${1}" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
+  declare repo_path="${1-}"
 
-  declare ahead_count
-  declare ahead_count_segment
-  declare behind_count
-  declare behind_count_segment
-  declare commit_age
-  declare commit_age_segment
-  declare commit_id
-  declare commit_id_segment
-  declare upstream
-  declare upstream_segment
+  load_git_data
 
+  ${POWERLINE-true} && output_powerline || output_basic_line
+}
+
+output_powerline() {
   local -a powerline
 
   build_segments
@@ -54,20 +35,64 @@ main() {
     $behind_count_segment
     $upstream_segment
     $ahead_count_segment
-    "#[default]"
   )
 
-  echo -e "${powerline[@]}"
+  echo -e "${powerline[@]}#[default]"
+}
+
+output_basic_line() {
+  basic_line=(
+    "#[fg=yellow]$commit_id#[default]"
+    "$commit_age ago"
+  )
+  [[ $behind_count -gt 0 ]] && basic_line+=("#[fg=red]-$behind_count#[default]")
+  basic_line+=("#[fg=blue]$upstream")
+  [[ $ahead_count -gt 0 ]] && basic_line+=("#[fg=green]+$ahead_count#[default]")
+
+  echo -e "${basic_line[@]}#[default]"
 }
 
 build_segments() {
   load_git_data
+
+  ahead_bg="green"
+  ahead_fg="darkgreen"
+  ahead_style="bold"
+
+  behind_bg="red"
+  behind_fg="darkred"
+  behind_style="bold"
+
+  commit_age_bg="default"
+  commit_age_fg="default"
+  commit_age_style="nobold"
+
+  commit_id_bg="yellow"
+  commit_id_fg="brown"
+  commit_id_style="bold"
+
+  default_bg="default"
+  default_fg="default"
+
+  upstream_bg="blue"
+  upstream_fg="darkblue"
+  upstream_style="bold"
+
+  arrow_left=""
+  arrow_right=""
+  circle_left=""
+  circle_right=""
+  icon_commit_age=""
+  icon_upstream=""
 
   commit_id_segment+="#[fg=${commit_id_bg},bg=${default_bg}]${circle_left}"
   commit_id_segment+="#[fg=${commit_id_fg},bg=${commit_id_bg},${commit_id_style}]${commit_id}"
   commit_id_segment+="#[fg=${commit_id_bg},bg=${commit_age_bg}]${circle_right}"
 
   commit_age_segment+="#[fg=${commit_age_fg},bg=${commit_age_bg},${commit_age_style}]${icon_commit_age} ${commit_age} "
+
+  behind_count_segment=""
+  ahead_count_segment=""
 
   if [[ -n "$upstream" ]]; then
     if [[ $behind_count -gt 0 ]]; then
@@ -93,13 +118,13 @@ build_segments() {
 load_git_data() {
   local -a git_fields
 
-  if ! [[ -d "${git_dir}" ]]; then
+  if ! [[ -d "${repo_path}/.git" ]]; then
     exit 1
   fi
 
   mapfile -t git_fields < <(\
     git \
-      --git-dir="$git_dir" \
+      -C "${repo_path}" \
       --no-pager \
       for-each-ref \
         --count=1 \
@@ -115,8 +140,8 @@ load_git_data() {
 
   commit_id="${git_fields[0]}"
   commit_age=${git_fields[1]}
-  ahead_behind="${git_fields[2]}"
-  upstream="${git_fields[3]}"
+  ahead_behind="${git_fields[2]-}"
+  upstream="${git_fields[3]-}"
 
   ahead_count=0
   behind_count=0
@@ -128,8 +153,6 @@ load_git_data() {
   done
   printf -v terse_commit_age "%s" "$commit_age"
 
-  echo $ahead_behind
-
   if [[ "$ahead_behind" =~ ahead\ ([0-9]+),\ behind\ ([0-9]+) ]]; then
     ahead_count="${BASH_REMATCH[1]}"
     behind_count="${BASH_REMATCH[2]}"
@@ -140,4 +163,4 @@ load_git_data() {
   fi
 }
 
-main "$1"
+main "$@"
