@@ -8,20 +8,21 @@ behind_fg="darkred"
 behind_style="bold"
 commit_age_bg="default"
 commit_age_fg="default"
+commit_age_style="nobold"
 commit_id_bg="yellow"
 commit_id_fg="brown"
+commit_id_style="bold"
 default_bg="default"
 default_fg="default"
 upstream_bg="blue"
 upstream_fg="darkblue"
+upstream_style="bold"
 
 ARROW_LEFT=""
 ARROW_RIGHT=""
-LEFT_CIRCLE=""
-RIGHT_CIRCLE=""
-# UPSTREAM_ICON=""
-UPSTREAM_ICON=""
-COMMIT_AGE_ICON=""
+CIRCLE_LEFT=""
+CIRCLE_RIGHT=""
+ICON_COMMIT_AGE=""
 INVERSE_ARROW_LEFT=""
 INVERSE_ARROW_RIGHT=""
 LOWER_LEFT_TRIANGLE=""
@@ -29,11 +30,70 @@ LOWER_RIGHT_TRIANGLE=""
 TERSE_COMMIT_AGE=true
 UPPER_LEFT_TRIANGLE=""
 UPPER_RIGHT_TRIANGLE=""
+ICON_UPSTREAM=""
 
 main() {
-  local dir="${1}"
+  declare git_dir="$(git -C "${1}" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
 
-  git_dir="$(git -C "${dir}" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
+  declare ahead_count
+  declare ahead_count_segment
+  declare behind_count
+  declare behind_count_segment
+  declare commit_age
+  declare commit_age_segment
+  declare commit_id
+  declare commit_id_segment
+  declare upstream
+  declare upstream_segment
+
+  local -a powerline
+
+  build_segments
+
+  powerline=(
+    $commit_age_segment
+    $commit_id_segment
+    $behind_count_segment
+    $upstream_segment
+    $ahead_count_segment
+  )
+
+  echo -e "${powerline[@]}"
+}
+
+build_segments() {
+  load_git_data
+
+  commit_id_segment+="#[fg=${commit_id_bg},bg=${default_bg}]${CIRCLE_LEFT}"
+  commit_id_segment+="#[fg=${commit_id_fg},bg=${commit_id_bg},${commit_id_style}]${commit_id}"
+  commit_id_segment+="#[fg=${commit_id_bg},bg=${commit_age_bg}]${CIRCLE_RIGHT}"
+
+  commit_age_segment+="#[fg=${commit_age_fg},bg=${commit_age_bg},${commit_age_style}]${ICON_COMMIT_AGE} ${commit_age} "
+
+  if [[ -n "$upstream" ]]; then
+    if [[ $behind_count -gt 0 ]]; then
+      behind_count_segment+="#[fg=${behind_bg},bg=${default_bg}]${ARROW_LEFT}"
+      behind_count_segment+="#[fg=${behind_fg},bg=${behind_bg},${behind_style}]${behind_count} "
+      behind_count_segment+="#[fg=${behind_bg},bg=${default_bg}]${ARROW_LEFT}"
+    else
+      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${CIRCLE_LEFT}"
+    fi
+
+    upstream_segment+="#[fg=${upstream_fg},bg=${upstream_bg},${upstream_style}]${ICON_UPSTREAM}${upstream}"
+
+    if [[ $ahead_count -gt 0 ]]; then
+      upstream_segment+="#[fg=${upstream_bg},bg=${ahead_bg}]${CIRCLE_RIGHT}"
+      ahead_count_segment+="#[fg=${ahead_fg},bg=${ahead_bg},${ahead_style}]${ahead_count}"
+      ahead_count_segment+="#[fg=${ahead_bg},bg=${default_bg}]${ARROW_RIGHT}"
+    else
+      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${CIRCLE_RIGHT}"
+    fi
+  fi
+}
+
+load_git_data() {
+  local -a git_fields
+
   if ! [[ -d "${git_dir}" ]]; then
     exit 1
   fi
@@ -53,20 +113,20 @@ main() {
 %(end)\
 ")
 
-  local commit_id="${git_fields[0]}"
-  local ahead_behind="${git_fields[2]}"
-  local upstream="${git_fields[3]}"
+  commit_id="${git_fields[0]}"
+  commit_age=${git_fields[1]}
+  ahead_behind="${git_fields[2]}"
+  upstream="${git_fields[3]}"
 
-  time_ago=${git_fields[1]}
+  ahead_count=0
+  behind_count=0
+
   for unit in "second sec" "minute min" "hour hr" "day days" "year yr"; do
     set -- $unit
-    time_ago=${time_ago// $1 ago/ $2}
-    time_ago=${time_ago// ${1}s ago/ $2}
+    commit_age=${commit_age// $1 ago/ $2}
+    commit_age=${commit_age// ${1}s ago/ $2}
   done
-  printf -v terse_commit_age "%s" "$time_ago"
-
-  local ahead_count=0
-  local behind_count=0
+  printf -v terse_commit_age "%s" "$commit_age"
 
   if [[ "$ahead_behind" =~ , ]]; then
     ahead_count="${BASH_REMATCH[1]}"
@@ -76,53 +136,6 @@ main() {
   elif [[ "$ahead_behind" =~ behind\ ([0-9]+) ]]; then
     behind_count="${BASH_REMATCH[1]}"
   fi
-
-  generate_powerline "$commit_id" "$terse_commit_age" "$ahead_count" "$behind_count" "$upstream"
-}
-
-generate_powerline() {
-  local commit_id="$1"
-  local commit_age="$2"
-  local ahead_count="$3"
-  local behind_count="$4"
-  local upstream="$5"
-
-  local output=""
-
-  output+="#[fg=${commit_id_bg},bg=${default_bg}]${LEFT_CIRCLE}"
-  output+="#[fg=${commit_id_fg},bg=${commit_id_bg},bold]${commit_id}"
-  output+="#[fg=${commit_id_bg},bg=${commit_age_bg},nobold]${RIGHT_CIRCLE}"
-
-  output+="#[fg=${commit_age_fg}]"
-  output+="#[fg=${commit_age_fg},bg=${commit_age_bg}] ${COMMIT_AGE_ICON} ${commit_age} "
-
-  if [[ $behind_count -gt 0 ]]; then
-    output+="#[fg=${behind_bg},bg=default]${ARROW_LEFT}"
-    output+="#[fg=${behind_fg},bg=${behind_bg},bold]${behind_count} "
-    output+="#[fg=${upstream_bg},bg=${behind_bg}]${LEFT_CIRCLE}"
-  fi
-
-  if [[ -n "$upstream" ]]; then
-    if [[ ! $behind_count -gt 0 ]]; then
-      output+="#[fg=${upstream_bg},bg=${commit_age_bg}]${LEFT_CIRCLE}"
-    fi
-    output+="#[fg=${upstream_bg},bg=${commit_age_bg}]"
-    output+="#[fg=${upstream_fg},bg=${upstream_bg},bold]${UPSTREAM_ICON}${upstream}"
-    if [[ ! $ahead_count -gt 0 ]]; then
-      output+="#[fg=${upstream_bg},bg=${commit_age_bg}]${RIGHT_CIRCLE}"
-    fi
-
-    if [[ $ahead_count -gt 0 ]]; then
-      output+="#[fg=${upstream_bg},bg=${ahead_bg}]${RIGHT_CIRCLE}"
-      output+="#[fg=${ahead_fg},bg=${ahead_bg},bold] ${ahead_count}"
-      output+="#[fg=${ahead_bg},bg=default,nobold]${ARROW_RIGHT}"
-    fi
-
-  fi
-
-  output+="#[default]"
-
-  echo -e "$output"
 }
 
 main "$1"
