@@ -29,6 +29,7 @@ path=("./node_modules/.bin" $path)
 path=("./bin" $path)
 
 [ -d $HOME/.cargo/bin ] && path=("$HOME/.cargo/bin" $path)
+[ -f $HOME/.cargo/env ] && source "$HOME/.cargo/env"
 [ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
 [ -x "$ASDF_DATA_PATH/shims/pnpm" ] && path=("$PNPM_HOME" $path)
 
