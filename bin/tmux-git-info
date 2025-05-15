@@ -3,34 +3,32 @@
 ahead_bg="green"
 ahead_fg="darkgreen"
 ahead_style="bold"
+
 behind_bg="red"
 behind_fg="darkred"
 behind_style="bold"
+
 commit_age_bg="default"
 commit_age_fg="default"
 commit_age_style="nobold"
+
 commit_id_bg="yellow"
 commit_id_fg="brown"
 commit_id_style="bold"
+
 default_bg="default"
 default_fg="default"
+
 upstream_bg="blue"
 upstream_fg="darkblue"
 upstream_style="bold"
 
-ARROW_LEFT=""
-ARROW_RIGHT=""
-CIRCLE_LEFT=""
-CIRCLE_RIGHT=""
-ICON_COMMIT_AGE=""
-INVERSE_ARROW_LEFT=""
-INVERSE_ARROW_RIGHT=""
-LOWER_LEFT_TRIANGLE=""
-LOWER_RIGHT_TRIANGLE=""
-TERSE_COMMIT_AGE=true
-UPPER_LEFT_TRIANGLE=""
-UPPER_RIGHT_TRIANGLE=""
-ICON_UPSTREAM=""
+arrow_left=""
+arrow_right=""
+circle_left=""
+circle_right=""
+icon_commit_age=""
+icon_upstream=""
 
 main() {
   declare git_dir="$(git -C "${1}" rev-parse --path-format=absolute --git-dir 2>/dev/null)"
@@ -51,11 +49,12 @@ main() {
   build_segments
 
   powerline=(
-    $commit_age_segment
     $commit_id_segment
+    $commit_age_segment
     $behind_count_segment
     $upstream_segment
     $ahead_count_segment
+    "#[default]"
   )
 
   echo -e "${powerline[@]}"
@@ -64,29 +63,29 @@ main() {
 build_segments() {
   load_git_data
 
-  commit_id_segment+="#[fg=${commit_id_bg},bg=${default_bg}]${CIRCLE_LEFT}"
+  commit_id_segment+="#[fg=${commit_id_bg},bg=${default_bg}]${circle_left}"
   commit_id_segment+="#[fg=${commit_id_fg},bg=${commit_id_bg},${commit_id_style}]${commit_id}"
-  commit_id_segment+="#[fg=${commit_id_bg},bg=${commit_age_bg}]${CIRCLE_RIGHT}"
+  commit_id_segment+="#[fg=${commit_id_bg},bg=${commit_age_bg}]${circle_right}"
 
-  commit_age_segment+="#[fg=${commit_age_fg},bg=${commit_age_bg},${commit_age_style}]${ICON_COMMIT_AGE} ${commit_age} "
+  commit_age_segment+="#[fg=${commit_age_fg},bg=${commit_age_bg},${commit_age_style}]${icon_commit_age} ${commit_age} "
 
   if [[ -n "$upstream" ]]; then
     if [[ $behind_count -gt 0 ]]; then
-      behind_count_segment+="#[fg=${behind_bg},bg=${default_bg}]${ARROW_LEFT}"
-      behind_count_segment+="#[fg=${behind_fg},bg=${behind_bg},${behind_style}]${behind_count} "
-      behind_count_segment+="#[fg=${behind_bg},bg=${default_bg}]${ARROW_LEFT}"
+      behind_count_segment+="#[fg=${behind_bg},bg=${default_bg}]${arrow_left}"
+      behind_count_segment+="#[fg=${behind_fg},bg=${behind_bg},${behind_style}]${behind_count}"
+      upstream_segment+="#[fg=${upstream_bg},bg=${behind_bg}]${circle_left}"
     else
-      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${CIRCLE_LEFT}"
+      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${circle_left}"
     fi
 
-    upstream_segment+="#[fg=${upstream_fg},bg=${upstream_bg},${upstream_style}]${ICON_UPSTREAM}${upstream}"
+    upstream_segment+="#[fg=${upstream_fg},bg=${upstream_bg},${upstream_style}]${icon_upstream}${upstream}"
 
     if [[ $ahead_count -gt 0 ]]; then
-      upstream_segment+="#[fg=${upstream_bg},bg=${ahead_bg}]${CIRCLE_RIGHT}"
+      upstream_segment+="#[fg=${upstream_bg},bg=${ahead_bg}]${circle_right}"
       ahead_count_segment+="#[fg=${ahead_fg},bg=${ahead_bg},${ahead_style}]${ahead_count}"
-      ahead_count_segment+="#[fg=${ahead_bg},bg=${default_bg}]${ARROW_RIGHT}"
+      ahead_count_segment+="#[fg=${ahead_bg},bg=${default_bg}]${arrow_right}"
     else
-      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${CIRCLE_RIGHT}"
+      upstream_segment+="#[fg=${upstream_bg},bg=${default_bg}]${circle_right}"
     fi
   fi
 }
@@ -98,13 +97,14 @@ load_git_data() {
     exit 1
   fi
 
-  mapfile -t git_fields < <(git \
-    --git-dir="$git_dir" \
-    --no-pager \
-    for-each-ref \
-    --count=1 \
-    --points-at=HEAD \
-    --format="\
+  mapfile -t git_fields < <(\
+    git \
+      --git-dir="$git_dir" \
+      --no-pager \
+      for-each-ref \
+        --count=1 \
+        --points-at=HEAD \
+        --format="\
 %(objectname:short)
 %(committerdate:relative)
 %(if)%(upstream)%(then)\
@@ -128,7 +128,9 @@ load_git_data() {
   done
   printf -v terse_commit_age "%s" "$commit_age"
 
-  if [[ "$ahead_behind" =~ , ]]; then
+  echo $ahead_behind
+
+  if [[ "$ahead_behind" =~ ahead\ ([0-9]+),\ behind\ ([0-9]+) ]]; then
     ahead_count="${BASH_REMATCH[1]}"
     behind_count="${BASH_REMATCH[2]}"
   elif [[ "$ahead_behind" =~ ahead\ ([0-9]+) ]]; then
