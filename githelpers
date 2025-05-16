@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+wip() {
+  options="$*"
+  git add -A
+  git commit --no-verify -m "[wip] ${options}"
+}
+
+unwip() {
+  if [[ "$(git log --format=%B -n 1 HEAD)" == "[wip]"* ]]; then
+    git reset --soft HEAD~1;
+    git reset HEAD;
+  fi;
+}
+
+uncommit() {
+  local id="$(git rev-parse --short HEAD)"
+  local title="$(git log --format="%s" -1)"
+  local message=$(git log --format="%B" -1)
+  git reset --soft HEAD~
+  if _clipboard_program >/dev/null 2>&1; then
+    echo "${message}" | "$(_clipboard_program)"
+    echo "Reset commit (was ${id}): ${title}"
+    echo "Commit message copied to clipboard"
+  else
+    echo "Reset commit (was ${id})"
+    echo "${message}"
+  fi
+}
+
+log() {
+  options="$*"
+  cd "$GIT_PREFIX"
+  git --no-pager log --color=always $options --decorate | less --pattern '^commit'
+}
+
+log_patch() {
+  options="$*"
+  cd "$GIT_PREFIX"
+  git --no-pager log --color=always --patch $options --decorate | less --pattern '^commit'
+}
+
+search() {
+  query="$*"
+  git --no-pager log --color=always -S ${query} --patch | less --pattern ${query}
+}
+
+fuzzy_find_branches() {
+  # Uses the reflog to ensure the first result is the branch we were previously
+  # on, making this useful for jumping back and forth between branches.
+  # (awk dedupes without sorting)
+  local reflog_branches=$(git reflog -n 100 \
+    | grep -E 'checkout:|Branch: renamed' \
+    | grep -Eo '\S+$'
+  )
+  local all_branches=$(git branch -a --format="%(refname:short)" \
+    | grep -v '^origin$' \
+    | sed 's:^origin/::'
+  )
+  local filtered=$(echo "$reflog_branches" \
+    | grep -Fx -f <(echo "$all_branches")
+  )
+  local extra=$(echo "$all_branches" \
+    | grep -Fvx -f <(echo "$filtered"))
+  branch=$(printf "%s\n%s\n" "$filtered" "$extra" \
+      | awk '!x[$0]++' \
+      | grep -v "^$(git rev-parse --abbrev-ref HEAD)$" \
+      | fzf)
+  [[ $branch ]] && git checkout "${branch}"
+}
+
+pretty_log() {
+  git log --graph --pretty=format:"%C(yellow)%h%C(red)%d%C(reset) %s (%C(green)%an%C(reset), %C(blue)%ar%C(reset))"
+}
+
+new() {
+  [ -z "$1" ] && >&2 echo "Error: new directory path required" && exit 1
+
+  mkdir -p "$1"
+  git_dir="./${1}/.git"
+  git init "$1" \
+    && git --git-dir="$git_dir" commit --allow-empty -m "Initial commit" \
+    && git --git-dir="$git_dir" tag root
+
+  [ $TMUX ] && tmux send-keys "cd ${1}" C-m
+}
+
+blame_files() {
+  arg_files="$*"
+  for file in "$arg_files"; do
+    blame_file "$file"
+  done | column -t -s "␟" | less -S
+}
+
+blame_file() {
+  file="$1"
+  git --no-pager log --color=always --format="%ai␟${file}␟%C(blue)%an%C(reset)␟%C(yellow)%h%C(reset)  %s" -1 "$file"
+}
+
+jcoglan_graph() {
+  options="$*"
+  git --no-pager log --color=always $options --graph \
+    --format="%C(yellow)%h%C(green)%d %C(blue)(%an, %ar) %C(reset)%n%w(72)%s%n" \
+    | less --pattern "([0-9]|[a-f]){7,}"
+}
+
+rebase_upstream() {
+  options="$*"
+  git rebase $options $(upstream)
+}
+
+upstream() {
+  git rev-parse --abbrev-ref --symbolic-full-name @{u}
+}
+
+log_all() {
+  options="$*"
+  git log --oneline --graph --decorate --all $options
+}
+
+show_stash() {
+ git reflog show --format="%h" stash
+}
+
+delete_local_merged_branches() {
+  local branches=$(_local_merged_branches)
+  echo $branches
+  read -n 1 -p "Delete branches? [y/N] " confirmed
+  if [[ $confirmed == [Yy] ]]; then
+    echo
+    git branch --delete $branches
+  else
+    exit 1
+  fi
+}
+
+delete_remote_merged_branches() {
+  local branches=$(_remote_merged_branches)
+  echo $branches
+  read -n 1 -p "Delete branches? [y/N] " confirmed
+  if [[ $confirmed == [Yy] ]]; then
+    echo
+    git push origin --delete $branches
+  else
+    exit 1
+  fi
+}
+
+_local_merged_branches() {
+  git branch --merged ${_mainline_branch} \
+    | grep -v "*" \
+    | grep -v development \
+    | grep -v main \
+    | grep -v master \
+    | grep -v master \
+    | grep -v staging
+}
+
+_remote_merged_branches() {
+  git branch -a --merged origin/${_mainline_branch} \
+    | grep --color=never remotes \
+    | grep -v HEAD \
+    | grep -v development \
+    | grep -v main \
+    | grep -v master \
+    | grep -v staging \
+    | sed "s|remotes/origin/||g"
+}
+
+_mainline_branch() {
+  git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null \
+    | sed 's|^refs/remotes/origin/||'
+}
+
+truncating_log() {
+  local options="$*"
+  local hash="%C(yellow)%h%C(reset)"
+  local author_date="%C(red)%ad%C(reset)"
+  local author_name="%<(7,trunc)%C(blue)%an%C(reset)"
+  local message="%<(50,mtrunc)%s"
+  local decorations="%C(green)%d%C(reset)"
+  git --no-pager log --color=always $options \
+    --graph \
+    --date=iso \
+    --pretty="$hash $author_date $author_name $message $decorations" \
+    | less
+}
+
+fuzzy_select_sha_to_clipboard() {
+  git log --oneline --color=always \
+    | fzf --exact
+}
+
+_clipboard_program() {
+  command -v pbcopy || command -v wl-copy
+}

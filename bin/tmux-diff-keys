@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+diff -u0 --color=always \
+  <(tmux -L temp -f /dev/null list-keys) \
+  <(tmux list-keys) \
+  | less -S

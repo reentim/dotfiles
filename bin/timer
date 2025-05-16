@@ -1,0 +1,182 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+require 'date'
+require 'fileutils'
+require 'time'
+
+FILE = File.join(ENV['HOME'], 'Documents/task-times.csv')
+
+Entry = Struct.new(:task, :timespan, :duration) do
+  def initialize(task, started_at, finished_at = nil)
+    started_at = started_at.is_a?(Time) ? started_at : Time.parse(started_at)
+    if finished_at
+      finished_at = finished_at.is_a?(Time) ? finished_at : Time.parse(finished_at)
+    end
+    self.task = task
+    self.timespan = started_at..finished_at
+    self.duration = (finished_at || Time.now.floor) - started_at
+  end
+
+  def finished?
+    !timespan.end.nil?
+  end
+end
+
+class TaskTimer
+  attr_accessor :entries, :task, :tasks_columns, :hours_columns, :summation
+
+  def initialize
+    parse_options
+    load_entries
+  end
+
+  private
+
+  def parse_options
+    ARGV && case ARGV[0]
+    when 'edit' then edit
+    when 'ls'   then list
+    when 'stop' then stop
+    end
+
+    start
+  end
+
+  def list
+    load_entries
+    exit if entries.empty?
+
+    @timeframe = case ARGV[1..-1].join(' ')
+    when 'day', 'today'
+      Date.today.to_time..(Date.today + 1).to_time
+    when 'week', 'this week'
+      start_of_week.to_time..(start_of_week + 7).to_time
+    when 'month', 'this month'
+    Time.new(Time.now.year, Time.now.month)..\
+      Time.new(Date.today.next_month.year, Date.today.next_month.month)
+    when 'yesterday'
+      (Date.today - 1).to_time..Date.today.to_time
+    when 'last week'
+      start_of_last_week.to_time..(start_of_last_week + 7).to_time
+    when 'last month'
+      Time.new(Date.today.prev_month.year, Date.today.prev_month.month)..\
+        Time.new(Time.now.year, Date.today.month)
+    else
+      abort "Argument error"
+    end
+
+    @summation = entries
+      .select { |entry| entry.timespan.overlap?(@timeframe) }
+      .map { |entry|
+        dup = entry.dup
+        dup.timespan = [dup.timespan.begin, @timeframe.begin].max..\
+          [(dup.timespan.end || Time.now), @timeframe.end].min
+        dup.duration = dup.timespan.end - dup.timespan.begin
+        dup
+      }
+      .group_by(&:task)
+      .transform_values { |entries| entries.sum(&:duration) }
+      .transform_keys { |task| ongoing_entry&.task == task ? "-> #{task}" : task }
+      .sort_by { |_, total| -total }
+      .to_h
+
+    exit if summation.keys.none?
+
+    summation.each { |pair| pretty_print(*pair) }
+
+    print_total
+    exit
+  end
+
+  def print_total
+    print_dashes
+    puts ('%.1f' % summation.transform_values(&method(:to_rounded_hours)).values.sum)
+      .rjust(@tasks_columns + @hours_columns)
+  end
+
+  def pretty_print(task, total)
+    @tasks_columns ||= summation.keys.map(&:length).max + 4
+    @hours_columns ||= summation.values
+      .map { |value| to_rounded_hours(value) }
+      .map(&:to_s).map(&:length).max
+
+    puts [
+      task.ljust(tasks_columns),
+      to_rounded_hours(total).to_s.rjust(hours_columns),
+    ].join
+  end
+
+  def start
+    load_entries
+
+    task_list = tasks && tasks.join("\n") || ''
+    selected = %x(echo "#{task_list}" | fzf --print-query --exact).split("\n").last
+    exit if [nil, '', ongoing_entry&.task].include?(selected)
+    stop_ongoing
+    entries << Entry.new(selected, Time.now.floor)
+    write_file
+    exit
+  end
+
+  def write_file
+    File.open(FILE, 'w') do |f|
+      f << entries
+        .map { |e| [e.task, e.timespan.begin, e.timespan.end] }
+        .map(&:to_csv)
+        .join
+    end
+  end
+
+  def stop
+    load_entries
+    stop_ongoing
+    write_file
+    exit
+  end
+
+  def stop_ongoing
+    return unless ongoing_entry
+
+    puts "#{ongoing_entry.task} stopped after #{to_rounded_hours(ongoing_entry.duration)} hours"
+    ongoing_entry.timespan = ongoing_entry.timespan.begin..Time.now.floor
+  end
+
+  def tasks
+    entries&.map(&:task)&.uniq
+  end
+
+  def print_dashes
+    (tasks_columns + hours_columns).times { print '-' }
+    puts
+  end
+
+  def load_entries
+    File.exist?(FILE) || FileUtils.touch(FILE)
+    @entries = CSV.read(FILE).map { |line| Entry.new(*line) }
+  end
+
+  def edit
+    abort "EDITOR is unset" unless ENV['EDITOR']
+    exec "#{ENV['EDITOR']} #{FILE}"
+  end
+
+  def ongoing_entry
+    return unless entries.any?
+    entries.last unless entries.last.finished?
+  end
+
+  def to_rounded_hours(seconds)
+    (seconds / 360).ceil / 10.0
+  end
+
+  def start_of_week
+    (Date.today - Date.today.wday + 1)
+  end
+
+  def start_of_last_week
+    Date.today - (Date.today.wday) - 6
+  end
+end
+
+TaskTimer.new

@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+WINDOW_CLASS="quick_terminal"
+
+main() {
+  if quick_terminal_is_active; then
+    quick_terminal_shell_is_active && clear_quick_terminal
+    tmux -L "$WINDOW_CLASS" detach-client -s "$WINDOW_CLASS"
+  else
+    kitty \
+      --detach \
+      --config "$HOME"/.config/kitty/kitty.conf \
+      --config "$HOME"/.config/kitty/themes/modus_vivendi.conf \
+      --config "$HOME"/.config/kitty/profiles/quick_terminal.conf \
+      --config <(echo "font_size "$(font_size)"") \
+      --class "$WINDOW_CLASS" \
+      tmux \
+        -L "$WINDOW_CLASS" \
+        -f "$HOME"/.tmux/base.conf \
+        new-session -As "$WINDOW_CLASS"
+  fi
+}
+
+quick_terminal_is_active() {
+  hyprctl clients -j \
+    | jq -e --argjson ws "$(active_workspace)" \
+    '.[] | select(.workspace.id == $ws) | select(.class == "'$WINDOW_CLASS'")'
+}
+
+quick_terminal_shell_is_active() {
+  [[ $(quick_terminal_current_command) =~ ^(bash|zsh|fish)$ ]]
+}
+
+quick_terminal_current_command() {
+  tmux -L "$WINDOW_CLASS" display-message -p '#{pane_current_command}'
+}
+
+active_workspace() {
+  hyprctl activewindow -j | jq '.["workspace"]["id"]'
+}
+
+clear_quick_terminal() {
+  tmux -L "$WINDOW_CLASS" send-keys -t "$WINDOW_CLASS" C-l
+}
+
+font_size() {
+  case $(monitor_scale) in
+    1.00) echo "16" ;;
+    1.25) echo "13" ;;
+    1.50) echo "11" ;;
+    1.67) echo "9.5" ;;
+    2.00) echo "8.5" ;;
+  esac
+}
+
+monitor_scale() {
+  hyprctl monitors -j | jq '.[0]["scale"]'
+}
+
+main

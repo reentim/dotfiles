@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+default_text="Hyprland"
+
+main() {
+  echo "${default_text}"
+
+  socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |
+    while read -r line; do
+      case "$line" in
+        activewindow\>\>*)
+          content="${line#*>>}"
+          class="${content%%,*}"
+          if [[ -n "$class" ]]; then
+            echo "$class"
+          fi
+          ;;
+        closewindow*|createworkspace\>\>*)
+          echo "${default_text}"
+          ;;
+      esac
+    done
+  }
+
+main

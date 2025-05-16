@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+echo -e "$(
+for i in {0..7}; do
+  echo ""
+  date=$(date +"%a, %-d %b %Y" --date="$i days ago 0:00")
+  echo $date
+  echo "----------------"
+  commits=$(git --no-pager shortlog --format="commit[%cD] author[%aD] ☞%h ☞%s" --all --since="$i days ago 0:00" --until="$i days ago 23:59")
+  echo "$commits" |
+    sed -E "s/commit\[$date ([0-9]{2}:[0-9]{2}):[0-9]{2} .[0-9]+\]/\1/" | # reduce commit date to HH:MM
+    sed -E "s/author\[$date ([0-9]{2}:[0-9]{2}):[0-9]{2} .[0-9]+\]//" |   # remove author date for commits authored on day in question
+    sed -E "s/author\[([A-Z][a-z]{2}, [0-9]+ [A-Z][a-z]{2}).*\]/(\1)/" |  # reduce author date to (day, DD, month)
+    sed    "s/Merge pull request/\o033[1;32mMerge pull request/" |        # colour merged pull requests in bright green
+    sed -E "s/Merge(.*)staging-([0-9])$/\o033[0;37mMerge\1staging-\2/" |  # colour staging merge commits in grey
+    column -t -s "☞" | # columnate
+    sed -E "s/(^\S.*$)/\n\1/"   # restore whitespace stripped by column
+done
+)" | less

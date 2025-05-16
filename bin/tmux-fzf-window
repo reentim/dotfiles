@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+tmux switch-client -t $(
+  tmux list-windows -aF "#{session_name}:#{window_index} #{window_name}" \
+    | awk '{printf "%s %s \t%s\n", $1, $2, $1}' \
+    | fzf --exact --with-nth=1 --delimiter '\t' --height=100% \
+    | cut -f 2
+)

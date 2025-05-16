@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+  ws="$(active_workspace_name)"
+
+  if [[ $ws == special:* ]]; then
+    name="${ws#special:}"
+    hyprctl dispatch togglespecialworkspace "$name"
+  fi
+}
+
+active_workspace_name() {
+  hyprctl activewindow -j | jq -r '.["workspace"]["name"]'
+}
+
+main

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+  tmux has-session -t documents && exit
+
+  documents=$(find ~/Documents -type f -regex '.*/[A-Z]+$')
+
+  tmux new-session -d -s documents -n killme
+
+  for file in $documents; do
+    tmux new-window -t documents -n $(basename ${file}) "$EDITOR ${file}"
+  done
+
+  tmux kill-window -t documents:killme
+}
+
+main

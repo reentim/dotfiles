@@ -1,0 +1,205 @@
+#!/usr/bin/env node
+
+const DTP_POINT_IN_INCH = 1/72;
+const STANDARD_DPI = 72;
+
+const DISPLAY_CONFIGS = [
+  {
+    name: "Macintosh",
+    resolution_x: 512,
+    resolution_y: 342,
+    diagonal_inches: 8.55,
+    scaling: 1.0
+  },
+  {
+    name: "MacBook Pro 15.4\"",
+    resolution_x: 2880,
+    resolution_y: 1800,
+    diagonal_inches: 15.4,
+    scaling: 2.0
+  },
+  {
+    name: "5k iMac 27\"",
+    resolution_x: 5120,
+    resolution_y: 2880,
+    diagonal_inches: 27.0,
+    scaling: 2.0
+  },
+  {
+    name: "4.5k iMac 24\"",
+    resolution_x: 4480,
+    resolution_y: 2520,
+    diagonal_inches: 24.0,
+    scaling: 2.0
+  },
+  {
+    name: "External 31.6\"",
+    resolution_x: 3840,
+    resolution_y: 2160,
+    diagonal_inches: 31.6,
+    scaling: 1.5
+  },
+  {
+    name: "External 31.6\"",
+    resolution_x: 3840,
+    resolution_y: 2160,
+    diagonal_inches: 31.6,
+    scaling: 1.667
+  },
+  {
+    name: "External 31.6\"",
+    resolution_x: 3840,
+    resolution_y: 2160,
+    diagonal_inches: 31.6,
+    scaling: 2.0
+  }
+];
+
+function parseArguments() {
+  const args = {};
+  process.argv.slice(2).forEach((arg, index, array) => {
+    if (arg.startsWith('--')) {
+      const key = arg.slice(2);
+      const nextArg = array[index + 1];
+      if (nextArg && !nextArg.startsWith('--')) {
+        args[key] = nextArg;
+      } else {
+        args[key] = true;
+      }
+    }
+  });
+
+  if (args.table && !args.sizes) {
+    args.sizes = '9,13,15';
+  }
+
+  if (
+    !args.table
+      && ([
+        args.pt,
+        args['display-dpi'],
+        args.scale,
+      ].some(arg => Number.isNaN(Number.parseFloat(arg))))
+  ) {
+    console.error("Error: --pt and --display-dpi and --scale are required when not using --table");
+    console.error("Usage:");
+    console.error("  Single conversion: --pt <size> --display-dpi <dpi> --scale <scale>");
+    console.error("  Table generation: --table [--sizes <comma,separated,list>] [--reference <logical dpi>]");
+    process.exit(1);
+  }
+
+  return args;
+}
+
+function calculatePPI(config) {
+  return Math.sqrt(
+    Math.pow(config.resolution_x, 2) +
+    Math.pow(config.resolution_y, 2)
+  ) / config.diagonal_inches;
+}
+
+function calculatePointSizeForDPI(pointSize, logicalDPI, targetDPI = STANDARD_DPI) {
+  return pointSize * (logicalDPI / targetDPI);
+}
+
+function formatNumber(value) {
+  if (typeof value === 'number') {
+    return value.toFixed(2);
+  }
+  return value;
+}
+
+function performConversion(args) {
+  const displayDPI = Number.parseFloat(args['display-dpi']);
+  const scaling = Number.parseFloat(args.scale);
+  const logicalDPI = displayDPI / scaling;
+  const dtpSize = Number.parseFloat(args.pt);
+  const requiredPointSize = dtpSize * (logicalDPI / STANDARD_DPI);
+
+  console.log(formatNumber(requiredPointSize));
+}
+
+// Generate a table of font rendering sizes across displays
+function generateTable(args) {
+  const fontSizes = args.sizes.split(',').map(size => Number.parseInt(size.trim()));
+  const referenceDPI = args.reference ? Number.parseFloat(args.reference) : null;
+
+  // Calculate results for each display
+  const results = DISPLAY_CONFIGS.map(config => {
+    const ppi = calculatePPI(config);
+    const logicalDPI = ppi / config.scaling;
+
+    // Create base row with standard columns
+    const row = {
+      "Computer": config.name,
+      "Resolution": `${config.resolution_x}x${config.resolution_y}`,
+      "Physical PPI": ppi,
+      "Scaling": config.scaling,
+      "Logical DPI": logicalDPI
+    };
+
+    // Calculate font sizes for each requested size
+    fontSizes.forEach(pointSize => {
+      // Calculate point size needed to match standard 72 DPI
+      const pointSizeFor72DPI = calculatePointSizeForDPI(pointSize, logicalDPI);
+
+      // Add to row
+      row[`${pointSize}pt`] = pointSizeFor72DPI;
+
+      // If reference DPI provided, calculate that too
+      if (referenceDPI) {
+        const pointSizeForRef = calculatePointSizeForDPI(pointSize, logicalDPI, referenceDPI);
+        row[`Ref. ${pointSize}pt`] = pointSizeForRef;
+      }
+    });
+
+    return row;
+  });
+
+  // Prepare headers
+  const standardHeaders = ["Computer", "Resolution", "Physical PPI", "Scaling", "Logical DPI"];
+  const sizeHeaders = fontSizes.map(size => `${size}pt`);
+  const headers = [...standardHeaders, ...sizeHeaders];
+
+  if (referenceDPI) {
+    const refHeaders = fontSizes.map(size => `Ref. ${size}pt`);
+    headers.push(...refHeaders);
+  }
+
+  // Output in CSV format
+  outputCSV(headers, results);
+}
+
+// Output results in CSV format
+function outputCSV(headers, results) {
+  // Output header row
+  console.log(headers.join(','));
+
+  // Output data rows
+  results.forEach(row => {
+    const values = headers.map(header => {
+      const value = row[header];
+      if (typeof value === 'number') {
+        return formatNumber(value);
+      }
+      // Quote strings with commas
+      return typeof value === 'string' && value.includes(',') ? `"${value}"` : value;
+    });
+
+    console.log(values.join(','));
+  });
+}
+
+// Main function
+function main() {
+  const args = parseArguments();
+
+  if (args.table) {
+    generateTable(args);
+  } else {
+    performConversion(args);
+  }
+}
+
+// Run the program
+main();

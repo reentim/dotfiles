@@ -1,0 +1,94 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+class Github
+  ARGV[0] ||= "HEAD"
+
+  def initialize
+    set_modes
+  end
+
+  def page_url
+    if @modes[:compare_mode]
+      "#{project_url}/compare/#{rev}"
+    elsif @modes[:file_mode]
+      "#{project_url}/blob/#{branch}/#{file}"
+    elsif @modes[:file_revision_mode]
+      "#{project_url}/blob/#{rev}/#{file}"
+    else
+      "#{project_url}/commit/#{rev}"
+    end
+  end
+
+  def markdown_link
+    "[#{short_token}](https://#{page_url})"
+  end
+
+  private
+
+  def project_url
+    `git remote -v`.lines.first.
+      split(/\.git\s/).first.
+      sub(':', '/').
+      match(/github(.*)/)
+  end
+
+  def sha(rev)
+    `git rev-parse --short #{rev}`.chomp
+  end
+
+  def branch
+    `git rev-parse --abbrev-ref HEAD`.chomp
+  end
+
+  def rev
+    if @modes[:compare_mode]
+      "#{sha(ARGV[0])}...#{sha(ARGV[1])}"
+    else
+      "#{sha(ARGV[0])}"
+    end
+  end
+
+  def file
+    if @modes[:file_revision_mode]
+      "#{path(ARGV[1])}"
+    else
+      "#{path(ARGV[0])}"
+    end
+  end
+
+  def path(file)
+    File.expand_path(file).sub("#{`git rev-parse --show-toplevel`.chomp}/", '')
+  end
+
+  def short_token
+    if @modes[:file_mode]
+      File.basename(file)
+    elsif @modes[:file_revision_mode]
+      "#{rev}:#{File.basename(file)}"
+    else
+      rev
+    end
+  end
+
+  def set_modes
+    @modes = {}
+
+    case ARGV.size
+    when 1
+      if File.exist?(ARGV[0])
+        @modes[:file_mode] = true
+      end
+    when 2
+      if File.exist?(ARGV[1])
+        @modes[:file_revision_mode] = true
+      else
+        @modes[:compare_mode] = true
+      end
+    end
+  end
+end
+
+github = Github.new
+
+puts github.page_url
+puts github.markdown_link
