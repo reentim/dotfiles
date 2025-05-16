@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+git pull --ff-only
+bundle
+yarn
+docker-compose start
+
+tmux send-keys -t spec:spec.top "make app-sh" C-m
+tmux send-keys -t logs:logs.4 "sleep 1 && make app-sh" C-m
+tmux send-keys -t logs:logs.5 "sleep 2 && make app-sh" C-m
+sleep 5
+
+tmux send-keys -t logs:logs.2 "docker-compose logs -f --tail=100 webpack" C-m
+tmux send-keys -t logs:logs.3 "docker-compose logs -f --tail=100 app" C-m
+
+tmux send-keys -t logs:logs.4 "yarn run flow-watch" C-m
+tmux send-keys -t logs:logs.5 "yarn run compile-schema" C-m
+
+tmux send-keys -t spec:spec.top "bundle && yarn" C-m
+tmux send-keys -t spec:spec.bottom "rails console" C-m

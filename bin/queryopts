@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Usage: queryopts <command> <args>
+# Example: queryopts ls -la
+
+cmd="$1"
+shift
+args=("$@")
+
+opts=()
+for arg in "${args[@]}"; do
+	if [[ "$arg" =~ ^-([^-].*)$ ]]; then
+		for (( i=0; i<${#BASH_REMATCH[1]}; i++ )); do
+			opts+=("-${BASH_REMATCH[1]:i:1}")
+		done
+	elif [[ "$arg" =~ ^--.*$ ]]; then
+		opts+=("$arg")
+	fi
+done
+
+if man "$cmd" > /dev/null 2>&1; then
+	src=$(man "$cmd" | col -bx)
+else
+	src=$("$cmd" --help 2>&1)
+fi
+
+echo "Options used: ${opts[*]}"
+for opt in "${opts[@]}"; do
+    echo "$src" | grep -E "^\s+(($opt))"
+done

@@ -1,0 +1,9 @@
+[opener]
+view = [
+  { run = 'loupe "$@"', orphan = true, for = "linux" }
+]
+
+[open]
+rules = [
+  { mime = "image/*", use = "view" }
+]

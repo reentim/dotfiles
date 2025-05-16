@@ -1,0 +1,61 @@
+* {
+  font-family: "IBM Plex Sans Medm", sans-serif;
+  font-size: 12px;
+}
+
+window#waybar {
+  background: rgba(34, 36, 54, 0.8);
+  color: rgba(255, 255, 255, 0.95);
+  border-bottom: 2px solid #353542;
+}
+
+box {
+  margin: 0 4px 0 2px;
+  padding: 0;
+}
+
+#custom-system-icon {
+  font-size: 20px;
+  margin-right: 2px;
+}
+
+.module {
+  border-radius: 0 0 6px 6px;
+  margin: 0 2px;
+  padding: 0 2px;
+}
+
+.module#workspaces,
+.module#workspaces:hover {
+  padding: 0;
+  margin: 0;
+  transition: background-color 0.25s ease;
+  background: none;
+}
+
+#workspaces button {
+  min-width: 0;
+  min-height: 0;
+  color: rgba(255, 255, 255, 0.5);
+  border: none;
+}
+
+#workspaces button:hover {
+  background: none;
+  box-shadow: none;
+  color: inherit;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+  color: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 0 12px 2px rgba(0, 0, 0, 0.5),
+              inset -1px 0 2px 0 rgba(0, 0, 0, 0.25),
+              inset 1px 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+button {
+  border-radius: 0;
+}
+

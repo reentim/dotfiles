@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Hyprland focused window script for waybar or similar
+
+DEFAULT_TEXT="Hyprland"
+DISPLAY_PROPERTY="title"
+MAX_LENGTH=50
+
+main() {
+  output_window_info
+  socat -u "UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock" - |
+    while read -r line; do
+      echo "$line" >> ~/.var/log/hyprland-socket2.log
+      case "$line" in
+        activewindow\>\>*)
+          content="${line#*>>}"
+          class="${content%%,*}"
+          if [[ -n "$class" ]]; then
+            echo "$class"
+          fi
+          ;;
+        closewindow*)
+          echo "Hyprland"
+          ;;
+      esac
+    done
+  }
+
+output_window_info() {
+  local window_info
+  # Get active window info based on the chosen property
+  if [[ "$DISPLAY_PROPERTY" == "title" ]]; then
+    window_info=$(hyprctl activewindow -j | jq -r '.title // empty')
+  else
+    window_info=$(hyprctl activewindow -j | jq -r '.class // empty')
+  fi
+
+  # If empty, use default text
+  if [[ -z "$window_info" ]]; then
+    echo "$DEFAULT_TEXT"
+  else
+    # Truncate if too long and add ellipsis
+    if (( ${#window_info} > MAX_LENGTH )); then
+      window_info="${window_info:0:$((MAX_LENGTH-3))}..."
+    fi
+    echo "$window_info"
+  fi
+}
+
+main
