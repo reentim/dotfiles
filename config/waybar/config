@@ -1,0 +1,87 @@
+{
+  "layer": "bottom",
+  "position": "top",
+  "modules-left": [
+    "hyprland/workspaces",
+    "custom/active-window-class"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "mpris",
+    "pulseaudio",
+    "custom/cpu-icon",
+    "cpu",
+    "custom/memory-icon",
+    "memory",
+    "custom/nvidia-icon",
+    "custom/nvidia-power"
+  ],
+
+  "custom/active-window-class": {
+    "exec": "~/bin/hypr-active-window-class",
+    "tooltip": false
+  },
+
+  "mpris": {
+    "interval": 1,
+    "show-progress": false
+  },
+
+  "clock": {
+    "format": "{:%a %d %b %H:%M}",
+    "tooltip": false
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "hyprctl dispatch workspace {id}"
+  },
+
+  "custom/cpu-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "cpu": {
+      "format": "{usage}%",
+      "tooltip": false
+  },
+
+  "custom/memory-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "memory": {
+      "format": "{used} GiB",
+      "tooltip": false
+  },
+
+  "custom/nvidia-icon": {
+    "format": "",
+    "tooltip": false
+  },
+
+  "custom/nvidia-power": {
+    "interval": 5,
+    "exec": "~/.config/waybar/scripts/nvidia-power.sh",
+    "tooltip": false
+  },
+
+  "pulseaudio": {
+    "format": "{icon}    {volume}%",
+    "tooltip": "{desc}",
+    "format-bluetooth": "{volume}% {icon}",
+    "format-muted": "   {volume}%",
+    "format-icons": {
+      "headphone": "",
+      "default": ["", ""]
+    },
+    "scroll-step": 1,
+    "on-click": "pavucontrol"
+  }
+}
+
+// vim: ft=jsonc
