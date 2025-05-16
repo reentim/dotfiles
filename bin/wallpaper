@@ -74,7 +74,7 @@ set_wallpaper() {
 remove_wallpaper() {
 	mkdir -p "${trash_dir}"
 	mv "${1-${current_wallpaper}}" "${trash_dir}" &&
-		echo "🚮 moved to $(homify_path "${trash_dir}")"
+		echo "🚮 moved to $(relative_path "${trash_dir}")"
 }
 
 like_wallpaper() {
@@ -108,7 +108,7 @@ find_wallpaper() {
 		| fzf --exact)"
 }
 
-homify_path() {
+relative_path() {
 	local path=$1
 	if [[ $path == "$HOME" || $path == "$HOME/"* ]]; then
 		echo "~${path#$HOME}"
