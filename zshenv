@@ -35,3 +35,4 @@ path=("./bin" $path)
 if [[ $ZSH_BENCH_ENABLED == true ]]; then
   printf "[%.3f] ~/.zshenv\n" "(( $EPOCHREALTIME - $ZSH_BENCH_EPOCH ))"
 fi
+. "$HOME/.cargo/env"

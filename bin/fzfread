@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+	mapfile -t result < <(fzf --print-query)
+	[[ ${#result[@]} -gt 0 ]] && echo "${result[0]}" || echo "${result[1]}"
+}
+
+main "$@"
