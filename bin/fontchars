@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+
+echo -e "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890\`~-_=+[]{};:'\".,<>|\/? 1lI| TI DO EF Z2 O0 B8 D0 S5 S8 Z7 T7 58 53 71 lI l1 o0 gq mn ce"
+echo -e "\033[1mAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890\`~-_=+[]{};:'\".,<>|\/? 1lI| TI DO EF Z2 O0 B8 D0 S5 S8 Z7 T7 58 53 71 lI l1 o0 gq mn ce\033[0m"
+echo -e "\033[3mAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890\`~-_=+[]{};:'\".,<>|\/? 1lI| TI DO EF Z2 O0 B8 D0 S5 S8 Z7 T7 58 53 71 lI l1 o0 gq mn ce\033[0m"

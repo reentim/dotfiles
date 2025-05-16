@@ -1,0 +1,31 @@
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config
+
+command = env TERM_APP=ghostty $SHELL
+cursor-style = block
+keybind = alt+eight=unbind
+keybind = alt+five=unbind
+keybind = alt+four=unbind
+keybind = alt+nine=unbind
+keybind = alt+one=unbind
+keybind = alt+seven=unbind
+keybind = alt+six=unbind
+keybind = alt+three=unbind
+keybind = alt+two=unbind
+keybind = ctrl+shift+minus=decrease_font_size:0.5
+keybind = ctrl+shift+plus=increase_font_size:0.5
+keybind = shift+delete=paste_from_selection
+link-url = true
+mouse-hide-while-typing = true
+resize-overlay = never
+shell-integration-features = no-cursor
+window-padding-balance = true
+window-padding-color = background
+window-padding-x = 4
+window-padding-y = 4
+
+config-file = ?fonts/_current
+config-file = ?themes/_current

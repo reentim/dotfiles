@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+find="${1}"
+shift
+replace="${1}"
+shift
+
+for file in $(git ls-files "*$find*"); do
+  mv "$(echo $file | sed -e "s|$find|{$find,$replace}|g")"
+done

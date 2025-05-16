@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+main() {
+  dir="${1:-$(pwd)}"
+  gitroot_path=$(git -C ${dir} rev-parse --show-toplevel >/dev/null 2>&1)
+  if [[ $gitroot_path ]]; then
+    proj="$(basename $gitroot_path)"
+  else
+    proj="$(basename $dir)"
+  fi
+  all_dbs=$(psql -c "copy (select datname from pg_database where datistemplate = false) to stdout")
+
+  for db in $all_dbs; do
+    if [[ "${proj}" == "$db" || "${proj}_development" == "$db" || "${proj}_dev" == "$db" || -f "$dir/.db-name" && $(cat $dir/.db-name) == "$db" ]]; then
+      echo $db
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+main $*

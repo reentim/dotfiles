@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+main() {
+	scale="$(scale)"
+	hyprctl keyword monitor ,highrr,auto,${scale}
+}
+
+scale() {
+	cat <<-EOF | fzf | cut -d ' ' -f2-
+	a) 1.00
+	b) 1.25
+	c) 1.50
+	d) 1.67
+	e) 2.00
+	EOF
+}
+
+main
+
+# vim:sw=4:noet

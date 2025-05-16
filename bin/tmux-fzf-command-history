@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+history=$(tac ~/.tmux_history | sed -E 's/^command://')
+
+command=$(
+  {
+    tac /tmp/tmux_history
+    echo "${history}"
+  } \
+    | fzf --exact --print-query \
+    | tail -n 1
+)
+
+if [[ $command ]]; then
+  echo "${command}" >> /tmp/tmux_history
+  tmux ${command}
+fi

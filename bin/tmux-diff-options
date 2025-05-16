@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+
+tmux -L temp -f /dev/null new-session -d
+options=$(tmux -L temp show-options -g)
+tmux -L temp kill-server
+
+diff -u0 --color=always \
+  <(echo "${options}") \
+  <(tmux show-options -g) \
+  | less -S

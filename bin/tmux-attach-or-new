@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+main() {
+  local session="$(unattached_session)"
+
+  if [[ -n "$session" ]]; then
+    tmux attach-session -t "$session"
+  else
+    if command -v systemd-run >/dev/null 2>&1; then
+      systemd-run >/dev/null 2>&1 --user --scope --slice=background.slice \
+        tmux new-session
+    else
+      tmux new-sesion
+    fi
+  fi
+}
+
+unattached_session() {
+  tmux list-sessions -F '#{session_name}:#{session_attached}' 2>/dev/null \
+    | awk -F: '$2 == 0 {print $1}' \
+    | head -n 1
+}
+
+main

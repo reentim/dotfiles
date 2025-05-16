@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+main() {
+  if [[ $TERM_PROGRAM = "kitty" ]]; then
+    kitty +kitten themes --config-file-name themes/_fake_config.tmp
+    rm -f "$HOME/.config/kitty/themes/_fake_config.tmp"
+    kill -SIGUSR1 $(pgrep kitty)
+  fi
+}
+
+
+main

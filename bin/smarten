@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+file = ARGV[0]
+
+unless file && File.exist?(file)
+  abort "File not found"
+end
+
+require 'redcarpet'
+
+f = File.open(file, "r+")
+smart = Redcarpet::Render::SmartyPants.render(f.read)
+f.rewind
+f.write(smart)

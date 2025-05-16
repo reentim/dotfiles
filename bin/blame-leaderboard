@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+search=$1
+shift
+dir=${*:-'.'}
+grep_mode=$( [[ $(uname) = 'Linux' ]] && printf %s "-P" || printf %s "-E" )
+
+# exit unless search yields results
+if [[ $(printf %d $(echo $dir | xargs ag "$search" | wc -l)) < 1 ]]; then
+  exit
+fi
+
+echo $dir |
+  xargs ag "$search" |
+  awk -F ":" '{ printf("%s -L %s,%s\n", $1, $2, $2) }' | # results => git blame options
+  xargs -L 1 git --no-pager blame -cw |                  # run git blame for each
+  iconv -c -f utf-8 -t ascii |                           # strip non-ascii
+  grep $grep_mode -o "\t\((\S| )+" |                     # only print author
+  sed "s:(::" |                                          # remove leading paren
+  xargs -L 1 echo |                                      # trim whitespace
+  sort | uniq -c | sort -nr                              # tally

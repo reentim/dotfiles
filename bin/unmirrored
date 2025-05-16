@@ -1,0 +1,104 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+class Unmirrored
+  attr_reader :args, :target, :postfix, :sources
+  attr_accessor :unmirrored, :unpostfixed
+
+  OPTIONS = %w[-h --help -t -s -i -p]
+
+  def initialize
+    @args = parsed_args(ARGV, OPTIONS)
+    @target = args.fetch('-t', []).first&.delete('/')
+    @postfix = args.fetch('-p', ["_#{target}"]).first
+    @sources = args.fetch('-s', Dir.glob('*/')).map { |dir| dir.delete('/') } - [target]
+    @ignore = args.fetch('-i', [])
+  end
+
+  def display
+    if @args.empty? || help_requested?
+      abort <<~EOS
+        Usage:
+          unmirrored -t <target_dir> [-p <target_file_postfix>] [-s <source_dir>...] [-i <ignore_pattern>...]
+
+          e.g. unmirrored -t test -p _test -s app lib -i fixtures/ helpers/
+
+        Options:
+          -h --help   Show this screen
+          -t          Target directory
+          -p          Target file postfix [default: _<target_dir>]
+          -s          Source directories [default: all working directories except target]
+          -i          Ignore patterns
+      EOS
+    end
+
+    find!
+
+    if unmirrored.any?
+      puts "Files in #{target}/ with #{postfix} postfix, not mirrored in any of #{sources.map { |s| "#{s}/" }.join("\s")}:"
+      puts unmirrored.map { |path| "\t#{path}" }
+    end
+
+    puts if unmirrored.any? && unpostfixed.any?
+
+    if unpostfixed.any?
+      puts "Files in #{target}/ missing #{postfix} postfix:"
+      puts unpostfixed.map { |path| "\t#{path}" }
+    end
+  end
+
+  def find!
+    all_files = Dir.glob("#{target}/**/*.*")
+
+    target_files = all_files.select do |file|
+      File.basename(file).match?(/#{postfix}/)
+    end
+
+    @unmirrored = target_files.reject do |file_path|
+      sources.map do |source|
+        mirror_exists?(file_path, source, target, postfix)
+      end.any?
+    end
+
+    @unpostfixed = all_files.reject do |file|
+      File.basename(file).match?(/#{postfix}/) || postfix_not_required?(postfix, file)
+    end
+  end
+
+  def mirror_exists?(file_path, source, target, postfix)
+    File.exists?(expected_source_path(file_path, target, source, postfix))
+  end
+
+  def expected_source_path(file_path, target, source, postfix)
+    file_path
+      .sub(/^#{target}/, source)
+      .sub(/#{postfix}/, '')
+  end
+
+  def postfix_not_required?(postfix, filename)
+    [
+      filename.match?(/shared_examples\//),
+      filename.match?(/spec\/fixtures\//),
+      filename.match?(/spec\/factories\//),
+    ].any?
+  end
+
+  def help_requested?
+    (@args.keys & %w[-h --help]).any?
+  end
+
+  def parsed_args(args, options=[])
+    parsed_args = {}
+    while args.any?
+      if options.include?(args.first)
+        option = args.shift
+        parsed_args[option] = []
+        until options.include?(args.first) || args.empty?
+          parsed_args[option] << args.shift
+        end
+      end
+    end
+    parsed_args
+  end
+end
+
+Unmirrored.new.display

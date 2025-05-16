@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+read -p ": " cmd
+if [[ $cmd == :* ]]; then
+    # Handle internal tmux commands
+    tmux send-keys -t "$TMUX_PANE" "$cmd" Enter
+else
+    # Handle regular tmux commands
+    tmux $cmd
+fi

@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import sys
+from PIL import Image
+
+def average_color(image_path):
+    try:
+        # Open the image
+        with Image.open(image_path) as img:
+            # Convert the image to RGB (in case it's in a different mode)
+            img = img.convert('RGB')
+            pixels = img.getdata()
+
+            # Initialize sum of colors
+            total_red, total_green, total_blue = 0, 0, 0
+            num_pixels = len(pixels)
+
+            # Sum up the color values
+            for r, g, b in pixels:
+                total_red += r
+                total_green += g
+                total_blue += b
+
+            # Calculate average color
+            average_red = total_red // num_pixels
+            average_green = total_green // num_pixels
+            average_blue = total_blue // num_pixels
+
+            # Convert to hexadecimal
+            average_hex = "#{:02x}{:02x}{:02x}".format(average_red, average_green, average_blue)
+            return average_hex
+
+    except Exception as e:
+        print(f"Error processing image: {e}")
+        return None
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: average_color <image_filename>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+    avg_color = average_color(filename)
+
+    if avg_color:
+        print(f"The average color of the image is: {avg_color}")

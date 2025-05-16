@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+session="tmux-cheatsheet"
+
+tmux send-keys -t "${session}" "pnpm run dev" C-m
+tmux new-window
+tmux send-keys -t "${session}" "$EDITOR" C-m

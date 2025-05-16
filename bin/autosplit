@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+main() {
+  read -r pane_w pane_h win_w win_h <<< \
+    $(tmux display -p '#{pane_width} #{pane_height} #{window_width} #{window_height}')
+
+  if (( pane_w * win_h >= pane_h * win_w )); then
+    echo "split-window -h"
+  else
+    echo "split-window -v"
+  fi
+}
+
+main

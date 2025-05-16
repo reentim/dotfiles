@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+projects="${HOME}/proj/"
+
+main() {
+  proj_path="${projects}$(
+    # non-hidden directories that don't start with underscore, sorted by modified
+    # time
+    find "${projects}" -mindepth 1 \
+      \( -name ".*" -type d -prune \) -o \
+      \( -type d ! -name "_*" \
+          \( -path "*/proj/*" ! -path "*/proj/*/*" -o -path "*/_*/*" \) \
+          -prune -printf '%T@\t%P\n' \) \
+      | sort -nr \
+      | cut -f2- \
+      | fzf --exact --print-query --height=100% \
+      | tail -n 1
+  )"
+
+  if [[ $proj_path == $projects ]]; then
+    exit
+  fi
+
+  proj_name="$(basename ${proj_path})"
+
+  if [[ ! -d $proj_path ]]; then
+    read -n 1 -p "Create ${proj_path}? [Y/n] " confirmed
+    [[ $confirmed == [Nn] ]] && exit
+    mkdir -p "${proj_path}"
+  fi
+
+  cd "${proj_path}"
+
+  session_name=$(normalised_session_name "${proj_name}")
+
+  if ! tmux has-session -t "${session_name}" >/dev/null 2>&1; then
+    tmux new-session -d -s "${session_name}"
+    set_up_session
+  fi
+
+  if [[ $TMUX ]]; then
+    tmux switch-client -t "${session_name}"
+  else
+    tmux new-session -As "${session_name}"
+    set_up_session
+  fi
+}
+
+set_up_session() {
+  if command -v "tmux-session-${proj_name}" >/dev/null 2>&1; then
+    "tmux-session-${proj_name}"
+  fi
+}
+
+normalised_session_name() {
+  echo "${1}" \
+    | sed 's/\./_/g'
+}
+
+main

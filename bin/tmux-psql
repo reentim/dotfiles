@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+main() {
+  dir="$1"
+
+  found_db="$(finddb ${dir})"
+
+  if [ "$found_db" ]; then
+    cmd="psql -d $found_db"
+  else
+    cmd="psql"
+  fi
+
+  tmux $(autosplit) -c "$dir" "$cmd"
+}
+
+main $*

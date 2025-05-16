@@ -1,0 +1,141 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+require 'io/console'
+require 'optparse'
+require 'pathname'
+
+trap("INT") { exit }
+
+class Stopwatch
+  attr_accessor :options
+
+  def self.start
+    new
+  end
+
+  def initialize
+    @options = parse_options
+
+    start
+    stop
+    report
+    append_to_file
+  end
+
+  def parse_options
+    options = {
+      output_file: "#{ENV['HOME']}/Documents/stopwatch_times.csv",
+      blind: false,
+    }
+
+    OptionParser.new do |opts|
+      opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+
+      opts.on('-o', '--output FILE', 'Specify output file') do |file|
+        options[:output_file] = file
+      end
+      opts.on('-b', '--blind', 'Do not show the clock') do
+        options[:blind] = true
+      end
+    end.parse!
+
+    options
+  end
+
+  def start
+    puts "Press any key to stop the timer..."
+
+    tick
+    $stdin.getch
+  end
+
+  def stop
+    @running = false
+
+    @timer_thread.join
+    @display_thread.join
+
+    @duration = nil
+    @mutex.synchronize do
+      @duration = @elapsed_time
+    end
+
+    @duration ||= '%.2f' % (now - @start)
+  end
+
+  def report
+    print "\r\e[K#{@duration} seconds\n\n"
+
+    @entry = %[#{Time.now}, #{@duration}\n]
+
+    if !best_entry || @duration.to_f < best_entry[0].to_f
+      puts 'New best time!'
+    else
+      puts "Time to beat: #{best_entry[0]} (#{best_entry[1]})"
+    end
+
+    puts "\nPress <ENTER> to save to #{file.relative_path_from(Pathname.pwd)}"
+    $stdin.gets
+  end
+
+  def tick
+    @running = true
+
+    @mutex = Mutex.new
+    @elapsed_time = nil
+    @start = now
+
+    @timer_thread = Thread.new do
+      if show_time?
+        while @running
+          current_elapsed = (now - @start)
+          @mutex.synchronize do
+            @elapsed_time = '%.2f' % current_elapsed
+          end
+          sleep 0.001
+        end
+      end
+    end
+
+    @display_thread = Thread.new do
+      if show_time?
+        while @running
+          current_display = 0
+          @mutex.synchronize do
+            current_display = @elapsed_time
+          end
+          print "\r\e[K#{current_display} seconds"
+          sleep 0.01
+        end
+      end
+    end
+  end
+
+  def now
+    Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  end
+
+  def show_time?
+    !options[:blind]
+  end
+
+  def file
+    Pathname.new(options[:output_file]).realdirpath
+  end
+
+  def append_to_file
+    File.open(file, 'a') do |file|
+      file.write(@entry)
+    end
+  end
+
+  def best_entry
+    File.exist?(file) && File.readlines(file).map { |line|
+      line.split(', ')
+        .reverse
+        .map { |column| column.include?("\n") ? column.chomp.to_f : column }
+    }.min
+  end
+end
+
+Stopwatch.start

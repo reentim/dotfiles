@@ -1,0 +1,9 @@
+adjust-cell-height = 10%
+adjust-cell-width = 0%
+font-family = "JetBrainsMono Nerd Font"
+font-feature = "+ss19"
+font-feature = "+zero"
+font-size = 24
+font-style-bold = ExtraBold
+font-style-bold-italic = "ExtraBold Italic"
+window-padding-x = 4

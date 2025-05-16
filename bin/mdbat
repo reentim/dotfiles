@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+main() {
+  local tmpfile
+  local final_output=""
+
+  tmpfile=$(mktemp)
+
+  for file in "$@"; do
+    bat_output=$(bat --paging=never --decorations=always --style="numbers,header-filename" "${file}")
+    final_output+=$(echo "${bat_output}" | head -n 1 | sed -E 's/^\s+//')
+    final_output+="\n"
+    final_output+='```'
+    final_output+="\n"
+    final_output+=$(echo "${bat_output}" | tail -n +2)
+    final_output+="\n"
+    final_output+='```'
+    final_output+="\n"
+  done
+
+  echo -e "${final_output}" > "${tmpfile}"
+  "${EDITOR-nvim}" "${tmpfile}"
+  cat "${tmpfile}" | wl-copy
+  rm -f "${tmpfile}"
+}
+
+main "$@"
