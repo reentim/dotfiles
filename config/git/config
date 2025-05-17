@@ -72,5 +72,7 @@
   prune = true
 [rebase]
   autosquash = true
+[advice]
+  mergeConflict = false
 
 # vim:ft=gitconfig
