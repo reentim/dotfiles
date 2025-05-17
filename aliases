@@ -2,15 +2,15 @@
 
 alias ls='ls -CF --color=always --group-directories-first'
 
-if [[ $(uname) == "Darwin" ]]; then
-  command -v gls > /dev/null 2>&1 && alias ls="gls --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
-  command -v gstat > /dev/null 2>&1 && alias numfmt="gnumfmt"
-fi
+command -v colordiff >/dev/null 2>&1 && alias diff='colordiff -u' || alias diff='diff -u --color=auto'
+command -v gls >/dev/null 2>&1 && alias ls="gls --color=auto --group-directories-first --file-type --time-style=+'%F %T'"
+command -v gstat >/dev/null 2>&1 && alias numfmt="gnumfmt"
+command -v hub >/dev/null 2>&1 && alias git='hub'
+command -v xdg-open >/dev/null 2>&1 && alias open='xdg-open'
 
 alias ag='rg'
 alias bx='bundle exec'
 alias cdr='cd $(git rev-parse --show-cdup 2>/dev/null)'
-alias diff='colordiff -u'
 alias docker='podman'
 alias grep='grep --color=auto'
 alias l='ls -1'
@@ -25,6 +25,3 @@ alias t='tmux'
 alias ta='tmux attach'
 alias tree='tree -FC --dirsfirst'
 alias vi='nvim'
-
-command -v hub > /dev/null 2>&1 && alias git='hub'
-command -v xdg-open > /dev/null 2>&1 && alias open='xdg-open'
