@@ -19,9 +19,6 @@ export TIMEFMT="=> [%*Es real, %*Us user, %*Ss system. %P CPU. %M KB max RSS]"
 export WORDCHARS='*?[]~&;!$%^<>-'
 export MANPAGER='nvim +Man!'
 
-foobar=("baz" $foobar)
-# typeset -U foobar
-
 path=("$HOME/.asdf/shims" $path)
 path=("$HOME/bin" $path)
 path=("./node_modules/.bin" $path)
