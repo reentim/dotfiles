@@ -167,6 +167,7 @@ prompt_grb_setup() {
   }
 
   PROMPT=""
+  PROMPT+='%(1j.[%j] .)'
   [ $SSH_CONNECTION ] && PROMPT+="%B$pc[host]%m$pc[reset]%B|"
   PROMPT+="%B$pc[shortpath]%1~%b$pc[reset]"
   PROMPT+="\$(prompt_grb_formatted_scm_info)"
@@ -329,4 +330,4 @@ prompt_wunjo_scm_branch() {
 
 prompt_grb_setup "$@"
 
-# vim:set ft=zsh:
+# vim:ft=zsh:
