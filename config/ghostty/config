@@ -23,9 +23,9 @@ mouse-hide-while-typing = true
 resize-overlay = never
 shell-integration-features = no-cursor
 window-padding-balance = true
-# window-padding-color = extend
+window-padding-color = background
 window-padding-x = 4
-window-padding-y = 8
+window-padding-y = 4
 
 config-file = ?fonts/_current
 config-file = ?themes/_current
