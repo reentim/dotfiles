@@ -16,7 +16,6 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 export SAVEHIST=$HISTSIZE
 export TERM_PROFILE="${TERM_PROFILE:=TokyoNight}"
 export TIMEFMT="=> [%*Es real, %*Us user, %*Ss system. %P CPU. %M KB max RSS]"
-export VISUAL="nvim"
 export WORDCHARS='*?[]~&;!$%^<>-'
 export MANPAGER='nvim +Man!'
 
