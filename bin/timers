@@ -1,0 +1,108 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+require 'time'
+require 'yaml'
+require 'pry'
+
+FILE = "#{ENV['HOME']}/Documents/task-times.csv"
+COLUMNS = %w(task_name started_at stopped_at)
+
+def main
+  data = CSV.readlines(FILE) if File.exist?(FILE)
+
+  if data
+    if ARGV[0] == 'stop' || timer_running?(data)
+      stop_all(data)
+      unless data.empty?
+        puts report(data).to_yaml
+      end
+      puts "\nTimers STOPPED"
+      exit
+    end
+
+    data.sort!
+
+    binding.pry
+
+    tasks = data
+      .map { |row| row[COLUMNS.index('task_name')] }
+      .uniq
+
+    stop_all(data)
+  end
+
+  begin
+    puts "Select from existing tasks:\n"
+    selected_task =  %x(echo "#{tasks}" | fzf --print-query).chomp
+  rescue Interrupt
+  end
+
+  abort if selected_task.empty?
+
+  started_at = Time.now
+
+  puts "\nTimer for [#{selected_task}] STARTED at #{started_at}\n\n"
+  append("#{selected_task},#{started_at}")
+
+  unless data.nil?
+    puts report(data).to_yaml
+  end
+end
+
+def append(entry)
+  File.open(FILE, 'a') { |f| f.write("#{entry.chomp}\n") }
+end
+
+def overwrite(data)
+  File.open(FILE, 'w') { |f| f << data.map(&:to_csv).join }
+end
+
+def time_at_or_now(time_string_or_time)
+  return time_string_or_time.is_a?(Time) ? time_string_or_time : Time.parse(time_string_or_time)
+end
+
+def stop_all(task_data)
+  overwrite(
+    task_data
+      .map { |row|
+        row[COLUMNS.index('stopped_at')] = row[COLUMNS.index('stopped_at')] || Time.now
+        row
+    }.sort
+  )
+end
+
+def timer_running?(data)
+  return false if data.empty?
+  data.last.size == 2
+end
+
+def report(task_data)
+  totals = Hash.new(0)
+  task_data
+    .sort
+    .map { |row|
+      [
+        row[COLUMNS.index('task_name')],
+        time_at_or_now(row[COLUMNS.index('stopped_at')]) - Time.parse(row[COLUMNS.index('started_at')])
+      ]
+    }.each { |task, time| totals[task] = totals[task] + time }
+  totals.map do |task, time_in_seconds|
+    [task, (time_in_seconds / 3600).round(2)]
+  end.to_h
+end
+
+def saved_duration(task, task_data)
+  return (
+    (task_data
+      .select { |row| row[COLUMNS.index('task_name')] == task }
+      .map { |row| Time.parse(row[COLUMNS.index('stopped_at')]) - Time.parse(row[COLUMNS.index('started_at')]) }
+      .sum
+    ) / 3600).round(2)
+end
+
+def duration(start_time, end_time)
+  return end_time - start_time
+end
+
+main

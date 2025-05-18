@@ -30,6 +30,7 @@ PACMAN_PACKAGES := \
 HOMEBREW_PACKAGES := \
 	coreutils \
 	fzf \
+	git-delta \
 	ripgrep \
 	zoxide \
 

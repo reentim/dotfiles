@@ -93,6 +93,7 @@ build_segments() {
 
   behind_count_segment=""
   ahead_count_segment=""
+  upstream_segment=""
 
   if [[ -n "$upstream" ]]; then
     if [[ $behind_count -gt 0 ]]; then

@@ -1,10 +1,6 @@
-# Run `ghostty +show-config --default --docs` to view a list of
-# all available config options and their default values.
-#
-# Additionally, each config option is also explained in detail
-# on Ghostty's website, at https://ghostty.org/docs/config
 
-command = env TERM_APP=ghostty $SHELL
+# command = env TERM_APP=ghostty $SHELL
+copy-on-select = true
 cursor-style = block
 keybind = alt+eight=unbind
 keybind = alt+five=unbind
@@ -17,8 +13,12 @@ keybind = alt+three=unbind
 keybind = alt+two=unbind
 keybind = ctrl+shift+minus=decrease_font_size:0.5
 keybind = ctrl+shift+plus=increase_font_size:0.5
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
 keybind = shift+delete=paste_from_selection
 link-url = true
+macos-non-native-fullscreen = true
+macos-option-as-alt = true
+macos-titlebar-style = hidden
 mouse-hide-while-typing = true
 resize-overlay = never
 shell-integration-features = no-cursor
@@ -27,5 +27,7 @@ window-padding-color = background
 window-padding-x = 4
 window-padding-y = 4
 
+config-file = ?fonts/_default
 config-file = ?fonts/_current
 config-file = ?themes/_current
+config-file = ?untracked

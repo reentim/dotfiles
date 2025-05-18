@@ -1,3 +1,5 @@
+echo '~/.zshrc'
+
 [ -f "$HOME/.zsh/functions.zsh" ] && source "$HOME/.zsh/functions.zsh"
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 [ -f /tmp/PROMPT_TIME ] && export PROMPT_TIME=1

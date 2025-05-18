@@ -22,7 +22,7 @@
   aa = add -A
   amend = commit --amend --no-edit
   ap = add -A --patch
-  b = "!. ~/.githelpers && fuzzy_find_branches"
+  b = "!bash -c '. ~/.githelpers && fuzzy_find_branches'"
   blamef = "!. ~/.githelpers && blame_files"
   ci = commit --verbose
   cim = "!f() { git commit -m \"$*\"; }; f"
