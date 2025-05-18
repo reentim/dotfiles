@@ -4,7 +4,7 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config
 
-command = env TERM_APP=ghostty $SHELL
+# command = env TERM_APP=ghostty $SHELL
 cursor-style = block
 keybind = alt+eight=unbind
 keybind = alt+five=unbind
@@ -27,5 +27,7 @@ window-padding-color = background
 window-padding-x = 4
 window-padding-y = 4
 
+config-file = ?fonts/_default
 config-file = ?fonts/_current
 config-file = ?themes/_current
+config-file = ?untracked

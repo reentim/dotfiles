@@ -1,5 +1,16 @@
+echo '~/.zshenv'
+
 fpath=($fpath $HOME/.zsh/func)
 typeset -U fpath
+
+append-path () {
+  case ":$PATH:" in
+    *:"$1":*)
+      ;;
+    *)
+      PATH="${PATH:+$PATH:}$1"
+  esac
+}
 
 export DEFAULT_BRANCH="main"
 export EDITOR="nvim"
@@ -19,15 +30,16 @@ export TIMEFMT="=> [%*Es real, %*Us user, %*Ss system. %P CPU. %M KB max RSS]"
 export WORDCHARS='*?[]~&;!$%^<>-'
 export MANPAGER='nvim +Man!'
 
-path=("$HOME/.asdf/shims" $path)
-path=("$HOME/bin" $path)
-path=("./node_modules/.bin" $path)
-path=("./bin" $path)
+append-path "$HOME/.asdf/shims"
+append-path "$HOME/bin"
+append-path "./node_modules/.bin"
+append-path '.bin'
 
 [ -d $HOME/.cargo/bin ] && path=("$HOME/.cargo/bin" $path)
 [ -f $HOME/.cargo/env ] && source "$HOME/.cargo/env"
 [ -d $HOME/.local/bin ] && path=("$HOME/.local/bin" $path)
 [ -x "$ASDF_DATA_PATH/shims/pnpm" ] && path=("$PNPM_HOME" $path)
+
 
 if [[ $ZSH_BENCH_ENABLED == true ]]; then
   printf "[%.3f] ~/.zshenv\n" "(( $EPOCHREALTIME - $ZSH_BENCH_EPOCH ))"

@@ -1,0 +1,1 @@
+command = env TERM_APP=ghostty $SHELL --login

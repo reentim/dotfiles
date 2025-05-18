@@ -41,14 +41,6 @@ append-path () {
   esac
 }
 
-alias-ls-time() {
-  alias ls='ls -CFtr --color=always --group-directories-first'
-}
-
-alias-ls-name() {
-  alias ls='ls -CF --color=always --group-directories-first'
-}
-
 zoxide-scan() {
   find "$PWD" -type d \
     -regex '.*/\(\..*\|node_modules\|cache\|tmp\|public\|vendor\)' \
