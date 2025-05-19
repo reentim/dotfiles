@@ -12,13 +12,17 @@ PACMAN_PACKAGES := \
 	bat \
 	direnv \
 	dnsutils \
+	git-delta \
 	github-cli \
+	lazygit \
 	libqalculate \
 	lsof \
 	moreutils \
 	perf \
 	podman \
+	pspg \
 	socat \
+	tabulate \
 	tig \
 	zoxide \
 	zsh \

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
-diff -u --color=always \
-  <(tmux -L null -f /dev/null list-keys) \
-  <(tmux list-keys)
+diff -u0 --color=always \
+  <(tmux -L temp -f /dev/null list-keys) \
+  <(tmux list-keys) \
+  | less -S

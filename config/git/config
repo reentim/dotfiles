@@ -4,13 +4,20 @@
 [github]
   user = reentim
 [core]
-  excludesfile = "~/.gitignore_global"
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
+  dark = true
 [color]
   ui = auto
   status = auto
   branch = auto
   interactive = auto
   diff = auto
+[merge]
+  conflictstyle = zdiff3
 [alias]
   aa = add -A
   amend = commit --amend --no-edit

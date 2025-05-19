@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# usage: notify-later <time> <options for notify-send>
+# e.g.
+#   notify-later 16h 'hi'
+#   notify-later 10m -u critical 'oh no'
+
+time="${1}"
+shift
+
+systemd-run \
+  --user \
+  --on-active=10s \
+  --timer-property=AccuracySec=1s \
+  --unit=notify-later \
+  /usr/bin/notify-send $*

@@ -3,11 +3,23 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     lazy = false,
     config = function()
-      require("telescope").setup({
+      local actions = require("telescope.actions")
+      local telescope = require("telescope")
+      telescope.setup({
         defaults = {
-          preview = false,
+        preview = false,
+        mappings = {
+          i = {
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+          },
+          n = {
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+          },
         },
-      })
-      vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>')
-    end,
+      },
+    })
+    vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>')
+  end,
 }

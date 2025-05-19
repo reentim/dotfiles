@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+require 'time'
+require 'yaml'
+require 'pry'
+require 'rspec'
+
+FILE = "#{ENV['HOME']}/Documents/task-times.csv"
+COLUMNS = %w(task_name started_at stopped_at)
+
+def main
+  data = CSV.read(FILE) if File.exist?(FILE)
+
+  if ARGV[0] == '--edit'
+    exec "#{ENV['EDITOR']} #{FILE}"
+  end
+
+  if ARGV[0] == '--ls'
+    puts report(data).to_yaml
+    exit
+  end
+
+  if data
+    if ARGV[0] == '--stop' || timer_running?(data)
+      stop_all(data)
+
+      puts "Timers stopped"
+      exit
+    end
+
+    data.sort!
+
+    tasks = data
+      .map { |row| row[COLUMNS.index('task_name')] }
+      .uniq
+      .join("\n")
+  end
+
+  begin
+    puts "Select from existing tasks:\n"
+    selected_task =  %x(echo "#{tasks}" | fzf --print-query).delete("\n")
+  rescue Interrupt
+  end
+
+  binding.pry
+
+  abort if selected_task.empty?
+
+  started_at = Time.now
+
+  puts "'#{selected_task}' started at #{started_at}\n\n"
+  append("#{selected_task},#{started_at}")
+end
+
+def append(entry)
+  File.open(FILE, 'a') { |f| f.write("#{entry.chomp}\n") }
+end
+
+def overwrite(data)
+  File.open(FILE, 'w') { |f| f << data.map(&:to_csv).join }
+end
+
+def stop_all(task_data)
+  overwrite(
+    task_data
+      .map { |row|
+        row[COLUMNS.index('stopped_at')] = row[COLUMNS.index('stopped_at')] || Time.now
+        row
+    }.sort
+  )
+end
+
+def timer_running?(data)
+  return false if data.empty?
+  binding.pry
+  data.last.size == 2
+end
+
+def running_task(data)
+
+end
+
+def saved_duration(task, task_data)
+  return (
+    (task_data
+      .select { |row| row[COLUMNS.index('task_name')] == task }
+      .map { |row| duration(row) }
+      .sum
+    ) / 3600).round(2)
+end
+
+def duration(data_row)
+  Time.parse(data_row[COLUMNS.index('stopped_at')]) - Time.parse(data_row[COLUMNS.index('started_at')])
+end
+
+main
+
+# describe 'foo' do
+#   it 'works' do
+#     expect(1).to eq(1)
+#   end
+# end
