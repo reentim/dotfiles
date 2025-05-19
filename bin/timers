@@ -3,62 +3,51 @@
 require 'csv'
 require 'time'
 require 'yaml'
+require 'pry'
 
-FILE = "#{ENV['HOME']}/iCloud-Drive/multitimes.csv"
+FILE = "#{ENV['HOME']}/Documents/task-times.csv"
 COLUMNS = %w(task_name started_at stopped_at)
 
 def main
-  data = CSV.read(FILE)
+  data = CSV.readlines(FILE) if File.exist?(FILE)
 
-  if ARGV[0] == 'stop' || timer_running?(data)
-    stop_all(data)
-    unless data.empty?
-      puts report(data).to_yaml
+  if data
+    if ARGV[0] == 'stop' || timer_running?(data)
+      stop_all(data)
+      unless data.empty?
+        puts report(data).to_yaml
+      end
+      puts "\nTimers STOPPED"
+      exit
     end
-    puts "\nTimers STOPPED"
-    exit
+
+    data.sort!
+
+    binding.pry
+
+    tasks = data
+      .map { |row| row[COLUMNS.index('task_name')] }
+      .uniq
+
+    stop_all(data)
   end
-
-  data = data.sort
-
-  tasks = data
-    .map { |row| row[COLUMNS.index('task_name')] }
-    .uniq
-    .join("\n")
-
-  stop_all(data)
-
-  selected_task = ''
 
   begin
-    unless tasks == ''
-      puts "Select from existing tasks:\n"
-      selected_task =  %x(echo "#{tasks}" | selecta).chomp
-    end
+    puts "Select from existing tasks:\n"
+    selected_task =  %x(echo "#{tasks}" | fzf --print-query).chomp
   rescue Interrupt
-  end
-
-  if selected_task.empty?
-    print 'Enter name of new task: '
-    begin
-      selected_task = gets.chomp
-    rescue Interrupt
-      abort
-    end
-  else
-    # puts "Current duration (hours): #{saved_duration(selected_task, data)}"
   end
 
   abort if selected_task.empty?
 
   started_at = Time.now
 
-  unless data.empty?
-    puts report(data).to_yaml
-  end
-
   puts "\nTimer for [#{selected_task}] STARTED at #{started_at}\n\n"
   append("#{selected_task},#{started_at}")
+
+  unless data.nil?
+    puts report(data).to_yaml
+  end
 end
 
 def append(entry)
