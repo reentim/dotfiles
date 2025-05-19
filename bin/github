@@ -23,16 +23,6 @@ class Github
     "[#{short_token}](https://#{page_url})"
   end
 
-  def attempt_copy
-    if clipboard_available
-      puts "Copied URL to clipboard"
-      `echo #{page_url} | pbcopy`
-    elsif @modes[:ssh] && ssh_clipboard_available
-      puts "Copied URL to clipboard via SSH"
-      `echo #{page_url} | ssh client 'pbcopy'`
-    end
-  end
-
   private
 
   def project_url
@@ -80,33 +70,16 @@ class Github
     end
   end
 
-  def ssh_client_available
-    %x[ssh -q client exit]
-    $?.exitstatus == 0
-  end
-
-  def clipboard_available
-    %x[which pbcopy > /dev/null]
-    $?.exitstatus == 0
-  end
-
-  def ssh_clipboard_available
-    if ssh_client_available
-      %x[ssh client 'which pbcopy > /dev/null']
-      $?.exitstatus == 0
-    end
-  end
-
   def set_modes
-    @modes = { ssh: ENV['SCRIPTED_SSH_ENABLED'] }
+    @modes = {}
 
     case ARGV.size
     when 1
-      if File.exists?(ARGV[0])
+      if File.exist?(ARGV[0])
         @modes[:file_mode] = true
       end
     when 2
-      if File.exists?(ARGV[1])
+      if File.exist?(ARGV[1])
         @modes[:file_revision_mode] = true
       else
         @modes[:compare_mode] = true
@@ -117,6 +90,5 @@ end
 
 github = Github.new
 
-github.attempt_copy
 puts github.page_url
 puts github.markdown_link

@@ -11,116 +11,115 @@ trash_dir="$HOME/Pictures/wallpaper/_trash"
 tag_dir="${TAG_DIR-$HOME/Pictures/wallpaper/_by_tag}"
 
 main() {
-	find_mode=false
-	shuffle_mode=false
-	remove_mode=false
-	like_mode=false
-	tag_mode=false
+  find_mode=false
+  shuffle_mode=false
+  remove_mode=false
+  like_mode=false
+  tag_mode=false
 
-	while [[ $# -gt 0 ]]; do
-		case "$1" in
-			--find|-f)
-				find_mode=true
-				shift
-				;;
-			--shuffle|-s)
-				shuffle_mode=true
-				shift
-				;;
-			--remove|-r)
-				remove_mode=true
-				shift
-				;;
-			--like|-l)
-				like_mode=true
-				;;
-			--tag|-t)
-				tag_mode=true
-				shift
-				;;
-			*)
-				${tag_mode-} && tag_wallpaper "${current_wallpaper}" "${1}" && exit
-				${like_mode-} && like_wallpaper "${1}" && exit
-				[[ -f $1 ]] && set_wallpaper "${1}" && exit
-				break
-				;;
-		esac
-	done
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --find|-f)
+        find_mode=true
+        shift
+        ;;
+      --shuffle|-s)
+        shuffle_mode=true
+        shift
+        ;;
+      --remove|-r)
+        remove_mode=true
+        shift
+        ;;
+      --like|-l)
+        like_mode=true
+        ;;
+      --tag|-t)
+        tag_mode=true
+        shift
+        ;;
+      *)
+        ${tag_mode-} && tag_wallpaper "${current_wallpaper}" "${1}" && exit
+        ${like_mode-} && like_wallpaper "${1}" && exit
+        [[ -f $1 ]] && set_wallpaper "${1}" && exit
+        break
+        ;;
+    esac
+  done
 
-	$find_mode && $remove_mode && remove_wallpaper "$(find_wallpaper)" && exit
-	$find_mode && $tag_mode && tag_wallpaper "$(find_wallpaper)" && exit
-	$find_mode && $like_mode && like_wallpaper "$(find_wallpaper)" && exit
-	$like_mode && like_wallpaper
-	$tag_mode && tag_wallpaper "${current_wallpaper}"
-	$find_mode && set_wallpaper "$(find_wallpaper)"
-	$shuffle_mode && shuffle_wallpaper
+  $find_mode && $remove_mode && remove_wallpaper "$(find_wallpaper)" && exit
+  $find_mode && $tag_mode && tag_wallpaper "$(find_wallpaper)" && exit
+  $find_mode && $like_mode && like_wallpaper "$(find_wallpaper)" && exit
+  $like_mode && like_wallpaper
+  $tag_mode && tag_wallpaper "${current_wallpaper}"
+  $find_mode && set_wallpaper "$(find_wallpaper)"
+  $shuffle_mode && shuffle_wallpaper
+  exit 0
 }
 
 shuffle_wallpaper() {
-	wallpaper=$(find "${wallpaper_dir}" \
-		-path "${tag_dir}" -prune -o \
-		-type f ! -name "$(basename ${current_wallpaper})" \
-		| shuf -n 1)
-	set_wallpaper "${wallpaper}"
+  wallpaper=$(find "${wallpaper_dir}" \
+    -path "${tag_dir}" -prune -o \
+    -type f ! -name "$(basename ${current_wallpaper})" \
+    | shuf -n 1)
+  set_wallpaper "${wallpaper}"
 }
 
 set_wallpaper() {
-	file="${1}"
-	[[ -f $file ]] || exit 1
-	hyprctl hyprpaper reload ,"${file}"
-	echo "reload = , "${file}"" > "$hyprpaper_conf"
+  file="${1}"
+  [[ -f $file ]] || exit 1
+  hyprctl hyprpaper reload , "${file}"
+  echo "reload = , "${file}"" > "$hyprpaper_conf"
 }
 
 remove_wallpaper() {
-	mkdir -p "${trash_dir}"
-	mv "${1-${current_wallpaper}}" "${trash_dir}" &&
-		echo "🚮 moved to $(relative_path "${trash_dir}")"
-}
+  mkdir -p "${trash_dir}"
+  mv "${1-${current_wallpaper}}" "${trash_dir}" &&
+    echo "🚮 moved to $(relative_path "${trash_dir}")"
+  }
 
 like_wallpaper() {
-	tag_wallpaper "${1-${current_wallpaper}}" "liked"
+  tag_wallpaper "${1-${current_wallpaper}}" "liked"
 }
 
 tag_wallpaper() {
-	wallpaper="${1}"
-	tag="${2-}"
-	echo "Select or create tag for $(basename ${wallpaper}):"
-	if [[ -z $tag ]]; then
-		tag="$(find "${wallpaper_dir%/}/_by_tag" -mindepth 1 -type d -print0 \
-			| xargs -0 -n 1 basename \
-			| fzf --exact --print-query \
-			| uniq
-		)"
-	fi
-	[[ -n "$tag" ]] || exit 1
-	tag_dir="${wallpaper_dir%/}/_by_tag/${tag}"
-	mkdir -p "${tag_dir}"
-	ln -sf \
-		"${wallpaper}" \
-		"${tag_dir%/}/$(basename ${wallpaper})" >/dev/null 2>&1 \
-		&& echo "✅ tagged as '${tag}': $(basename ${wallpaper})"
-}
+  wallpaper="${1}"
+  tag="${2-}"
+  echo "Select or create tag for $(basename ${wallpaper}):"
+  if [[ -z $tag ]]; then
+    tag="$(find "${wallpaper_dir%/}/_by_tag" -mindepth 1 -type d -print0 \
+      | xargs -0 -n 1 basename \
+      | fzf --exact --print-query \
+      | uniq
+    )"
+  fi
+  [[ -n "$tag" ]] || exit 1
+  tag_dir="${wallpaper_dir%/}/_by_tag/${tag}"
+  mkdir -p "${tag_dir}"
+  ln -sf \
+    "${wallpaper}" \
+    "${tag_dir%/}/$(basename ${wallpaper})" >/dev/null 2>&1 \
+    && echo "✅ tagged as '${tag}': $(basename ${wallpaper})"
+  }
 
 find_wallpaper() {
-	wallpaper_path "$(\
-		find "${wallpaper_dir}" -type f -o -type l \
-		| sed "s|^${wallpaper_dir}/||" \
-		| fzf --exact)"
-}
+  wallpaper_path "$(\
+    find "${wallpaper_dir}" -type f -o -type l \
+    | sed "s|^${wallpaper_dir}/||" \
+    | fzf --exact)"
+  }
 
 relative_path() {
-	local path=$1
-	if [[ $path == "$HOME" || $path == "$HOME/"* ]]; then
-		echo "~${path#$HOME}"
-	else
-		echo "$path"
-	fi
+  local path=$1
+  if [[ $path == "$HOME" || $path == "$HOME/"* ]]; then
+    echo "~${path#$HOME}"
+  else
+    echo "$path"
+  fi
 }
 
 wallpaper_path() {
-	echo "${wallpaper_dir/%}/${1}"
+  echo "${wallpaper_dir/%}/${1}"
 }
 
 main "$@"
-
-# vim:sw=4:noet

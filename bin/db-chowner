@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-$(watch 'sudo chown vagrant /home/vagrant/platform/db/structure.sql' &) &

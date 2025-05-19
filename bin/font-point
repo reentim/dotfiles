@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const DTP_POINT_IN_INCH = 1/72;  // desktop publishing point is defined as 1/72 inch
-const STANDARD_DPI = 72;  // Standard DPI reference
+const DTP_POINT_IN_INCH = 1/72;
+const STANDARD_DPI = 72;
 
 const DISPLAY_CONFIGS = [
   {
@@ -69,7 +69,6 @@ function parseArguments() {
     }
   });
 
-  // Set default values
   if (args.table && !args.sizes) {
     args.sizes = '9,13,15';
   }

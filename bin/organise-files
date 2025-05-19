@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# Downloads
-mv ~/Downloads/Statement*.pdf ~/Documents/filing-cabinet/banking/CBA-bank-statements

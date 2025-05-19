@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-main() {
-  /usr/local/bin/tmux attach -t hotkey && return
-  /usr/local/bin/tmux new-session -s hotkey
-}
-
-main

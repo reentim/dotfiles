@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-ruby --disable-gems -r zlib -e "puts Zlib::Inflate.inflate(STDIN.read)"

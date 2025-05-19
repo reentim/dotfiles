@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-function flippa-tmux-specs {
-	tmux new-session -d -s spec -n spec
-		tmux send-keys -t spec:spec "cd flippa/flippa-rails && clear" C-m
-}
-
-flippa-tmux-specs

@@ -1,8 +1,0 @@
-#!/bin/bash
-ARGS=""
-
-for file; do
-  ARGS="$ARGS `pwd`/$file"
-done
-
-`open -a "iA Writer"$ARGS`

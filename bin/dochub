@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-screen -md node /Users/tim/dev/dochub/web.js
-open 'http://localhost:5000'

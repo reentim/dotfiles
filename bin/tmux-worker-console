@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-
-tmux new-window -n production
-
-tmux send-keys -t production "tmux set-window-option window-status-current-bg red" C-m
-
-tmux send-keys -t production "ssh -A -l ubuntu \$(cd ~/flippa/rails && bundle exec cap production | ag worker | head -n 1 | sed 's/Found worker server: //')" C-m

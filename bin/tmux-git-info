@@ -17,7 +17,7 @@
 set -euo pipefail
 
 main() {
-  declare repo_path="${1-}"
+  declare current_path="${1-}"
 
   load_git_data
 
@@ -118,13 +118,9 @@ build_segments() {
 load_git_data() {
   local -a git_fields
 
-  if ! [[ -d "${repo_path}/.git" ]]; then
-    exit 1
-  fi
-
   mapfile -t git_fields < <(\
     git \
-      -C "${repo_path}" \
+      -C "${current_path}" \
       --no-pager \
       for-each-ref \
         --count=1 \
@@ -136,7 +132,9 @@ load_git_data() {
 %(push:track)
 %(upstream:short)
 %(end)\
-")
+" 2>/dev/null)
+
+  [[ ${#git_fields[@]} -eq 0 ]] && exit 1
 
   commit_id="${git_fields[0]}"
   commit_age=${git_fields[1]}

@@ -9,4 +9,4 @@ set -e
 find_in="$1"
 pattern="$2"
 
-find $find_in -name $pattern -printf "%T@\t%Tc\t%p\n" | sort -nr | awk -F '\t' '{ print $3 }'
+find $find_in -name "${pattern}" -printf "%T@\t%Tc\t%p\n" | sort -nr | awk -F '\t' '{ print $3 }'
