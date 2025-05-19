@@ -2,8 +2,12 @@
 view = [
   { run = 'loupe "$@"', orphan = true, for = "linux" }
 ]
+watch = [
+  { run = 'mpv "$@"', orphan = true, for = "linux" }
+]
 
 [open]
 rules = [
-  { mime = "image/*", use = "view" }
+  { mime = "image/*", use = "view" },
+  { mime = "video/*", use = "watch" }
 ]
