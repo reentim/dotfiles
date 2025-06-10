@@ -4,7 +4,7 @@ return {
     lazy = false,
     priority = 500,
     config = function()
-      vim.cmd[[colorscheme tokyonight]]
+      vim.cmd [[colorscheme tokyonight]]
     end,
   },
   {
@@ -15,13 +15,11 @@ return {
   },
   {
     'dcampos/nvim-snippy',
-    config = function()
-      require('snippy').setup({
-        scopes = {
-          typescriptreact = { '_', 'typescript', 'html' },
-        }
-      })
-    end
+    opts = {
+      scopes = {
+        typescriptreact = { '_', 'typescript', 'html' },
+      },
+    },
   },
   {
     'Wansmer/treesj',

@@ -34,23 +34,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "css",
-  callback = function()
-    vim.opt_local.formatoptions:remove("r")
-    vim.opt_local.formatoptions:remove("o")
-  end,
-})
-
-function _G.wc_info()
-  local lines = vim.api.nvim_buf_line_count(0)
-  local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-  local words = select(2, text:gsub("%S+", ""))
-  local chars = #text
-  return string.format("L:%d W:%d C:%d", lines, words, chars)
-end
-
-vim.o.statusline = "%f %m%r%h%w %=%y %l,%c%V %{v:lua.wc_info()} %p%%"
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "css",
+--   callback = function()
+--     vim.opt_local.formatoptions:remove("r")
+--     vim.opt_local.formatoptions:remove("o")
+--   end,
+-- })
 
 local function jump_with_mark(key)
   return function()
@@ -64,3 +54,7 @@ end
 
 vim.keymap.set('n', 'j', jump_with_mark('j'), { expr = false, silent = true })
 vim.keymap.set('n', 'k', jump_with_mark('k'), { expr = false, silent = true })
+
+vim.diagnostic.config({
+  virtual_text = true
+})
