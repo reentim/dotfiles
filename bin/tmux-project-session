@@ -6,8 +6,9 @@ projects="${HOME}/proj/"
 
 main() {
   proj_path="${projects}$(
-    # non-hidden directories that don't start with underscore, sorted by modified
-    # time
+    set +o pipefail
+    # a project dir is a non-hidden dir that don't start with underscore,
+    # sorted by modified time.
     find "${projects}" -mindepth 1 \
       \( -name ".*" -type d -prune \) -o \
       \( -type d ! -name "_*" \
@@ -19,16 +20,17 @@ main() {
       | tail -n 1
   )"
 
-  if [[ $proj_path == $projects ]]; then
-    exit
-  fi
-
   proj_name="$(basename ${proj_path})"
 
   if [[ ! -d $proj_path ]]; then
     read -n 1 -p "Create ${proj_path}? [Y/n] " confirmed
     [[ $confirmed == [Nn] ]] && exit
     mkdir -p "${proj_path}"
+  fi
+
+  if [[ $proj_path == $projects ]]; then
+    # no project has been selected
+    exit
   fi
 
   cd "${proj_path}"

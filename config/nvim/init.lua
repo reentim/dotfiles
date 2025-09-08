@@ -1,4 +1,4 @@
-vim.cmd[[highlight SignColumn guibg=brightblack]]
+vim.cmd [[highlight SignColumn guibg=brightblack]]
 vim.opt.backupdir = '/tmp/nvim_temp//'
 vim.opt.dir = '/tmp/nvim_swap//'
 vim.opt.guicursor = 'n-v-c-i-:block'
@@ -22,16 +22,16 @@ require('config.lazy')
 vim.cmd.source(vim.fn.stdpath("config") .. '/vimrc')
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    callback = function()
-        local group = vim.fn.hlexists("HighlightedyankRegion") > 0
-            and "HighlightedyankRegion"
-            or "IncSearch"
+  callback = function()
+    local group = vim.fn.hlexists("HighlightedyankRegion") > 0
+        and "HighlightedyankRegion"
+        or "IncSearch"
 
-        vim.highlight.on_yank {
-            higroup = group,
-            timeout = 200,
-        }
-    end,
+    vim.highlight.on_yank {
+      higroup = group,
+      timeout = 200,
+    }
+  end,
 })
 
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -57,4 +57,30 @@ vim.keymap.set('n', 'k', jump_with_mark('k'), { expr = false, silent = true })
 
 vim.diagnostic.config({
   virtual_text = true
+})
+
+
+
+
+vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "red" })
+
+local ignore_ft = { lazy = true, mason = true, help = true, }
+
+local function apply()
+  if vim.bo.buftype ~= "" or ignore_ft[vim.bo.filetype] then
+    vim.fn.clearmatches()
+    return
+  end
+  local pat = vim.fn.mode() == "i" and [[\s\+\%#\@<!$]] or [[\s\+$]]
+  vim.fn.matchadd("TrailingWhitespace", pat)
+end
+
+vim.api.nvim_create_autocmd({ "BufEnter", "InsertEnter", "InsertLeave" }, {
+  callback = apply,
+})
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+  callback = function()
+    vim.fn.clearmatches()
+  end,
 })

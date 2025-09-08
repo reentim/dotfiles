@@ -53,6 +53,7 @@ augroup vimrc
   autocmd BufNewFile,BufRead jrnl*,*journal.txt call SetJournalOptions()
   autocmd BufReadPost * call ResumeCursorPosition()
   autocmd BufWritePre,InsertLeave jrnl* call RewrapBuffer()
+  autocmd FileType netrw setlocal splitright = 0
 augroup END
 
 command! -nargs=? -complete=help Help help <args> | wincmd L | vert resize 80 | normal! 999zh

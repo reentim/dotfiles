@@ -74,6 +74,7 @@ shuffle_wallpaper() {
   [[ $shuffle_dir == $wallpaper_dir ]] && prune_dir="${tag_dir}"
   wallpaper=$(find "${shuffle_dir}" \
     -path ${prune_dir} -prune \
+    -path '_trash' -prune \
     -o -type f \
     -o -type l \
     ! -name "$(basename ${current_wallpaper})" \
