@@ -36,7 +36,6 @@ return {
       },
     },
     config = function()
-      local lspconfig = require('lspconfig')
       local cmp_nvim_lsp = require('cmp_nvim_lsp')
       local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -73,7 +72,7 @@ return {
         end,
       })
 
-      lspconfig.lua_ls.setup({
+      vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
             diagnostics = {
@@ -94,11 +93,11 @@ return {
         },
       })
 
-      lspconfig.tailwindcss.setup({
+      vim.lsp.config('tailwindcss', {
         capabilities = capabilities,
       })
 
-      lspconfig.ts_ls.setup({
+      vim.lsp.config('ts_ls.setup', {
         capabilities = capabilities,
         filetypes = {
           'javascript',
@@ -133,21 +132,21 @@ return {
             },
           },
         },
-        root_dir = lspconfig.util.root_pattern(
+        root_dir = vim.fs.root(0, {
           '.git',
           'package.json',
           'tsconfig.json'
-        ),
+        }),
       })
 
-      lspconfig.ruby_lsp.setup({
+      vim.lsp.config('ruby_lsp', {
         capabilities = capabilities,
         filetypes = {
           'ruby',
         }
       })
 
-      lspconfig.biome.setup({})
+      vim.lsp.config('biome', {})
     end,
   },
 }
