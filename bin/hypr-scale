@@ -2,12 +2,14 @@
 
 set -euo pipefail
 
+current_scale=$(hyprctl -j monitors | jq '.[0]["scale"]')
+
 main() {
-	scale="$(scale)"
-	hyprctl keyword monitor ,highrr,auto,${scale}
+	new_scale="$(fzf_scale)"
+	hyprctl keyword monitor ,3840x2160@240.00Hz,auto,${new_scale}
 }
 
-scale() {
+fzf_scale() {
 	cat <<-EOF | fzf | cut -d ' ' -f2-
 	a) 1.00
 	b) 1.25

@@ -15,8 +15,13 @@ main() {
   like_mode=false
   tag_mode=false
 
-  if [[ ! -d $wallpaper_dir ]] || ! command -v hyprpaper >/dev/null 2>&1; then
-    echo 2>&1 "Error: bad environment"
+  if [[ ! -d $wallpaper_dir ]]; then
+    echo 2>&1 "Error: directory doesn't exist: ${wallpaper_dir}"
+    exit 1
+  fi
+
+  if ! command -v hyprpaper >/dev/null 2>&1; then
+    echo 2>&1 "Error: hyprpaper unavailable"
     exit 1
   fi
 
@@ -42,8 +47,12 @@ main() {
         tag_mode=true
         shift
         ;;
-      --which)
+      --which|-w)
         echo "${current_wallpaper}"
+        exit
+        ;;
+      --help|-h)
+        display_help
         exit
         ;;
       *)
@@ -64,7 +73,7 @@ main() {
   $tag_mode && tag_wallpaper "${current_wallpaper}"
   $find_mode && set_wallpaper "$(find_wallpaper)"
   $shuffle_mode && shuffle_wallpaper
-  exit 0
+  exit 1
 }
 
 shuffle_wallpaper() {
@@ -79,6 +88,10 @@ shuffle_wallpaper() {
     -o -type l \
     ! -name "$(basename ${current_wallpaper})" \
     | shuf -n 1)
+  if [[ -z $wallpaper ]]; then
+    echo 2>&1 "Error: no wallpapers found"
+    exit 1
+  fi
   set_wallpaper "${wallpaper}"
 }
 
@@ -106,8 +119,8 @@ like_wallpaper() {
 tag_wallpaper() {
   wallpaper="${1}"
   tag="${2-}"
-  echo "Select or create tag:"
   if [[ -z $tag ]]; then
+    echo "Select or create tag:"
     tag="$(find "${wallpaper_dir%/}/_tags" -mindepth 1 -type d -print0 \
       | xargs -0 -n 1 basename \
       | fzf --exact --print-query \
@@ -121,7 +134,7 @@ tag_wallpaper() {
     "${wallpaper}" \
     "${tag_dir%/}/$(basename ${wallpaper})" >/dev/null 2>&1 \
     && echo "✅ tagged as '${tag}': $(basename ${wallpaper})"
-  }
+}
 
 find_wallpaper() {
   type_opt="${1--type f -o -type l}"
@@ -143,6 +156,18 @@ relative_path() {
 wallpaper_path() {
   [[ -z $1 ]] && exit 1
   echo "${wallpaper_dir/%}/${1}"
+}
+
+display_help() {
+  cat <<EOF
+--find, -f      (fzf) set wallpaper to selected file from ${wallpaper_dir}
+--shuffle, -s   set wallpaper to random file from ${wallpaper_dir} (current wallpaper excluded)
+--remove, -r    move current wallpaper file to ${trash_dir}
+--like, -l      apply 'liked' tag to current wallapper
+--tag, -t       (fzf) create or select existing tag to apply to current wallpaper
+--which, -w     print current wallpaper file path
+--help, -h      display this message
+EOF
 }
 
 main "$@"

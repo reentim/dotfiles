@@ -53,6 +53,11 @@ main() {
 set_up_session() {
   if command -v "tmux-session-${proj_name}" >/dev/null 2>&1; then
     "tmux-session-${proj_name}"
+  elif pnpm run | grep -w dev; then
+    echo 'here' >>/tmp/log
+    tmux send-keys -t "${session}" "pnpm run dev" C-m
+    tmux new-window
+    tmux send-keys -t "${session}" "$EDITOR" C-m
   fi
 }
 

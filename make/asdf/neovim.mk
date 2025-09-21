@@ -5,7 +5,7 @@ neovim: $(ASDF_DIR)/shims/nvim
 $(ASDF_DIR)/shims/nvim: $(ASDF_DIR)/plugins/neovim
 	$(ASDF_INSTALL_LATEST_NEOVIM_CMD)
 
-$(ASDF_DIR)/plugins/neovim: /usr/local/bin/asdf
+$(ASDF_DIR)/plugins/neovim:
 	asdf plugin add neovim
 
 .PHONY: asdf-install-latest-neovim

@@ -8,7 +8,7 @@ nodejs: $(ASDF_DIR)/shims/node
 $(ASDF_DIR)/shims/node: $(ASDF_DIR)/plugins/nodejs
 	$(ASDF_INSTALL_LATEST_NODEJS_CMD)
 
-$(ASDF_DIR)/plugins/nodejs: /usr/local/bin/asdf
+$(ASDF_DIR)/plugins/nodejs:
 	asdf plugin add nodejs
 
 .PHONY: asdf-install-latest-nodejs

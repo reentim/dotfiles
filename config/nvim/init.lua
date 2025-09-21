@@ -60,26 +60,40 @@ vim.diagnostic.config({
 })
 
 
-
-
-vim.api.nvim_set_hl(0, "TrailingWhitespace", { bg = "red" })
-
-local ignore_ft = { lazy = true, mason = true, help = true, }
-
-local function apply()
-  if vim.bo.buftype ~= "" or ignore_ft[vim.bo.filetype] then
-    vim.fn.clearmatches()
-    return
-  end
-  local pat = vim.fn.mode() == "i" and [[\s\+\%#\@<!$]] or [[\s\+$]]
-  vim.fn.matchadd("TrailingWhitespace", pat)
+local function TrailingWhitespace_highlight()
+  vim.api.nvim_set_hl(0, "TrailingWhitespace", { ctermbg = "darkred", bg = "darkred" })
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter", "InsertEnter", "InsertLeave" }, {
-  callback = apply,
+local group = vim.api.nvim_create_augroup("TrailingWhitespace", { clear = true })
+
+TrailingWhitespace_highlight()
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = group,
+  callback = function()
+    vim.fn.clearmatches()
+    vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
+  end,
+})
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+  group = group,
+  callback = function()
+    vim.fn.clearmatches()
+    vim.fn.matchadd("TrailingWhitespace", [[\s\+\%#\@<!$]])
+  end,
+})
+
+vim.api.nvim_create_autocmd("InsertLeave", {
+  group = group,
+  callback = function()
+    vim.fn.clearmatches()
+    vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
+  end,
 })
 
 vim.api.nvim_create_autocmd("BufWinLeave", {
+  group = group,
   callback = function()
     vim.fn.clearmatches()
   end,

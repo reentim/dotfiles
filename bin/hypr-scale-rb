@@ -1,0 +1,68 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+class HyprScale
+  def initialize
+    if ARGV.any?
+      handle_options
+      exit
+    end
+
+    set_scale
+  end
+
+  private
+
+  def handle_options
+    case ARGV[0]
+    when "up"
+      change_scale_by_one(1)
+    when "down"
+      change_scale_by_one(-1)
+    end
+  end
+
+  def set_scale(scale = fzf_selected_scale)
+    abort unless scale_options.include?(scale)
+    abort if scale == current_scale
+
+    system %Q{
+      hyprctl keyword monitor , highres, auto, #{scale}
+    }
+  end
+
+  def fzf_selected_scale
+    scale_index = scale_options.index(current_scale)
+    downs = Array.new(scale_index) { 'down' }.join('+')
+
+    %x{
+      echo '#{scale_options.join("\n")}' \
+      | fzf --bind 'start:#{downs}' \
+    }.chomp
+  end
+
+  def scale_options
+    %w{
+      1.00
+      1.25
+      1.50
+      1.67
+      2.00
+    }
+  end
+
+  def change_scale_by_one(direction)
+    set_scale(
+      scale_options[
+        (scale_options.index(current_scale) + direction).clamp(0, scale_options.size - 1)
+      ]
+    )
+  end
+
+  def current_scale
+    @current_scale ||= %x{
+      hyprctl -j monitors | jq '.[0]["scale"]'
+    }.chomp
+  end
+end
+
+HyprScale.new

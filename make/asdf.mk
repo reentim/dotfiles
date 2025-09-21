@@ -4,14 +4,13 @@ include make/asdf/ruby.mk
 include make/asdf/pnpm.mk
 include make/asdf/bun.mk
 
-.PHONY: install-asdf
-install-asdf: install-packages
-	$(INSTALL_ASDF_CMD)
+.PHONY: asdf-vm-installed
+asdf-vm-installed:
+	@if ! command -v asdf >/dev/null 2>&1; then \
+		echo "ERROR: asdf not present. Refer to https://asdf-vm.com/guide/getting-started"; \
+	fi
 
-/usr/local/bin/asdf:
-	$(INSTALL_ASDF_CMD)
-
-INSTALL_ASDF_CMD = @{ \
+asdf-vm-manually-installed:
 	echo "Installing latest asdf release..."; \
 	set -e; \
 	LATEST_RELEASE=$$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/asdf-vm/asdf/releases/latest | sed 's|.*/tag/v||'); \
@@ -32,5 +31,4 @@ INSTALL_ASDF_CMD = @{ \
 	curl -fsSL -o "/tmp/$$TARBALL" "$$DOWNLOAD_URL"; \
 	echo "	Extracting /tmp/$$TARBALL to $$INSTALL_DIR..."; \
 	sudo tar -xzf "/tmp/$$TARBALL" -C "$$INSTALL_DIR"; \
-	echo "	✅ asdf installed successfully in $$INSTALL_DIR!"; \
-}
+	echo "	✅ asdf installed successfully in $$INSTALL_DIR!"

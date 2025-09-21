@@ -8,7 +8,7 @@ bun: $(ASDF_DIR)/shims/bun
 $(ASDF_DIR)/shims/bun: $(ASDF_DIR)/plugins/bun
 	$(ASDF_INSTALL_LATEST_BUN_CMD)
 
-$(ASDF_DIR)/plugins/bun: /usr/local/bin/asdf
+$(ASDF_DIR)/plugins/bun:
 	asdf plugin add bun
 
 ASDF_INSTALL_LATEST_BUN_CMD = @{ \
