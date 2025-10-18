@@ -8,7 +8,11 @@ export FZF_DEFAULT_OPTS="--style default --layout reverse --height=~100%"
 export HISTFILE="$HOME/.history"
 export HISTSIZE=100000
 export HOMEBREW_AUTO_UPDATE_SECS=86400
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
 export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 export LC_COLLATE=C
 export LESS="MRi --mouse"
 export MANPAGER='nvim +Man!'
@@ -25,6 +29,8 @@ export WORDCHARS='*?[]~&;!$%^<>-'
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -f "$HOME/.secrets.env" ]] && source "$HOME/.secrets.env"
 
+path=("/opt/homebrew/bin" $path)
+path=("/opt/homebrew/sbin" $path)
 path=("$HOME/.asdf/shims" $path)
 path=("./node_modules/.bin" $path)
 path=("$HOME/bin" $path)
@@ -33,3 +39,7 @@ path=("./bin" $path)
 if [[ $ZSH_BENCH_ENABLED == true ]]; then
   printf "[%.3f] ~/.zshenv\n" "(( $EPOCHREALTIME - $ZSHENV_EPOCH ))"
 fi
+
+fpath[1,0]="/opt/homebrew/share/zsh/site-functions";
+
+[[ -z "${MANPATH-}" ]] || export MANPATH=":${MANPATH#:}";

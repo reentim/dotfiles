@@ -10,7 +10,7 @@ pnpm: $(ASDF_DIR)/shims/pnpm
 $(ASDF_DIR)/shims/pnpm: $(ASDF_DIR)/plugins/pnpm
 	$(ASDF_INSTALL_LATEST_PNPM_CMD)
 
-$(ASDF_DIR)/plugins/pnpm:
+$(ASDF_DIR)/plugins/pnpm: asdf
 	asdf plugin add pnpm
 
 ASDF_INSTALL_LATEST_PNPM_CMD = @{ \

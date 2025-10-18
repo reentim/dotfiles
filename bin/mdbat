@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+clip() {
+  if command -v wl-copy >/dev/null 2>&1; then
+    wl-copy
+  else
+    pbcopy
+  fi
+}
+
 main() {
   local tmpfile
   local final_output=""
@@ -20,7 +28,7 @@ main() {
 
   echo -e "${final_output}" > "${tmpfile}"
   "${EDITOR-nvim}" "${tmpfile}"
-  cat "${tmpfile}" | wl-copy
+  cat "${tmpfile}" | clip
   rm -f "${tmpfile}"
 }
 

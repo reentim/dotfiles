@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -euxo pipefail
 
 projects="${HOME}/proj/"
 
 main() {
+  find_cmd=$(command -v gfind || command -v find)
   proj_path="${projects}$(
     set +o pipefail
     # a project dir is a non-hidden dir that don't start with underscore,
     # sorted by modified time.
-    find "${projects}" -mindepth 1 \
+    "${find_cmd}" "${projects}" -mindepth 1 \
       \( -name ".*" -type d -prune \) -o \
       \( -type d ! -name "_*" \
           \( -path "*/proj/*" ! -path "*/proj/*/*" -o -path "*/_*/*" \) \
@@ -62,8 +63,7 @@ set_up_session() {
 }
 
 normalised_session_name() {
-  echo "${1}" \
-    | sed 's/\./_/g'
+  echo "${1}" | sed 's/\./_/g'
 }
 
 main

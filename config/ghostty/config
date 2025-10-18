@@ -4,7 +4,8 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config
 
-command = env TERM_APP=ghostty $SHELL
+command = env TERM_APP=ghostty /Users/tim/bin/tmux-attach-or-new
+quit-after-last-window-closed = true
 cursor-style = block
 keybind = alt+eight=unbind
 keybind = alt+five=unbind
@@ -16,16 +17,35 @@ keybind = alt+six=unbind
 keybind = alt+three=unbind
 keybind = alt+two=unbind
 keybind = ctrl+shift+minus=decrease_font_size:0.5
-keybind = ctrl+shift+plus=increase_font_size:0.5
+keybind = ctrl+shift+equal=increase_font_size:0.5
 keybind = shift+delete=paste_from_selection
 link-url = true
 mouse-hide-while-typing = true
 resize-overlay = never
 shell-integration-features = no-cursor
 window-padding-balance = true
-window-padding-color = background
+window-padding-color = extend-always
 window-padding-x = 4
 window-padding-y = 4
+copy-on-select = clipboard
+fullscreen = false
+
+font-thicken = true
+font-thicken-strength = 64
+font-size = 17.5
+adjust-cell-height = 10%
 
 config-file = ?fonts/_current
 config-file = ?themes/_current
+
+macos-option-as-alt = true
+macos-non-native-fullscreen = true
+macos-titlebar-style = hidden
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+# window-decoration = none
+
+window-height = 999
+window-width = 999
+
+# for Claude code
+keybind = shift+enter=text:\x1b\r

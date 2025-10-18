@@ -1,15 +1,16 @@
 PACKAGES := \
+	bat \
 	btop \
 	curl \
 	git \
 	libyaml \
+	tmux \
 	tree \
 
 APT_PACKAGES := \
 	build-essential \
 
 PACMAN_PACKAGES := \
-	bat \
 	direnv \
 	dnsutils \
 	git-delta \
@@ -27,9 +28,14 @@ PACMAN_PACKAGES := \
 	zsh \
 
 HOMEBREW_PACKAGES := \
+	bash \
 	coreutils \
+	findutils \
 	fzf \
+	gh \
+	make \
 	ripgrep \
+	rsync \
 	zoxide \
 
 UPDATE_STAMP := ~/.packages-updated-stamp

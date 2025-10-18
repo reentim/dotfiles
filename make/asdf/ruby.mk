@@ -8,7 +8,7 @@ ruby: $(ASDF_DIR)/shims/ruby
 $(ASDF_DIR)/shims/ruby: $(ASDF_DIR)/plugins/ruby
 	$(ASDF_INSTALL_LATEST_RUBY_CMD)
 
-$(ASDF_DIR)/plugins/ruby:
+$(ASDF_DIR)/plugins/ruby: asdf
 	asdf plugin add ruby
 
 .PHONY: asdf-install-latest-ruby

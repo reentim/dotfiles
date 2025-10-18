@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 main() {
   local session="$(unattached_session)"
@@ -10,7 +10,7 @@ main() {
       systemd-run >/dev/null 2>&1 --user --scope --slice=background.slice \
         tmux new-session
     else
-      tmux new-sesion
+      tmux new-session
     fi
   fi
 }
