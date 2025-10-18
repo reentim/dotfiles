@@ -1,0 +1,75 @@
+#!/usr/bin/env -S ruby --disable-gems
+
+GHOSTTY_FONTS_DIR = File.join(Dir.home, ".config/ghostty/fonts/")
+
+class Chfont
+  attr_accessor :fonts
+
+  def initialize
+    handle_options if ARGV.any?
+
+    all_fonts = %x[ghostty +list-fonts]
+    @fonts = all_fonts
+      .split("\n")
+      .reject { |str| str.match?(/(^\s)|(^$)/) }
+
+    ensure_font_confs_exist
+    fuzzy_select_font
+  end
+
+  def handle_options
+    case ARGV.join
+    when "-ec"
+      edit_current
+      exit
+    end
+  end
+
+  def edit_current
+    exec("#{ENV['EDITOR']} #{current_config_file}")
+  end
+
+  def current_config_file
+    File.join(
+      GHOSTTY_FONTS_DIR,
+      File
+        .read(File.join(GHOSTTY_FONTS_DIR, "_current"))
+        .split(" = ?")
+        .last
+        .chomp
+    )
+  end
+
+  def fuzzy_select_font
+    all_font_config_files = Dir
+      .glob(File.join(GHOSTTY_FONTS_DIR, '**/*'))
+      .select { |f| File.file?(f) }
+      .map { |path| path.sub(GHOSTTY_FONTS_DIR, '') }
+      .reject { |f| f == "_current" }
+
+    fuzzy_selected = %x{
+      echo '#{all_font_config_files.join("\n")}' | fzf
+    }
+
+    abort if [nil, ""].include?(fuzzy_selected)
+
+    File.open(File.join(GHOSTTY_FONTS_DIR, "_current"), "w") do |f|
+      f << "config-file = ?#{fuzzy_selected}"
+    end
+  end
+
+  def ensure_font_confs_exist
+    fonts.each do |font_name|
+      file_name = font_name.downcase.gsub("\s", "_")
+      file_path = File.join(GHOSTTY_FONTS_DIR, file_name)
+
+      unless File.exist?(file_path)
+        File.open(file_path, "w") do |f|
+          f << %Q[font-family = "#{font_name}"]
+        end
+      end
+    end
+  end
+end
+
+Chfont.new
