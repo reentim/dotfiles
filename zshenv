@@ -29,6 +29,7 @@ export WORDCHARS='*?[]~&;!$%^<>-'
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 [[ -f "$HOME/.secrets.env" ]] && source "$HOME/.secrets.env"
 
+path=("/opt/podman/bin" $path)
 path=("/opt/homebrew/bin" $path)
 path=("/opt/homebrew/sbin" $path)
 path=("$HOME/.asdf/shims" $path)

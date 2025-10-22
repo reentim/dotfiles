@@ -8,3 +8,5 @@ tags
 node_modules
 .tool-versions
 .swp
+
+**/.claude/settings.local.json

@@ -156,7 +156,7 @@ zgit_tracking_merge() {
 
 zgit_isindexclean() {
 	zgit_isgit || return 1
-	if git diff --quiet --cached 2>/dev/null; then
+	if git diff --quiet --cached -- >/dev/null 2>&1; then
 		return 0
 	else
 		return 1
@@ -165,7 +165,7 @@ zgit_isindexclean() {
 
 zgit_isworktreeclean() {
 	zgit_isgit || return 1
-	if git diff --quiet 2>/dev/null; then
+	if git diff --quiet >/dev/null 2>&1; then
 		return 0
 	else
 		return 1
@@ -192,19 +192,6 @@ zgit_hasunmerged() {
 	else
 		return 1
 	fi
-}
-
-zgit_svnhead() {
-	zgit_isgit || return 1
-
-	local commit=$1
-	if [ -z "$commit" ]; then
-		commit='HEAD'
-	fi
-
-	git show --raw $commit | \
-		grep git-svn-id | \
-			sed -re 's/^\s*git-svn-id: .*@([0-9]+).*$/\1/'
 }
 
 zgit_rebaseinfo() {
