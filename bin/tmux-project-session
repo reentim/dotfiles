@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 projects="${HOME}/proj/"
 
@@ -17,11 +17,22 @@ main() {
           -prune -printf '%T@\t%P\n' \) \
       | sort -nr \
       | cut -f2- \
-      | fzf --exact --print-query --height=100% \
+      | fzf --exact --print-query --height=100% --prompt="^g for github> " --bind 'ctrl-g:become(echo "github")' \
       | tail -n 1
   )"
 
   proj_name="$(basename ${proj_path})"
+
+  if [[ $proj_name = "github" ]]; then
+    name_with_owner="$(gh repo list --json 'nameWithOwner' \
+      | jq -r '.[] | .[]' \
+      | fzf --exact --print-query --height=100% \
+      | tail -n 1
+    )"
+    proj_name="$(basename ${name_with_owner})"
+    proj_path="${projects}${proj_name}"
+    gh repo clone "${name_with_owner}" "${proj_path}"
+  fi
 
   if [[ ! -d $proj_path ]]; then
     read -n 1 -p "Create ${proj_path}? [Y/n] " confirmed
