@@ -1,0 +1,4 @@
+font_family      family="ZedMono Nerd Font" features="-calt +zero"
+bold_font        family="ZedMono Nerd Font" features="-calt +zero" style="Bold"
+italic_font      family="ZedMono Nerd Font" features="-calt +zero" style="Italic"
+bold_italic_font family="ZedMono Nerd Font" features="-calt +zero" style="BoldItalic"

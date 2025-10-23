@@ -1,0 +1,4 @@
+font_family      family="SF Mono"
+bold_font        family="SF Mono" style="Bold"
+italic_font      family="SF Mono" style="Italic"
+bold_italic_font family="SF Mono" style="BoldItalic"

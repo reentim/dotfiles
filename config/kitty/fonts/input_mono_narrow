@@ -1,0 +1,4 @@
+font_family      family="Input Mono Narrow" features="+zero"
+bold_font        family="Input Mono Narrow" features="+zero" style="Bold"
+italic_font      family="Input Mono Narrow" features="+zero" style="Italic"
+bold_italic_font family="Input Mono Narrow" features="+zero" style="BoldItalic"

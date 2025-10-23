@@ -1,0 +1,4 @@
+font_family      family="Operator Mono" style="Book"
+bold_font        family="Operator Mono" style="Bold"
+italic_font      family="Operator Mono" style="Book Italic"
+bold_italic_font family="Operator Mono" style="BoldItalic"

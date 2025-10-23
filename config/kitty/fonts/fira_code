@@ -1,0 +1,4 @@
+font_family      family="Fira Code"
+bold_font        family="Fira Code" style="Bold"
+italic_font      family="Fira Code" style="Italic"
+bold_italic_font family="Fira Code" style="BoldItalic"

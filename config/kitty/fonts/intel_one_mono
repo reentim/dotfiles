@@ -1,0 +1,4 @@
+font_family      family="Intel One Mono"
+bold_font        family="Intel One Mono" style="Bold"
+italic_font      family="Intel One Mono" style="Italic"
+bold_italic_font family="Intel One Mono" style="BoldItalic"

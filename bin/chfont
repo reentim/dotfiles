@@ -1,74 +1,143 @@
 #!/usr/bin/env -S ruby --disable-gems
 
-GHOSTTY_FONTS_DIR = File.join(Dir.home, ".config/ghostty/fonts/")
+FONT_CONFIG_DIRS = {
+  ghostty: File.join(Dir.home, ".config/ghostty/fonts/"),
+  kitty: File.join(Dir.home, ".config/kitty/fonts")
+}
+
+IGNORE_LIST = [
+  "Input Sans",
+  "Input Serif",
+  "Noto",
+]
+
+unless ["kitty", "ghostty"].include?(ENV["TERM_APP"])
+  abort "terminal program can't be determined"
+end
+
+unless system("which ghostty >/dev/null 2>&1")
+  abort "ghostty is required for listing fonts"
+end
 
 class Chfont
-  attr_accessor :fonts
+  attr_accessor :installed_fonts, :config_files
 
   def initialize
     handle_options if ARGV.any?
 
-    all_fonts = %x[ghostty +list-fonts]
-    @fonts = all_fonts
+    @installed_fonts = %x[ghostty +list-fonts]
       .split("\n")
-      .reject { |str| str.match?(/(^\s)|(^$)/) }
+      .reject { |font| font.match?(/(^\s)|(^$)/) }
+      .reject { |font| IGNORE_LIST.any? { |name| font.match?(/^#{name}/) }}
 
-    ensure_font_confs_exist
+    @config_files = Dir
+      .glob(File.join(font_config_dir, '**/*'))
+      .select { |f| File.file?(f) }
+      .map { |path| File.basename(path) }
+      .reject { |f| ["_current", "_default"].include?(f) }
+
     fuzzy_select_font
+    reload_config
   end
 
   def handle_options
     case ARGV.join
-    when "-ec"
+    when "-e", "--edit"
       edit_current
+      reload_config
       exit
     end
   end
 
   def edit_current
-    exec("#{ENV['EDITOR']} #{current_config_file}")
+    system(%Q[#{ENV["EDITOR"]} #{current_config_file}])
   end
 
   def current_config_file
     File.join(
-      GHOSTTY_FONTS_DIR,
+      font_config_dir,
       File
-        .read(File.join(GHOSTTY_FONTS_DIR, "_current"))
-        .split(" = ?")
+        .read(File.join(font_config_dir, "_current"))
+        .split
         .last
         .chomp
     )
   end
 
   def fuzzy_select_font
-    all_font_config_files = Dir
-      .glob(File.join(GHOSTTY_FONTS_DIR, '**/*'))
-      .select { |f| File.file?(f) }
-      .map { |path| path.sub(GHOSTTY_FONTS_DIR, '') }
-      .reject { |f| f == "_current" }
+    fuzzy_selected = nil
 
-    fuzzy_selected = %x{
-      echo '#{all_font_config_files.join("\n")}' | fzf
-    }
+    while ["INSTALLED", "CONFIGURED", nil].include?(fuzzy_selected) do
+      fuzzy_selected = %x[
+        echo '#{config_files.join("\n")}' \
+          | fzf --prompt="^f for all fonts> " \
+              --bind "ctrl-f:become(echo 'INSTALLED')"
+      ].chomp
+
+      if fuzzy_selected == "INSTALLED"
+        fuzzy_selected = %x[
+          echo '#{installed_fonts.join("\n")}' \
+            | fzf --prompt="^f for configured> " \
+              --bind "ctrl-f:become(echo 'CONFIGURED')"
+        ].chomp
+      end
+    end
 
     abort if [nil, ""].include?(fuzzy_selected)
 
-    File.open(File.join(GHOSTTY_FONTS_DIR, "_current"), "w") do |f|
-      f << "config-file = ?#{fuzzy_selected}"
+    ensure_font_config_file_exists(fuzzy_selected)
+
+    File.open(File.join(font_config_dir, "_current"), "w") do |f|
+      f << include_config_file(filename_for(fuzzy_selected)) + "\n"
     end
   end
 
-  def ensure_font_confs_exist
-    fonts.each do |font_name|
-      file_name = font_name.downcase.gsub("\s", "_")
-      file_path = File.join(GHOSTTY_FONTS_DIR, file_name)
-
-      unless File.exist?(file_path)
-        File.open(file_path, "w") do |f|
-          f << %Q[font-family = "#{font_name}"]
-        end
+  def ensure_font_config_file_exists(font_name)
+    filename = filename_for(font_name)
+    file_path = File.join(font_config_dir, filename)
+    unless File.exist?(file_path)
+      File.open(file_path, "w") do |f|
+        f << specify_font(font_name) + "\n"
       end
     end
+  end
+
+  def reload_config
+    case ENV["TERM_APP"]
+    when "kitty"
+      system(%q[bash -c "kill -SIGUSR1 $(pgrep kitty)"])
+    end
+  end
+
+  def font_config_dir
+    FONT_CONFIG_DIRS.fetch(ENV["TERM_APP"].to_sym)
+  end
+
+  def include_config_file(filename)
+    case ENV["TERM_APP"]
+    when "kitty"
+      "include #{filename}"
+    when "ghostty"
+      "config-file = #{filename}"
+    end
+  end
+
+  def specify_font(family)
+    case ENV["TERM_APP"]
+    when "kitty"
+      <<~EOF.chomp
+        font_family      family="#{family}"
+        bold_font        auto
+        italic_font      auto
+        bold_italic_font auto
+      EOF
+    when "ghostty"
+      %Q[font-family = "#{family}"]
+    end
+  end
+
+  def filename_for(font_name)
+    font_name.downcase.gsub("\s", "_")
   end
 end
 

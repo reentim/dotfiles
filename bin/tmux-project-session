@@ -17,7 +17,8 @@ main() {
           -prune -printf '%T@\t%P\n' \) \
       | sort -nr \
       | cut -f2- \
-      | fzf --exact --print-query --height=100% --prompt="^g for github> " --bind 'ctrl-g:become(echo "github")' \
+      | fzf --exact --print-query --height=100% --prompt="^g for github> " \
+          --bind 'ctrl-g:become(echo "github")' \
       | tail -n 1
   )"
 

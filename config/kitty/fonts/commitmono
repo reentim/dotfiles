@@ -1,0 +1,4 @@
+font_family      family="CommitMono"
+bold_font        family="CommitMono" style="Bold"
+italic_font      family="CommitMono" style="Italic"
+bold_italic_font family="CommitMono" style="BoldItalic"

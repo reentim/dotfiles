@@ -1,0 +1,4 @@
+font_family      family="Adwaita Mono" features="+zero"
+bold_font        family="Adwaita Mono" style="Bold" features="+zero"
+italic_font      family="Adwaita Mono" style="Italic" features="+zero"
+bold_italic_font family="Adwaita Mono" style="BoldItalic" features="+zero"

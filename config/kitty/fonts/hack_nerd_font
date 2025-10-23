@@ -1,0 +1,4 @@
+font_family      family="Hack Nerd Font"
+bold_font        family="Hack Nerd Font" style="Bold"
+italic_font      family="Hack Nerd Font" style="Italic"
+bold_italic_font family="Hack Nerd Font" style="BoldItalic"

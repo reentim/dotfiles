@@ -1,0 +1,4 @@
+font_family      family="BlexMono Nerd Font" features="+ss03"
+bold_font        family="BlexMono Nerd Font" style="Bold" features="+ss03"
+italic_font      family="BlexMono Nerd Font" style="Italic" features="+ss03"
+bold_italic_font family="BlexMono Nerd Font" style="BoldItalic" features="+ss03"

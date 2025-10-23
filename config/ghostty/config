@@ -4,7 +4,7 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config
 
-command = env TERM_APP=ghostty /Users/tim/bin/tmux-attach-or-new
+command = env TERM_APP=ghostty ~/bin/tmux-attach-or-new
 quit-after-last-window-closed = true
 cursor-style = block
 keybind = alt+eight=unbind
@@ -32,7 +32,7 @@ fullscreen = false
 
 font-thicken = true
 font-thicken-strength = 64
-font-size = 17.5
+font-size = 13
 adjust-cell-height = 10%
 
 config-file = ?fonts/_current
