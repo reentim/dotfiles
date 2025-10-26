@@ -1,4 +1,4 @@
-font_family      family="IoskeleyMono" features="-calt"
-bold_font        family="IoskeleyMono" features="-calt" style="Bold"
-italic_font      family="IoskeleyMono" features="-calt" style="Italic"
-bold_italic_font family="IoskeleyMono" features="-calt" style="BoldItalic"
+font_family      family="IoskeleyMono" features="-calt +zero"
+bold_font        family="IoskeleyMono" features="-calt +zero" style="Bold"
+italic_font      family="IoskeleyMono" features="-calt +zero" style="Italic"
+bold_italic_font family="IoskeleyMono" features="-calt +zero" style="BoldItalic"
