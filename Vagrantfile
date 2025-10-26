@@ -82,6 +82,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     mkdir -p ~/.ssh
     ssh-keyscan github.com >> ~/.ssh/known_hosts
-    [ -d ~/dotfiles ] || git clone git@github.com:reentim/dotfiles.git
+    [ -d ~/proj/dotfiles ] || git clone git@github.com:reentim/dotfiles.git
   SHELL
 end

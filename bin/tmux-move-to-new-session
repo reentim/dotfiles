@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Get current session and window
+current_session=$(tmux display-message -p '#S')
+current_window=$(tmux display-message -p '#I')
+
+# Create a new session (detached, so we don't switch to it)
+new_session=$(tmux new-session -dP -F '#{session_name}')
+
+# Move the current window to the new session
+tmux move-window -s "${current_session}:${current_window}" -t "${new_session}:"
+
+tmux switch-client -t "$new_session"
+echo "Moved window to new session: $new_session"

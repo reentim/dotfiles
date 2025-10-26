@@ -3,5 +3,7 @@
     "~f" = "moveWordForward:";
     "~b" = "moveWordBackward:";
     "~d" = "deleteWordForward:";
-    "^w" = "deleteWordBackward:";
+/*  "^w" = "deleteWordBackward:"; hazardous for muscle memory; RIP my desktop linux browser tabs */
+    "~u" = (selectParagraph:, delete:, moveToBeginningOfParagraph:);
+
 }

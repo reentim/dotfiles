@@ -68,18 +68,18 @@ nnoremap <F5> :set invlist<CR>
 nnoremap <F6> :call LineNumbers_toggle()<CR>
 nnoremap <leader><leader> <C-^>
 nnoremap <leader>cx :silent !chmod +x %<CR>
-nnoremap <leader>eg :e ~/dotfiles/config/ghostty/config<CR>
+nnoremap <leader>eg :e ~/proj/dotfiles/config/ghostty/config<CR>
 nnoremap <leader>eh :e ~/proj/arch-config/config/hypr/hyprland.conf<CR>
-nnoremap <leader>ek :e ~/dotfiles/config/kitty/kitty.conf<CR>
-nnoremap <leader>eni :e ~/dotfiles/config/nvim/init.lua<CR>
-nnoremap <leader>enp :e ~/dotfiles/config/nvim/lua/plugins.lua<CR>
-nnoremap <leader>env :e ~/dotfiles/config/nvim/vimrc<CR>
-nnoremap <leader>etb :e ~/dotfiles/tmux/bindings.conf<CR>
-nnoremap <leader>etc :e ~/dotfiles/tmux.conf<CR>
-nnoremap <leader>ets :e ~/dotfiles/tmux/settings.conf<CR>
-nnoremap <leader>eze :e ~/dotfiles/zshenv<CR>
-nnoremap <leader>ezf :e ~/dotfiles/zsh/functions.zsh<CR>
-nnoremap <leader>ezr :e ~/dotfiles/zshrc<CR>
+nnoremap <leader>ek :e ~/proj/dotfiles/config/kitty/kitty.conf<CR>
+nnoremap <leader>eni :e ~/proj/dotfiles/config/nvim/init.lua<CR>
+nnoremap <leader>enp :e ~/proj/dotfiles/config/nvim/lua/plugins.lua<CR>
+nnoremap <leader>env :e ~/proj/dotfiles/config/nvim/vimrc<CR>
+nnoremap <leader>etb :e ~/proj/dotfiles/tmux/bindings.conf<CR>
+nnoremap <leader>etc :e ~/proj/dotfiles/tmux.conf<CR>
+nnoremap <leader>ets :e ~/proj/dotfiles/tmux/settings.conf<CR>
+nnoremap <leader>eze :e ~/proj/dotfiles/zshenv<CR>
+nnoremap <leader>ezf :e ~/proj/dotfiles/zsh/functions.zsh<CR>
+nnoremap <leader>ezr :e ~/proj/dotfiles/zshrc<CR>
 nnoremap <leader>gf :e <cfile><CR>
 nnoremap <leader>m /\v^(\<{7}.*\|\={7}\|\>{7}.*)<CR>
 nnoremap <leader>n :call RenameFile()<CR>
