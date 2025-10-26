@@ -59,7 +59,7 @@ main() {
     tmux switch-client -t "${session_name}"
   else
     tmux new-session -As "${session_name}"
-    set_up_session
+    # set_up_session
   fi
 }
 
