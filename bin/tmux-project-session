@@ -51,14 +51,18 @@ main() {
   session_name=$(normalised_session_name "${proj_name}")
 
   if ! tmux has-session -t "${session_name}" >/dev/null 2>&1; then
+    echo "does not have session" >> /tmp/log
     tmux new-session -d -s "${session_name}"
-    set_up_session
+    # set_up_session
   fi
 
   if [[ $TMUX ]]; then
+    echo "has TMUX" >> /tmp/log
     tmux switch-client -t "${session_name}"
   else
+    echo "doesn't have TMUX" >> /tmp/log
     tmux new-session -As "${session_name}"
+    tmux switch-client -t "${session_name}"
     # set_up_session
   fi
 }
