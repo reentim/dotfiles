@@ -1,4 +1,4 @@
-font_family      family="TX-02" style="Retina"
-bold_font        family="TX-02" style="ExtraBold"
-italic_font      family="TX-02" style="Retina Oblique"
-bold_italic_font family="TX-02" style="ExtraBold Oblique"
+font_family      family="TX-02" style="Retina" features="-calt"
+bold_font        family="TX-02" style="ExtraBold" features="-calt"
+italic_font      family="TX-02" style="Retina Oblique" features="-calt"
+bold_italic_font family="TX-02" style="ExtraBold Oblique" features="-calt"
